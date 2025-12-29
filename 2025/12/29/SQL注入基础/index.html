@@ -9,7 +9,7 @@
   
   <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_4k4bc36ef96';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = 'All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://cl1ck-t0.github.io';</script>
   <title>
-    友情链接 | Cl1ck-t0&#39;s blog
+    SQL注入基础 | Cl1ck-t0&#39;s blog
   </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish%3A400%2C400italic%2C700%2C700italic%7CNoto+Serif+SC%3A400%2C400italic%2C700%2C700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish%3A400%2C400italic%2C700%2C700italic%7CNoto+Serif+SC%3A400%2C400italic%2C700%2C700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
@@ -17,19 +17,19 @@
     
 <link rel="stylesheet" href="/css/loader.css">
 
-    <meta name="description" content="这里是我的朋友和大佬们~">
-<meta property="og:type" content="website">
-<meta property="og:title" content="友情链接">
-<meta property="og:url" content="https://cl1ck-t0.github.io/friend/index.html">
+    <meta name="description" content="SQL注入一.前言SQL注入（SQL Injection）是一种常见的Web安全漏洞，形成的主要原因是web应用程序在接收相关数据参数时未做好过滤，将其直接带入到数据库中查询，导致攻击者可以拼接执行构造的SQL语句。那什么是SQL了？结构化查询语言（Structured Query Language，缩写：SQL），是一种关系型数据库查询的标准编程语言，用于存取数据以及查询、更新、删除和管理关系型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL注入基础">
+<meta property="og:url" content="https://cl1ck-t0.github.io/2025/12/29/SQL%E6%B3%A8%E5%85%A5%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
-<meta property="og:description" content="这里是我的朋友和大佬们~">
+<meta property="og:description" content="SQL注入一.前言SQL注入（SQL Injection）是一种常见的Web安全漏洞，形成的主要原因是web应用程序在接收相关数据参数时未做好过滤，将其直接带入到数据库中查询，导致攻击者可以拼接执行构造的SQL语句。那什么是SQL了？结构化查询语言（Structured Query Language，缩写：SQL），是一种关系型数据库查询的标准编程语言，用于存取数据以及查询、更新、删除和管理关系型">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://cl1ck-t0.github.io/images/banner.webp">
-<meta property="article:published_time" content="2025-11-18T12:27:57.000Z">
-<meta property="article:modified_time" content="2025-11-27T12:46:42.185Z">
+<meta property="article:published_time" content="2025-12-29T07:00:34.000Z">
+<meta property="article:modified_time" content="2025-12-29T08:49:32.437Z">
 <meta property="article:author" content="Cl1ck-t0">
+<meta property="article:tag" content="基础">
+<meta property="article:tag" content="常见语句">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cl1ck-t0.github.io/images/banner.webp">
     <link rel="alternate" href="/atom.xml" title="Cl1ck-t0's blog" type="application/atom+xml">
     <link rel="shortcut icon" href="/images/favicon.ico">
   
@@ -127,13 +127,13 @@
   </nav>
 </div>
 <header id="header" aria-label="Site header">
-      <picture>
-      </picture>
-        <img  fetchpriority="high" src="/images/banner.webp" alt="友情链接">
+        <picture>
+        </picture>
+          <img  fetchpriority="high" src="/images/banner.webp" alt="SQL注入基础">
   <div id="header-outer">
     <div id="header-title">
           <span id="logo">
-            <h1 data-aos="slide-up">友情链接</h1>
+            <h1 data-aos="slide-up">SQL注入基础</h1>
           </span>
         <h2 id="subtitle-wrap" data-aos="slide-down">
         </h2>
@@ -143,10 +143,15 @@
 
         <div id="content" aria-label="Page content"  class="sidebar-right" >
           <aside id="sidebar" aria-label="Sidebar">
-  <div class="sidebar-wrapper-container ">
+  <div class="sidebar-wrapper-container sticky">
   <div class="sidebar-wrapper">
     <div class="sidebar-wrap" data-aos="fade-up">
-        <div class="sidebar-author">
+          <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL%E6%B3%A8%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text">SQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">一.前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E5%AF%B9%E4%BA%8ESQL%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E7%9A%84%E6%8C%96%E6%8E%98"><span class="toc-number">1.2.</span> <span class="toc-text">二.对于SQL注入漏洞的挖掘</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%8F%AF%E8%83%BD%E7%9A%84%E6%B3%A8%E5%85%A5%E7%82%B9"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.可能的注入点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.漏洞检测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E5%B8%B8%E8%A7%81%E7%9A%84%E6%B3%A8%E5%85%A5%E6%89%8B%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">三.常见的注入手法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.数字型注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.2.</span> <span class="toc-text">2.字符型注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%90%9C%E7%B4%A2%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.搜索型注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B-%E8%81%94%E5%90%88%E6%B3%A8%E5%85%A5"><span class="toc-number">1.4.</span> <span class="toc-text">四.联合注入</span></a></li></ol></li></ol>
+</div>
+</div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
   <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
   <div class="sidebar-author-name">Cl1ck-t0</div>
   <div class="sidebar-description"></div>
@@ -197,7 +202,11 @@
         <div class="sidebar-menu-link">Friend</div>
       </div>
 </div>
-
+</div>
+          <div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div>
     </div>
   </div>
   <div class="sidebar-widget">
@@ -205,13 +214,13 @@
   </div>
 </aside>
 
-          <section id="main" aria-label="Main content"><article id="page-" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
+          <section id="main" aria-label="Main content"><article id="post-SQL注入基础" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner" data-aos="fade-up">
     <div class="article-meta">
       <div class="article-date">
   <span class="article-date-link icon-calendar" data-aos="zoom-in">
-    <time datetime="2025-11-18T12:27:57.000Z" itemprop="datePublished">2025-11-18</time>
-    <time style="display: none;" id="post-update-time">2025-11-27</time>
+    <time datetime="2025-12-29T07:00:34.000Z" itemprop="datePublished">2025-12-29</time>
+    <time style="display: none;" id="post-update-time">2025-12-29</time>
   </span>
 </div>
 
@@ -221,14 +230,82 @@
     <div class="hr-line"></div>
     
     <div class="e-content article-entry" itemprop="articleBody">
-        <p>这里是我的朋友和大佬们~</p>
+        <h1 id="SQL注入"><a href="#SQL注入" class="headerlink" title="SQL注入"></a>SQL注入</h1><h2 id="一-前言"><a href="#一-前言" class="headerlink" title="一.前言"></a>一.前言</h2><p>SQL注入（SQL Injection）是一种常见的Web安全漏洞，形成的主要原因是web应用程序在接收相关数据参数时未做好过滤，将其直接带入到数据库中查询，导致攻击者可以拼接执行构造的SQL语句。那什么是SQL了？结构化查询语言（Structured Query Language，缩写：SQL），是一种关系型数据库查询的标准编程语言，用于存取数据以及查询、更新、删除和管理关系型数据库（即SQL是一种数据库查询语言）</p>
+<p><strong>注入产生的原因是后台服务器在接收相关参数时未做好过滤直接带入到数据库中查询，导致可以拼接执行构造的SQL语句</strong></p>
+<h2 id="二-对于SQL注入漏洞的挖掘"><a href="#二-对于SQL注入漏洞的挖掘" class="headerlink" title="二.对于SQL注入漏洞的挖掘"></a>二.对于SQL注入漏洞的挖掘</h2><p>由于现代浏览器比较完善，几乎不可能存在sql注入点（），因此以下所述均为做题中的体会（纯入门心得，有点问题请见谅doge）</p>
+<h3 id="1-可能的注入点"><a href="#1-可能的注入点" class="headerlink" title="1.可能的注入点"></a>1.可能的注入点</h3><p>1). 搜索框，登录界面等，这些地方肯定是与数据库有数据交互的，所以我们可以优先观察存在传值或者查询的地方。</p>
+<p>eg.buuctf 极客大挑战2019 EasySQL</p>
+<p>2). 当没有明显搜索框等明显交互位置时，并不代表不存在sql漏洞，这时可以通过url进行传参。</p>
+<p>eg.buuctf 极客大挑战2019 loveSQL &amp;&amp;Knife(后者虽然通常使用蚁剑来秒杀但是也可以用HackBar当成SQL做同样很快)</p>
+<h3 id="2-漏洞检测"><a href="#2-漏洞检测" class="headerlink" title="2.漏洞检测"></a>2.漏洞检测</h3><p>1.get型</p>
+<p>进行url编码</p>
+<p>如果是在burp中测试payload需要先进行url编码，浏览器中则不需要;</p>
+<p>不进行编码的话，也可以用+代替空格，#代替–+ 。 &#x3D;&#x3D;%23代表#&#x3D;&#x3D;，也是注释符。</p>
+<p>2.post型</p>
+<p>如果是post型的话，我们可以用上面的方法进行编码，或者使用+代替空格，也可以不使用，直接像在浏览器中探测一样。</p>
+<h2 id="三-常见的注入手法"><a href="#三-常见的注入手法" class="headerlink" title="三.常见的注入手法"></a>三.常见的注入手法</h2><p>首先我们应该判断知道其注入类型，SQL注入按照注入点类型分类可分为三种：</p>
+<h3 id="1-数字型注入"><a href="#1-数字型注入" class="headerlink" title="1.数字型注入"></a>1.数字型注入</h3><p> SQL中的语句格式：select * from users where id &#x3D;x</p>
+<pre><code>    判断方法：使用 1 and 1=1  ，1 and 1=2 来判断
+
+    当输入：and 1=1 时页面显示正常
+
+                   select * from users where id =x and 1=1
+
+        输入：and 1=2 时页面显示异常
+
+                   select * from users where id =x and 1=2
+
+       说明是数字型注入
+</code></pre>
+<h3 id="2-字符型注入"><a href="#2-字符型注入" class="headerlink" title="2.字符型注入"></a>2.字符型注入</h3><p> SQL中的语句格式：select * from users where id &#x3D;’x’</p>
+<pre><code>    判断方法：使用 1&#39; and &#39;1&#39;=&#39;1  ，1&#39; and &#39;1&#39;=&#39;2 来判断
+
+    当输入：1’ and ‘1’=&#39;1 时页面显示正常
+
+                   select * from users where id =&#39;x&#39; and &#39;1&#39;=&#39;1&#39;
+
+       输入：1’ and ‘1’=&#39;2 时页面显示异常
+
+                  select * from users where id =&#39;x&#39; and &#39;1&#39;=&#39;2&#39;
+
+      说明是字符型注入
+</code></pre>
+<h3 id="3-搜索型注入"><a href="#3-搜索型注入" class="headerlink" title="3.搜索型注入"></a>3.搜索型注入</h3><p> 基于搜索框的注入</p>
+<pre><code>    SQL中的语句格式：select * from database.table where users like &#39;%要查询的关键字%&#39;
+
+   判断方法：
+
+     某个商品名称%&#39; and 1=1 and &#39;%&#39;=&#39;  （这个语句的功能就相当于普通SQL注入的 and 1=1）
+</code></pre>
+<p>select * from database.table where users like ‘%某个商品名称%’ and 1&#x3D;1 and ‘%’&#x3D;’%’</p>
+<pre><code>    页面显示正常
+
+     某个商品名称%&#39; and 1=2 and &#39;%&#39;=&#39;  （这个语句的功能就相当于普通SQL注入的 and 1=2）
+</code></pre>
+<p>select * from database.table where users like ‘%某个商品名称%’ and 1&#x3D;2 and ‘%’&#x3D;’%’</p>
+<pre><code>    页面显示异常
+
+    根据上面的返回情况来判断是否存在搜索型注入
+</code></pre>
+<h2 id="四-联合注入"><a href="#四-联合注入" class="headerlink" title="四.联合注入"></a>四.联合注入</h2><p>这里我将总结部分比较常用的SQL注入语句：</p>
 
     </div>
     <footer class="article-footer">
-      
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80/" rel="tag" title="基础">基础</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E5%B8%B8%E8%A7%81%E8%AF%AD%E5%8F%A5/" rel="tag" title="常见语句">常见语句</a></li></ul>
+
     </footer>
   </div>
-  
+    <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
+    <div class="article-nav-link-wrap right">
+          <img data-src="/covers/3032b6252fa98175d8d46be9a6cdda6e.jpg" data-sizes="auto" alt="xss基础" class="lazyload">
+      <a href="/2025/11/23/xss%E5%9F%BA%E7%A1%80/" aria-label="Next: xss基础"  title="Next: xss基础"></a>
+      <div class="article-nav-caption">Next</div>
+      <h3 class="article-nav-title">
+          xss基础
+      </h3>
+    </div>
+  </nav>
+
 </article>
 
 
@@ -274,7 +351,12 @@
       </div>
       <nav id="mobile-nav" aria-label="Mobile navigation">
   <div class="sidebar-wrap">
-      <div class="sidebar-author">
+        <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL%E6%B3%A8%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text">SQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">一.前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E5%AF%B9%E4%BA%8ESQL%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E7%9A%84%E6%8C%96%E6%8E%98"><span class="toc-number">1.2.</span> <span class="toc-text">二.对于SQL注入漏洞的挖掘</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%8F%AF%E8%83%BD%E7%9A%84%E6%B3%A8%E5%85%A5%E7%82%B9"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.可能的注入点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.漏洞检测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E5%B8%B8%E8%A7%81%E7%9A%84%E6%B3%A8%E5%85%A5%E6%89%8B%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">三.常见的注入手法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.数字型注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.2.</span> <span class="toc-text">2.字符型注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%90%9C%E7%B4%A2%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.搜索型注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B-%E8%81%94%E5%90%88%E6%B3%A8%E5%85%A5"><span class="toc-number">1.4.</span> <span class="toc-text">四.联合注入</span></a></li></ol></li></ol>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
   <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
   <div class="sidebar-author-name">Cl1ck-t0</div>
   <div class="sidebar-description"></div>
@@ -325,8 +407,12 @@
         <div class="sidebar-menu-link">Friend</div>
       </div>
 </div>
-
+</div>
   </div>
+      <div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
 </nav>
 
     </div>
@@ -387,13 +473,13 @@
       <script data-pjax>
         window.REIMU_POST = {
           author: "Cl1ck-t0",
-          title: "友情链接",
-          url: "https://cl1ck-t0.github.io/friend/index.html",
+          title: "SQL注入基础",
+          url: "https://cl1ck-t0.github.io/2025/12/29/SQL%E6%B3%A8%E5%85%A5%E5%9F%BA%E7%A1%80/",
           excerpt: "",
           description: "",
-          stripContent: "这里是我的朋友和大佬们~ ",
-          date: "Tue Nov 18 2025 20:27:57 GMT+0800",
-          updated: "Thu Nov 27 2025 20:46:42 GMT+0800",
+          stripContent: "SQL注入一.前言SQL注入（SQL Injection）是一种常见的Web安全漏洞，形成的主要原因是web应用程序在接收相关数据参数时未做好过滤，将其直接带入到数据库中查询，导致攻击者可以拼接执行构造的SQL语句。那什么是SQL了？结构化查询语言（Structured Query Language，缩写：SQL），是一种关系型数据库查询的标准编程语言，用于存取数据以及查询、更新、删除和管理关系型数据库（即SQL是一种数据库查询语言） 注入产生的原因是后台服务器在接收相关参数时未做好过滤直接带入",
+          date: "Mon Dec 29 2025 15:00:34 GMT+0800",
+          updated: "Mon Dec 29 2025 16:49:32 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
