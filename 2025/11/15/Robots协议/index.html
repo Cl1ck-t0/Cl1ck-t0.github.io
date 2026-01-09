@@ -25,7 +25,7 @@
 <meta property="og:description" content="Robots协议Robots 协议（也称为爬虫协议、机器人协议等）是网站与爬虫之间的一种默契约定，用于指导爬虫哪些页面可以抓取，哪些不可以抓取，从而保护网站的数据隐私、性能以及避免过度抓取对服务器造成负担。其本质是一个放置在网站根目录下的文本文件（通常命名为 robots.txt），里面包含了一系列规则，告诉搜索引擎爬虫或其他网络爬虫在抓取网站页面时应遵循的指令。 为什么需要 Robots 协议？">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-11-15T15:50:20.000Z">
-<meta property="article:modified_time" content="2026-01-07T08:23:58.785Z">
+<meta property="article:modified_time" content="2026-01-09T09:10:18.904Z">
 <meta property="article:author" content="Cl1ck-t0">
 <meta property="article:tag" content="基础">
 <meta property="article:tag" content="新手期心得">
@@ -220,7 +220,7 @@
       <div class="article-date">
   <span class="article-date-link icon-calendar" data-aos="zoom-in">
     <time datetime="2025-11-15T15:50:20.000Z" itemprop="datePublished">2025-11-15</time>
-    <time style="display: none;" id="post-update-time">2026-01-07</time>
+    <time style="display: none;" id="post-update-time">2026-01-09</time>
   </span>
 </div>
 
@@ -242,6 +242,9 @@
 <p>直接访问&#x2F;.index.php.swp          由于vim编辑器在编辑index.php文件时会生成临时交换文件，用于备份编辑过程中的内容，如果vim未正常关闭，则可能残留并被访问。</p>
 <p>2.git源码泄露：</p>
 <p>使用工具GitHack,</p>
+<p>3.利用目录穿越漏洞（目录遍历漏洞）：</p>
+<p>漏洞的核心原理在于服务器端对用户输入的文件路径缺乏严格验证，如果应用程序在读取服务器上的文件时未对输入进行充分过滤，攻击方可以在路径中插入特殊序列，（如 ..&#x2F;），这些序列会指示系统向上回溯目录层级，从而突破安全限制，访问到本应受保护的文件。</p>
+<p>eg.buuctf–N1BOOK-Web入门-afr-2<del>(可自行去体验)</del></p>
 
     </div>
     <footer class="article-footer">
@@ -251,7 +254,7 @@
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
       <div class="article-nav-link-wrap left">
-            <img data-src="/covers/furina-de-fontaine-3840x2160-19459.jpg" data-sizes="auto" alt="HTTP协议" class="lazyload">
+            <img data-src="/covers/preview.jpg" data-sizes="auto" alt="HTTP协议" class="lazyload">
         <a href="/2025/11/16/HTTP/" aria-label="Prev: HTTP协议" title="Prev: HTTP协议"></a>
         <div class="article-nav-caption">Prev</div>
         <h3 class="article-nav-title">
@@ -290,7 +293,7 @@
       </div>
       <div>
         <span class="icon-brush"></span>
-        9.3k
+        9.4k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
         00:44
@@ -441,7 +444,7 @@
           description: "",
           stripContent: "Robots协议Robots 协议（也称为爬虫协议、机器人协议等）是网站与爬虫之间的一种默契约定，用于指导爬虫哪些页面可以抓取，哪些不可以抓取，从而保护网站的数据隐私、性能以及避免过度抓取对服务器造成负担。其本质是一个放置在网站根目录下的文本文件（通常命名为 robots.txt），里面包含了一系列规则，告诉搜索引擎爬虫或其他网络爬虫在抓取网站页面时应遵循的指令。 为什么需要 Robots 协议？保护网站隐私和敏感信息：某些页面可能包含用户个人数据、内部运营数据、未公开的内容等，网站管理员可以通",
           date: "Sat Nov 15 2025 23:50:20 GMT+0800",
-          updated: "Wed Jan 07 2026 16:23:58 GMT+0800",
+          updated: "Fri Jan 09 2026 17:10:18 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
