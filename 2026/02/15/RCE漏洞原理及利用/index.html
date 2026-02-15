@@ -17,15 +17,15 @@
     
 <link rel="stylesheet" href="/css/loader.css">
 
-    <meta name="description" content="RCE漏洞原理及利用">
+    <meta name="description" content="RCE漏洞原理及利用引路题QAQ:NSSCTF-[SWPUCTF 2021 新生赛]babyrce,窝的博客里题解部分也有详解嘿嘿（） 一、RCE漏洞概述web的应用开发中常常为了灵活性与简洁性，让应用调用代码执行函数或系统命令执行函数处理，如果对用户输入过滤不严，容易产生远程代码执行漏洞或命令执行漏洞。 二、常见的RCE漏洞函数1.系统命令执行函数1).system() ;这个相信大家都不陌生(">
 <meta property="og:type" content="article">
 <meta property="og:title" content="RCE漏洞原理及利用">
 <meta property="og:url" content="https://cl1ck-t0.github.io/2026/02/15/RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8/index.html">
 <meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
-<meta property="og:description" content="RCE漏洞原理及利用">
+<meta property="og:description" content="RCE漏洞原理及利用引路题QAQ:NSSCTF-[SWPUCTF 2021 新生赛]babyrce,窝的博客里题解部分也有详解嘿嘿（） 一、RCE漏洞概述web的应用开发中常常为了灵活性与简洁性，让应用调用代码执行函数或系统命令执行函数处理，如果对用户输入过滤不严，容易产生远程代码执行漏洞或命令执行漏洞。 二、常见的RCE漏洞函数1.系统命令执行函数1).system() ;这个相信大家都不陌生(">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-02-15T13:13:09.000Z">
-<meta property="article:modified_time" content="2026-02-15T13:14:07.951Z">
+<meta property="article:modified_time" content="2026-02-15T13:39:54.628Z">
 <meta property="article:author" content="Cl1ck-t0">
 <meta property="article:tag" content="web漏洞">
 <meta name="twitter:card" content="summary">
@@ -135,7 +135,7 @@
     <div class="sidebar-wrap" data-aos="fade-up">
           <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">RCE漏洞原理及利用</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">RCE漏洞原理及利用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81RCE%E6%BC%8F%E6%B4%9E%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">一、RCE漏洞概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%B8%B8%E8%A7%81%E7%9A%84RCE%E6%BC%8F%E6%B4%9E%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.</span> <span class="toc-text">二、常见的RCE漏洞函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.系统命令执行函数</span></a></li></ol></li></ol></li></ol>
 </div>
 </div>
           <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -204,7 +204,13 @@
     <div class="hr-line"></div>
     
     <div class="e-content article-entry" itemprop="articleBody">
-        <h1 id="RCE漏洞原理及利用"><a href="#RCE漏洞原理及利用" class="headerlink" title="RCE漏洞原理及利用"></a>RCE漏洞原理及利用</h1>
+        <h1 id="RCE漏洞原理及利用"><a href="#RCE漏洞原理及利用" class="headerlink" title="RCE漏洞原理及利用"></a>RCE漏洞原理及利用</h1><p>引路题QAQ:NSSCTF-[SWPUCTF 2021 新生赛]babyrce,<del>窝的博客里题解部分也有详解嘿嘿</del>（）</p>
+<h2 id="一、RCE漏洞概述"><a href="#一、RCE漏洞概述" class="headerlink" title="一、RCE漏洞概述"></a>一、RCE漏洞概述</h2><p>web的应用开发中常常为了灵活性与简洁性，让应用调用代码执行函数或系统命令执行函数处理，如果对用户输入过滤不严，容易产生远程代码执行漏洞或命令执行漏洞。</p>
+<h2 id="二、常见的RCE漏洞函数"><a href="#二、常见的RCE漏洞函数" class="headerlink" title="二、常见的RCE漏洞函数"></a>二、常见的RCE漏洞函数</h2><h3 id="1-系统命令执行函数"><a href="#1-系统命令执行函数" class="headerlink" title="1.系统命令执行函数"></a>1.系统命令执行函数</h3><p>1).system() ;这个相信大家都不陌生(抬头不见低头见)，能将字符串作为命令执行并返回结果；</p>
+<p>2).exec() ; 也能将字符串作为命令执行，但是只能返回结果的最后一行(至今不知道有什么用emmmmmm)；</p>
+<p>3).shell_exec() ; 能执行命令但不返回结果；</p>
+<p>4).passthru(); 能将字符串作为命令执行，只调用命令不返回任何结果，但把命令的运行结果原样输出到标准输出设备上(这里指的是命令的执行状态，0代表成功，非0代表失败)</p>
+
     </div>
     <footer class="article-footer">
         <blockquote class="article-copyright">
@@ -212,7 +218,7 @@
     <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/02/15/RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8/">https://cl1ck-t0.github.io/2026/02/15/RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8/</a></p>
     
     <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-02-15 21:13:09</p>
-    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-02-15 21:14:07</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-02-15 21:39:54</p>
     <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
@@ -254,7 +260,7 @@
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
     <div class="article-nav-link-wrap right">
-          <img data-src="/covers/castorice-honkai-3840x2160-22114.jpg" data-sizes="auto" alt="PHP&amp;MySQL基础" class="lazyload">
+          <img data-src="/covers/furina-de-fontaine-3840x2160-19459.jpg" data-sizes="auto" alt="PHP&amp;MySQL基础" class="lazyload">
       <a href="/2026/02/10/PHP-MySQL%E5%9F%BA%E7%A1%80/" aria-label="Next: PHP&amp;MySQL基础"  title="Next: PHP&amp;MySQL基础"></a>
       <div class="article-nav-caption">Next</div>
       <h3 class="article-nav-title">
@@ -303,10 +309,10 @@
       </div>
       <div>
         <span class="icon-brush"></span>
-        16.8k
+        17.1k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        01:20
+        01:21
       </div>
       <div>
         <span class="icon-eye"></span>
@@ -328,7 +334,7 @@
   <div class="sidebar-wrap">
         <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">RCE漏洞原理及利用</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">RCE漏洞原理及利用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81RCE%E6%BC%8F%E6%B4%9E%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">一、RCE漏洞概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%B8%B8%E8%A7%81%E7%9A%84RCE%E6%BC%8F%E6%B4%9E%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.</span> <span class="toc-text">二、常见的RCE漏洞函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.系统命令执行函数</span></a></li></ol></li></ol></li></ol>
 </div>
 </div>
         <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -452,9 +458,9 @@
           url: "https://cl1ck-t0.github.io/2026/02/15/RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8/",
           excerpt: "",
           description: "",
-          stripContent: "RCE漏洞原理及利用",
+          stripContent: "RCE漏洞原理及利用引路题QAQ:NSSCTF-[SWPUCTF 2021 新生赛]babyrce,窝的博客里题解部分也有详解嘿嘿（） 一、RCE漏洞概述web的应用开发中常常为了灵活性与简洁性，让应用调用代码执行函数或系统命令执行函数处理，如果对用户输入过滤不严，容易产生远程代码执行漏洞或命令执行漏洞。 二、常见的RCE漏洞函数1.系统命令执行函数1).system() ;这个相信大家都不陌生(抬头不见低头见)，能将字符串作为命令执行并返回结果； 2).exec() ; 也能将字符串作为命令执",
           date: "Sun Feb 15 2026 21:13:09 GMT+0800",
-          updated: "Sun Feb 15 2026 21:14:07 GMT+0800",
+          updated: "Sun Feb 15 2026 21:39:54 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
