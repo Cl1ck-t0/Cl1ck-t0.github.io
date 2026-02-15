@@ -9,7 +9,7 @@
   
   <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_4k4bc36ef96';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = 'All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://cl1ck-t0.github.io';</script>
   <title>
-    Robots协议 | Cl1ck-t0&#39;s blog
+    RCE漏洞原理及利用 | Cl1ck-t0&#39;s blog
   </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media='all'">
@@ -17,18 +17,17 @@
     
 <link rel="stylesheet" href="/css/loader.css">
 
-    <meta name="description" content="Robots协议Robots 协议（也称为爬虫协议、机器人协议等）是网站与爬虫之间的一种默契约定，用于指导爬虫哪些页面可以抓取，哪些不可以抓取，从而保护网站的数据隐私、性能以及避免过度抓取对服务器造成负担。其本质是一个放置在网站根目录下的文本文件（通常命名为 robots.txt），里面包含了一系列规则，告诉搜索引擎爬虫或其他网络爬虫在抓取网站页面时应遵循的指令。 为什么需要 Robots 协议？">
+    <meta name="description" content="RCE漏洞原理及利用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Robots协议">
-<meta property="og:url" content="https://cl1ck-t0.github.io/2025/11/15/Robots%E5%8D%8F%E8%AE%AE/index.html">
+<meta property="og:title" content="RCE漏洞原理及利用">
+<meta property="og:url" content="https://cl1ck-t0.github.io/2026/02/15/RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8/index.html">
 <meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
-<meta property="og:description" content="Robots协议Robots 协议（也称为爬虫协议、机器人协议等）是网站与爬虫之间的一种默契约定，用于指导爬虫哪些页面可以抓取，哪些不可以抓取，从而保护网站的数据隐私、性能以及避免过度抓取对服务器造成负担。其本质是一个放置在网站根目录下的文本文件（通常命名为 robots.txt），里面包含了一系列规则，告诉搜索引擎爬虫或其他网络爬虫在抓取网站页面时应遵循的指令。 为什么需要 Robots 协议？">
+<meta property="og:description" content="RCE漏洞原理及利用">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2025-11-15T15:50:20.000Z">
-<meta property="article:modified_time" content="2026-01-09T09:10:18.904Z">
+<meta property="article:published_time" content="2026-02-15T13:13:09.000Z">
+<meta property="article:modified_time" content="2026-02-15T13:14:07.951Z">
 <meta property="article:author" content="Cl1ck-t0">
-<meta property="article:tag" content="基础">
-<meta property="article:tag" content="新手期心得">
+<meta property="article:tag" content="web漏洞">
 <meta name="twitter:card" content="summary">
     <link rel="alternate" href="/atom.xml" title="Cl1ck-t0's blog" type="application/atom+xml">
     <link rel="shortcut icon" href="/images/favicon.ico">
@@ -117,11 +116,11 @@
 <header id="header" aria-label="Site header">
         <picture>
         </picture>
-          <img  fetchpriority="high" src="/images/banner.webp" alt="Robots协议">
+          <img  fetchpriority="high" src="/images/banner.webp" alt="RCE漏洞原理及利用">
   <div id="header-outer">
     <div id="header-title">
           <span id="logo">
-            <h1 data-aos="slide-up">Robots协议</h1>
+            <h1 data-aos="slide-up">RCE漏洞原理及利用</h1>
           </span>
         <h2 id="subtitle-wrap" data-aos="slide-down">
         </h2>
@@ -136,7 +135,7 @@
     <div class="sidebar-wrap" data-aos="fade-up">
           <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Robots%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.</span> <span class="toc-text">Robots协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-Robots-%E5%8D%8F%E8%AE%AE%EF%BC%9F"><span class="toc-number">1.1.</span> <span class="toc-text">为什么需要 Robots 协议？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Robots-%E5%8D%8F%E8%AE%AE%E7%9A%84%E6%93%8D%E4%BD%9C%E8%BF%87%E7%A8%8B%E3%80%81%E5%91%BD%E4%BB%A4%E5%92%8C%E5%B7%A5%E5%85%B7"><span class="toc-number">1.2.</span> <span class="toc-text">Robots 协议的操作过程、命令和工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%93%8D%E4%BD%9C%E8%BF%87%E7%A8%8B"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.操作过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%91%BD%E4%BB%A4"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%B7%A5%E5%85%B7"><span class="toc-number">1.2.3.</span> <span class="toc-text">3.工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E9%A2%98%E5%A4%96%E8%AF%9D"><span class="toc-number">1.2.4.</span> <span class="toc-text">4.题外话</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">RCE漏洞原理及利用</span></a></li></ol>
 </div>
 </div>
           <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -190,13 +189,13 @@
   </div>
 </aside>
 
-          <section id="main" aria-label="Main content"><article id="post-Robots协议" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
+          <section id="main" aria-label="Main content"><article id="post-RCE漏洞原理及利用" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner" data-aos="fade-up">
     <div class="article-meta">
       <div class="article-date">
   <span class="article-date-link icon-calendar" data-aos="zoom-in">
-    <time datetime="2025-11-15T15:50:20.000Z" itemprop="datePublished">2025-11-15</time>
-    <time style="display: none;" id="post-update-time">2026-01-09</time>
+    <time datetime="2026-02-15T13:13:09.000Z" itemprop="datePublished">2026-02-15</time>
+    <time style="display: none;" id="post-update-time">2026-02-15</time>
   </span>
 </div>
 
@@ -205,43 +204,28 @@
     <div class="hr-line"></div>
     
     <div class="e-content article-entry" itemprop="articleBody">
-        <h1 id="Robots协议"><a href="#Robots协议" class="headerlink" title="Robots协议"></a>Robots协议</h1><p>Robots 协议（也称为爬虫协议、机器人协议等）是网站与爬虫之间的一种默契约定，用于指导爬虫哪些页面可以抓取，哪些不可以抓取，从而保护网站的数据隐私、性能以及避免过度抓取对服务器造成负担。其本质是一个放置在网站根目录下的文本文件（通常命名为 robots.txt），里面包含了一系列规则，告诉搜索引擎爬虫或其他网络爬虫在抓取网站页面时应遵循的指令。</p>
-<h2 id="为什么需要-Robots-协议？"><a href="#为什么需要-Robots-协议？" class="headerlink" title="为什么需要 Robots 协议？"></a>为什么需要 Robots 协议？</h2><p>保护网站隐私和敏感信息：某些页面可能包含用户个人数据、内部运营数据、未公开的内容等，网站管理员可以通过 Robots 协议阻止搜索引擎或其他爬虫获取这些敏感信息，防止信息泄露。<br>控制爬虫访问频率：爬虫过度频繁地访问网站可能会消耗大量服务器资源，影响网站的正常运行和其他用户的访问体验。Robots 协议可以限制爬虫在一定时间内的访问次数，避免对服务器造成过大压力。<br>引导爬虫抓取重点内容：网站管理员可以通过 Robots 协议明确告诉爬虫哪些页面是对用户有价值且希望被收录和展示的，引导爬虫优先抓取这些页面，提高网站重要内容在搜索引擎结果中的曝光率。</p>
-<h2 id="Robots-协议的操作过程、命令和工具"><a href="#Robots-协议的操作过程、命令和工具" class="headerlink" title="Robots 协议的操作过程、命令和工具"></a>Robots 协议的操作过程、命令和工具</h2><h3 id="1-操作过程"><a href="#1-操作过程" class="headerlink" title="1.操作过程"></a>1.操作过程</h3><p>1.查找 robots.txt 文件：在浏览器地址栏中输入目标网站的根目录地址，然后加上 “&#x2F;robots.txt”，例如 “<a target="_blank" rel="noopener" href="https://www.example.com/robots.txt%E2%80%9D%EF%BC%88%E8%BF%99%E9%87%8C%E7%9A%84">https://www.example.com/robots.txt”（这里的</a> “<a target="_blank" rel="noopener" href="http://www.example.com”/">www.example.com”</a> 需替换为实际的网站域名）。如果网站存在该协议文件，浏览器会显示其内容；如果不存在，则可能会返回 404 页面或其他提示信息。</p>
-<p>2.解读 robots.txt 内容：文件中包含一系列的规则，每条规则由用户代理（User-agent）和允许或禁止访问的目录或文件路径（Disallow 和 Allow）组成。例如：<br>1.User-agent: * （表示适用于所有爬虫）<br>2.Disallow: &#x2F;private&#x2F; （表示禁止所有爬虫访问网站根目录下的 “private” 文件夹及其子文件夹和文件）<br>3.Allow: &#x2F;public&#x2F; （表示允许所有爬虫访问网站根目录下的 “public” 文件夹及其子文件夹和文件）</p>
-<p>3.遵守协议规则进行爬虫开发或网站管理<br>对于爬虫开发者：在编写爬虫程序时，需要读取目标网站的 robots.txt 文件（可以使用相应的编程语言和库来实现，如 Python 中的urllib.robotparser模块），根据其中的规则来确定哪些页面可以抓取，哪些不可以抓取。例如，如果规则禁止访问某个目录，爬虫就应该避免向该目录下的页面发送请求。<br>对于网站管理员：合理编写 robots.txt 文件来控制爬虫对网站的访问。可以根据网站的结构、内容重要性以及隐私需求等因素，明确指定允许和禁止爬虫访问的区域。同时，需要定期检查和更新该文件，以适应网站内容和业务需求的变化。</p>
-<h3 id="2-命令"><a href="#2-命令" class="headerlink" title="2.命令"></a>2.命令</h3><p>1.User-agent：指定规则适用的爬虫名称或通配符 “<em>”（表示适用于所有爬虫）。例如，“User-agent: Googlebot” 表示下面的规则仅适用于谷歌搜索引擎的爬虫；“User-agent: 2.</em>” 表示适用于所有未特别指定的爬虫。<br>Disallow：指定不允许爬虫访问的目录或文件路径。可以使用通配符 “*” 和 “来更精确地控制。例如，禁止访问网站根目录下的文件夹；” 禁止访问所有以.pdf 结尾的文件。<br>3.Allow：与 Disallow 相反，用于指定允许爬虫访问的目录或文件路径。如果在 Disallow 规则之后有 Allow 规则，Allow 规则将覆盖 Disallow 规则中相同路径的部分。例如，先有 “Disallow: &#x2F;images&#x2F;”，然后有 “Allow: &#x2F;images&#x2F;public&#x2F;”，则表示除了 “&#x2F;images&#x2F;public&#x2F;” 及其子文件夹外，其他 “&#x2F;images&#x2F;” 下的内容都不允许访问。<br>4.Sitemap（可选）：用于指定网站地图（Sitemap）的位置，帮助搜索引擎更全面地了解网站的结构和内容，以便更好地进行索引。例如，“Sitemap: <a target="_blank" rel="noopener" href="https://www.example.com/sitemap.xml%E2%80%9D">https://www.example.com/sitemap.xml”</a> 告诉爬虫可以在该地址找到网站地图文件。</p>
-<h3 id="3-工具"><a href="#3-工具" class="headerlink" title="3.工具"></a>3.工具</h3><p>1.用于查看 robots.txt 文件的浏览器：普通的网页浏览器（如 Chrome、Firefox、Edge 等）都可以直接在地址栏中输入网站的 robots.txt 文件地址来查看其内容。<br>2.编程语言相关库（用于爬虫开发中读取和遵循 robots.txt 规则）<br>Python：urllib.robotparser模块可以用于解析 robots.txt 文件并根据规则判断是否允许爬虫访问特定页面。</p>
-<h3 id="4-题外话"><a href="#4-题外话" class="headerlink" title="4.题外话"></a>4.题外话</h3><p>robots协议在ctf中常用于页面中搜寻信息，与此目的相同的简易操作我在这里也简单列举一些()</p>
-<p>1.swp源码泄露：</p>
-<p>直接访问&#x2F;.index.php.swp          由于vim编辑器在编辑index.php文件时会生成临时交换文件，用于备份编辑过程中的内容，如果vim未正常关闭，则可能残留并被访问。</p>
-<p>2.git源码泄露：</p>
-<p>使用工具GitHack,</p>
-<p>3.利用目录穿越漏洞（目录遍历漏洞）：</p>
-<p>漏洞的核心原理在于服务器端对用户输入的文件路径缺乏严格验证，如果应用程序在读取服务器上的文件时未对输入进行充分过滤，攻击方可以在路径中插入特殊序列，（如 ..&#x2F;），这些序列会指示系统向上回溯目录层级，从而突破安全限制，访问到本应受保护的文件。</p>
-<p>eg.buuctf–N1BOOK-Web入门-afr-2<del>(可自行去体验)</del></p>
-
+        <h1 id="RCE漏洞原理及利用"><a href="#RCE漏洞原理及利用" class="headerlink" title="RCE漏洞原理及利用"></a>RCE漏洞原理及利用</h1>
     </div>
     <footer class="article-footer">
         <blockquote class="article-copyright">
     <p><strong><span class="icon-user icon"></span>Author: </strong>Cl1ck-t0</p>
-    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2025/11/15/Robots%E5%8D%8F%E8%AE%AE/">https://cl1ck-t0.github.io/2025/11/15/Robots%E5%8D%8F%E8%AE%AE/</a></p>
+    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/02/15/RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8/">https://cl1ck-t0.github.io/2026/02/15/RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8/</a></p>
     
-    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2025-11-15 23:50:20</p>
-    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-01-09 17:10:18</p>
+    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-02-15 21:13:09</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-02-15 21:14:07</p>
     <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
         <div class="share-wrapper">
-    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2F2025%2F11%2F15%2FRobots%25E5%258D%258F%25E8%25AE%25AE%2F&amp;appkey=&amp;title=Robots%E5%8D%8F%E8%AE%AE&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="Robots协议">
+    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2F2026%2F02%2F15%2FRCE%25E6%25BC%258F%25E6%25B4%259E%25E5%258E%259F%25E7%2590%2586%25E5%258F%258A%25E5%2588%25A9%25E7%2594%25A8%2F&amp;appkey=&amp;title=RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="RCE漏洞原理及利用">
       <div class="share-icon icon icon-weibo">
       </div>
     </a>
-    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=Robots%E5%8D%8F%E8%AE%AE&amp;desc=Robots%E5%8D%8F%E8%AE%AE&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="Robots协议">
+    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8&amp;desc=RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="RCE漏洞原理及利用">
       <div class="share-icon icon icon-qq">
       </div>
     </a>
-    <a href="javascript:;"  title="Robots协议">
+    <a href="javascript:;"  title="RCE漏洞原理及利用">
       <div class="share-icon icon icon-weixin">
           <div id="share-weixin">
             <div class="share-weixin-dom">
@@ -264,19 +248,19 @@
     </a>
 </div>
       
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80/" rel="tag" title="基础">基础</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E6%96%B0%E6%89%8B%E6%9C%9F%E5%BF%83%E5%BE%97/" rel="tag" title="新手期心得">新手期心得</a></li></ul>
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web%E6%BC%8F%E6%B4%9E/" rel="tag" title="web漏洞">web漏洞</a></li></ul>
 
     </footer>
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
-      <div class="article-nav-link-wrap left">
-            <img data-src="/covers/firefly-honkai-star-3840x2160-21360.jpg" data-sizes="auto" alt="HTTP协议" class="lazyload">
-        <a href="/2025/11/16/HTTP/" aria-label="Prev: HTTP协议" title="Prev: HTTP协议"></a>
-        <div class="article-nav-caption">Prev</div>
-        <h3 class="article-nav-title">
-            HTTP协议
-        </h3>
-      </div>
+    <div class="article-nav-link-wrap right">
+          <img data-src="/covers/castorice-honkai-3840x2160-22114.jpg" data-sizes="auto" alt="PHP&amp;MySQL基础" class="lazyload">
+      <a href="/2026/02/10/PHP-MySQL%E5%9F%BA%E7%A1%80/" aria-label="Next: PHP&amp;MySQL基础"  title="Next: PHP&amp;MySQL基础"></a>
+      <div class="article-nav-caption">Next</div>
+      <h3 class="article-nav-title">
+          PHP&amp;MySQL基础
+      </h3>
+    </div>
   </nav>
 
 </article>
@@ -344,7 +328,7 @@
   <div class="sidebar-wrap">
         <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Robots%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.</span> <span class="toc-text">Robots协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-Robots-%E5%8D%8F%E8%AE%AE%EF%BC%9F"><span class="toc-number">1.1.</span> <span class="toc-text">为什么需要 Robots 协议？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Robots-%E5%8D%8F%E8%AE%AE%E7%9A%84%E6%93%8D%E4%BD%9C%E8%BF%87%E7%A8%8B%E3%80%81%E5%91%BD%E4%BB%A4%E5%92%8C%E5%B7%A5%E5%85%B7"><span class="toc-number">1.2.</span> <span class="toc-text">Robots 协议的操作过程、命令和工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%93%8D%E4%BD%9C%E8%BF%87%E7%A8%8B"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.操作过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%91%BD%E4%BB%A4"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%B7%A5%E5%85%B7"><span class="toc-number">1.2.3.</span> <span class="toc-text">3.工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E9%A2%98%E5%A4%96%E8%AF%9D"><span class="toc-number">1.2.4.</span> <span class="toc-text">4.题外话</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">RCE漏洞原理及利用</span></a></li></ol>
 </div>
 </div>
         <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -464,13 +448,13 @@
       <script data-pjax>
         window.REIMU_POST = {
           author: "Cl1ck-t0",
-          title: "Robots协议",
-          url: "https://cl1ck-t0.github.io/2025/11/15/Robots%E5%8D%8F%E8%AE%AE/",
+          title: "RCE漏洞原理及利用",
+          url: "https://cl1ck-t0.github.io/2026/02/15/RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8/",
           excerpt: "",
           description: "",
-          stripContent: "Robots协议Robots 协议（也称为爬虫协议、机器人协议等）是网站与爬虫之间的一种默契约定，用于指导爬虫哪些页面可以抓取，哪些不可以抓取，从而保护网站的数据隐私、性能以及避免过度抓取对服务器造成负担。其本质是一个放置在网站根目录下的文本文件（通常命名为 robots.txt），里面包含了一系列规则，告诉搜索引擎爬虫或其他网络爬虫在抓取网站页面时应遵循的指令。 为什么需要 Robots 协议？保护网站隐私和敏感信息：某些页面可能包含用户个人数据、内部运营数据、未公开的内容等，网站管理员可以通",
-          date: "Sat Nov 15 2025 23:50:20 GMT+0800",
-          updated: "Fri Jan 09 2026 17:10:18 GMT+0800",
+          stripContent: "RCE漏洞原理及利用",
+          date: "Sun Feb 15 2026 21:13:09 GMT+0800",
+          updated: "Sun Feb 15 2026 21:14:07 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
