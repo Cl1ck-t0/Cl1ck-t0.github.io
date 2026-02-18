@@ -25,9 +25,10 @@
 <meta property="og:description" content="PHP反序列化漏洞前言：我写这个的目的主要是由于我在看题时看到了相关内容，处于新手期想要广泛获取知识，想由此激励自己学习php反序列化漏洞的相关知识，并总结学习心得与经验。 0.入坑题：攻防世界web（unserialize3）ps:初见这题时我什么概念都不懂，整道题均由ds老师赞助完成(doge) 我们先由这道题引出相关内容吧： 题目给出了这个： 123456class xctf&#123;pu">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-02-02T12:52:49.000Z">
-<meta property="article:modified_time" content="2026-02-17T11:47:45.776Z">
+<meta property="article:modified_time" content="2026-02-18T12:24:07.967Z">
 <meta property="article:author" content="Cl1ck-t0">
 <meta property="article:tag" content="PHP">
+<meta property="article:tag" content="web">
 <meta property="article:tag" content="web漏洞">
 <meta name="twitter:card" content="summary">
     <link rel="alternate" href="/atom.xml" title="Cl1ck-t0's blog" type="application/atom+xml">
@@ -155,7 +156,7 @@
   </div>
   <div class="sidebar-state-tag">
     <div>Tag</div>
-    <div class="sidebar-state-number">16</div>
+    <div class="sidebar-state-number">15</div>
   </div>
 </div>
 <div class="sidebar-social" >
@@ -196,7 +197,7 @@
       <div class="article-date">
   <span class="article-date-link icon-calendar" data-aos="zoom-in">
     <time datetime="2026-02-02T12:52:49.000Z" itemprop="datePublished">2026-02-02</time>
-    <time style="display: none;" id="post-update-time">2026-02-17</time>
+    <time style="display: none;" id="post-update-time">2026-02-18</time>
   </span>
 </div>
 
@@ -282,7 +283,7 @@
     <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/02/02/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/">https://cl1ck-t0.github.io/2026/02/02/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/</a></p>
     
     <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-02-02 20:52:49</p>
-    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-02-17 19:47:45</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-02-18 20:24:07</p>
     <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
@@ -318,13 +319,13 @@
     </a>
 </div>
       
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag" title="PHP">PHP</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web%E6%BC%8F%E6%B4%9E/" rel="tag" title="web漏洞">web漏洞</a></li></ul>
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag" title="PHP">PHP</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web/" rel="tag" title="web">web</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web%E6%BC%8F%E6%B4%9E/" rel="tag" title="web漏洞">web漏洞</a></li></ul>
 
     </footer>
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
       <div class="article-nav-link-wrap left">
-            <img data-src="/covers/furina-neuvillette-3840x2160-19462.jpg" data-sizes="auto" alt="xss外带cookie攻击" class="lazyload">
+            <img data-src="/covers/furina-de-fontaine-3840x2160-19459.jpg" data-sizes="auto" alt="xss外带cookie攻击" class="lazyload">
         <a href="/2026/02/09/xss%E5%A4%96%E5%B8%A6cookie%E6%94%BB%E5%87%BB/" aria-label="Prev: xss外带cookie攻击" title="Prev: xss外带cookie攻击"></a>
         <div class="article-nav-caption">Prev</div>
         <h3 class="article-nav-title">
@@ -332,7 +333,7 @@
         </h3>
       </div>
     <div class="article-nav-link-wrap right">
-          <img data-src="/covers/hoshimi-miyabi-dope-3840x2160-20500.jpg" data-sizes="auto" alt="简单题writeup" class="lazyload">
+          <img data-src="/covers/pd-image (2).png" data-sizes="auto" alt="简单题writeup" class="lazyload">
       <a href="/2026/01/31/%E7%AE%80%E5%8D%95%E9%A2%98writeup/" aria-label="Next: 简单题writeup"  title="Next: 简单题writeup"></a>
       <div class="article-nav-caption">Next</div>
       <h3 class="article-nav-title">
@@ -425,7 +426,7 @@
   </div>
   <div class="sidebar-state-tag">
     <div>Tag</div>
-    <div class="sidebar-state-number">16</div>
+    <div class="sidebar-state-number">15</div>
   </div>
 </div>
 <div class="sidebar-social" >
@@ -532,7 +533,7 @@
           description: "",
           stripContent: "PHP反序列化漏洞前言：我写这个的目的主要是由于我在看题时看到了相关内容，处于新手期想要广泛获取知识，想由此激励自己学习php反序列化漏洞的相关知识，并总结学习心得与经验。 0.入坑题：攻防世界web（unserialize3）ps:初见这题时我什么概念都不懂，整道题均由ds老师赞助完成(doge) 我们先由这道题引出相关内容吧： 题目给出了这个： 123456class xctf&amp;#123;public $flag = &amp;#x27;111&amp;#x27;;public function __wak",
           date: "Mon Feb 02 2026 20:52:49 GMT+0800",
-          updated: "Tue Feb 17 2026 19:47:45 GMT+0800",
+          updated: "Wed Feb 18 2026 20:24:07 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
