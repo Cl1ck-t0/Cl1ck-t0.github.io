@@ -2663,6 +2663,93 @@ pre .emphasis {
     background: var(--top-icon) no-repeat center/100%;
   }
 }
+.tagcloud a {
+  display: inline-block;
+  margin: 5px 5px 0 0;
+}
+[data-theme='dark'] .widget-wrap {
+  box-shadow: var(--shadow-card);
+}
+.widget-wrap {
+  margin: 40px 0 0 0;
+  background: var(--color-wrap);
+  border-radius: 12px;
+  transition: 0.3s;
+}
+.widget-wrapper {
+  transition: 0.3s;
+}
+.widget-wrapper .aos-animate {
+  transition-property: initial !important;
+}
+.widget-wrapper .aos-animate:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+.widget-title {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--grey-9);
+  padding: 20px 20px 8px;
+}
+.widget {
+  color: var(--grey-7);
+  padding: 4px 20px 20px;
+}
+.widget li {
+  color: var(--color-link);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.widget a,
+.widget span {
+  color: var(--color-link);
+  text-decoration: none;
+  opacity: 0.9;
+  transition: 0.3s;
+}
+.widget a:hover,
+.widget span:hover {
+  opacity: 1;
+  color: var(--red-0);
+}
+.widget span {
+  margin-left: 5px;
+}
+.widget ul ul,
+.widget ol ul,
+.widget dl ul,
+.widget ul ol,
+.widget ol ol,
+.widget dl ol,
+.widget ul dl,
+.widget ol dl,
+.widget dl dl {
+  margin-left: 16px;
+  list-style: none;
+}
+.widget li {
+  margin-top: 4px;
+  line-height: normal;
+}
+.widget li:before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 10px;
+  background: var(--color-h2-after);
+  vertical-align: middle;
+  margin-right: 12px;
+  box-shadow: var(--shadow-red-6-shadow);
+  opacity: 0.5;
+  transition: 0.3s;
+}
+.widget li:hover:before {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  opacity: 1;
+}
 #sidebar {
   display: none;
 }
@@ -3056,6 +3143,90 @@ pre .emphasis {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+}
+.aplayer {
+  margin: 0 0 40px !important;
+  border-radius: 12px !important;
+  background: var(--color-wrap) !important;
+  transition: all 0.3s;
+  font-family: 'Mulish','Noto Serif SC', '-apple-system','PingFang SC','Microsoft YaHei','sans-serif' !important;
+  box-shadow: none !important;
+}
+.aplayer button:hover path,
+.aplayer .aplayer-icon:hover path {
+  fill: var(--color-link) !important;
+}
+.aplayer:hover {
+  box-shadow: var(--shadow-card-hover) !important;
+}
+.aplayer-after-sidebar .aplayer,
+.aplayer.aplayer-after-sidebar,
+.aplayer-after-widget .aplayer,
+.aplayer.aplayer-after-widget {
+  margin: 40px 0 0 0 !important;
+}
+.aplayer .aplayer-miniswitcher {
+  background: var(--red-5-5) !important;
+}
+.aplayer.aplayer-fixed {
+  margin: 0 !important;
+}
+.aplayer.aplayer-fixed .aplayer-body {
+  background: var(--color-wrap) !important;
+  transition: all 0.3s;
+}
+.aplayer.aplayer-fixed .aplayer-info {
+  transition: all 0.3s;
+  border-top: 1px solid var(--color-h2-border) !important;
+}
+.aplayer.aplayer-fixed .aplayer-list {
+  border: 1px solid var(--color-h2-border) !important;
+  transition: all 0.3s;
+}
+.aplayer.aplayer-withlist .aplayer-info {
+  transition: all 0.3s;
+  border-bottom: 1px solid var(--color-h2-border) !important;
+}
+.aplayer-title,
+.aplayer-list-title,
+.aplayer-music {
+  color: var(--color-link) !important;
+}
+.aplayer .aplayer-list ol li {
+  transition: all 0.3s;
+  border-top: 1px solid var(--color-h2-border) !important;
+}
+.aplayer-lrc::before {
+  background: none !important;
+}
+.aplayer-lrc::after {
+  background: none !important;
+}
+.aplayer-list ol li.aplayer-list-light {
+  background: var(--color-hover-shadow) !important;
+}
+.aplayer-list ol li:hover {
+  background: var(--color-hover-shadow) !important;
+}
+.aplayer-lrc-contents,
+.aplayer-music {
+  cursor: var(--cursor-default) !important;
+}
+.aplayer-pic,
+body .aplayer .aplayer-info .aplayer-controller .aplayer-bar-wrap,
+.aplayer-list-cur,
+.aplayer-list-index,
+.aplayer-list-author,
+.aplayer-list ol li,
+body .aplayer .aplayer-info .aplayer-controller .aplayer-volume-wrap,
+.aplayer-thumb,
+.aplayer-icon {
+  cursor: var(--cursor-pointer) !important;
+}
+.aplayer-author,
+.aplayer-lrc p,
+.aplayer-list-author {
+  color: var(--grey-7) !important;
 }
 .share-wrapper {
   display: flex;
