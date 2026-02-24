@@ -17,12 +17,12 @@
     
 <link rel="stylesheet" href="/css/loader.css">
 
-    <meta name="description" content="PHP伪协议一.PHP支持的伪协议1234567891011121 file:&#x2F;&#x2F; — 访问本地文件系统2 http:&#x2F;&#x2F; — 访问 HTTP(s) 网址3 ftp:&#x2F;&#x2F; — 访问 FTP(s) URLs4 php:&#x2F;&#x2F; — 访问各个输入&#x2F;输出流（I&#x2F;O streams）5 zlib:&#x2F;&#x2F; — 压缩流6 data:&#x2F;&#x2F; — 数据（RFC 2397）7 glob:&#x2F;&#x2F; — 查找匹配的文件路径模式8">
+    <meta name="description" content="PHP伪协议  一.PHP支持的伪协议 1234567891011121 file:&#x2F;&#x2F; — 访问本地文件系统2 http:&#x2F;&#x2F; — 访问 HTTP(s) 网址3 ftp:&#x2F;&#x2F; — 访问 FTP(s) URLs4 php:&#x2F;&#x2F; — 访问各个输入&#x2F;输出流（I&#x2F;O streams）5 zlib:&#x2F;&#x2F; — 压缩流6 data:&#x2F;&#x2F; — 数据（RFC 2397）7 glob:&#x2F;&#x2F; — 查找匹配的文件路径">
 <meta property="og:type" content="article">
 <meta property="og:title" content="php伪协议">
 <meta property="og:url" content="https://cl1ck-t0.github.io/2025/11/16/php%E4%BC%AA%E5%8D%8F%E8%AE%AE/index.html">
 <meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
-<meta property="og:description" content="PHP伪协议一.PHP支持的伪协议1234567891011121 file:&#x2F;&#x2F; — 访问本地文件系统2 http:&#x2F;&#x2F; — 访问 HTTP(s) 网址3 ftp:&#x2F;&#x2F; — 访问 FTP(s) URLs4 php:&#x2F;&#x2F; — 访问各个输入&#x2F;输出流（I&#x2F;O streams）5 zlib:&#x2F;&#x2F; — 压缩流6 data:&#x2F;&#x2F; — 数据（RFC 2397）7 glob:&#x2F;&#x2F; — 查找匹配的文件路径模式8">
+<meta property="og:description" content="PHP伪协议  一.PHP支持的伪协议 1234567891011121 file:&#x2F;&#x2F; — 访问本地文件系统2 http:&#x2F;&#x2F; — 访问 HTTP(s) 网址3 ftp:&#x2F;&#x2F; — 访问 FTP(s) URLs4 php:&#x2F;&#x2F; — 访问各个输入&#x2F;输出流（I&#x2F;O streams）5 zlib:&#x2F;&#x2F; — 压缩流6 data:&#x2F;&#x2F; — 数据（RFC 2397）7 glob:&#x2F;&#x2F; — 查找匹配的文件路径">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-11-16T01:26:16.000Z">
 <meta property="article:modified_time" content="2026-02-17T11:48:04.368Z">
@@ -140,7 +140,7 @@
     <div class="sidebar-wrap" data-aos="fade-up">
           <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#PHP%E4%BC%AA%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.</span> <span class="toc-text">PHP伪协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-PHP%E6%94%AF%E6%8C%81%E7%9A%84%E4%BC%AA%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.1.</span> <span class="toc-text">一.PHP支持的伪协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.2.</span> <span class="toc-text">二.详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-php-filter"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.php:&#x2F;&#x2F;filter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">1.2.2.</span> <span class="toc-text">过滤器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">字符串过滤器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BD%AC%E6%8D%A2%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">转换过滤器</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-data"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.data:&#x2F;&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-file"><span class="toc-number">1.2.4.</span> <span class="toc-text">3 file:&#x2F;&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-php"><span class="toc-number">1.2.5.</span> <span class="toc-text">4 php:&#x2F;&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-php-input"><span class="toc-number">1.2.6.</span> <span class="toc-text">5 php:&#x2F;&#x2F;input</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-zip"><span class="toc-number">1.2.7.</span> <span class="toc-text">6 zip:&#x2F;&#x2F;</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#php%E4%BC%AA%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.</span> <span class="toc-text"> PHP伪协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80php%E6%94%AF%E6%8C%81%E7%9A%84%E4%BC%AA%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.1.</span> <span class="toc-text"> 一.PHP支持的伪协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.2.</span> <span class="toc-text"> 二.详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1phpfilter"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.php:&#x2F;&#x2F;filter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 过滤器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">1.2.2.1.</span> <span class="toc-text"> 字符串过滤器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BD%AC%E6%8D%A2%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">1.2.2.2.</span> <span class="toc-text"> 转换过滤器</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2data"><span class="toc-number">1.2.3.</span> <span class="toc-text"> 2.data:&#x2F;&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-file"><span class="toc-number">1.2.4.</span> <span class="toc-text"> 3 file:&#x2F;&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-php"><span class="toc-number">1.2.5.</span> <span class="toc-text"> 4 php:&#x2F;&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-phpinput"><span class="toc-number">1.2.6.</span> <span class="toc-text"> 5 php:&#x2F;&#x2F;input</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-zip"><span class="toc-number">1.2.7.</span> <span class="toc-text"> 6 zip:&#x2F;&#x2F;</span></a></li></ol></li></ol></li></ol>
 </div>
 </div>
           <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -216,13 +216,15 @@
     <div class="hr-line"></div>
     
     <div class="e-content article-entry" itemprop="articleBody">
-        <h1 id="PHP伪协议"><a href="#PHP伪协议" class="headerlink" title="PHP伪协议"></a>PHP伪协议</h1><h2 id="一-PHP支持的伪协议"><a href="#一-PHP支持的伪协议" class="headerlink" title="一.PHP支持的伪协议"></a>一.PHP支持的伪协议</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">1 file:// — 访问本地文件系统</span><br><span class="line">2 http:// — 访问 HTTP(s) 网址</span><br><span class="line">3 ftp:// — 访问 FTP(s) URLs</span><br><span class="line">4 php:// — 访问各个输入/输出流（I/O streams）</span><br><span class="line">5 zlib:// — 压缩流</span><br><span class="line">6 data:// — 数据（RFC 2397）</span><br><span class="line">7 glob:// — 查找匹配的文件路径模式</span><br><span class="line">8 phar:// — PHP 归档</span><br><span class="line">9 ssh2:// — Secure Shell 2</span><br><span class="line">10 rar:// — RAR</span><br><span class="line">11 ogg:// — 音频流</span><br><span class="line">12 expect:// — 处理交互式的流</span><br></pre></td></tr></table></figure>
-
-<h2 id="二-详解"><a href="#二-详解" class="headerlink" title="二.详解"></a>二.详解</h2><h3 id="1-php-filter"><a href="#1-php-filter" class="headerlink" title="1.php:&#x2F;&#x2F;filter"></a>1.php:&#x2F;&#x2F;filter</h3><p>元封装器。文件过滤筛选。php:&#x2F;&#x2F;filter可以获取指定文件源码。当它与包含函数结合时，php:&#x2F;&#x2F;filter流会被当作php文件执行。所以我们一般对其进行编码，让其不执行。从而导致 任意文件读取。</p>
+        <h1 id="php伪协议"><a class="markdownIt-Anchor" href="#php伪协议"></a> PHP伪协议</h1>
+<h2 id="一php支持的伪协议"><a class="markdownIt-Anchor" href="#一php支持的伪协议"></a> 一.PHP支持的伪协议</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">1 file:// — 访问本地文件系统</span><br><span class="line">2 http:// — 访问 HTTP(s) 网址</span><br><span class="line">3 ftp:// — 访问 FTP(s) URLs</span><br><span class="line">4 php:// — 访问各个输入/输出流（I/O streams）</span><br><span class="line">5 zlib:// — 压缩流</span><br><span class="line">6 data:// — 数据（RFC 2397）</span><br><span class="line">7 glob:// — 查找匹配的文件路径模式</span><br><span class="line">8 phar:// — PHP 归档</span><br><span class="line">9 ssh2:// — Secure Shell 2</span><br><span class="line">10 rar:// — RAR</span><br><span class="line">11 ogg:// — 音频流</span><br><span class="line">12 expect:// — 处理交互式的流</span><br></pre></td></tr></table></figure>
+<h2 id="二详解"><a class="markdownIt-Anchor" href="#二详解"></a> 二.详解</h2>
+<h3 id="1phpfilter"><a class="markdownIt-Anchor" href="#1phpfilter"></a> 1.php://filter</h3>
+<p>元封装器。文件过滤筛选。php://filter可以获取指定文件源码。当它与包含函数结合时，php://filter流会被当作php文件执行。所以我们一般对其进行编码，让其不执行。从而导致 任意文件读取。</p>
 <p>eg.[ACTF2020 新生赛]Include1</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://71a5b17a-a293-4fe5-95a3-99aa00f4c77a.node5.buuoj.cn:81/?file=php://filter/read=convert.base64-encode/resource=flag.php #PHP伪协议</span><br><span class="line">http://71a5b17a-a293-4fe5-95a3-99aa00f4c77a.node5.buuoj.cn:81/?file=flag.php #原有URL</span><br></pre></td></tr></table></figure>
-
-<p> 上述也是比较常用的。</p>
+<p>上述也是比较常用的。</p>
 <table>
 <thead>
 <tr>
@@ -230,59 +232,69 @@
 <th>描述</th>
 </tr>
 </thead>
-<tbody><tr>
-<td>resource&#x3D;&lt;要过滤的数据流&gt;</td>
+<tbody>
+<tr>
+<td>resource=&lt;要过滤的数据流&gt;</td>
 <td>这个参数是必须的。它指定了你要筛选过滤的数据流。</td>
 </tr>
 <tr>
 <td><code>read=&lt;读链的筛选列表&gt;</code></td>
-<td>该参数可选。可以设定一个或多个过滤器名称，以管道符（&#96;</td>
+<td>该参数可选。可以设定一个或多个过滤器名称，以管道符（`</td>
 </tr>
 <tr>
-<td>write&#x3D;&lt;写链的筛选列表&gt;</td>
-<td>该参数可选。可以设定一个或多个过滤器名称，以管道符（&#96;</td>
+<td>write=&lt;写链的筛选列表&gt;</td>
+<td>该参数可选。可以设定一个或多个过滤器名称，以管道符（`</td>
 </tr>
 <tr>
 <td>&lt;；两个链的筛选列表&gt;</td>
 <td>任何没有以 <code>read=</code> 或 <code>write=</code> 作前缀 的筛选器列表会视情况应用于读或写链。</td>
 </tr>
-</tbody></table>
-<h3 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h3><h4 id="字符串过滤器"><a href="#字符串过滤器" class="headerlink" title="字符串过滤器"></a>字符串过滤器</h4><p>该类通常以string开头，对每个字符都进行同样方式的处理。</p>
+</tbody>
+</table>
+<h3 id="过滤器"><a class="markdownIt-Anchor" href="#过滤器"></a> 过滤器</h3>
+<h4 id="字符串过滤器"><a class="markdownIt-Anchor" href="#字符串过滤器"></a> 字符串过滤器</h4>
+<p>该类通常以string开头，对每个字符都进行同样方式的处理。</p>
 <p>string.rot13</p>
 <p>一种字符处理方式，字符右移十三位。</p>
 <p>string.toupper</p>
 <p>将所有字符转换为大写。</p>
 <p>string.tolower</p>
 <p>将所有字符转换为小写。</p>
-<p>string.strip_tags<br>这个过滤器就比较有意思，用来处理掉读入的所有标签，例如XML的等等。在绕过死亡exit大有用处。</p>
-<h4 id="转换过滤器"><a href="#转换过滤器" class="headerlink" title="转换过滤器"></a>转换过滤器</h4><p>对数据流进行编码，通常用来读取文件源码。</p>
+<p>string.strip_tags<br />
+这个过滤器就比较有意思，用来处理掉读入的所有标签，例如XML的等等。在绕过死亡exit大有用处。</p>
+<h4 id="转换过滤器"><a class="markdownIt-Anchor" href="#转换过滤器"></a> 转换过滤器</h4>
+<p>对数据流进行编码，通常用来读取文件源码。</p>
 <p>convert.base64-encode &amp; convert.base64-decode</p>
 <p>base64加密解密</p>
 <p>convert.quoted-printable-encode &amp; convert.quoted-printable-decode</p>
 <p>可以翻译为可打印字符引用编码，使用可以打印的ASCII编码的字符表示各种编码形式下的字符。</p>
 <p>补充资料：<a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/php-filter-magic.html">https://www.leavesongs.com/PENETRATION/php-filter-magic.html</a></p>
-<h3 id="2-data"><a href="#2-data" class="headerlink" title="2.data:&#x2F;&#x2F;"></a>2.data:&#x2F;&#x2F;</h3><p>数据流封装器，以传递相应格式的数据。可以让用户来控制输入流，当它与包含函数结合时，用户输入的data:&#x2F;&#x2F;流会被当作php文件执行。</p>
+<h3 id="2data"><a class="markdownIt-Anchor" href="#2data"></a> 2.data://</h3>
+<p>数据流封装器，以传递相应格式的数据。可以让用户来控制输入流，当它与包含函数结合时，用户输入的data://流会被当作php文件执行。</p>
 <p>eg.</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1、data://text/plain,</span><br><span class="line">http://127.0.0.1/include.php?file=data://text/plain,&lt;?php%20phpinfo();?&gt;</span><br><span class="line"> </span><br><span class="line">2、data://text/plain;base64,</span><br><span class="line">http://127.0.0.1/include.php?file=data://text/plain;base64,PD9waHAgcGhwaW5mbygpOz8%2b</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-file"><a href="#3-file" class="headerlink" title="3 file:&#x2F;&#x2F;"></a>3 file:&#x2F;&#x2F;</h3><p>用于访问本地文件系统，并且不受allow_url_fopen，allow_url_include影响<br>file:&#x2F;&#x2F;协议主要用于访问文件(绝对路径、相对路径以及网络路径)<br>比如：</p>
+<h3 id="3-file"><a class="markdownIt-Anchor" href="#3-file"></a> 3 file://</h3>
+<p>用于访问本地文件系统，并且不受allow_url_fopen，allow_url_include影响<br />
+file://协议主要用于访问文件(绝对路径、相对路径以及网络路径)<br />
+比如：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.xx.com?file=file:///etc/passsword</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="4-php"><a href="#4-php" class="headerlink" title="4 php:&#x2F;&#x2F;"></a>4 php:&#x2F;&#x2F;</h3><p>在allow_url_fopen，allow_url_include都关闭的情况下可以正常使用<br>php:&#x2F;&#x2F;作用为访问输入输出流</p>
-<p>包含php:&#x2F;&#x2F;filter和php:&#x2F;&#x2F;input</p>
-<h3 id="5-php-input"><a href="#5-php-input" class="headerlink" title="5 php:&#x2F;&#x2F;input"></a>5 php:&#x2F;&#x2F;input</h3><p>php:&#x2F;&#x2F;input可以访问请求的原始数据的只读流，将post请求的数据当作php代码执行。当传入的参数作为文件名打开时，可以将参数设为php:&#x2F;&#x2F;input,同时post想设置的文件内容，php执行时会将post内容当作文件内容。从而导致任意代码执行。</p>
+<h3 id="4-php"><a class="markdownIt-Anchor" href="#4-php"></a> 4 php://</h3>
+<p>在allow_url_fopen，allow_url_include都关闭的情况下可以正常使用<br />
+php://作用为访问输入输出流</p>
+<p>包含php://filter和php://input</p>
+<h3 id="5-phpinput"><a class="markdownIt-Anchor" href="#5-phpinput"></a> 5 php://input</h3>
+<p>php://input可以访问请求的原始数据的只读流，将post请求的数据当作php代码执行。当传入的参数作为文件名打开时，可以将参数设为php://input,同时post想设置的文件内容，php执行时会将post内容当作文件内容。从而导致任意代码执行。</p>
 <p>例如：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/cmd.php?cmd=php://input</span><br></pre></td></tr></table></figure>
-
-<p>POST数据：<?php phpinfo()?><br>注意：<br>当enctype&#x3D;”multipart&#x2F;form-data”的时候 php:&#x2F;&#x2F;input&#96; 是无效的</p>
-<p>遇到file_get_contents()要想到用php:&#x2F;&#x2F;input绕过。</p>
-<p>其中php:&#x2F;&#x2F;input通常与</p>
+<p>POST数据：<?php phpinfo()?><br />
+注意：<br />
+当enctype=&quot;multipart/form-data&quot;的时候 php://input` 是无效的</p>
+<p>遇到file_get_contents()要想到用php://input绕过。</p>
+<p>其中php://input通常与</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php system(&#x27; &#x27;)?&gt;</span><br></pre></td></tr></table></figure>
-
 <p>联合使用，用于读取文件内容，查看目录等等。</p>
-<h3 id="6-zip"><a href="#6-zip" class="headerlink" title="6 zip:&#x2F;&#x2F;"></a>6 zip:&#x2F;&#x2F;</h3><p>zip:&#x2F;&#x2F; 可以访问压缩包里面的文件。当它与包含函数结合时，zip:&#x2F;&#x2F;流会被当作php文件执行。从而实现任意代码执行。</p>
+<h3 id="6-zip"><a class="markdownIt-Anchor" href="#6-zip"></a> 6 zip://</h3>
+<p>zip:// 可以访问压缩包里面的文件。当它与包含函数结合时，zip://流会被当作php文件执行。从而实现任意代码执行。</p>
 
     </div>
     <footer class="article-footer">
@@ -333,7 +345,7 @@
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
       <div class="article-nav-link-wrap left">
-            <img data-src="/covers/b29d15932393a8bed07adce825361cae.jpg" data-sizes="auto" alt="xss基础" class="lazyload">
+            <img data-src="/covers/a313a5b13f55b09555bfaa524b212f13.jpg" data-sizes="auto" alt="xss基础" class="lazyload">
         <a href="/2025/11/23/xss%E5%9F%BA%E7%A1%80/" aria-label="Prev: xss基础" title="Prev: xss基础"></a>
         <div class="article-nav-caption">Prev</div>
         <h3 class="article-nav-title">
@@ -341,7 +353,7 @@
         </h3>
       </div>
     <div class="article-nav-link-wrap right">
-          <img data-src="/covers/anime-girl-kazari-genshin-impact-spring-mask-5k-3840x2160-7950.jpg" data-sizes="auto" alt="HTTP协议" class="lazyload">
+          <img data-src="/covers/acheron-honkai-star-3840x2160-19696.jpg" data-sizes="auto" alt="HTTP协议" class="lazyload">
       <a href="/2025/11/16/HTTP/" aria-label="Next: HTTP协议"  title="Next: HTTP协议"></a>
       <div class="article-nav-caption">Next</div>
       <h3 class="article-nav-title">
@@ -390,10 +402,10 @@
       </div>
       <div>
         <span class="icon-brush"></span>
-        21.8k
+        22k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        01:40
+        01:41
       </div>
       <div>
         <span class="icon-eye"></span>
@@ -415,7 +427,7 @@
   <div class="sidebar-wrap">
         <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#PHP%E4%BC%AA%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.</span> <span class="toc-text">PHP伪协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-PHP%E6%94%AF%E6%8C%81%E7%9A%84%E4%BC%AA%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.1.</span> <span class="toc-text">一.PHP支持的伪协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.2.</span> <span class="toc-text">二.详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-php-filter"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.php:&#x2F;&#x2F;filter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">1.2.2.</span> <span class="toc-text">过滤器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">字符串过滤器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BD%AC%E6%8D%A2%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">转换过滤器</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-data"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.data:&#x2F;&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-file"><span class="toc-number">1.2.4.</span> <span class="toc-text">3 file:&#x2F;&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-php"><span class="toc-number">1.2.5.</span> <span class="toc-text">4 php:&#x2F;&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-php-input"><span class="toc-number">1.2.6.</span> <span class="toc-text">5 php:&#x2F;&#x2F;input</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-zip"><span class="toc-number">1.2.7.</span> <span class="toc-text">6 zip:&#x2F;&#x2F;</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#php%E4%BC%AA%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.</span> <span class="toc-text"> PHP伪协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80php%E6%94%AF%E6%8C%81%E7%9A%84%E4%BC%AA%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.1.</span> <span class="toc-text"> 一.PHP支持的伪协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.2.</span> <span class="toc-text"> 二.详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1phpfilter"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.php:&#x2F;&#x2F;filter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 过滤器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">1.2.2.1.</span> <span class="toc-text"> 字符串过滤器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BD%AC%E6%8D%A2%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">1.2.2.2.</span> <span class="toc-text"> 转换过滤器</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2data"><span class="toc-number">1.2.3.</span> <span class="toc-text"> 2.data:&#x2F;&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-file"><span class="toc-number">1.2.4.</span> <span class="toc-text"> 3 file:&#x2F;&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-php"><span class="toc-number">1.2.5.</span> <span class="toc-text"> 4 php:&#x2F;&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-phpinput"><span class="toc-number">1.2.6.</span> <span class="toc-text"> 5 php:&#x2F;&#x2F;input</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-zip"><span class="toc-number">1.2.7.</span> <span class="toc-text"> 6 zip:&#x2F;&#x2F;</span></a></li></ol></li></ol></li></ol>
 </div>
 </div>
         <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -546,7 +558,7 @@
           url: "https://cl1ck-t0.github.io/2025/11/16/php%E4%BC%AA%E5%8D%8F%E8%AE%AE/",
           excerpt: "",
           description: "",
-          stripContent: "PHP伪协议一.PHP支持的伪协议1234567891011121 file:// — 访问本地文件系统2 http:// — 访问 HTTP(s) 网址3 ftp:// — 访问 FTP(s) URLs4 php:// — 访问各个输入/输出流（I/O streams）5 zlib:// — 压缩流6 data:// — 数据（RFC 2397）7 glob:// — 查找匹配的文件路径模式8 phar:// — PHP 归档9 ssh2:// — Secure Shell 210 rar:/",
+          stripContent: " PHP伪协议  一.PHP支持的伪协议 1234567891011121 file:// — 访问本地文件系统2 http:// — 访问 HTTP(s) 网址3 ftp:// — 访问 FTP(s) URLs4 php:// — 访问各个输入/输出流（I/O streams）5 zlib:// — 压缩流6 data:// — 数据（RFC 2397）7 glob:// — 查找匹配的文件路径模式8 phar:// — PHP 归档9 ssh2:// — Secure Shell 210 r",
           date: "Sun Nov 16 2025 09:26:16 GMT+0800",
           updated: "Tue Feb 17 2026 19:48:04 GMT+0800",
           cover: "/images/banner.webp",

