@@ -9,7 +9,7 @@
   
   <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_4k4bc36ef96';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = 'All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://cl1ck-t0.github.io';</script>
   <title>
-    index.md | Cl1ck-t0&#39;s blog
+    CRT | Cl1ck-t0&#39;s blog
   </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media='all'">
@@ -17,19 +17,19 @@
     
 <link rel="stylesheet" href="/css/loader.css">
 
-    <meta name="description" content="这里是一个摆烂大学牲的博客，你可以叫我Cl1ck，有点社恐，但是熟悉后比较开放（） 爱好广泛，从音乐到运动均有涉猎，喜欢玩Phigros、原神、绝区零（你怎么知道我500抽6+1小光）（）等游戏 目前在学习web和密码，不定期更新学习心得与经验分享。 blog仍在搭建中……欢迎参观交流hahahahahaha">
-<meta property="og:type" content="website">
-<meta property="og:title" content="index.md">
-<meta property="og:url" content="https://cl1ck-t0.github.io/about/index.html">
+    <meta name="description" content="CRT(中国剩余定理)一、引入 有物不知其数，三三数之剩二，五五数之剩三，七七数之剩二．问物几何？  即求满足以下条件的整数：除以 3 余 2，除以 5 余 3，除以 7 余 2．  三人同行七十希，五树梅花廿一支，七子团圆正半月，除百零五便得知．  2 ×70 +3 ×21 +2 ×15 &#x3D;233 &#x3D;2 ×105 +23，故答案为 23． 为何呢：$$70≡1(mod3)70">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CRT">
+<meta property="og:url" content="https://cl1ck-t0.github.io/2026/02/24/CRT/index.html">
 <meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
-<meta property="og:description" content="这里是一个摆烂大学牲的博客，你可以叫我Cl1ck，有点社恐，但是熟悉后比较开放（） 爱好广泛，从音乐到运动均有涉猎，喜欢玩Phigros、原神、绝区零（你怎么知道我500抽6+1小光）（）等游戏 目前在学习web和密码，不定期更新学习心得与经验分享。 blog仍在搭建中……欢迎参观交流hahahahahaha">
+<meta property="og:description" content="CRT(中国剩余定理)一、引入 有物不知其数，三三数之剩二，五五数之剩三，七七数之剩二．问物几何？  即求满足以下条件的整数：除以 3 余 2，除以 5 余 3，除以 7 余 2．  三人同行七十希，五树梅花廿一支，七子团圆正半月，除百零五便得知．  2 ×70 +3 ×21 +2 ×15 &#x3D;233 &#x3D;2 ×105 +23，故答案为 23． 为何呢：$$70≡1(mod3)70">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://cl1ck-t0.github.io/images/banner.webp">
-<meta property="article:published_time" content="2025-11-16T00:33:56.000Z">
-<meta property="article:modified_time" content="2025-12-30T15:36:48.051Z">
+<meta property="article:published_time" content="2026-02-24T01:51:30.000Z">
+<meta property="article:modified_time" content="2026-02-24T02:28:24.716Z">
 <meta property="article:author" content="Cl1ck-t0">
+<meta property="article:tag" content="RSA">
+<meta property="article:tag" content="crypto">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cl1ck-t0.github.io/images/banner.webp">
     <link rel="alternate" href="/atom.xml" title="Cl1ck-t0's blog" type="application/atom+xml">
     <link rel="shortcut icon" href="/images/favicon.ico">
   
@@ -118,13 +118,13 @@
   </nav>
 </div>
 <header id="header" aria-label="Site header">
-      <picture>
-      </picture>
-        <img  fetchpriority="high" src="/images/banner.webp" alt="index.md">
+        <picture>
+        </picture>
+          <img  fetchpriority="high" src="/images/banner.webp" alt="CRT">
   <div id="header-outer">
     <div id="header-title">
           <span id="logo">
-            <h1 data-aos="slide-up">index.md</h1>
+            <h1 data-aos="slide-up">CRT</h1>
           </span>
         <h2 id="subtitle-wrap" data-aos="slide-down">
         </h2>
@@ -134,10 +134,15 @@
 
         <div id="content" aria-label="Page content"  class="sidebar-right" >
           <aside id="sidebar" aria-label="Sidebar">
-  <div class="sidebar-wrapper-container ">
+  <div class="sidebar-wrapper-container sticky">
   <div class="sidebar-wrapper">
     <div class="sidebar-wrap" data-aos="fade-up">
-        <div class="sidebar-author">
+          <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CRT-%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">CRT(中国剩余定理)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%BC%95%E5%85%A5"><span class="toc-number">1.1.</span> <span class="toc-text">一、引入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%AE%9A%E4%B9%89"><span class="toc-number">1.2.</span> <span class="toc-text">二、定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E8%BF%87%E7%A8%8B"><span class="toc-number">1.3.</span> <span class="toc-text">三、过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%9C%A8RSA%E4%B8%AD%E7%9A%84%E7%AE%80%E5%8D%95%E5%BA%94%E7%94%A8"><span class="toc-number">1.4.</span> <span class="toc-text">四、在RSA中的简单应用</span></a></li></ol></li></ol>
+</div>
+</div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
   <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
   <div class="sidebar-author-name">Cl1ck-t0</div>
   <div class="sidebar-description"></div>
@@ -183,7 +188,11 @@
         <div class="sidebar-menu-link">rss</div>
       </div>
 </div>
-
+</div>
+          <div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div>
     </div>
   </div>
   <div class="sidebar-widget">
@@ -191,13 +200,13 @@
   </div>
 </aside>
 
-          <section id="main" aria-label="Main content"><article id="page-" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
+          <section id="main" aria-label="Main content"><article id="post-CRT" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner" data-aos="fade-up">
     <div class="article-meta">
       <div class="article-date">
   <span class="article-date-link icon-calendar" data-aos="zoom-in">
-    <time datetime="2025-11-16T00:33:56.000Z" itemprop="datePublished">2025-11-16</time>
-    <time style="display: none;" id="post-update-time">2025-12-30</time>
+    <time datetime="2026-02-24T01:51:30.000Z" itemprop="datePublished">2026-02-24</time>
+    <time style="display: none;" id="post-update-time">2026-02-24</time>
   </span>
 </div>
 
@@ -206,32 +215,45 @@
     <div class="hr-line"></div>
     
     <div class="e-content article-entry" itemprop="articleBody">
-        <p>这里是一个摆烂大学牲的博客，你可以叫我Cl1ck，有点社恐，但是熟悉后比较开放（）</p>
-<p>爱好广泛，从音乐到运动均有涉猎，喜欢玩Phigros、原神、绝区零<del>（你怎么知道我500抽6+1小光）</del>（）等游戏</p>
-<p>目前在学习web和密码，不定期更新学习心得与经验分享。</p>
-<p>blog仍在搭建中……欢迎参观交流hahahahahaha</p>
+        <h1 id="CRT-中国剩余定理"><a href="#CRT-中国剩余定理" class="headerlink" title="CRT(中国剩余定理)"></a>CRT(中国剩余定理)</h1><h2 id="一、引入"><a href="#一、引入" class="headerlink" title="一、引入"></a>一、引入</h2><blockquote>
+<p>有物不知其数，三三数之剩二，五五数之剩三，七七数之剩二．问物几何？</p>
+</blockquote>
+<p>即求满足以下条件的整数：除以 3<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="3"> 余 2<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="2">，除以 5<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="5"> 余 3<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="3">，除以 7<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="7"> 余 2<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="2">．</p>
+<blockquote>
+<p>三人同行七十希，五树梅花廿一支，七子团圆正半月，除百零五便得知．</p>
+</blockquote>
+<p>2 ×70 +3 ×21 +2 ×15 &#x3D;233 &#x3D;2 ×105 +23<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="2\times 70+3\times 21+2\times 15&#x3D;233&#x3D;2\times 105+23">，故答案为 23<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="23">．</p>
+<p>为何呢：<br>$$<br>70≡1(mod3)70≡1(mod3)，</p>
+<p>21≡1(mod5)21≡1(mod5),</p>
+<p>15≡1(mod7)15≡1(mod7),</p>
+<p>105&#x3D;3×5×7（模数的乘积）<br>$$</p>
+<h2 id="二、定义"><a href="#二、定义" class="headerlink" title="二、定义"></a>二、定义</h2><p>中国剩余定理 (Chinese Remainder Theorem, CRT) 可求解如下形式的一元线性同余方程组（其中 𝑛1,𝑛2,⋯,𝑛𝑘<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="n_1, n_2, \cdots, n_k"> 两两互质）：<br>$$<br>\begin{cases}<br>x \equiv a_1 \pmod{n_1} \<br>x \equiv a_2 \pmod{n_2} \<br>\quad \vdots \<br>x \equiv a_k \pmod{n_k}<br>\end{cases}<br>$$</p>
+<h2 id="三、过程"><a href="#三、过程" class="headerlink" title="三、过程"></a>三、过程</h2><p>$$<br>\begin{aligned}<br>&amp;\text{计算所有模数的积：} \<br>&amp;n &#x3D; \prod_{i&#x3D;1}^k n_i &#x3D; n_1 \times n_2 \times \cdots \times n_k \<br>\<br>&amp;\text{对于第 } i \text{ 个方程：} \<br>&amp;m_i &#x3D; \frac{n}{n_i} \<br>\<br>&amp;\text{计算 } m_i \text{ 在模 } n_i \text{ 意义下的逆元 } m_i^{-1}：\<br>&amp;m_i \cdot m_i^{-1} \equiv 1 \pmod{n_i} \<br>\<br>&amp;\text{计算 } c_i &#x3D; m_i m_i^{-1} \text{（不要对 } n_i \text{ 取模）：} \<br>&amp;c_i &#x3D; m_i \cdot m_i^{-1} \<br>\<br>&amp;\text{方程组在模 } n \text{ 意义下的唯一解为：} \<br>&amp;x &#x3D; \sum_{i&#x3D;1}^k a_i c_i \pmod{n}<br>\end{aligned}<br>$$</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">def CRT(k, a, r):</span><br><span class="line">    n = 1</span><br><span class="line">    ans = 0</span><br><span class="line">    for i in range(1, k + 1):</span><br><span class="line">        n = n * r[i]          # 计算所有模数的乘积 n = r1×r2×...×rk</span><br><span class="line">    </span><br><span class="line">    for i in range(1, k + 1):</span><br><span class="line">        m = n // r[i]          # 除去当前模数的乘积 Mi = n/ri</span><br><span class="line">        b = y = 0</span><br><span class="line">        exgcd(m, r[i], b, y)   # 扩展欧几里得求 Mi 模 ri 的逆元 b</span><br><span class="line">        # 满足: b × m ≡ 1 (mod r[i])</span><br><span class="line">        </span><br><span class="line">        ans = (ans + a[i] * m * b % n) % n   # 累加: ans += ai × Mi × inv(Mi)</span><br><span class="line">    </span><br><span class="line">    return (ans % n + n) % n   # 确保结果为正</span><br></pre></td></tr></table></figure>
+
+<h2 id="四、在RSA中的简单应用"><a href="#四、在RSA中的简单应用" class="headerlink" title="四、在RSA中的简单应用"></a>四、在RSA中的简单应用</h2><p>$$<br>\begin{aligned}<br>&amp;\textbf{步骤 1：计算模 } p \text{ 下的明文分量} \<br>&amp;m_p &#x3D; c^{d_p} \pmod{p} \[2ex]<br>&amp;\textbf{步骤 2：计算模 } q \text{ 下的明文分量} \<br>&amp;m_q &#x3D; c^{d_q} \pmod{q} \[2ex]<br>&amp;\textbf{步骤 3：计算 } q \text{ 模 } p \text{ 的逆元} \<br>&amp;q \times q_{\text{inv}} \equiv 1 \pmod{p} \[2ex]<br>&amp;\textbf{步骤 4：计算组合参数 } h \<br>&amp;h &#x3D; (q_{\text{inv}} \times (m_p - m_q)) \bmod p \[2ex]<br>&amp;\textbf{步骤 5：计算最终明文 } m \<br>&amp;m &#x3D; m_q + h \times q \pmod{n}<br>\end{aligned}<br>$$</p>
 
     </div>
     <footer class="article-footer">
         <blockquote class="article-copyright">
     <p><strong><span class="icon-user icon"></span>Author: </strong>Cl1ck-t0</p>
-    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/about/index.html">https://cl1ck-t0.github.io/about/index.html</a></p>
+    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/02/24/CRT/">https://cl1ck-t0.github.io/2026/02/24/CRT/</a></p>
     
-    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2025-11-16 08:33:56</p>
-    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2025-12-30 23:36:48</p>
+    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-02-24 09:51:30</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-02-24 10:28:24</p>
     <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
         <div class="share-wrapper">
-    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2Fabout%2Findex.html&amp;appkey=&amp;title=index.md&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="index.md">
+    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2F2026%2F02%2F24%2FCRT%2F&amp;appkey=&amp;title=CRT&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="CRT">
       <div class="share-icon icon icon-weibo">
       </div>
     </a>
-    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=index.md&amp;desc=index.md&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="index.md">
+    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=CRT&amp;desc=CRT&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="CRT">
       <div class="share-icon icon icon-qq">
       </div>
     </a>
-    <a href="javascript:;"  title="index.md">
+    <a href="javascript:;"  title="CRT">
       <div class="share-icon icon icon-weixin">
           <div id="share-weixin">
             <div class="share-weixin-dom">
@@ -254,10 +276,21 @@
     </a>
 </div>
       
-      
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/RSA/" rel="tag" title="RSA">RSA</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/crypto/" rel="tag" title="crypto">crypto</a></li></ul>
+
     </footer>
   </div>
-  
+    <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
+    <div class="article-nav-link-wrap right">
+          <img data-src="/covers/furina-neuvillette-3840x2160-19462.jpg" data-sizes="auto" alt="pop链构造" class="lazyload">
+      <a href="/2026/02/19/pop%E9%93%BE%E6%9E%84%E9%80%A0/" aria-label="Next: pop链构造"  title="Next: pop链构造"></a>
+      <div class="article-nav-caption">Next</div>
+      <h3 class="article-nav-title">
+          pop链构造
+      </h3>
+    </div>
+  </nav>
+
 </article>
 
   <section id="comments" data-aos="fade-up">
@@ -321,7 +354,12 @@
       </div>
       <nav id="mobile-nav" aria-label="Mobile navigation">
   <div class="sidebar-wrap">
-      <div class="sidebar-author">
+        <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CRT-%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">CRT(中国剩余定理)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%BC%95%E5%85%A5"><span class="toc-number">1.1.</span> <span class="toc-text">一、引入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%AE%9A%E4%B9%89"><span class="toc-number">1.2.</span> <span class="toc-text">二、定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E8%BF%87%E7%A8%8B"><span class="toc-number">1.3.</span> <span class="toc-text">三、过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%9C%A8RSA%E4%B8%AD%E7%9A%84%E7%AE%80%E5%8D%95%E5%BA%94%E7%94%A8"><span class="toc-number">1.4.</span> <span class="toc-text">四、在RSA中的简单应用</span></a></li></ol></li></ol>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
   <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
   <div class="sidebar-author-name">Cl1ck-t0</div>
   <div class="sidebar-description"></div>
@@ -367,8 +405,12 @@
         <div class="sidebar-menu-link">rss</div>
       </div>
 </div>
-
+</div>
   </div>
+      <div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
 </nav>
 
     </div>
@@ -441,13 +483,13 @@
       <script data-pjax>
         window.REIMU_POST = {
           author: "Cl1ck-t0",
-          title: "index.md",
-          url: "https://cl1ck-t0.github.io/about/index.html",
+          title: "CRT",
+          url: "https://cl1ck-t0.github.io/2026/02/24/CRT/",
           excerpt: "",
           description: "",
-          stripContent: "这里是一个摆烂大学牲的博客，你可以叫我Cl1ck，有点社恐，但是熟悉后比较开放（） 爱好广泛，从音乐到运动均有涉猎，喜欢玩Phigros、原神、绝区零（你怎么知道我500抽6+1小光）（）等游戏 目前在学习web和密码，不定期更新学习心得与经验分享。 blog仍在搭建中……欢迎参观交流hahahahahaha ",
-          date: "Sun Nov 16 2025 08:33:56 GMT+0800",
-          updated: "Tue Dec 30 2025 23:36:48 GMT+0800",
+          stripContent: "CRT(中国剩余定理)一、引入 有物不知其数，三三数之剩二，五五数之剩三，七七数之剩二．问物几何？  即求满足以下条件的整数：除以 3 余 2，除以 5 余 3，除以 7 余 2．  三人同行七十希，五树梅花廿一支，七子团圆正半月，除百零五便得知．  2 ×70 +3 ×21 +2 ×15 &amp;#x3D;233 &amp;#x3D;2 ×105 +23，故答案为 23． 为何呢：$$70≡1(mod3)70≡1(mod3)， 21≡1(mod5)21≡1(mod5), 15≡1(mod7)15≡1(mod",
+          date: "Tue Feb 24 2026 09:51:30 GMT+0800",
+          updated: "Tue Feb 24 2026 10:28:24 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
