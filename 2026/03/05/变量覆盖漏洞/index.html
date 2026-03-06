@@ -25,7 +25,7 @@
 <meta property="og:description" content="变量覆盖漏洞 引入题：[MoeCTF 2022]ezphp  一、概念 变量覆盖漏洞是指攻击者使用自定义的变量去覆盖源代码中的变量，从而改变代码逻辑，实现攻击目的的一种漏洞。通常来说，单独的变量覆盖漏洞很难有利用价值，但是在与其他应用代码或漏洞结合后，可能会有很大的影响。  二、 变量覆盖漏洞相关的函数 变量覆盖漏洞大多数由函数使用不当导致，经常引发变量覆盖漏洞的函数有：  extract()">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-03-05T14:42:30.000Z">
-<meta property="article:modified_time" content="2026-03-05T15:27:17.900Z">
+<meta property="article:modified_time" content="2026-03-06T07:49:40.501Z">
 <meta property="article:author" content="Cl1ck-t0">
 <meta property="article:tag" content="web">
 <meta property="article:tag" content="web漏洞">
@@ -157,7 +157,7 @@
     <div class="sidebar-wrap" data-aos="fade-up">
           <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.</span> <span class="toc-text"> 变量覆盖漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96%E6%BC%8F%E6%B4%9E%E7%9B%B8%E5%85%B3%E7%9A%84%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、 变量覆盖漏洞相关的函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、详细说明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1extract%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 1.extract()变量覆盖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96%E9%87%8D%E7%82%B9"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 2.$$变量覆盖（重点）</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.</span> <span class="toc-text"> 变量覆盖漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96%E6%BC%8F%E6%B4%9E%E7%9B%B8%E5%85%B3%E7%9A%84%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、 变量覆盖漏洞相关的函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、详细说明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1extract%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 1.extract()变量覆盖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96%E9%87%8D%E7%82%B9"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 2.$$变量覆盖（重点）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3parse_str%E5%AF%BC%E8%87%B4%E7%9A%84%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.parse_str()导致的变量覆盖</span></a></li></ol></li></ol></li></ol>
 </div>
 </div>
           <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -224,7 +224,7 @@
       <div class="article-date">
   <span class="article-date-link icon-calendar" data-aos="zoom-in">
     <time datetime="2026-03-05T14:42:30.000Z" itemprop="datePublished">2026-03-05</time>
-    <time style="display: none;" id="post-update-time">2026-03-05</time>
+    <time style="display: none;" id="post-update-time">2026-03-06</time>
   </span>
 </div>
 
@@ -265,6 +265,12 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">highlight_file(&#x27;source.txt&#x27;);</span><br><span class="line">echo &quot;&lt;br&gt;&lt;br&gt;&quot;;</span><br><span class="line"></span><br><span class="line">$flag = &#x27;xxxxxxxx&#x27;;</span><br><span class="line">$giveme = &#x27;can can need flag!&#x27;;</span><br><span class="line">$getout = &#x27;No! flag.Try again. Come on!&#x27;;</span><br><span class="line">if(!isset($_GET[&#x27;flag&#x27;]) &amp;&amp; !isset($_POST[&#x27;flag&#x27;]))&#123;</span><br><span class="line">  exit($giveme);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if($_POST[&#x27;flag&#x27;] === &#x27;flag&#x27; || $_GET[&#x27;flag&#x27;] === &#x27;flag&#x27;)&#123;</span><br><span class="line">  exit($getout);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foreach ($_POST as $key =&gt; $value) &#123;</span><br><span class="line">  $$key = $value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foreach ($_GET as $key =&gt; $value) &#123;</span><br><span class="line">  $$key = $$value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">echo &#x27;the flag is : &#x27; . $flag;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 <p><strong>漏洞产生:</strong></p>
 <p>使用foreach来遍历数组中的值，然后再将获取到的<strong>数组键名作为变量名</strong>，数组中的<strong>键值作为变量的值</strong>。因此就产生了变量覆盖漏洞。请求<code>?flag=a</code> 会将<code>$flag</code>的值覆盖，$flag=a。</p>
+<h3 id="3parse_str导致的变量覆盖"><a class="markdownIt-Anchor" href="#3parse_str导致的变量覆盖"></a> 3.parse_str()导致的变量覆盖</h3>
+<p>parse_str(string,array)函数把**查询字符串解析到变量中。 **</p>
+<p>array参数规定存储变量的数组名称。该参数指示变量存储到一个指定的数组中。</p>
+<p>注释：如果未设置 array 参数，由该函数设置的变量将覆盖已存在的同名变量。</p>
+<p>查询字符串（URL参数）是指在URL的末尾加上用于向服务器 发送信息的字符串（变量）。将“？”放在URL的末尾，然后再加上“参数＝值”，想加上多个参数的话，使用“&amp;”。以这个形式，可以将想要发送给服务器的数据添加到URL中。</p>
+<p><strong>parse_str函数的作用就是解析字符串并注册成变量，在注册变量之前不会验证当前变量是否存在，所以直接覆盖掉已有变量</strong></p>
 
     </div>
     <footer class="article-footer">
@@ -273,7 +279,7 @@
     <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/03/05/%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96%E6%BC%8F%E6%B4%9E/">https://cl1ck-t0.github.io/2026/03/05/%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96%E6%BC%8F%E6%B4%9E/</a></p>
     
     <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-03-05 22:42:30</p>
-    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-03-05 23:27:17</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-03-06 15:49:40</p>
     <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
@@ -315,7 +321,7 @@
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
     <div class="article-nav-link-wrap right">
-          <img data-src="/covers/furina-neuvillette-3840x2160-19462.jpg" data-sizes="auto" alt="MD5" class="lazyload">
+          <img data-src="/covers/columbina-genshin-3840x2160-23949.jpg" data-sizes="auto" alt="MD5" class="lazyload">
       <a href="/2026/03/01/MD5/" aria-label="Next: MD5"  title="Next: MD5"></a>
       <div class="article-nav-caption">Next</div>
       <h3 class="article-nav-title">
@@ -364,10 +370,10 @@
       </div>
       <div>
         <span class="icon-brush"></span>
-        27.3k
+        27.5k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        02:05
+        02:06
       </div>
       <div>
         <span class="icon-eye"></span>
@@ -389,7 +395,7 @@
   <div class="sidebar-wrap">
         <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.</span> <span class="toc-text"> 变量覆盖漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96%E6%BC%8F%E6%B4%9E%E7%9B%B8%E5%85%B3%E7%9A%84%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、 变量覆盖漏洞相关的函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、详细说明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1extract%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 1.extract()变量覆盖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96%E9%87%8D%E7%82%B9"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 2.$$变量覆盖（重点）</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.</span> <span class="toc-text"> 变量覆盖漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96%E6%BC%8F%E6%B4%9E%E7%9B%B8%E5%85%B3%E7%9A%84%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、 变量覆盖漏洞相关的函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、详细说明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1extract%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 1.extract()变量覆盖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96%E9%87%8D%E7%82%B9"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 2.$$变量覆盖（重点）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3parse_str%E5%AF%BC%E8%87%B4%E7%9A%84%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.parse_str()导致的变量覆盖</span></a></li></ol></li></ol></li></ol>
 </div>
 </div>
         <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -528,7 +534,7 @@
           description: "",
           stripContent: " 变量覆盖漏洞 引入题：[MoeCTF 2022]ezphp  一、概念 变量覆盖漏洞是指攻击者使用自定义的变量去覆盖源代码中的变量，从而改变代码逻辑，实现攻击目的的一种漏洞。通常来说，单独的变量覆盖漏洞很难有利用价值，但是在与其他应用代码或漏洞结合后，可能会有很大的影响。  二、 变量覆盖漏洞相关的函数 变量覆盖漏洞大多数由函数使用不当导致，经常引发变量覆盖漏洞的函数有：  extract() parse_str() import_request_variables()  (可变变量)(可变变",
           date: "Thu Mar 05 2026 22:42:30 GMT+0800",
-          updated: "Thu Mar 05 2026 23:27:17 GMT+0800",
+          updated: "Fri Mar 06 2026 15:49:40 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
