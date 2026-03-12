@@ -25,7 +25,7 @@
 <meta property="og:description" content="RCE漏洞原理及利用 引路题QAQ:NSSCTF-[SWPUCTF 2021 新生赛]babyrce,窝的博客里题解部分也有详解嘿嘿（）  一、RCE漏洞概述 web的应用开发中常常为了灵活性与简洁性，让应用调用代码执行函数或系统命令执行函数处理，如果对用户输入过滤不严，容易产生远程代码执行漏洞或命令执行漏洞。 RCE漏洞分为两类： 远程命令执行漏洞(Remote Command Executi">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-02-15T13:13:09.000Z">
-<meta property="article:modified_time" content="2026-03-07T06:52:55.415Z">
+<meta property="article:modified_time" content="2026-03-12T06:40:55.787Z">
 <meta property="article:author" content="Cl1ck-t0">
 <meta property="article:tag" content="web">
 <meta property="article:tag" content="web漏洞">
@@ -224,7 +224,7 @@
       <div class="article-date">
   <span class="article-date-link icon-calendar" data-aos="zoom-in">
     <time datetime="2026-02-15T13:13:09.000Z" itemprop="datePublished">2026-02-15</time>
-    <time style="display: none;" id="post-update-time">2026-03-07</time>
+    <time style="display: none;" id="post-update-time">2026-03-12</time>
   </span>
 </div>
 
@@ -268,7 +268,7 @@
 <h3 id="2绕过技巧"><a class="markdownIt-Anchor" href="#2绕过技巧"></a> 2.绕过技巧</h3>
 <h4 id="过滤cat"><a class="markdownIt-Anchor" href="#过滤cat"></a> 过滤cat</h4>
 <p>用类似命令代替：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">tac</span>：反向查看。</span><br><span class="line"></span><br><span class="line">more：逐页显示文档。</span><br><span class="line"></span><br><span class="line">less：逐页显示文档。</span><br><span class="line"></span><br><span class="line"><span class="built_in">tail</span>：查看末尾几行。</span><br><span class="line"></span><br><span class="line"><span class="built_in">nl</span>：带行号显示。</span><br><span class="line"></span><br><span class="line"><span class="built_in">od</span>：二进制读取。</span><br><span class="line"></span><br><span class="line">xxd：二进制读取。</span><br><span class="line"></span><br><span class="line"><span class="built_in">sort</span>：排序文件。</span><br><span class="line"></span><br><span class="line"><span class="built_in">uniq</span>：报错相关。</span><br><span class="line"></span><br><span class="line">file -f：报错相关。#passthru(<span class="string">&quot;file -f /flag&quot;</span>);</span><br><span class="line"></span><br><span class="line">grep str file：在file中读取str</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">tac</span>：反向查看。</span><br><span class="line"></span><br><span class="line">more：逐页显示文档。</span><br><span class="line"></span><br><span class="line">less：逐页显示文档。</span><br><span class="line"></span><br><span class="line"><span class="built_in">tail</span>：查看末尾几行。</span><br><span class="line"></span><br><span class="line"><span class="built_in">nl</span>：带行号显示。</span><br><span class="line"></span><br><span class="line"><span class="built_in">od</span>：二进制读取。</span><br><span class="line"></span><br><span class="line">xxd：二进制读取。</span><br><span class="line"></span><br><span class="line"><span class="built_in">sort</span>：排序文件。</span><br><span class="line"></span><br><span class="line"><span class="built_in">uniq</span>：报错相关。</span><br><span class="line"></span><br><span class="line">file -f：报错相关。#passthru(<span class="string">&quot;file -f /flag&quot;</span>);</span><br><span class="line"></span><br><span class="line">grep str file：在file中读取str</span><br><span class="line"></span><br><span class="line">rev：反向读取,eg:FSCTF&#123;c0ng2atu1ati0ns_y0u_a2e_go0D!&#125;会读取为：&#125;!D0og_e2a_u0y_sn0ita1uta2gn0c&#123;FTCSF</span><br><span class="line"></span><br><span class="line">strings/paste: 也是读取文件内容</span><br></pre></td></tr></table></figure>
 <p>eg.[FSCTF 2023]Hello,you</p>
 <p>这题就是经典的cat过滤，我们在注入<code>fla*</code>通配符时回显flag.php;我们尝试cat被拦截后使用<code> ; more fla*</code>，成功得到flag。</p>
 <h4 id="过滤flag"><a class="markdownIt-Anchor" href="#过滤flag"></a> 过滤flag</h4>
@@ -316,7 +316,7 @@
     <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/02/15/RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8/">https://cl1ck-t0.github.io/2026/02/15/RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8/</a></p>
     
     <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-02-15 21:13:09</p>
-    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-03-07 14:52:55</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-03-12 14:40:55</p>
     <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
@@ -358,7 +358,7 @@
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
       <div class="article-nav-link-wrap left">
-            <img data-src="/covers/d6d41915b0e308caf498f5160d5a8178.jpg" data-sizes="auto" alt="pop链构造" class="lazyload">
+            <img data-src="/covers/hoshimi-miyabi-dope-3840x2160-20500.jpg" data-sizes="auto" alt="pop链构造" class="lazyload">
         <a href="/2026/02/19/pop%E9%93%BE%E6%9E%84%E9%80%A0/" aria-label="Prev: pop链构造" title="Prev: pop链构造"></a>
         <div class="article-nav-caption">Prev</div>
         <h3 class="article-nav-title">
@@ -579,7 +579,7 @@
           description: "",
           stripContent: " RCE漏洞原理及利用 引路题QAQ:NSSCTF-[SWPUCTF 2021 新生赛]babyrce,窝的博客里题解部分也有详解嘿嘿（）  一、RCE漏洞概述 web的应用开发中常常为了灵活性与简洁性，让应用调用代码执行函数或系统命令执行函数处理，如果对用户输入过滤不严，容易产生远程代码执行漏洞或命令执行漏洞。 RCE漏洞分为两类： 远程命令执行漏洞(Remote Command Execution)和远程代码执行漏洞(Remote Code Execution) 它们的成因分别为： 应用程序",
           date: "Sun Feb 15 2026 21:13:09 GMT+0800",
-          updated: "Sat Mar 07 2026 14:52:55 GMT+0800",
+          updated: "Thu Mar 12 2026 14:40:55 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
