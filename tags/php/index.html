@@ -160,7 +160,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>Post</div>
-    <div class="sidebar-state-number">17</div>
+    <div class="sidebar-state-number">18</div>
   </div>
   <div class="sidebar-state-category">
     <div>Category</div>
@@ -233,10 +233,10 @@
       <a class="archives-tag-list-link" href="/tags/LFSR/">LFSR</a>
     </div>
     <div class="archives-tag-list-item" data-aos="zoom-in">
-      <a class="archives-tag-list-link" href="/tags/PHP/">PHP</a>
+      <a class="archives-tag-list-link" href="/tags/MD5%E7%A2%B0%E6%92%9E/">MD5碰撞</a>
     </div>
     <div class="archives-tag-list-item" data-aos="zoom-in">
-      <a class="archives-tag-list-link" href="/tags/MD5%E7%A2%B0%E6%92%9E/">MD5碰撞</a>
+      <a class="archives-tag-list-link" href="/tags/PHP/">PHP</a>
     </div>
     <div class="archives-tag-list-item" data-aos="zoom-in">
       <a class="archives-tag-list-link" href="/tags/web%E6%BC%8F%E6%B4%9E/">web漏洞</a>
@@ -308,10 +308,10 @@
       </div>
       <div>
         <span class="icon-brush"></span>
-        29.7k
+        31.7k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        02:16
+        02:26
       </div>
       <div>
         <span class="icon-eye"></span>
@@ -339,7 +339,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>Post</div>
-    <div class="sidebar-state-number">17</div>
+    <div class="sidebar-state-number">18</div>
   </div>
   <div class="sidebar-state-category">
     <div>Category</div>
@@ -490,6 +490,29 @@
         if (!false || !window.matchMedia('(max-width: 768px)').matches) {
           if (window.matchMedia('(max-width: 959px)').matches) {
             const meting = _$('meting-js');
+            if (meting) {
+              meting.setAttribute('fixed', 'true');
+              const aside = meting.parentNode?.parentNode;
+              if (aside?.tagName === 'ASIDE') {
+                meting.parentNode.removeChild(meting);
+                document.body.appendChild(meting);
+              }
+            }
+          }
+        }
+      };
+    </script>
+  
+<script src="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.js" integrity="sha384-gdGYZwHnfJM54evoZhpO0s6ZF5BQiybkiyW7VXr+h5UfruuRL&#x2F;aORyw+5+HZoU6e" crossorigin="anonymous" defer onload="setupAPlayer()"></script>
+
+    
+<script src="https://npm.webcache.cn/meting@2.0.1/dist/Meting.min.js" integrity="sha384-ASVlpKF80A22OXTK3tfEjZm1EL6uFMKIC4p8+0maanw1S&#x2F;IyB+Y4JG+ZDU7GpKE8" crossorigin="anonymous" defer></script>
+
+
+
+  </body>
+  </html>
+ing = _$('meting-js');
             if (meting) {
               meting.setAttribute('fixed', 'true');
               const aside = meting.parentNode?.parentNode;
