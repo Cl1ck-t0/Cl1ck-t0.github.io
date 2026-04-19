@@ -17,15 +17,15 @@
     
 <link rel="stylesheet" href="/css/loader.css">
 
-    <meta name="description" content="burp靶场漏洞实战wp 之前一直在做各种题库中的题目，偶然得知burp靶场的题目不错，故作次wp，将持续跟进解题进度  一、sql注入  1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞 开头一个个看过去，没什么特别的。仔细看发现在Refine your search: 下面点进去url会变为 1https:&#x2F;&#x2F;0ade00b5041780e7808e120800720083.web">
+    <meta name="description" content="burp靶场漏洞实战wp 之前一直在做各种题库中的题目，偶然得知burp靶场的实验不错，故作次wp，将持续跟进解题进度  一、sql注入  1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞 开头一个个看过去，没什么特别的。仔细看发现在Refine your search: 下面点进去url会变为 1https:&#x2F;&#x2F;0ade00b5041780e7808e120800720083.web">
 <meta property="og:type" content="article">
 <meta property="og:title" content="burp靶场漏洞实战">
 <meta property="og:url" content="https://cl1ck-t0.github.io/2026/03/31/burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98/index.html">
 <meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
-<meta property="og:description" content="burp靶场漏洞实战wp 之前一直在做各种题库中的题目，偶然得知burp靶场的题目不错，故作次wp，将持续跟进解题进度  一、sql注入  1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞 开头一个个看过去，没什么特别的。仔细看发现在Refine your search: 下面点进去url会变为 1https:&#x2F;&#x2F;0ade00b5041780e7808e120800720083.web">
+<meta property="og:description" content="burp靶场漏洞实战wp 之前一直在做各种题库中的题目，偶然得知burp靶场的实验不错，故作次wp，将持续跟进解题进度  一、sql注入  1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞 开头一个个看过去，没什么特别的。仔细看发现在Refine your search: 下面点进去url会变为 1https:&#x2F;&#x2F;0ade00b5041780e7808e120800720083.web">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-03-31T14:06:57.000Z">
-<meta property="article:modified_time" content="2026-03-31T15:29:15.556Z">
+<meta property="article:modified_time" content="2026-04-19T08:55:26.009Z">
 <meta property="article:author" content="Cl1ck-t0">
 <meta property="article:tag" content="burp靶场">
 <meta property="article:tag" content="web">
@@ -157,7 +157,7 @@
     <div class="sidebar-wrap" data-aos="fade-up">
           <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98wp"><span class="toc-number">1.</span> <span class="toc-text"> burp靶场漏洞实战wp</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-sql%E6%B3%A8%E5%85%A5"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、sql注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8Cwhere%E6%9D%A1%E6%AC%BE%E4%B8%AD%E5%85%81%E8%AE%B8%E6%A3%80%E7%B4%A2%E9%9A%90%E8%97%8F%E6%95%B0%E6%8D%AE%E7%9A%84sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E5%AE%9E%E9%AA%8C%E5%85%81%E8%AE%B8%E7%99%BB%E5%BD%95%E7%BB%95%E8%BF%87%E7%9A%84sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2.实验：允许登录绕过的SQL注入漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E5%AE%9E%E9%AA%8Csql%E6%B3%A8%E5%85%A5union%E6%94%BB%E5%87%BB%E7%A1%AE%E5%AE%9A%E6%9F%A5%E8%AF%A2%E8%BF%94%E5%9B%9E%E7%9A%84%E5%88%97%E6%95%B0"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 3.实验：SQL注入UNION攻击，确定查询返回的列数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、文件上传漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8C%E5%AE%A4%E9%80%9A%E8%BF%87%E7%BD%91%E9%A1%B5%E5%A3%B3%E4%B8%8A%E4%BC%A0%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.实验室：通过网页壳上传远程代码执行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98wp"><span class="toc-number">1.</span> <span class="toc-text"> burp靶场漏洞实战wp</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-sql%E6%B3%A8%E5%85%A5"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、sql注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8Cwhere%E6%9D%A1%E6%AC%BE%E4%B8%AD%E5%85%81%E8%AE%B8%E6%A3%80%E7%B4%A2%E9%9A%90%E8%97%8F%E6%95%B0%E6%8D%AE%E7%9A%84sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E5%AE%9E%E9%AA%8C%E5%85%81%E8%AE%B8%E7%99%BB%E5%BD%95%E7%BB%95%E8%BF%87%E7%9A%84sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2.实验：允许登录绕过的SQL注入漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E5%AE%9E%E9%AA%8Csql%E6%B3%A8%E5%85%A5union%E6%94%BB%E5%87%BB%E7%A1%AE%E5%AE%9A%E6%9F%A5%E8%AF%A2%E8%BF%94%E5%9B%9E%E7%9A%84%E5%88%97%E6%95%B0"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 3.实验：SQL注入UNION攻击，确定查询返回的列数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、文件上传漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8C%E5%AE%A4%E9%80%9A%E8%BF%87%E7%BD%91%E9%A1%B5%E5%A3%B3%E4%B8%8A%E4%BC%A0%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.实验室：通过网页壳上传远程代码执行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、跨站脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8C%E5%B0%86xss%E6%98%A0%E5%B0%84%E5%88%B0html%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%AD%E4%B8%94%E6%B2%A1%E6%9C%89%E7%BC%96%E7%A0%81"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 1.实验：将XSS映射到HTML上下文中，且没有编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2dom-xss-%E5%9C%A8-sack-%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%BA%90%E4%BB%A3%E7%A0%81documentwritelocationsearch"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 2.DOM XSS 在 sack 中使用源代码document.write&#96;&#96;location.search</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3dom-xss-in-innerhtml-sink-using-source-locationsearch"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.DOM XSS in innerHTML sink using source location.search</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E5%AE%9E%E9%AA%8Cjquery-%E9%94%9A%E5%B1%9E%E6%80%A7%E6%B1%87%E5%85%A5-dom-xss-%E4%BD%BF%E7%94%A8%E6%BA%90%E4%BB%A3%E7%A0%81hreflocationsearch"><span class="toc-number">1.3.4.</span> <span class="toc-text"> 4.实验：jQuery 锚属性汇入 DOM XSS 使用源代码href&#96;&#96;location.search</span></a></li></ol></li></ol></li></ol>
 </div>
 </div>
           <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -224,7 +224,7 @@
       <div class="article-date">
   <span class="article-date-link icon-calendar" data-aos="zoom-in">
     <time datetime="2026-03-31T14:06:57.000Z" itemprop="datePublished">2026-03-31</time>
-    <time style="display: none;" id="post-update-time">2026-03-31</time>
+    <time style="display: none;" id="post-update-time">2026-04-19</time>
   </span>
 </div>
 
@@ -234,7 +234,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
         <h1 id="burp靶场漏洞实战wp"><a class="markdownIt-Anchor" href="#burp靶场漏洞实战wp"></a> burp靶场漏洞实战wp</h1>
-<p>之前一直在做各种题库中的题目，偶然得知burp靶场的题目不错，故作次wp，将持续跟进解题进度</p>
+<p>之前一直在做各种题库中的题目，偶然得知burp靶场的实验不错，故作次wp，将持续跟进解题进度</p>
 <h2 id="一-sql注入"><a class="markdownIt-Anchor" href="#一-sql注入"></a> 一、sql注入</h2>
 <h3 id="1实验where条款中允许检索隐藏数据的sql注入漏洞"><a class="markdownIt-Anchor" href="#1实验where条款中允许检索隐藏数据的sql注入漏洞"></a> 1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞</h3>
 <p>开头一个个看过去，没什么特别的。仔细看发现在<strong>Refine your search:</strong></p>
@@ -277,7 +277,36 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /files/avatars/1.php HTTP/2</span><br></pre></td></tr></table></figure>
 <p>得到目标：</p>
 <p>Rnh4NwyW1Gl2Ko3yWlVT2eFgyKRH9Hcd</p>
-<h2 id="三"><a class="markdownIt-Anchor" href="#三"></a> 三、</h2>
+<h2 id="三-跨站脚本"><a class="markdownIt-Anchor" href="#三-跨站脚本"></a> 三、跨站脚本</h2>
+<h3 id="1实验将xss映射到html上下文中且没有编码"><a class="markdownIt-Anchor" href="#1实验将xss映射到html上下文中且没有编码"></a> 1.实验：将XSS映射到HTML上下文中，且没有编码</h3>
+<p>最简单的xss，</p>
+<p>直接<code>&lt;script&gt;alert()&lt;/script&gt;</code>就行。</p>
+<h3 id="2dom-xss-在-sack-中使用源代码documentwritelocationsearch"><a class="markdownIt-Anchor" href="#2dom-xss-在-sack-中使用源代码documentwritelocationsearch"></a> 2.DOM XSS 在 sack 中使用源代码<code>document.write``location.search</code></h3>
+<p>理解DOM漏洞原理</p>
+<ul>
+<li><strong>源 (Source)</strong>：<code>location.search</code>，这是浏览器地址栏中 <code>?</code> 后面的部分（也就是 GET 参数）。攻击者可以完全控制这部分。</li>
+<li><strong>汇 (Sink)</strong>：<code>document.write</code>。这个函数会将传入的字符串直接解析为 HTML 写入页面。如果传入的数据包含 <code>&lt;script&gt;</code> 标签，它<strong>通常不会执行</strong>（这是很多人的误区）。</li>
+<li><strong>关键点</strong>：在 <code>document.write</code> 的上下文中，最可靠的 XSS 触发方式不是 <code>&lt;script&gt;alert(1)&lt;/script&gt;</code>，而是<strong>HTML 事件处理器</strong>，例如 <code>&lt;img src=x onerror=alert(1)&gt;</code>。</li>
+</ul>
+<p>DOM型xss最常见的来源是url,故我们可以尝试一下，在搜索栏里随便输入发现url变成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://0a360098047f989f80da125100e00067.web-security-academy.net/?search=1</span><br></pre></td></tr></table></figure>
+<p>payload如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;&gt;&lt;img src=x onerror=alert(666)&gt;</span><br><span class="line">这里注意闭合前面的&lt;&quot;</span><br><span class="line">&quot;&gt;&lt;svg onload=alert(666)&gt;</span><br></pre></td></tr></table></figure>
+<p>其实本实验的核心还是在于闭合前面语句上面。</p>
+<h3 id="3dom-xss-in-innerhtml-sink-using-source-locationsearch"><a class="markdownIt-Anchor" href="#3dom-xss-in-innerhtml-sink-using-source-locationsearch"></a> 3.DOM XSS in <code>innerHTML</code> sink using source <code>location.search</code></h3>
+<p>比2还简单,直接</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=x onerror=alert()&gt;</span><br></pre></td></tr></table></figure>
+<p>即可。</p>
+<p>这里简单说说原理，</p>
+<ul>
+<li><strong><code>&lt;img</code></strong>：这是一个标准的 HTML 图片标签的开始。浏览器看到它，就会准备去加载一张图片。</li>
+<li><strong><code>src=x</code></strong>：这是图片的源地址属性。我们故意给它一个<strong>不存在的、无效的</strong>地址 <code>x</code>。</li>
+<li><strong><code>onerror=alert(1)</code></strong>：这是一个<strong>事件处理器</strong>。<code>onerror</code> 是 <code>&lt;img&gt;</code> 标签的一个内置事件，它的触发条件是：<strong>当浏览器加载 <code>src</code> 指定的图片资源失败时</strong>。</li>
+</ul>
+<p>因此会触发xss</p>
+<h3 id="4实验jquery-锚属性汇入-dom-xss-使用源代码hreflocationsearch"><a class="markdownIt-Anchor" href="#4实验jquery-锚属性汇入-dom-xss-使用源代码hreflocationsearch"></a> 4.实验：jQuery 锚属性汇入 DOM XSS 使用源代码<code>href``location.search</code></h3>
+<p>本实验室在提交反馈页面中包含一个基于DOM的跨站脚本漏洞。它使用 jQuery 库的选择函数来寻找锚点元素，并利用 的数据更改其属性。<code>$``href``location.search</code></p>
+<p>要解决这个实验，可以设置“回溯”链接提醒。<code>document.cookie</code></p>
 
     </div>
     <footer class="article-footer">
@@ -286,7 +315,7 @@
     <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/03/31/burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98/">https://cl1ck-t0.github.io/2026/03/31/burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98/</a></p>
     
     <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-03-31 22:06:57</p>
-    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-03-31 23:29:15</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-04-19 16:55:26</p>
     <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
@@ -328,7 +357,7 @@
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
     <div class="article-nav-link-wrap right">
-          <img data-src="/covers/a313a5b13f55b09555bfaa524b212f13.jpg" data-sizes="auto" alt="SSTI注入" class="lazyload">
+          <img data-src="/covers/furina-de-fontaine-3840x2160-19459.jpg" data-sizes="auto" alt="SSTI注入" class="lazyload">
       <a href="/2026/03/13/SSTI%E6%B3%A8%E5%85%A5/" aria-label="Next: SSTI注入"  title="Next: SSTI注入"></a>
       <div class="article-nav-caption">Next</div>
       <h3 class="article-nav-title">
@@ -377,10 +406,10 @@
       </div>
       <div>
         <span class="icon-brush"></span>
-        33.8k
+        34.3k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        02:35
+        02:37
       </div>
       <div>
         <span class="icon-eye"></span>
@@ -402,7 +431,7 @@
   <div class="sidebar-wrap">
         <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98wp"><span class="toc-number">1.</span> <span class="toc-text"> burp靶场漏洞实战wp</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-sql%E6%B3%A8%E5%85%A5"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、sql注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8Cwhere%E6%9D%A1%E6%AC%BE%E4%B8%AD%E5%85%81%E8%AE%B8%E6%A3%80%E7%B4%A2%E9%9A%90%E8%97%8F%E6%95%B0%E6%8D%AE%E7%9A%84sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E5%AE%9E%E9%AA%8C%E5%85%81%E8%AE%B8%E7%99%BB%E5%BD%95%E7%BB%95%E8%BF%87%E7%9A%84sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2.实验：允许登录绕过的SQL注入漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E5%AE%9E%E9%AA%8Csql%E6%B3%A8%E5%85%A5union%E6%94%BB%E5%87%BB%E7%A1%AE%E5%AE%9A%E6%9F%A5%E8%AF%A2%E8%BF%94%E5%9B%9E%E7%9A%84%E5%88%97%E6%95%B0"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 3.实验：SQL注入UNION攻击，确定查询返回的列数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、文件上传漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8C%E5%AE%A4%E9%80%9A%E8%BF%87%E7%BD%91%E9%A1%B5%E5%A3%B3%E4%B8%8A%E4%BC%A0%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.实验室：通过网页壳上传远程代码执行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98wp"><span class="toc-number">1.</span> <span class="toc-text"> burp靶场漏洞实战wp</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-sql%E6%B3%A8%E5%85%A5"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、sql注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8Cwhere%E6%9D%A1%E6%AC%BE%E4%B8%AD%E5%85%81%E8%AE%B8%E6%A3%80%E7%B4%A2%E9%9A%90%E8%97%8F%E6%95%B0%E6%8D%AE%E7%9A%84sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E5%AE%9E%E9%AA%8C%E5%85%81%E8%AE%B8%E7%99%BB%E5%BD%95%E7%BB%95%E8%BF%87%E7%9A%84sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2.实验：允许登录绕过的SQL注入漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E5%AE%9E%E9%AA%8Csql%E6%B3%A8%E5%85%A5union%E6%94%BB%E5%87%BB%E7%A1%AE%E5%AE%9A%E6%9F%A5%E8%AF%A2%E8%BF%94%E5%9B%9E%E7%9A%84%E5%88%97%E6%95%B0"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 3.实验：SQL注入UNION攻击，确定查询返回的列数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、文件上传漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8C%E5%AE%A4%E9%80%9A%E8%BF%87%E7%BD%91%E9%A1%B5%E5%A3%B3%E4%B8%8A%E4%BC%A0%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.实验室：通过网页壳上传远程代码执行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、跨站脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8C%E5%B0%86xss%E6%98%A0%E5%B0%84%E5%88%B0html%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%AD%E4%B8%94%E6%B2%A1%E6%9C%89%E7%BC%96%E7%A0%81"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 1.实验：将XSS映射到HTML上下文中，且没有编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2dom-xss-%E5%9C%A8-sack-%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%BA%90%E4%BB%A3%E7%A0%81documentwritelocationsearch"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 2.DOM XSS 在 sack 中使用源代码document.write&#96;&#96;location.search</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3dom-xss-in-innerhtml-sink-using-source-locationsearch"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.DOM XSS in innerHTML sink using source location.search</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E5%AE%9E%E9%AA%8Cjquery-%E9%94%9A%E5%B1%9E%E6%80%A7%E6%B1%87%E5%85%A5-dom-xss-%E4%BD%BF%E7%94%A8%E6%BA%90%E4%BB%A3%E7%A0%81hreflocationsearch"><span class="toc-number">1.3.4.</span> <span class="toc-text"> 4.实验：jQuery 锚属性汇入 DOM XSS 使用源代码href&#96;&#96;location.search</span></a></li></ol></li></ol></li></ol>
 </div>
 </div>
         <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -539,9 +568,9 @@
           url: "https://cl1ck-t0.github.io/2026/03/31/burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98/",
           excerpt: "",
           description: "",
-          stripContent: " burp靶场漏洞实战wp 之前一直在做各种题库中的题目，偶然得知burp靶场的题目不错，故作次wp，将持续跟进解题进度  一、sql注入  1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞 开头一个个看过去，没什么特别的。仔细看发现在Refine your search: 下面点进去url会变为 1https://0ade00b5041780e7808e120800720083.web-security-academy.net/filter?category=Tech+gifts 看",
+          stripContent: " burp靶场漏洞实战wp 之前一直在做各种题库中的题目，偶然得知burp靶场的实验不错，故作次wp，将持续跟进解题进度  一、sql注入  1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞 开头一个个看过去，没什么特别的。仔细看发现在Refine your search: 下面点进去url会变为 1https://0ade00b5041780e7808e120800720083.web-security-academy.net/filter?category=Tech+gifts 看",
           date: "Tue Mar 31 2026 22:06:57 GMT+0800",
-          updated: "Tue Mar 31 2026 23:29:15 GMT+0800",
+          updated: "Sun Apr 19 2026 16:55:26 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
