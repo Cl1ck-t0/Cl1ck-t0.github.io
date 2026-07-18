@@ -25,7 +25,7 @@
 <meta property="og:description" content="PHP反序列化漏洞 前言：我写这个的目的主要是由于我在看题时看到了相关内容，处于新手期想要广泛获取知识，想由此激励自己学习php反序列化漏洞的相关知识，并总结学习心得与经验。  0.入坑题：攻防世界web（unserialize3） ps:初见这题时我什么概念都不懂，整道题均由ds老师赞助完成(doge) 我们先由这道题引出相关内容吧： 题目给出了这个： 123456class xctf&amp;#12">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-02-02T12:52:49.000Z">
-<meta property="article:modified_time" content="2026-02-19T13:12:26.449Z">
+<meta property="article:modified_time" content="2026-07-18T09:05:42.056Z">
 <meta property="article:author" content="Cl1ck-t0">
 <meta property="article:tag" content="PHP">
 <meta property="article:tag" content="web">
@@ -225,7 +225,7 @@
       <div class="article-date">
   <span class="article-date-link icon-calendar" data-aos="zoom-in">
     <time datetime="2026-02-02T12:52:49.000Z" itemprop="datePublished">2026-02-02</time>
-    <time style="display: none;" id="post-update-time">2026-02-19</time>
+    <time style="display: none;" id="post-update-time">2026-07-18</time>
   </span>
 </div>
 
@@ -305,6 +305,8 @@
 <h4 id="3__tostring"><a class="markdownIt-Anchor" href="#3__tostring"></a> 3.__toString ()</h4>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class FileReader &#123;</span><br><span class="line">    public $filename = &quot;index.php&quot;;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    function __toString() &#123;</span><br><span class="line">        return file_get_contents($this-&gt;filename);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 正常使用</span><br><span class="line">$reader = new FileReader();</span><br><span class="line">echo $reader; // 输出index.php内容</span><br><span class="line"></span><br><span class="line">// 恶意构造</span><br><span class="line">$malicious = &#x27;O:9:&quot;FileReader&quot;:1:&#123;s:8:&quot;filename&quot;;s:10:&quot;/etc/passwd&quot;;&#125;&#x27;;</span><br><span class="line">echo unserialize($malicious); // 输出/etc/passwd内容</span><br></pre></td></tr></table></figure>
 <p>当攻击者能够控制filename属性时，可以通过反序列化该对象并将其转换为字符串，读取任意文件内容。</p>
+<p>常用与cat相近语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">cat       # 一次性输出</span><br><span class="line">tac       # 反向一次性输出</span><br><span class="line">head      # 输出前N行</span><br><span class="line">tail      # 输出后N行</span><br><span class="line">nl        # 带行号输出</span><br><span class="line">od        # 八进制/十六进制</span><br><span class="line">xxd       # 十六进制</span><br><span class="line">base64    # 编码输出</span><br><span class="line">grep      # 搜索并输出</span><br><span class="line">awk       # 文本处理</span><br><span class="line">sed       # 流编辑器</span><br><span class="line">strings   # 提取字符串</span><br><span class="line">sort      # 排序</span><br><span class="line">uniq      # 去重</span><br></pre></td></tr></table></figure>
 <h2 id="三解决方案可能"><a class="markdownIt-Anchor" href="#三解决方案可能"></a> 三.解决方案(可能)</h2>
 <p>本文参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_73185293/article/details/131353031?ops_request_misc=elastic_search_misc&amp;request_id=8ff314bcf608370722c03309849e536f&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-1-131353031-null-null.nonlogin&amp;utm_term=php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E&amp;spm=1018.2226.3001.4187">php反序列化漏洞(万字详解)-CSDN博客</a></p>
 
@@ -315,7 +317,7 @@
     <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/02/02/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/">https://cl1ck-t0.github.io/2026/02/02/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/</a></p>
     
     <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-02-02 20:52:49</p>
-    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-02-19 21:12:26</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-07-18 17:05:42</p>
     <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
@@ -357,7 +359,7 @@
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
       <div class="article-nav-link-wrap left">
-            <img data-src="/covers/evernight-honkai-3840x2160-24123.jpg" data-sizes="auto" alt="xss外带cookie攻击" class="lazyload">
+            <img data-src="/covers/3032b6252fa98175d8d46be9a6cdda6e.jpg" data-sizes="auto" alt="xss外带cookie攻击" class="lazyload">
         <a href="/2026/02/09/xss%E5%A4%96%E5%B8%A6cookie%E6%94%BB%E5%87%BB/" aria-label="Prev: xss外带cookie攻击" title="Prev: xss外带cookie攻击"></a>
         <div class="article-nav-caption">Prev</div>
         <h3 class="article-nav-title">
@@ -365,7 +367,7 @@
         </h3>
       </div>
     <div class="article-nav-link-wrap right">
-          <img data-src="/covers/6b30891ec859ad095e8049c0da839fa3.jpg" data-sizes="auto" alt="简单题writeup" class="lazyload">
+          <img data-src="/covers/hoshimi-miyabi-dope-3840x2160-20500.jpg" data-sizes="auto" alt="简单题writeup" class="lazyload">
       <a href="/2026/01/31/%E7%AE%80%E5%8D%95%E9%A2%98writeup/" aria-label="Next: 简单题writeup"  title="Next: 简单题writeup"></a>
       <div class="article-nav-caption">Next</div>
       <h3 class="article-nav-title">
@@ -414,10 +416,10 @@
       </div>
       <div>
         <span class="icon-brush"></span>
-        35.9k
+        36.6k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        02:47
+        02:50
       </div>
       <div>
         <span class="icon-eye"></span>
@@ -578,7 +580,7 @@
           description: "",
           stripContent: " PHP反序列化漏洞 前言：我写这个的目的主要是由于我在看题时看到了相关内容，处于新手期想要广泛获取知识，想由此激励自己学习php反序列化漏洞的相关知识，并总结学习心得与经验。  0.入坑题：攻防世界web（unserialize3） ps:初见这题时我什么概念都不懂，整道题均由ds老师赞助完成(doge) 我们先由这道题引出相关内容吧： 题目给出了这个： 123456class xctf&amp;#123;public $flag = &amp;#x27;111&amp;#x27;;public function _",
           date: "Mon Feb 02 2026 20:52:49 GMT+0800",
-          updated: "Thu Feb 19 2026 21:12:26 GMT+0800",
+          updated: "Sat Jul 18 2026 17:05:42 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
