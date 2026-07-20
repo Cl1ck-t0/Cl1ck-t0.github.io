@@ -9,7 +9,7 @@
   
   <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_4k4bc36ef96';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = 'All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://cl1ck-t0.github.io';</script>
   <title>
-    php伪协议 | Cl1ck-t0&#39;s blog
+    Web入门——爆破 | Cl1ck-t0&#39;s blog
   </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media='all'">
@@ -17,19 +17,22 @@
     
 <link rel="stylesheet" href="/css/loader.css">
 
-    <meta name="description" content="PHP伪协议  一.PHP支持的伪协议 1234567891011121 file:&#x2F;&#x2F; — 访问本地文件系统2 http:&#x2F;&#x2F; — 访问 HTTP(s) 网址3 ftp:&#x2F;&#x2F; — 访问 FTP(s) URLs4 php:&#x2F;&#x2F; — 访问各个输入&#x2F;输出流（I&#x2F;O streams）5 zlib:&#x2F;&#x2F; — 压缩流6 data:&#x2F;&#x2F; — 数据（RFC 2397）7 glob:&#x2F;&#x2F; — 查找匹配的文件路径">
+    <meta name="description" content="爆破 这里主要是有关小灯学习爆破实战中学习过程与总结 ctfshow-web入门篇~  一、web21 账号密码爆破 首先我们用bp抓包，试着输入一下账号密码，发现账号密码是以账号:密码为形式的，于是我们将该请求发送到intruder模块 选择刚刚加密后的那一栏添加payload，这时候intruder模块就会在这一段尝试爆破  然后我们开始设置payload： 由于payload有自己的格式，">
 <meta property="og:type" content="article">
-<meta property="og:title" content="php伪协议">
-<meta property="og:url" content="https://cl1ck-t0.github.io/2025/11/16/php%E4%BC%AA%E5%8D%8F%E8%AE%AE/index.html">
+<meta property="og:title" content="Web入门——爆破">
+<meta property="og:url" content="https://cl1ck-t0.github.io/2026/07/20/Web%E5%85%A5%E9%97%A8%E2%80%94%E2%80%94%E7%88%86%E7%A0%B4/index.html">
 <meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
-<meta property="og:description" content="PHP伪协议  一.PHP支持的伪协议 1234567891011121 file:&#x2F;&#x2F; — 访问本地文件系统2 http:&#x2F;&#x2F; — 访问 HTTP(s) 网址3 ftp:&#x2F;&#x2F; — 访问 FTP(s) URLs4 php:&#x2F;&#x2F; — 访问各个输入&#x2F;输出流（I&#x2F;O streams）5 zlib:&#x2F;&#x2F; — 压缩流6 data:&#x2F;&#x2F; — 数据（RFC 2397）7 glob:&#x2F;&#x2F; — 查找匹配的文件路径">
+<meta property="og:description" content="爆破 这里主要是有关小灯学习爆破实战中学习过程与总结 ctfshow-web入门篇~  一、web21 账号密码爆破 首先我们用bp抓包，试着输入一下账号密码，发现账号密码是以账号:密码为形式的，于是我们将该请求发送到intruder模块 选择刚刚加密后的那一栏添加payload，这时候intruder模块就会在这一段尝试爆破  然后我们开始设置payload： 由于payload有自己的格式，">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2025-11-16T01:26:16.000Z">
-<meta property="article:modified_time" content="2026-02-17T11:48:04.368Z">
+<meta property="og:image" content="https://s41.ax1x.com/2026/07/20/pm6kHjH.png">
+<meta property="og:image" content="https://s41.ax1x.com/2026/07/20/pm6kT3D.png">
+<meta property="og:image" content="https://s41.ax1x.com/2026/07/20/pm6ACvQ.png">
+<meta property="article:published_time" content="2026-07-20T01:06:33.000Z">
+<meta property="article:modified_time" content="2026-07-20T03:03:43.611Z">
 <meta property="article:author" content="Cl1ck-t0">
-<meta property="article:tag" content="PHP">
 <meta property="article:tag" content="web">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s41.ax1x.com/2026/07/20/pm6kHjH.png">
     <link rel="alternate" href="/atom.xml" title="Cl1ck-t0's blog" type="application/atom+xml">
     <link rel="shortcut icon" href="/images/favicon.ico">
   
@@ -122,11 +125,11 @@
 <header id="header" aria-label="Site header">
         <picture>
         </picture>
-          <img  fetchpriority="high" src="/images/banner.webp" alt="php伪协议">
+          <img  fetchpriority="high" src="/images/banner.webp" alt="Web入门——爆破">
   <div id="header-outer">
     <div id="header-title">
           <span id="logo">
-            <h1 data-aos="slide-up">php伪协议</h1>
+            <h1 data-aos="slide-up">Web入门——爆破</h1>
           </span>
         <h2 id="subtitle-wrap" data-aos="slide-down">
         </h2>
@@ -157,7 +160,7 @@
     <div class="sidebar-wrap" data-aos="fade-up">
           <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#php%E4%BC%AA%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.</span> <span class="toc-text"> PHP伪协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80php%E6%94%AF%E6%8C%81%E7%9A%84%E4%BC%AA%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.1.</span> <span class="toc-text"> 一.PHP支持的伪协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.2.</span> <span class="toc-text"> 二.详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1phpfilter"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.php:&#x2F;&#x2F;filter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 过滤器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">1.2.2.1.</span> <span class="toc-text"> 字符串过滤器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BD%AC%E6%8D%A2%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">1.2.2.2.</span> <span class="toc-text"> 转换过滤器</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2data"><span class="toc-number">1.2.3.</span> <span class="toc-text"> 2.data:&#x2F;&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-file"><span class="toc-number">1.2.4.</span> <span class="toc-text"> 3 file:&#x2F;&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-php"><span class="toc-number">1.2.5.</span> <span class="toc-text"> 4 php:&#x2F;&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-phpinput"><span class="toc-number">1.2.6.</span> <span class="toc-text"> 5 php:&#x2F;&#x2F;input</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-zip"><span class="toc-number">1.2.7.</span> <span class="toc-text"> 6 zip:&#x2F;&#x2F;</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%88%86%E7%A0%B4"><span class="toc-number">1.</span> <span class="toc-text"> 爆破</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-web21"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、web21</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A5%E5%85%85%E7%9F%A5%E8%AF%86"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 补充知识：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-web22"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、web22</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-web23"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、web23</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B-web24"><span class="toc-number">1.4.</span> <span class="toc-text"> 四、web24</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94-web25"><span class="toc-number">1.5.</span> <span class="toc-text"> 五、web25</span></a></li></ol></li></ol>
 </div>
 </div>
           <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -218,13 +221,13 @@
   </div>
 </aside>
 
-          <section id="main" aria-label="Main content"><article id="post-php伪协议" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
+          <section id="main" aria-label="Main content"><article id="post-Web入门——爆破" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner" data-aos="fade-up">
     <div class="article-meta">
       <div class="article-date">
   <span class="article-date-link icon-calendar" data-aos="zoom-in">
-    <time datetime="2025-11-16T01:26:16.000Z" itemprop="datePublished">2025-11-16</time>
-    <time style="display: none;" id="post-update-time">2026-02-17</time>
+    <time datetime="2026-07-20T01:06:33.000Z" itemprop="datePublished">2026-07-20</time>
+    <time style="display: none;" id="post-update-time">2026-07-20</time>
   </span>
 </div>
 
@@ -233,107 +236,88 @@
     <div class="hr-line"></div>
     
     <div class="e-content article-entry" itemprop="articleBody">
-        <h1 id="php伪协议"><a class="markdownIt-Anchor" href="#php伪协议"></a> PHP伪协议</h1>
-<h2 id="一php支持的伪协议"><a class="markdownIt-Anchor" href="#一php支持的伪协议"></a> 一.PHP支持的伪协议</h2>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">1 file:// — 访问本地文件系统</span><br><span class="line">2 http:// — 访问 HTTP(s) 网址</span><br><span class="line">3 ftp:// — 访问 FTP(s) URLs</span><br><span class="line">4 php:// — 访问各个输入/输出流（I/O streams）</span><br><span class="line">5 zlib:// — 压缩流</span><br><span class="line">6 data:// — 数据（RFC 2397）</span><br><span class="line">7 glob:// — 查找匹配的文件路径模式</span><br><span class="line">8 phar:// — PHP 归档</span><br><span class="line">9 ssh2:// — Secure Shell 2</span><br><span class="line">10 rar:// — RAR</span><br><span class="line">11 ogg:// — 音频流</span><br><span class="line">12 expect:// — 处理交互式的流</span><br></pre></td></tr></table></figure>
-<h2 id="二详解"><a class="markdownIt-Anchor" href="#二详解"></a> 二.详解</h2>
-<h3 id="1phpfilter"><a class="markdownIt-Anchor" href="#1phpfilter"></a> 1.php://filter</h3>
-<p>元封装器。文件过滤筛选。php://filter可以获取指定文件源码。当它与包含函数结合时，php://filter流会被当作php文件执行。所以我们一般对其进行编码，让其不执行。从而导致 任意文件读取。</p>
-<p>eg.[ACTF2020 新生赛]Include1</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://71a5b17a-a293-4fe5-95a3-99aa00f4c77a.node5.buuoj.cn:81/?file=php://filter/read=convert.base64-encode/resource=flag.php #PHP伪协议</span><br><span class="line">http://71a5b17a-a293-4fe5-95a3-99aa00f4c77a.node5.buuoj.cn:81/?file=flag.php #原有URL</span><br></pre></td></tr></table></figure>
-<p>上述也是比较常用的。</p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>resource=&lt;要过滤的数据流&gt;</td>
-<td>这个参数是必须的。它指定了你要筛选过滤的数据流。</td>
-</tr>
-<tr>
-<td><code>read=&lt;读链的筛选列表&gt;</code></td>
-<td>该参数可选。可以设定一个或多个过滤器名称，以管道符（`</td>
-</tr>
-<tr>
-<td>write=&lt;写链的筛选列表&gt;</td>
-<td>该参数可选。可以设定一个或多个过滤器名称，以管道符（`</td>
-</tr>
-<tr>
-<td>&lt;；两个链的筛选列表&gt;</td>
-<td>任何没有以 <code>read=</code> 或 <code>write=</code> 作前缀 的筛选器列表会视情况应用于读或写链。</td>
-</tr>
-</tbody>
-</table>
-<h3 id="过滤器"><a class="markdownIt-Anchor" href="#过滤器"></a> 过滤器</h3>
-<h4 id="字符串过滤器"><a class="markdownIt-Anchor" href="#字符串过滤器"></a> 字符串过滤器</h4>
-<p>该类通常以string开头，对每个字符都进行同样方式的处理。</p>
-<p>string.rot13</p>
-<p>一种字符处理方式，字符右移十三位。</p>
-<p>string.toupper</p>
-<p>将所有字符转换为大写。</p>
-<p>string.tolower</p>
-<p>将所有字符转换为小写。</p>
-<p>string.strip_tags<br />
-这个过滤器就比较有意思，用来处理掉读入的所有标签，例如XML的等等。在绕过死亡exit大有用处。</p>
-<h4 id="转换过滤器"><a class="markdownIt-Anchor" href="#转换过滤器"></a> 转换过滤器</h4>
-<p>对数据流进行编码，通常用来读取文件源码。</p>
-<p>convert.base64-encode &amp; convert.base64-decode</p>
-<p>base64加密解密</p>
-<p>convert.quoted-printable-encode &amp; convert.quoted-printable-decode</p>
-<p>可以翻译为可打印字符引用编码，使用可以打印的ASCII编码的字符表示各种编码形式下的字符。</p>
-<p>补充资料：<a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/php-filter-magic.html">https://www.leavesongs.com/PENETRATION/php-filter-magic.html</a></p>
-<h3 id="2data"><a class="markdownIt-Anchor" href="#2data"></a> 2.data://</h3>
-<p>数据流封装器，以传递相应格式的数据。可以让用户来控制输入流，当它与包含函数结合时，用户输入的data://流会被当作php文件执行。</p>
-<p>eg.</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1、data://text/plain,</span><br><span class="line">http://127.0.0.1/include.php?file=data://text/plain,&lt;?php%20phpinfo();?&gt;</span><br><span class="line"> </span><br><span class="line">2、data://text/plain;base64,</span><br><span class="line">http://127.0.0.1/include.php?file=data://text/plain;base64,PD9waHAgcGhwaW5mbygpOz8%2b</span><br></pre></td></tr></table></figure>
-<h3 id="3-file"><a class="markdownIt-Anchor" href="#3-file"></a> 3 file://</h3>
-<p>用于访问本地文件系统，并且不受allow_url_fopen，allow_url_include影响<br />
-file://协议主要用于访问文件(绝对路径、相对路径以及网络路径)<br />
-比如：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.xx.com?file=file:///etc/passsword</span><br></pre></td></tr></table></figure>
-<h3 id="4-php"><a class="markdownIt-Anchor" href="#4-php"></a> 4 php://</h3>
-<p>在allow_url_fopen，allow_url_include都关闭的情况下可以正常使用<br />
-php://作用为访问输入输出流</p>
-<p>包含php://filter和php://input</p>
-<h3 id="5-phpinput"><a class="markdownIt-Anchor" href="#5-phpinput"></a> 5 php://input</h3>
-<p>php://input可以访问请求的原始数据的只读流，将post请求的数据当作php代码执行。当传入的参数作为文件名打开时，可以将参数设为php://input,同时post想设置的文件内容，php执行时会将post内容当作文件内容。从而导致任意代码执行。</p>
-<p>例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/cmd.php?cmd=php://input</span><br></pre></td></tr></table></figure>
-<p>POST数据：<?php phpinfo()?><br />
-注意：<br />
-当enctype=&quot;multipart/form-data&quot;的时候 php://input` 是无效的</p>
-<p>遇到file_get_contents()要想到用php://input绕过。</p>
-<p>其中php://input通常与</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php system(&#x27; &#x27;)?&gt;</span><br></pre></td></tr></table></figure>
-<p>联合使用，用于读取文件内容，查看目录等等。</p>
-<h3 id="6-zip"><a class="markdownIt-Anchor" href="#6-zip"></a> 6 zip://</h3>
-<p>zip:// 可以访问压缩包里面的文件。当它与包含函数结合时，zip://流会被当作php文件执行。从而实现任意代码执行。</p>
+        <h1 id="爆破"><a class="markdownIt-Anchor" href="#爆破"></a> 爆破</h1>
+<p>这里主要是有关小灯学习爆破实战中学习过程与总结</p>
+<p>ctfshow-web入门篇~</p>
+<h2 id="一-web21"><a class="markdownIt-Anchor" href="#一-web21"></a> 一、web21</h2>
+<p>账号密码爆破</p>
+<p>首先我们用bp抓包，试着输入一下账号密码，发现账号密码是以账号:密码为形式的，于是我们将该请求发送到intruder模块</p>
+<p>选择刚刚加密后的那一栏添加payload，这时候intruder模块就会在这一段尝试爆破</p>
+<p><img src="https://s41.ax1x.com/2026/07/20/pm6kHjH.png" alt="image" /></p>
+<p>然后我们开始设置payload：</p>
+<p>由于payload有自己的格式，我们选择自定义迭代器</p>
+<p><img src="https://s41.ax1x.com/2026/07/20/pm6kT3D.png" alt="image" /></p>
+<p>配置payload是位置一选择admin，位置二写&quot;:&quot;,位置三将题目给的字典上传</p>
+<p>选择base64-encode并取消url编码</p>
+<p>直接爆破</p>
+<p><img src="https://s41.ax1x.com/2026/07/20/pm6ACvQ.png" alt="image" /></p>
+<p>找到状态码200的就是我们需要的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">YWRtaW46c2hhcms2Mw==</span><br></pre></td></tr></table></figure>
+<p>解码得到：<strong><code>admin:shark63</code></strong></p>
+<p>flag：ctfshow{31f999ac-0b9d-452d-8d02-2510abfa2008}</p>
+<h3 id="补充知识"><a class="markdownIt-Anchor" href="#补充知识"></a> 补充知识：</h3>
+<p>这里补充一些bp的intruder模块的有关内容;</p>
+<p>burpsuite 爆破的四种模式</p>
+<p>四种模式分别为：Sniper、Battering ram、Pitchfork、Cluster bomb (推荐使用)</p>
+<ol>
+<li>Sniper(狙击手)</li>
+</ol>
+<p>作为比较常用的模式，Sniper 的作用是对其中选定的参数一个一个依次遍历字典并且替换然后测试。sniper 只能默认对第一个参数进行修改，而无法对两个参数同时进行爆破。</p>
+<ol start="2">
+<li>Battering ram (攻城锤)</li>
+</ol>
+<p>不同于 sniper，Battering ram 是两个参数同时进行遍历一个字典的</p>
+<ol start="3">
+<li>Pitchfork (草叉模式)</li>
+</ol>
+<p>Pitchfork 作为多字典，他的特点也非常明显，就是多个字典同时进行，与 Battering ram 有些相似之处，但是一个是多个人跑一个赛道，而一个是多个人，各有各的赛道。</p>
+<ol start="4">
+<li>Cluster bomb (集束炸弹) (推荐真-爆破时使用)</li>
+</ol>
+<p>Cluster bomb 兼备了前面三种模式的所有的功能，那就是全部遍历，不放过所有情况，但是在超大字典的情况下，运算能力就限制了。<br />
+Cluster bomb 模式的发挥，所以只要算力足够，那爆破出密码就不是问题。</p>
+<h2 id="二-web22"><a class="markdownIt-Anchor" href="#二-web22"></a> 二、web22</h2>
+<p>域名爆破~</p>
+<p>域名更新后，flag.ctf.show域名失效</p>
+<p>用layer子域名挖掘机就可以爆破，这里不说了QAQ</p>
+<h2 id="三-web23"><a class="markdownIt-Anchor" href="#三-web23"></a> 三、web23</h2>
+<p>爆破GET参数</p>
+<p>写个脚本就行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Searching for valid token...&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;This may take a few seconds to minutes.\n&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10000000</span>):</span><br><span class="line">    <span class="keyword">if</span> i % <span class="number">100000</span> == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Progress: <span class="subst">&#123;i&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    hash_md5 = hashlib.md5(<span class="built_in">str</span>(i).encode()).hexdigest()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> hash_md5[<span class="number">1</span>] == hash_md5[<span class="number">14</span>] <span class="keyword">and</span> hash_md5[<span class="number">14</span>] == hash_md5[<span class="number">17</span>]:</span><br><span class="line">        c = hash_md5[<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">if</span> c &gt;= <span class="string">&#x27;1&#x27;</span> <span class="keyword">and</span> c &lt;= <span class="string">&#x27;9&#x27;</span> <span class="keyword">and</span> hash_md5[<span class="number">31</span>] == <span class="string">&#x27;3&#x27;</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;\n✓ FOUND!&quot;</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Token: <span class="subst">&#123;i&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;MD5:   <span class="subst">&#123;hash_md5&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;\n访问: ?token=<span class="subst">&#123;i&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;\n未找到&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>得到：?token=422</p>
+<p>ctfshow{3c1ae605-2298-407c-9c70-3483345a994b}</p>
+<h2 id="四-web24"><a class="markdownIt-Anchor" href="#四-web24"></a> 四、web24</h2>
+<p>这真是爆破题吗（</p>
+<p>实则代码审计</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-03 13:26:39</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-03 13:53:31</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;flag.php&quot;</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;r&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$r</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;r&#x27;</span>];</span><br><span class="line">    <span class="title function_ invoke__">mt_srand</span>(<span class="number">372619038</span>);</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">intval</span>(<span class="variable">$r</span>)===<span class="title function_ invoke__">intval</span>(<span class="title function_ invoke__">mt_rand</span>()))&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">system</span>(<span class="string">&#x27;cat /proc/version&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span> Linux 版本 <span class="number">5.4</span>.<span class="number">0</span>-<span class="number">163</span>-generic （buildd@lcy02-amd64-<span class="number">067</span>） （gcc 版本 <span class="number">9.4</span>.<span class="number">0</span> （Ubuntu <span class="number">9.4</span>.<span class="number">0</span>-<span class="number">1</span>ubuntu1~<span class="number">20.04</span>.<span class="number">2</span>）） <span class="comment">#180-Ubuntu SMP 2023年9月5日 星期二 13：21：23 UTC Linux 版本 5.4.0-163-generic （buildd@lcy02-amd64-067） （gcc 版本 9.4.0 （Ubuntu 9.4.0-1ubuntu1~20.04.2）） #180-Ubuntu SMP 2023年9月5日 星期二 13：21：23 UTC</span></span><br></pre></td></tr></table></figure>
+<p>依旧爆破get参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mt_srand(372619038);  // 使用固定种子初始化随机数生成器</span><br></pre></td></tr></table></figure>
+<p>运行php即可得到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">php -r <span class="string">&quot;mt_srand(372619038); echo mt_rand();&quot;</span></span><br><span class="line">1155388967         </span><br></pre></td></tr></table></figure>
+<p>ctfshow{ff5271bd-2227-4afd-8b59-47ea772c4537}</p>
+<h2 id="五-web25"><a class="markdownIt-Anchor" href="#五-web25"></a> 五、web25</h2>
 
     </div>
     <footer class="article-footer">
         <blockquote class="article-copyright">
     <p><strong><span class="icon-user icon"></span>Author: </strong>Cl1ck-t0</p>
-    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2025/11/16/php%E4%BC%AA%E5%8D%8F%E8%AE%AE/">https://cl1ck-t0.github.io/2025/11/16/php%E4%BC%AA%E5%8D%8F%E8%AE%AE/</a></p>
+    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/07/20/Web%E5%85%A5%E9%97%A8%E2%80%94%E2%80%94%E7%88%86%E7%A0%B4/">https://cl1ck-t0.github.io/2026/07/20/Web%E5%85%A5%E9%97%A8%E2%80%94%E2%80%94%E7%88%86%E7%A0%B4/</a></p>
     
-    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2025-11-16 09:26:16</p>
-    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-02-17 19:48:04</p>
+    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-07-20 09:06:33</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-07-20 11:03:43</p>
     <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
         <div class="share-wrapper">
-    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2F2025%2F11%2F16%2Fphp%25E4%25BC%25AA%25E5%258D%258F%25E8%25AE%25AE%2F&amp;appkey=&amp;title=php%E4%BC%AA%E5%8D%8F%E8%AE%AE&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="php伪协议">
+    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2F2026%2F07%2F20%2FWeb%25E5%2585%25A5%25E9%2597%25A8%25E2%2580%2594%25E2%2580%2594%25E7%2588%2586%25E7%25A0%25B4%2F&amp;appkey=&amp;title=Web%E5%85%A5%E9%97%A8%E2%80%94%E2%80%94%E7%88%86%E7%A0%B4&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="Web入门——爆破">
       <div class="share-icon icon icon-weibo">
       </div>
     </a>
-    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=php%E4%BC%AA%E5%8D%8F%E8%AE%AE&amp;desc=php%E4%BC%AA%E5%8D%8F%E8%AE%AE&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="php伪协议">
+    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=Web%E5%85%A5%E9%97%A8%E2%80%94%E2%80%94%E7%88%86%E7%A0%B4&amp;desc=Web%E5%85%A5%E9%97%A8%E2%80%94%E2%80%94%E7%88%86%E7%A0%B4&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="Web入门——爆破">
       <div class="share-icon icon icon-qq">
       </div>
     </a>
-    <a href="javascript:;"  title="php伪协议">
+    <a href="javascript:;"  title="Web入门——爆破">
       <div class="share-icon icon icon-weixin">
           <div id="share-weixin">
             <div class="share-weixin-dom">
@@ -356,25 +340,17 @@ php://作用为访问输入输出流</p>
     </a>
 </div>
       
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag" title="PHP">PHP</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web/" rel="tag" title="web">web</a></li></ul>
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web/" rel="tag" title="web">web</a></li></ul>
 
     </footer>
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
-      <div class="article-nav-link-wrap left">
-            <img data-src="/covers/columbina-genshin-3840x2160-23949.jpg" data-sizes="auto" alt="xss基础" class="lazyload">
-        <a href="/2025/11/23/xss%E5%9F%BA%E7%A1%80/" aria-label="Prev: xss基础" title="Prev: xss基础"></a>
-        <div class="article-nav-caption">Prev</div>
-        <h3 class="article-nav-title">
-            xss基础
-        </h3>
-      </div>
     <div class="article-nav-link-wrap right">
-          <img data-src="/covers/2dd3c93383eb0db22386ffb43181a8d9.jpg" data-sizes="auto" alt="HTTP协议" class="lazyload">
-      <a href="/2025/11/16/HTTP/" aria-label="Next: HTTP协议"  title="Next: HTTP协议"></a>
+          <img data-src="/covers/castorice-purple-3840x2160-22219.jpg" data-sizes="auto" alt="新生赛赛后总结" class="lazyload">
+      <a href="/2026/07/17/%E6%96%B0%E7%94%9F%E8%B5%9B%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/" aria-label="Next: 新生赛赛后总结"  title="Next: 新生赛赛后总结"></a>
       <div class="article-nav-caption">Next</div>
       <h3 class="article-nav-title">
-          HTTP协议
+          新生赛赛后总结
       </h3>
     </div>
   </nav>
@@ -444,7 +420,7 @@ php://作用为访问输入输出流</p>
   <div class="sidebar-wrap">
         <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#php%E4%BC%AA%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.</span> <span class="toc-text"> PHP伪协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80php%E6%94%AF%E6%8C%81%E7%9A%84%E4%BC%AA%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.1.</span> <span class="toc-text"> 一.PHP支持的伪协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.2.</span> <span class="toc-text"> 二.详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1phpfilter"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.php:&#x2F;&#x2F;filter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 过滤器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">1.2.2.1.</span> <span class="toc-text"> 字符串过滤器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BD%AC%E6%8D%A2%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">1.2.2.2.</span> <span class="toc-text"> 转换过滤器</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2data"><span class="toc-number">1.2.3.</span> <span class="toc-text"> 2.data:&#x2F;&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-file"><span class="toc-number">1.2.4.</span> <span class="toc-text"> 3 file:&#x2F;&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-php"><span class="toc-number">1.2.5.</span> <span class="toc-text"> 4 php:&#x2F;&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-phpinput"><span class="toc-number">1.2.6.</span> <span class="toc-text"> 5 php:&#x2F;&#x2F;input</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-zip"><span class="toc-number">1.2.7.</span> <span class="toc-text"> 6 zip:&#x2F;&#x2F;</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%88%86%E7%A0%B4"><span class="toc-number">1.</span> <span class="toc-text"> 爆破</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-web21"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、web21</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A5%E5%85%85%E7%9F%A5%E8%AF%86"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 补充知识：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-web22"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、web22</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-web23"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、web23</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B-web24"><span class="toc-number">1.4.</span> <span class="toc-text"> 四、web24</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94-web25"><span class="toc-number">1.5.</span> <span class="toc-text"> 五、web25</span></a></li></ol></li></ol>
 </div>
 </div>
         <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -577,13 +553,13 @@ php://作用为访问输入输出流</p>
       <script data-pjax>
         window.REIMU_POST = {
           author: "Cl1ck-t0",
-          title: "php伪协议",
-          url: "https://cl1ck-t0.github.io/2025/11/16/php%E4%BC%AA%E5%8D%8F%E8%AE%AE/",
+          title: "Web入门——爆破",
+          url: "https://cl1ck-t0.github.io/2026/07/20/Web%E5%85%A5%E9%97%A8%E2%80%94%E2%80%94%E7%88%86%E7%A0%B4/",
           excerpt: "",
           description: "",
-          stripContent: " PHP伪协议  一.PHP支持的伪协议 1234567891011121 file:// — 访问本地文件系统2 http:// — 访问 HTTP(s) 网址3 ftp:// — 访问 FTP(s) URLs4 php:// — 访问各个输入/输出流（I/O streams）5 zlib:// — 压缩流6 data:// — 数据（RFC 2397）7 glob:// — 查找匹配的文件路径模式8 phar:// — PHP 归档9 ssh2:// — Secure Shell 210 r",
-          date: "Sun Nov 16 2025 09:26:16 GMT+0800",
-          updated: "Tue Feb 17 2026 19:48:04 GMT+0800",
+          stripContent: " 爆破 这里主要是有关小灯学习爆破实战中学习过程与总结 ctfshow-web入门篇~  一、web21 账号密码爆破 首先我们用bp抓包，试着输入一下账号密码，发现账号密码是以账号:密码为形式的，于是我们将该请求发送到intruder模块 选择刚刚加密后的那一栏添加payload，这时候intruder模块就会在这一段尝试爆破  然后我们开始设置payload： 由于payload有自己的格式，我们选择自定义迭代器  配置payload是位置一选择admin，位置二写&amp;quot;:&amp;quot;",
+          date: "Mon Jul 20 2026 09:06:33 GMT+0800",
+          updated: "Mon Jul 20 2026 11:03:43 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>

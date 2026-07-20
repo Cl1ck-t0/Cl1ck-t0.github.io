@@ -25,7 +25,7 @@
 <meta property="og:description" content="变量覆盖漏洞 引入题：[MoeCTF 2022]ezphp  一、概念 变量覆盖漏洞是指攻击者使用自定义的变量去覆盖源代码中的变量，从而改变代码逻辑，实现攻击目的的一种漏洞。通常来说，单独的变量覆盖漏洞很难有利用价值，但是在与其他应用代码或漏洞结合后，可能会有很大的影响。  二、 变量覆盖漏洞相关的函数 变量覆盖漏洞大多数由函数使用不当导致，经常引发变量覆盖漏洞的函数有：  extract()">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-03-05T14:42:30.000Z">
-<meta property="article:modified_time" content="2026-03-06T07:49:40.501Z">
+<meta property="article:modified_time" content="2026-07-20T03:12:14.540Z">
 <meta property="article:author" content="Cl1ck-t0">
 <meta property="article:tag" content="web">
 <meta property="article:tag" content="web漏洞">
@@ -168,7 +168,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>Post</div>
-    <div class="sidebar-state-number">22</div>
+    <div class="sidebar-state-number">23</div>
   </div>
   <div class="sidebar-state-category">
     <div>Category</div>
@@ -224,7 +224,7 @@
       <div class="article-date">
   <span class="article-date-link icon-calendar" data-aos="zoom-in">
     <time datetime="2026-03-05T14:42:30.000Z" itemprop="datePublished">2026-03-05</time>
-    <time style="display: none;" id="post-update-time">2026-03-06</time>
+    <time style="display: none;" id="post-update-time">2026-07-20</time>
   </span>
 </div>
 
@@ -262,7 +262,7 @@
 <h3 id="2变量覆盖重点"><a class="markdownIt-Anchor" href="#2变量覆盖重点"></a> 2.$$变量覆盖（重点）</h3>
 <p>由$$定义的变量为可变变量。就是说，一个变量的变量名可以动态的设置和使用。一个可变变量获取了一个普通变量的值作为这个可变变量的变量名。</p>
 <p>这个比较常见，我们详细展开一下，以ezphp为例说明一下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">highlight_file(&#x27;source.txt&#x27;);</span><br><span class="line">echo &quot;&lt;br&gt;&lt;br&gt;&quot;;</span><br><span class="line"></span><br><span class="line">$flag = &#x27;xxxxxxxx&#x27;;</span><br><span class="line">$giveme = &#x27;can can need flag!&#x27;;</span><br><span class="line">$getout = &#x27;No! flag.Try again. Come on!&#x27;;</span><br><span class="line">if(!isset($_GET[&#x27;flag&#x27;]) &amp;&amp; !isset($_POST[&#x27;flag&#x27;]))&#123;</span><br><span class="line">  exit($giveme);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if($_POST[&#x27;flag&#x27;] === &#x27;flag&#x27; || $_GET[&#x27;flag&#x27;] === &#x27;flag&#x27;)&#123;</span><br><span class="line">  exit($getout);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foreach ($_POST as $key =&gt; $value) &#123;</span><br><span class="line">  $$key = $value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foreach ($_GET as $key =&gt; $value) &#123;</span><br><span class="line">  $$key = $$value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">echo &#x27;the flag is : &#x27; . $flag;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="string">&#x27;source.txt&#x27;</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&lt;br&gt;&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$flag</span> = <span class="string">&#x27;xxxxxxxx&#x27;</span>;</span><br><span class="line"><span class="variable">$giveme</span> = <span class="string">&#x27;can can need flag!&#x27;</span>;</span><br><span class="line"><span class="variable">$getout</span> = <span class="string">&#x27;No! flag.Try again. Come on!&#x27;</span>;</span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;flag&#x27;</span>]) &amp;&amp; !<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;flag&#x27;</span>]))&#123;</span><br><span class="line">  <span class="keyword">exit</span>(<span class="variable">$giveme</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;flag&#x27;</span>] === <span class="string">&#x27;flag&#x27;</span> || <span class="variable">$_GET</span>[<span class="string">&#x27;flag&#x27;</span>] === <span class="string">&#x27;flag&#x27;</span>)&#123;</span><br><span class="line">  <span class="keyword">exit</span>(<span class="variable">$getout</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span> (<span class="variable">$_POST</span> <span class="keyword">as</span> <span class="variable">$key</span> =&gt; <span class="variable">$value</span>) &#123;</span><br><span class="line">  <span class="variable">$$key</span> = <span class="variable">$value</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span> (<span class="variable">$_GET</span> <span class="keyword">as</span> <span class="variable">$key</span> =&gt; <span class="variable">$value</span>) &#123;</span><br><span class="line">  <span class="variable">$$key</span> = <span class="variable">$$value</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;the flag is : &#x27;</span> . <span class="variable">$flag</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 <p><strong>漏洞产生:</strong></p>
 <p>使用foreach来遍历数组中的值，然后再将获取到的<strong>数组键名作为变量名</strong>，数组中的<strong>键值作为变量的值</strong>。因此就产生了变量覆盖漏洞。请求<code>?flag=a</code> 会将<code>$flag</code>的值覆盖，$flag=a。</p>
 <h3 id="3parse_str导致的变量覆盖"><a class="markdownIt-Anchor" href="#3parse_str导致的变量覆盖"></a> 3.parse_str()导致的变量覆盖</h3>
@@ -279,7 +279,7 @@
     <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/03/05/%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96%E6%BC%8F%E6%B4%9E/">https://cl1ck-t0.github.io/2026/03/05/%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96%E6%BC%8F%E6%B4%9E/</a></p>
     
     <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-03-05 22:42:30</p>
-    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-03-06 15:49:40</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-07-20 11:12:14</p>
     <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
@@ -329,7 +329,7 @@
         </h3>
       </div>
     <div class="article-nav-link-wrap right">
-          <img data-src="/covers/furina-de-fontaine-3840x2160-19459.jpg" data-sizes="auto" alt="MD5" class="lazyload">
+          <img data-src="/covers/genshin-impact-hot-3840x2160-21459.jpg" data-sizes="auto" alt="MD5" class="lazyload">
       <a href="/2026/03/01/MD5/" aria-label="Next: MD5"  title="Next: MD5"></a>
       <div class="article-nav-caption">Next</div>
       <h3 class="article-nav-title">
@@ -378,10 +378,10 @@
       </div>
       <div>
         <span class="icon-brush"></span>
-        37.4k
+        38.3k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        02:53
+        02:58
       </div>
       <div>
         <span class="icon-eye"></span>
@@ -414,7 +414,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>Post</div>
-    <div class="sidebar-state-number">22</div>
+    <div class="sidebar-state-number">23</div>
   </div>
   <div class="sidebar-state-category">
     <div>Category</div>
@@ -542,7 +542,7 @@
           description: "",
           stripContent: " 变量覆盖漏洞 引入题：[MoeCTF 2022]ezphp  一、概念 变量覆盖漏洞是指攻击者使用自定义的变量去覆盖源代码中的变量，从而改变代码逻辑，实现攻击目的的一种漏洞。通常来说，单独的变量覆盖漏洞很难有利用价值，但是在与其他应用代码或漏洞结合后，可能会有很大的影响。  二、 变量覆盖漏洞相关的函数 变量覆盖漏洞大多数由函数使用不当导致，经常引发变量覆盖漏洞的函数有：  extract() parse_str() import_request_variables()  (可变变量)(可变变",
           date: "Thu Mar 05 2026 22:42:30 GMT+0800",
-          updated: "Fri Mar 06 2026 15:49:40 GMT+0800",
+          updated: "Mon Jul 20 2026 11:12:14 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
