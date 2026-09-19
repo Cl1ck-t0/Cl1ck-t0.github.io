@@ -5,7 +5,7 @@
   
   
   
-  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_ex15nbittbh';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = 'All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://cl1ck-t0.github.io';window.REIMU_CONFIG.relative = '/';window.REIMU_CONFIG.dark_mode = {"button":true,"mode":"auto"};</script>
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_ex15nbittbh';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = 'All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!';window.REIMU_CONFIG.outdate = {"enable":true,"daysAgo":180,"message":"本文最后更新于 {time}，请注意文中内容可能已不适用。"};window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://cl1ck-t0.github.io';window.REIMU_CONFIG.relative = '/';window.REIMU_CONFIG.dark_mode = {"button":true,"mode":"auto"};</script>
   <title>
     phpstuty的配置和使用(自用) | Cl1ck-t0&#39;s blog
   </title>
@@ -115,12 +115,17 @@
   </nav>
   <nav id="sub-nav" aria-label="Secondary navigation">
       <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed" aria-label="RSS Feed" target="_blank"></a>
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="Search" aria-label="Search"></a>
   </nav>
 </div>
 <header id="header" aria-label="Site header">
         <picture>
+                <source media="(max-width: 479px)" srcset="/images/banner-600w.webp">
+                <source media="(max-width: 799px)" srcset="/images/banner-800w.webp">
+                <source media="(min-width: 800px)" srcset="/images/banner.webp">
+            <img  fetchpriority="high" src="/images/banner.webp" alt="phpstuty的配置和使用(自用)">
         </picture>
-          <img  fetchpriority="high" src="/images/banner.webp" alt="phpstuty的配置和使用(自用)">
+          <img alt="phpstuty的配置和使用(自用)" style="visibility: hidden;">
   <div id="header-outer">
     <div id="header-title">
           <span id="logo">
@@ -231,6 +236,10 @@
     <div class="hr-line"></div>
     
     <div class="e-content article-entry" itemprop="articleBody">
+        <div class="warning custom-block" id="outdate-blockquote" style="display: none;">
+          <p class="custom-block-title">WARNING</p>
+          <p></p>
+        </div>
         <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="❌ 密码错误，请重试" data-whm="❌ 文章校验失败">
   <script id="hbeData" type="hbeData" data-hmacdigest="71920ad8adca3c7900485e227d1aaf5497b229e46184899bca1cd35b10e01c37">57341c4c03789057d03f16543730f048ce68a62de3d53b991118dab30abb1444b827a13615dba8c66714b784c19622185b29411841d1845cbec2cdabf4d78be2bcb607607fa747db3224166f11696e4199312ddada96bffe868905edb8b6a8cae38ea92f80e72dc652f4997e19a858ce45db80a268952e63fcdbac87d6f4ceecd35f419442fad00a2a6a6af75ab09acaef6d7341102b44d7612f5427068e2975ba12d14843b95a94f50f85e38fc286086255554ec0f2121a651b2ea14ca422d0d14159dedc3cf9359e93b4afe613ab2d3101aa6c0d0400a4d5adac260a8f88f16b2f3fbe01aff87aacfa7cdd4baf5cb6ec172f60a6bc09550de5b6f930ef8e4b6b03a9483791aa0a0744ac162f0c2fa2572f81fbe15d4d6c3f52a4c7a6055bc03c2fd79ca6bd0856d07ee471519dbefb30fca55e4773068afb9de646f9fb13d600d7ae973aabbecf1683c89a4d000adf19c0550043f7f3df76bc44f25be29f82</script>
   <div class="hbe hbe-content">
@@ -292,7 +301,7 @@
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
       <div class="article-nav-link-wrap left">
-            <img data-src="/covers/809f64502bdf5b512370ef935ce818b7.jpg" data-sizes="auto" alt="LFSR做题有感" class="lazyload">
+            <img data-src="/covers/bed021fca5f9e9999912f57fa476faf9.jpg" data-sizes="auto" alt="LFSR做题有感" class="lazyload">
         <a href="/2026/02/10/LFSR%E5%81%9A%E9%A2%98%E6%9C%89%E6%84%9F/" aria-label="Prev: LFSR做题有感" title="Prev: LFSR做题有感"></a>
         <div class="article-nav-caption">Prev</div>
         <h3 class="article-nav-title">
@@ -300,7 +309,7 @@
         </h3>
       </div>
     <div class="article-nav-link-wrap right">
-          <img data-src="/covers/c53366addf8bd88b3898724deb9a4a22.jpg" data-sizes="auto" alt="xss外带cookie攻击" class="lazyload">
+          <img data-src="/covers/39e140edac9ea960ff5b1c27f5316a89.jpg" data-sizes="auto" alt="xss外带cookie攻击" class="lazyload">
       <a href="/2026/02/09/xss%E5%A4%96%E5%B8%A6cookie%E6%94%BB%E5%87%BB/" aria-label="Next: xss外带cookie攻击"  title="Next: xss外带cookie攻击"></a>
       <div class="article-nav-caption">Next</div>
       <h3 class="article-nav-title">
@@ -432,6 +441,21 @@
 </nav>
 
     </div>
+      <div class="site-search">
+        <div class="reimu-popup popup">
+          <div class="reimu-search">
+            <div class="reimu-search-input-icon"></div>
+            <div id="reimu-search-input"></div>
+            <div class="popup-btn-close"></div>
+          </div>
+          <div class="reimu-results">
+            <div id="reimu-stats"></div>
+            <div id="reimu-hits"></div>
+            <div id="reimu-pagination" class="reimu-pagination"></div>
+          </div>
+          <img class="reimu-bg" src="/images/reimu.png" loading="lazy" decoding="async" fetchpriority="low"/>
+        </div>
+      </div>
     
 <script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
 
@@ -466,6 +490,9 @@
 
 <script src="/js/pjax_script.js" data-pjax></script>
 
+
+  
+<script src="/js/generator_search.js" defer></script>
 
 
 
@@ -725,6 +752,34 @@
   </script>
   
 
+<script data-pjax>
+  var updateTime = _$('#post-update-time')?.innerHTML;
+
+  if (updateTime) {
+    const update = new Date(updateTime);
+    const now = new Date();
+    const diff = now - update;
+    const days = diff / 86400000;
+    const { daysAgo, message: template } = window.REIMU_CONFIG.outdate;
+    if (days >= daysAgo) {
+      let message = `This article was last updated on ${updateTime}. Please note that the content may no longer be applicable.`;
+      if (typeof template === 'string') {
+        message = template.replace(/{time}/, updateTime);
+      } else if (typeof template === 'object') {
+        const lang = document.documentElement.lang;
+        const messageKey = Object.keys(template).find(key => key.toLowerCase() === lang.toLowerCase());
+        if (messageKey && template[messageKey]) {
+          message = template[messageKey].replace(/{time}/, updateTime);
+        }
+      }
+      const blockquote = _$('#outdate-blockquote');
+      if (blockquote) {
+        blockquote.querySelectorAll('p')[1].innerText = message;
+        blockquote.style.display = 'flow-root';
+      }
+    }
+  }
+</script>
 
   
 <script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
@@ -795,6 +850,18 @@
 <script src="https://npm.webcache.cn/meting@2.0.2/dist/Meting.min.js" integrity="sha384-fbKru+jstKDdWI11+8ziKY8ts5Sv48OB1WWGUom0J9ZxRGKLm&#x2F;hmuYNnkIYeT3lu" crossorigin="anonymous" defer></script>
 
 
+  
+<script src="https://npm.webcache.cn/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha384-HeUHqi0nVsPUm&#x2F;E0ss7OfnIV&#x2F;yD96JWB8ehZvUuoVax9DpNHL17jj9pdfXHzqDxm" crossorigin="anonymous" defer></script>
+
+  <script data-pjax>
+    if (document.readyState === "loading") {
+      document.addEventListener('DOMContentLoaded', () => {
+        pangu?.spacingPage();
+      });
+    } else {
+      pangu?.spacingPage();
+    }
+  </script>
 
   </body>
   </html>
