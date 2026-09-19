@@ -1,0 +1,837 @@
+  <!DOCTYPE html>
+  <html lang="en"  
+      data-theme-mode="auto"
+  >
+  <head>
+  <meta charset="utf-8">
+  
+  
+  
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_4k4bc36ef96';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = 'All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://cl1ck-t0.github.io';</script>
+  <title>
+    RCE漏洞原理及利用 | Cl1ck-t0&#39;s blog
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media='all'">
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_4k4bc36ef96.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+    <meta name="description" content="RCE漏洞原理及利用 引路题QAQ:NSSCTF-[SWPUCTF 2021 新生赛]babyrce,窝的博客里题解部分也有详解嘿嘿（）  一、RCE漏洞概述 web的应用开发中常常为了灵活性与简洁性，让应用调用代码执行函数或系统命令执行函数处理，如果对用户输入过滤不严，容易产生远程代码执行漏洞或命令执行漏洞。 RCE漏洞分为两类： 远程命令执行漏洞(Remote Command Executi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RCE漏洞原理及利用">
+<meta property="og:url" content="https://cl1ck-t0.github.io/2026/02/15/RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8/index.html">
+<meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
+<meta property="og:description" content="RCE漏洞原理及利用 引路题QAQ:NSSCTF-[SWPUCTF 2021 新生赛]babyrce,窝的博客里题解部分也有详解嘿嘿（）  一、RCE漏洞概述 web的应用开发中常常为了灵活性与简洁性，让应用调用代码执行函数或系统命令执行函数处理，如果对用户输入过滤不严，容易产生远程代码执行漏洞或命令执行漏洞。 RCE漏洞分为两类： 远程命令执行漏洞(Remote Command Executi">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-02-15T13:13:09.000Z">
+<meta property="article:modified_time" content="2026-07-20T03:11:37.352Z">
+<meta property="article:author" content="Cl1ck-t0">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="web漏洞">
+<meta name="twitter:card" content="summary">
+    <link rel="alternate" href="/atom.xml" title="Cl1ck-t0's blog" type="application/atom+xml">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" integrity="sha384-IfxC36XL/toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei+Zx/1oA/0l8ysE" crossorigin="anonymous">
+      <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/katex@0.16.24/dist/katex.min.css" integrity="sha384-tTgKLjMYmJr94v8qu2PE5MUGSMbyN2xiH266JUB3gpm8vnnJywd1dWSOEfrFz+YI" crossorigin="anonymous">
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.2/dist/aos.css" integrity="sha384-GMRP93c6Hkz9JVKGAuRR3nTS7M07RwPgTFenXiosjq2VbVgvdDNcz1g6Mkj8AONa" crossorigin="anonymous">
+
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.css" integrity="sha384-tLMkTWh2pfXNWGFlUS0w1TFtRG5xZ9lPWFOooj+vDDLIL+xBGQU/voDBY5XE2lVh" crossorigin="anonymous">
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+      <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate">
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+           M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+      </div>
+      <div class="loading-word">Loading...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var loaderEl = document.getElementById('loader');
+    var startLoading = () => {
+      time = Date.now();
+      loaderEl.classList.remove("loading");
+    }
+    var hideLoader = () => {
+      document.body.style.overflow = 'auto';
+      loader.classList.add('loading');
+    };
+
+    var endLoading = () => {
+      if (!time) {
+        hideLoader();
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          hideLoader();
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    loaderEl.addEventListener('click', endLoading);
+  </script>
+<div id="copy-tooltip"></div>
+<div id="heatmap-tooltip"></div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav" aria-label="Primary navigation">
+        <a class="main-nav-link-wrap" href="/">
+          <span class="main-nav-link">Home</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/archives">
+          <span class="main-nav-link">Archives</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/about">
+          <span class="main-nav-link">About</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/friend">
+          <span class="main-nav-link">Friend</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/atom.xml">
+          <span class="main-nav-link">rss</span>
+        </span>
+    <a id="main-nav-toggle" class="nav-icon" aria-label="Toggle navigation" role="button"></a>
+  </nav>
+  <nav id="sub-nav" aria-label="Secondary navigation">
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed" aria-label="RSS Feed" target="_blank"></a>
+  </nav>
+</div>
+<header id="header" aria-label="Site header">
+        <picture>
+        </picture>
+          <img  fetchpriority="high" src="/images/banner.webp" alt="RCE漏洞原理及利用">
+  <div id="header-outer">
+    <div id="header-title">
+          <span id="logo">
+            <h1 data-aos="slide-up">RCE漏洞原理及利用</h1>
+          </span>
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+        </h2>
+    </div>
+  </div>
+</header>
+
+        <div id="content" aria-label="Page content"  class="sidebar-right" >
+          <aside id="sidebar" aria-label="Sidebar">
+  <div class="sidebar-wrapper-container sticky">
+      <meting-js
+        theme="var(--color-link)"
+        id="6868625065"
+        server="netease"
+        type="playlist"
+        
+        
+        autoplay="false"
+        loop="all"
+        order="list"
+        
+        volume="0.7"
+        mutex="true"
+        
+        
+      ></meting-js>
+  <div class="sidebar-wrapper">
+    <div class="sidebar-wrap" data-aos="fade-up">
+          <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#rce%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text"> RCE漏洞原理及利用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-rce%E6%BC%8F%E6%B4%9E%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、RCE漏洞概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E5%B8%B8%E8%A7%81%E7%9A%84rce%E6%BC%8F%E6%B4%9E%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、常见的RCE漏洞函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.系统命令执行函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E5%85%B7%E4%BD%93%E5%88%A9%E7%94%A8"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、具体利用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 1.文件包含</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E7%BB%95%E8%BF%87%E6%8A%80%E5%B7%A7"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 2.绕过技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4cat"><span class="toc-number">1.3.2.1.</span> <span class="toc-text"> 过滤cat</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4flag"><span class="toc-number">1.3.2.2.</span> <span class="toc-text"> 过滤flag</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E6%97%A0%E5%AD%97%E6%AF%8Drce"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.无字母RCE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E6%97%A0%E5%8F%82rce"><span class="toc-number">1.3.4.</span> <span class="toc-text"> 4.无参RCE</span></a></li></ol></li></ol></li></ol>
+</div>
+</div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
+  <div class="sidebar-author-name">Cl1ck-t0</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">32</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">20</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+    <div class="icon-rss sidebar-social-icon">
+      <a href=/atom.xml itemprop="url" target="_blank" aria-label="rss" rel="noopener nofollow noreferrer"></a>
+    </div>
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/atom.xml" aria-label="rss"></a>
+        <div class="sidebar-menu-link">rss</div>
+      </div>
+</div>
+</div>
+          <div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div>
+    </div>
+  </div>
+  <div class="sidebar-widget">
+  </div>
+  </div>
+</aside>
+
+          <section id="main" aria-label="Main content"><article id="post-RCE漏洞原理及利用" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <span class="article-date-link icon-calendar" data-aos="zoom-in">
+    <time datetime="2026-02-15T13:13:09.000Z" itemprop="datePublished">2026-02-15</time>
+    <time style="display: none;" id="post-update-time">2026-07-20</time>
+  </span>
+</div>
+
+    </div>
+    
+    <div class="hr-line"></div>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+        <h1 id="rce漏洞原理及利用"><a class="markdownIt-Anchor" href="#rce漏洞原理及利用"></a> RCE漏洞原理及利用</h1>
+<p>引路题QAQ:NSSCTF-[SWPUCTF 2021 新生赛]babyrce,<s>窝的博客里题解部分也有详解嘿嘿</s>（）</p>
+<h2 id="一-rce漏洞概述"><a class="markdownIt-Anchor" href="#一-rce漏洞概述"></a> 一、RCE漏洞概述</h2>
+<p>web的应用开发中常常为了灵活性与简洁性，让应用调用代码执行函数或系统命令执行函数处理，如果对用户输入过滤不严，容易产生远程代码执行漏洞或命令执行漏洞。</p>
+<p>RCE漏洞分为两类：</p>
+<p>远程命令执行漏洞(Remote Command Execution)和远程代码执行漏洞(Remote Code Execution)</p>
+<p>它们的成因分别为：</p>
+<p>应用程序需要调用外部操作系统命令来完成特定功能（例如，网络诊断工具中的 <code>ping</code> 或 <code>traceroute</code>，文件处理，系统管理任务）。如果应用程序将用户可控的输入（如 IP 地址、文件名、搜索词等）直接或不安全地嵌入到将要执行的命令字符串中，攻击者就可以注入额外的命令。</p>
+<p>应用程序使用了能将字符串作为代码执行的函数（如 PHP 中的 <code>eval()</code>、<code>assert()</code>，Python 中的 <code>exec()</code>），并且将用户可控的输入传递给了这些函数。或者，存在反序列化漏洞、模板注入、不安全的文件包含等，允许用户输入影响代码执行流。</p>
+<h2 id="二-常见的rce漏洞函数"><a class="markdownIt-Anchor" href="#二-常见的rce漏洞函数"></a> 二、常见的RCE漏洞函数</h2>
+<h3 id="1系统命令执行函数"><a class="markdownIt-Anchor" href="#1系统命令执行函数"></a> 1.系统命令执行函数</h3>
+<p>1).system() ;这个相信大家都不陌生(抬头不见低头见)，能将字符串作为命令执行并返回结果；</p>
+<p>2).exec() ; 也能将字符串作为命令执行，但是只能返回结果的最后一行(至今不知道有什么用emmmmmm)；</p>
+<p>3).shell_exec() ; 能执行命令但不返回结果；</p>
+<p>4).passthru(); 能将字符串作为命令执行，只调用命令不返回任何结果，但把命令的运行结果原样输出到标准输出设备上(这里指的是命令的执行状态，0代表成功，非0代表失败)</p>
+<p>二编<strong>warnings：system不需要提供output函数，他是直接把结果返回出来，同样return_var是执行的状态码</strong>；</p>
+<p><strong>而exec函数需要提供$output函数才能，且返回的数据是array类型</strong>；</p>
+<p><strong>shell_exec则与exec类似</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">system()    #　语法 : system(string $command, int &amp;$result_code = null)</span><br><span class="line">eval()        #语法：eval(string $code) 把字符串作为PHP代码执行</span><br><span class="line">passthru() #语法：passthru(string $command, int &amp;$result_code = null)</span><br><span class="line">exec()         #语法：exec(string $command, array &amp;$output = null, int &amp;$result_code = null)</span><br><span class="line">shell_exec() #语法：shell_exec(string $command),通过 shell 执行命令并将完整的输出以字符串的方式返回</span><br><span class="line">popen()         #popen(string $command, string $mode),打开指向进程的管道，进程由派生给定的 command 命令执行产生。</span><br><span class="line">proc_open()     #比popen更加灵活</span><br><span class="line">pcntl_exec()    #bool pcntl_exec(string $path, array $args = null, array $env = null)</span><br></pre></td></tr></table></figure>
+<h2 id="三-具体利用"><a class="markdownIt-Anchor" href="#三-具体利用"></a> 三、具体利用</h2>
+<h3 id="1文件包含"><a class="markdownIt-Anchor" href="#1文件包含"></a> 1.文件包含</h3>
+<p>对于文件包含所常用的命令拼接方式:</p>
+<p>1)使用（<strong>;</strong>）分隔</p>
+<p>eg.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c1;c2;c3</span><br></pre></td></tr></table></figure>
+<p>无论c1是否成立，该语句都会按顺序依次执行所有命令。</p>
+<p>2)使用逻辑与 (<code>&amp;&amp;</code>) 和逻辑或 (<code>||</code>)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">c1&amp;&amp;c2  //只有当左边的命令成功执行（返回状态码为 0）时，才会执行右边的命令。</span><br><span class="line">c1||c2  //只有当左边的命令执行失败（返回状态码非 0）时，才会执行右边的命令。</span><br></pre></td></tr></table></figure>
+<p>3)命令替换</p>
+<p><strong><code>$( ... )</code></strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c1 $(c2)</span><br></pre></td></tr></table></figure>
+<p>命令替换会将命令的输出替换到当前命令中。</p>
+<h3 id="2绕过技巧"><a class="markdownIt-Anchor" href="#2绕过技巧"></a> 2.绕过技巧</h3>
+<h4 id="过滤cat"><a class="markdownIt-Anchor" href="#过滤cat"></a> 过滤cat</h4>
+<p>用类似命令代替：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">tac</span>：反向查看。</span><br><span class="line"></span><br><span class="line">more：逐页显示文档。</span><br><span class="line"></span><br><span class="line">less：逐页显示文档。</span><br><span class="line"></span><br><span class="line"><span class="built_in">tail</span>：查看末尾几行。</span><br><span class="line"></span><br><span class="line"><span class="built_in">nl</span>：带行号显示。</span><br><span class="line"></span><br><span class="line"><span class="built_in">od</span>：二进制读取。</span><br><span class="line"></span><br><span class="line">xxd：二进制读取。</span><br><span class="line"></span><br><span class="line"><span class="built_in">sort</span>：排序文件。</span><br><span class="line"></span><br><span class="line"><span class="built_in">uniq</span>：报错相关。</span><br><span class="line"></span><br><span class="line">file -f：报错相关。#passthru(<span class="string">&quot;file -f /flag&quot;</span>);</span><br><span class="line"></span><br><span class="line">grep str file：在file中读取str</span><br><span class="line"></span><br><span class="line">rev：反向读取,eg:FSCTF&#123;c0ng2atu1ati0ns_y0u_a2e_go0D!&#125;会读取为：&#125;!D0og_e2a_u0y_sn0ita1uta2gn0c&#123;FTCSF</span><br><span class="line"></span><br><span class="line">strings/paste: 也是读取文件内容</span><br></pre></td></tr></table></figure>
+<p>eg.[FSCTF 2023]Hello,you</p>
+<p>这题就是经典的cat过滤，我们在注入<code>fla*</code>通配符时回显flag.php;我们尝试cat被拦截后使用<code> ; more fla*</code>，成功得到flag。</p>
+<h4 id="过滤flag"><a class="markdownIt-Anchor" href="#过滤flag"></a> 过滤flag</h4>
+<ul>
+<li>通配符绕过：</li>
+<li><code>?</code>：代表单个字符。</li>
+<li><code>*</code> ：模糊匹配，代表任意字符串。 如：cat fla*或者cat fla?</li>
+<li>或者用反斜线绕过</li>
+</ul>
+<p>如：cat fla\g</p>
+<ul>
+<li>单引号或者双引号绕过 如cat f’‘lag或者cat f’‘l’‘a’'g</li>
+</ul>
+<h3 id="3无字母rce"><a class="markdownIt-Anchor" href="#3无字母rce"></a> 3.无字母RCE</h3>
+<p>eg.[HUBUCTF 2022 新生赛]HowToGetShell</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">show_source</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="variable">$mess</span>=<span class="variable">$_POST</span>[<span class="string">&#x27;mess&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/[a-zA-Z]/&quot;</span>,<span class="variable">$mess</span>))&#123;</span><br><span class="line">  <span class="keyword">die</span>(<span class="string">&quot;invalid input!&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">eval</span>(<span class="variable">$mess</span>);</span><br></pre></td></tr></table></figure>
+<p>首先我们明确思路，我们的核心目的就是<strong>不使用字母、数字，去构造诸如 <code>assert</code>、<code>system</code> 函数的字符串</strong>，然后利用动态执行的方法进行调用。</p>
+<p>我们就能想到异或，构造payload如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mess=$_=(&#x27;%01&#x27;^&#x27;`&#x27;).(&#x27;%13&#x27;^&#x27;`&#x27;).(&#x27;%13&#x27;^&#x27;`&#x27;).(&#x27;%05&#x27;^&#x27;`&#x27;).(&#x27;%12&#x27;^&#x27;`&#x27;).(&#x27;%14&#x27;^&#x27;`&#x27;);$__=&#x27;_&#x27;.(&#x27;%0D&#x27;^&#x27;]&#x27;).(&#x27;%2F&#x27;^&#x27;`&#x27;).(&#x27;%0E&#x27;^&#x27;]&#x27;).(&#x27;%09&#x27;^&#x27;]&#x27;);$___=$$__;$_($___[_]);</span><br><span class="line">&amp;_=phpinfo();</span><br></pre></td></tr></table></figure>
+<p>除了异或外，我还在网上看到了一些其他的思路：</p>
+<p>方法二 取反</p>
+<p>该方法利用的是UTF-8编码的某个汉字，并将其中某个字符取出来。</p>
+<p>可以看到，当我们对一个<strong>中文取反的话会返回大小写字母以及特殊字符</strong>，那么我们配合索引进行取值即可，<code>帅</code>字在 UTF-8 编码中占用了3个字节，具体的UTF编码为: <code>\xe5\xb8\x85</code>, php 将字符串视为字节数组，所以在PHP中可以将其看做是包含三个字节的数组。</p>
+<p>使用 <code>帅[1]</code> 的结果是 <code>\xb8</code> 经过取反之后得到字母 <code>G</code>。</p>
+<p>具体取反过程如下:</p>
+<ul>
+<li>
+<p>先将十六进制 <code>b8</code> 转为二进制。</p>
+</li>
+<li>
+<p>再将 <code>b8</code> 的二进制进行按位取反，0变成1,1变成0。</p>
+</li>
+<li>
+<p>最后再将得到的二进制转为十进制与<code>ASCII</code>表中进行比对，最终找到字母 <code>G</code>。</p>
+<p>获取字符的脚本:</p>
+</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// 从文件中获取汉字</span></span><br><span class="line"><span class="variable">$content</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;data.txt&#x27;</span>); </span><br><span class="line"><span class="variable">$content_length</span> = <span class="title function_ invoke__">mb_strlen</span>(<span class="variable">$content</span>, <span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line"><span class="comment">// 要获取的字符</span></span><br><span class="line"><span class="variable">$payload</span> = <span class="string">&quot;a&quot;</span>;  </span><br><span class="line"><span class="comment">// 使用 for 循环逐个输出中文字符</span></span><br><span class="line"><span class="keyword">for</span> (<span class="variable">$i</span> = <span class="number">0</span>; <span class="variable">$i</span> &lt; <span class="variable">$content_length</span>; <span class="variable">$i</span>++) &#123;</span><br><span class="line">    <span class="comment">// 获取当前字符</span></span><br><span class="line">    <span class="variable">$char</span> = <span class="title function_ invoke__">mb_substr</span>(<span class="variable">$content</span>, <span class="variable">$i</span>, <span class="number">1</span>, <span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">    <span class="comment">// 输出中文字符（排除换行符等非中文字符）</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$char</span> != <span class="string">&quot;\n&quot;</span> &amp;&amp; <span class="variable">$char</span> != <span class="string">&quot;\r&quot;</span> &amp;&amp; <span class="variable">$char</span> != <span class="string">&quot;\t&quot;</span> &amp;&amp; <span class="variable">$char</span> != <span class="string">&#x27;，&#x27;</span> &amp;&amp; <span class="variable">$char</span> != <span class="string">&#x27;。&#x27;</span> &amp;&amp; <span class="variable">$char</span> != <span class="string">&quot;？&quot;</span> &amp;&amp; <span class="variable">$char</span> != <span class="string">&quot;“&quot;</span> &amp;&amp; <span class="variable">$char</span> != <span class="string">&quot;”&quot;</span> &amp;&amp; <span class="variable">$char</span> != <span class="string">&quot;《&quot;</span> &amp;&amp; <span class="variable">$char</span> != <span class="string">&quot;》&quot;</span> &amp;&amp; <span class="variable">$char</span> != <span class="string">&quot;、&quot;</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="variable">$j</span> = <span class="number">1</span>; <span class="variable">$j</span> &lt;= <span class="number">4</span>; <span class="variable">$j</span> ++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (~<span class="variable">$char</span>[<span class="variable">$j</span>] == <span class="variable">$payload</span>) &#123;</span><br><span class="line">                <span class="keyword">echo</span> <span class="string">&quot;~&#x27;<span class="subst">$char</span>&#x27;&quot;</span> . <span class="string">&quot;[<span class="subst">$j</span>]&quot;</span> . <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>脚本来源：<a target="_blank" rel="noopener" href="https://www.qwesec.com/2024/03/noLettersOrNumbersRCE.html">(<em><sup>▽</sup></em>)</a></p>
+<h3 id="4无参rce"><a class="markdownIt-Anchor" href="#4无参rce"></a> 4.无参RCE</h3>
+<p>可能用的到的函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">localeconv() – 函数返回一个包含本地数字及货币格式信息的数组 第一个是.</span><br><span class="line"></span><br><span class="line">pos() – 返回数组中的当前单元, 默认取第一个值</span><br><span class="line"></span><br><span class="line">next – 将内部指针指向数组下一个元素并输出</span><br><span class="line"></span><br><span class="line">scandir() – 扫描目录</span><br><span class="line"></span><br><span class="line">array_reverse() – 翻转数组</span><br><span class="line"></span><br><span class="line">array_flip() - 键名与数组值对调</span><br><span class="line"></span><br><span class="line">readfile()</span><br><span class="line"></span><br><span class="line">array_rand() - 随机读取键名</span><br><span class="line"></span><br><span class="line">var_dump() - 输出数组，可以用print_r替代</span><br><span class="line"></span><br><span class="line">file_get_contents() - 读取文件内容，show_source,highlight_file echo 可代替</span><br><span class="line"></span><br><span class="line">get_defined_vars() -  返回由所有已定义变量所组成的数组</span><br><span class="line"></span><br><span class="line">end() - 读取数组最后一个元素</span><br><span class="line"></span><br><span class="line">current() - 读取数组的第一个元素</span><br><span class="line"></span><br><span class="line">#php内置函数</span><br></pre></td></tr></table></figure>
+<p>eg.[HNCTF 2022 WEEK2]Canyource</p>
+
+    </div>
+    <footer class="article-footer">
+        <blockquote class="article-copyright">
+    <p><strong><span class="icon-user icon"></span>Author: </strong>Cl1ck-t0</p>
+    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/02/15/RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8/">https://cl1ck-t0.github.io/2026/02/15/RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8/</a></p>
+    
+    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-02-15 21:13:09</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-07-20 11:11:37</p>
+    <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
+    <span class="icon-creative-commons article-copyright-bg"></span>
+  </blockquote>
+        <div class="share-wrapper">
+    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2F2026%2F02%2F15%2FRCE%25E6%25BC%258F%25E6%25B4%259E%25E5%258E%259F%25E7%2590%2586%25E5%258F%258A%25E5%2588%25A9%25E7%2594%25A8%2F&amp;appkey=&amp;title=RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="RCE漏洞原理及利用">
+      <div class="share-icon icon icon-weibo">
+      </div>
+    </a>
+    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8&amp;desc=RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="RCE漏洞原理及利用">
+      <div class="share-icon icon icon-qq">
+      </div>
+    </a>
+    <a href="javascript:;"  title="RCE漏洞原理及利用">
+      <div class="share-icon icon icon-weixin">
+          <div id="share-weixin">
+            <div class="share-weixin-dom">
+              <div class="share-weixin-content">
+                <img id="share-weixin-banner"> 
+                <div id="share-weixin-title"></div>
+                <div id="share-weixin-desc"></div>
+              </div>
+              <div class="share-weixin-qrcode">
+                <div class="share-weixin-info">
+                  <div id="share-weixin-author"></div>
+                  <div id="share-weixin-theme">Powered By hexo-theme-reimu</div>
+                </div>
+                <img id="share-weixin-qr" >
+              </div>
+            </div>
+            <div class="share-weixin-canvas"></div>
+          </div>
+      </div>
+    </a>
+</div>
+      
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web/" rel="tag" title="web">web</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web%E6%BC%8F%E6%B4%9E/" rel="tag" title="web漏洞">web漏洞</a></li></ul>
+
+    </footer>
+  </div>
+    <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
+      <div class="article-nav-link-wrap left">
+            <img data-src="/covers/e733171f5f38a0bcf1090901492e8331.jpg" data-sizes="auto" alt="pop链构造" class="lazyload">
+        <a href="/2026/02/19/pop%E9%93%BE%E6%9E%84%E9%80%A0/" aria-label="Prev: pop链构造" title="Prev: pop链构造"></a>
+        <div class="article-nav-caption">Prev</div>
+        <h3 class="article-nav-title">
+            pop链构造
+        </h3>
+      </div>
+    <div class="article-nav-link-wrap right">
+          <img data-src="/covers/d6d41915b0e308caf498f5160d5a8178.jpg" data-sizes="auto" alt="PHP&amp;MySQL基础" class="lazyload">
+      <a href="/2026/02/10/PHP-MySQL%E5%9F%BA%E7%A1%80/" aria-label="Next: PHP&amp;MySQL基础"  title="Next: PHP&amp;MySQL基础"></a>
+      <div class="article-nav-caption">Next</div>
+      <h3 class="article-nav-title">
+          PHP&amp;MySQL基础
+      </h3>
+    </div>
+  </nav>
+
+</article>
+
+  <section id="comments" data-aos="fade-up">
+    <div class="comment-header">
+        
+      <h2 class="comment-title">Leave a comment</h2>
+      <div class="comment-selector">
+        <div class="comment-selector-wrap">
+            <div class="selector-item" data-selector="utterances">
+              <span>utterances</span>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-content">
+          <div class="comment utterances-comment" data-aos="fade-up"
+            id="utterances-comment">
+          </div>
+    </div>
+  </section>
+
+</section>
+        </div>
+        <footer id="footer" aria-label="Site footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    <div>
+      <span class="icon-copyright"></span>
+        2020-2026
+        &nbsp;
+      Cl1ck-t0
+    </div>
+      <div>
+        Powered by&nbsp;<a href="https://hexo.io/" rel="noopener nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+      <div>
+        <span class="icon-brush"></span>
+        67.8k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        05:11
+      </div>
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">Number of visits&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">Number of visitors&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+  </div>
+</footer>
+
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav" aria-label="Mobile navigation">
+  <div class="sidebar-wrap">
+        <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#rce%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text"> RCE漏洞原理及利用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-rce%E6%BC%8F%E6%B4%9E%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、RCE漏洞概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E5%B8%B8%E8%A7%81%E7%9A%84rce%E6%BC%8F%E6%B4%9E%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、常见的RCE漏洞函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.系统命令执行函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E5%85%B7%E4%BD%93%E5%88%A9%E7%94%A8"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、具体利用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 1.文件包含</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E7%BB%95%E8%BF%87%E6%8A%80%E5%B7%A7"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 2.绕过技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4cat"><span class="toc-number">1.3.2.1.</span> <span class="toc-text"> 过滤cat</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4flag"><span class="toc-number">1.3.2.2.</span> <span class="toc-text"> 过滤flag</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E6%97%A0%E5%AD%97%E6%AF%8Drce"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.无字母RCE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E6%97%A0%E5%8F%82rce"><span class="toc-number">1.3.4.</span> <span class="toc-text"> 4.无参RCE</span></a></li></ol></li></ol></li></ol>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
+  <div class="sidebar-author-name">Cl1ck-t0</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">32</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">20</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+    <div class="icon-rss sidebar-social-icon">
+      <a href=/atom.xml itemprop="url" target="_blank" aria-label="rss" rel="noopener nofollow noreferrer"></a>
+    </div>
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/atom.xml" aria-label="rss"></a>
+        <div class="sidebar-menu-link">rss</div>
+      </div>
+</div>
+</div>
+  </div>
+      <div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+</nav>
+
+    </div>
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+
+  <script>
+    var setupFirework = () => {
+      if (!false || !window.matchMedia('(max-width: 768px)').matches) {
+        window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["var(--red-1)","var(--red-2)","var(--red-3)","var(--red-4)"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["var(--red-0)"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'));
+      }
+    }
+  </script>
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.2.0/dist/index.umd.js" integrity="sha384-qi9WggRt19tv8Vc7pCHW3ulMNLwrn515zaLEWZjl1px07vz8+pUoWX8n1rgq282T" crossorigin="anonymous" onload="setupFirework()" defer></script>
+
+
+  
+<script src="https://npm.webcache.cn/theme-shokax-pjax@0.0.3/dist/index.umd.js" integrity="sha384-xneY1WY8hOfUzswrE4CrYq35N4BdVcxqxwHPr9zawE&#x2F;jMSCxD+jAPU55x&#x2F;jj3wlf" crossorigin="anonymous"></script>
+
+  
+<script src="/js/pjax.js"></script>
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@3.0.1/dist/quicklink.umd.js" integrity="sha384-caMDqvgav&#x2F;HWdEYQU1QRRHMLleigpL1YHAG0m371DhzfL8rRzUyOb+bEHtwlmYjD" crossorigin="anonymous"></script>
+
+  <script data-pjax>
+    window.quicklink?.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+<div id="lazy-script">
+  <div>
+      
+      
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "Cl1ck-t0",
+          title: "RCE漏洞原理及利用",
+          url: "https://cl1ck-t0.github.io/2026/02/15/RCE%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E5%8F%8A%E5%88%A9%E7%94%A8/",
+          excerpt: "",
+          description: "",
+          stripContent: " RCE漏洞原理及利用 引路题QAQ:NSSCTF-[SWPUCTF 2021 新生赛]babyrce,窝的博客里题解部分也有详解嘿嘿（）  一、RCE漏洞概述 web的应用开发中常常为了灵活性与简洁性，让应用调用代码执行函数或系统命令执行函数处理，如果对用户输入过滤不严，容易产生远程代码执行漏洞或命令执行漏洞。 RCE漏洞分为两类： 远程命令执行漏洞(Remote Command Execution)和远程代码执行漏洞(Remote Code Execution) 它们的成因分别为： 应用程序",
+          date: "Sun Feb 15 2026 21:13:09 GMT+0800",
+          updated: "Mon Jul 20 2026 11:11:37 GMT+0800",
+          cover: "/images/banner.webp",
+        };
+      </script>
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+      
+<script src="/js/tabs.js" data-pjax defer></script>
+
+        
+<script src="https://npm.webcache.cn/@zumer/snapdom@1.9.14/dist/snapdom.min.js" integrity="sha384-OEQ+fJp&#x2F;Mvi2uzBREXybtxryJvLytWapuHu4EE6LPwTKUwATYcc55tPPcZTzVcmx" crossorigin="anonymous" defer data-pjax></script>
+
+        
+<script src="https://npm.webcache.cn/qrcode@1.5.1/build/qrcode.js" integrity="sha384-VT1EeewTCEXgndcPMQ0PzV+uVFYjxFIjmAA7s5gcMX9t4Dt5TD+OVQIn7NJWIXn7" crossorigin="anonymous" defer data-pjax></script>
+
+      <script type="module" data-pjax>
+        (async () => {
+          const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+          const initPswp = (gallery, children) => {
+            if (_$$(`${gallery} ${children}`).length > 0) {
+              new PhotoSwipeLightbox({
+                gallery,
+                children,
+                pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+              }).init();
+            }
+          }
+          const pswp = () => {
+            initPswp('.article-entry', 'a.article-gallery-item');
+            initPswp('.article-gallery', 'a.article-gallery-item');
+          }
+          pswp();
+        })();
+      </script>
+        
+
+<script data-pjax>
+  var loadScript = (src, integrity) => {
+    const script = document.createElement('script');
+    script.src = src;
+    if (integrity) script.integrity = integrity;
+    script.crossOrigin = 'anonymous';
+    return script;
+  };
+
+  var commentConfigKeys = ["utterances"];
+  var commentConfig = {
+    utterances: {
+      enable: true,
+      load: () => {
+        const container = document.querySelector('.utterances-comment'); 
+        if (!container) return;
+        container.style.display = 'block';
+
+        let theme = 'auto';
+        const parsedTheme = theme === 'auto' ? (document.documentElement.getAttribute('data-theme') === 'dark' ? 'github-dark' : 'github-light') : theme;
+
+        // 创建 utterances 脚本
+        const script = document.createElement('script');
+        script.src = 'https://utteranc.es/client.js';
+        script.setAttribute('repo', 'Cl1ck-t0/Cl1ck-t0.github.io');
+        script.setAttribute('issue-term', 'title');
+        script.setAttribute('theme', parsedTheme);
+        script.setAttribute('crossorigin', 'anonymous');
+        script.async = true;
+
+        // 清空容器（防止重复加载）并插入脚本
+        container.innerHTML = '';
+        container.appendChild(script);
+        if (theme === 'auto') {
+          const themeHandler = (e) => {
+            const iframe = container.querySelector('iframe.utterances-frame');
+            if (!iframe || !iframe.contentWindow) {
+              document.body.removeEventListener('reimu:theme-set', themeHandler);
+              return;
+            }
+            iframe.contentWindow.postMessage({ type: 'set-theme', theme: e.detail.isDark ? 'github-dark' : 'github-light' }, 'https://utteranc.es');
+          };
+          document.body.addEventListener('reimu:theme-set', themeHandler);
+        }
+      }
+    },
+  }
+  commentConfig.enable = commentConfigKeys.some(key => commentConfig[key].enable);
+
+  var defaultComment = '';
+  if (commentConfig.enable) {
+    // 1. 首先检查localStorage中是否有保存的评论类型
+    var savedCommentType = localStorage.getItem('commentType');
+    
+    // 2. 如果localStorage中有值且对应的评论系统可用，就使用它
+    if (savedCommentType) {
+      if (commentConfig[savedCommentType]?.enable) {
+        defaultComment = savedCommentType;
+      }
+    }
+    
+    // 3. 如果localStorage无效，检查配置的默认评论系统
+    if (!defaultComment) {
+      var configDefault = 'waline';
+      if (commentConfig[configDefault]?.enable) {
+        defaultComment = configDefault;
+      }
+    }
+    
+    // 4. 如果前两项都无效，按指定顺序找到第一个可用的评论系统
+    if (!defaultComment) {
+      defaultComment = commentConfigKeys.find(sys => commentConfig[sys].enable) || '';
+    }
+  }
+  function loadComments() {
+    if (!commentConfig.enable) return;
+    const loadedComments = {
+      valine: false,
+      waline: false,
+      twikoo: false,
+      gitalk: false,
+      giscus: false
+    };
+
+    // 隐藏所有评论容器
+    const hideAllComments = () => {
+      const commentContainers = document.querySelectorAll('.comment');
+      commentContainers.forEach(container => {
+        container.style.display = 'none';
+      });
+    };
+
+    // 按需加载评论系统
+    const loadCommentSystem = (type) => {
+      if (loadedComments[type]) {
+        // 如果已加载，只需显示对应容器
+        document.querySelector(`.${type}-comment`).style.display = 'block';
+        return;
+      }
+
+      // 根据类型加载对应的脚本
+      commentConfig[type]?.load();
+      loadedComments[type] = true;
+    };
+
+    // 评论组件选择器
+    const changeActiveCommentItems = (item) => {
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let i = 0; i < commentItems.length; i++) {
+        commentItems[i].classList.remove('active');
+      }
+      item.classList.add('active');
+
+      // 获取要加载的评论系统类型
+      const commentType = item.getAttribute('data-selector');
+
+      // 隐藏所有评论系统
+      hideAllComments();
+
+      // 加载选中的评论系统
+      loadCommentSystem(commentType);
+    };
+
+    const commentInit = () => {
+      // 评论组件选择器点击事件
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let item of commentItems) {
+        item.addEventListener('click', () => {
+          // 保存选择器状态
+          const commentType = item.getAttribute('data-selector');
+          window.localStorage.setItem('commentType', commentType);
+          // 切换选中状态
+          changeActiveCommentItems(item);
+        });
+      }
+
+      // 检查是否需要加载默认评论系统
+      if (defaultComment) {
+        const defaultSelectorItem = document.querySelector(`[data-selector="${defaultComment}"]`);
+        if (!defaultSelectorItem) return;
+        defaultSelectorItem.style.display = 'block';
+        defaultSelectorItem.classList.add('active');
+        loadCommentSystem(defaultComment);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', commentInit);
+    } else {
+      commentInit();
+    }
+  };
+  loadComments();
+</script>
+
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.12.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+
+    <script>
+      var setupAPlayer = () => {
+        if (!false || !window.matchMedia('(max-width: 768px)').matches) {
+          if (window.matchMedia('(max-width: 959px)').matches) {
+            const meting = _$('meting-js');
+            if (meting) {
+              meting.setAttribute('fixed', 'true');
+              const aside = meting.parentNode?.parentNode;
+              if (aside?.tagName === 'ASIDE') {
+                meting.parentNode.removeChild(meting);
+                document.body.appendChild(meting);
+              }
+            }
+          }
+        }
+      };
+    </script>
+  
+<script src="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.js" integrity="sha384-gdGYZwHnfJM54evoZhpO0s6ZF5BQiybkiyW7VXr+h5UfruuRL&#x2F;aORyw+5+HZoU6e" crossorigin="anonymous" defer onload="setupAPlayer()"></script>
+
+    
+<script src="https://npm.webcache.cn/meting@2.0.1/dist/Meting.min.js" integrity="sha384-ASVlpKF80A22OXTK3tfEjZm1EL6uFMKIC4p8+0maanw1S&#x2F;IyB+Y4JG+ZDU7GpKE8" crossorigin="anonymous" defer></script>
+
+
+
+  </body>
+  </html>

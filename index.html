@@ -1,0 +1,778 @@
+  <!DOCTYPE html>
+  <html lang="en"  
+      data-theme-mode="auto"
+  >
+  <head>
+  <meta charset="utf-8">
+  
+  
+  
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_4k4bc36ef96';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = 'All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://cl1ck-t0.github.io';</script>
+  <title>
+    Cl1ck-t0&#39;s blog
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media='all'">
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_4k4bc36ef96.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+    <meta property="og:type" content="website">
+<meta property="og:title" content="Cl1ck-t0&#39;s blog">
+<meta property="og:url" content="https://cl1ck-t0.github.io/index.html">
+<meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cl1ck-t0.github.io/images/banner.webp">
+<meta property="article:author" content="Cl1ck-t0">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cl1ck-t0.github.io/images/banner.webp">
+    <link rel="alternate" href="/atom.xml" title="Cl1ck-t0's blog" type="application/atom+xml">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" integrity="sha384-IfxC36XL/toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei+Zx/1oA/0l8ysE" crossorigin="anonymous">
+      <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/katex@0.16.24/dist/katex.min.css" integrity="sha384-tTgKLjMYmJr94v8qu2PE5MUGSMbyN2xiH266JUB3gpm8vnnJywd1dWSOEfrFz+YI" crossorigin="anonymous">
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.2/dist/aos.css" integrity="sha384-GMRP93c6Hkz9JVKGAuRR3nTS7M07RwPgTFenXiosjq2VbVgvdDNcz1g6Mkj8AONa" crossorigin="anonymous">
+
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.css" integrity="sha384-tLMkTWh2pfXNWGFlUS0w1TFtRG5xZ9lPWFOooj+vDDLIL+xBGQU/voDBY5XE2lVh" crossorigin="anonymous">
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+      <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate">
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+           M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+      </div>
+      <div class="loading-word">Loading...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var loaderEl = document.getElementById('loader');
+    var startLoading = () => {
+      time = Date.now();
+      loaderEl.classList.remove("loading");
+    }
+    var hideLoader = () => {
+      document.body.style.overflow = 'auto';
+      loader.classList.add('loading');
+    };
+
+    var endLoading = () => {
+      if (!time) {
+        hideLoader();
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          hideLoader();
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    loaderEl.addEventListener('click', endLoading);
+  </script>
+<div id="copy-tooltip"></div>
+<div id="heatmap-tooltip"></div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav" aria-label="Primary navigation">
+        <a class="main-nav-link-wrap" href="/">
+          <span class="main-nav-link">Home</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/archives">
+          <span class="main-nav-link">Archives</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/about">
+          <span class="main-nav-link">About</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/friend">
+          <span class="main-nav-link">Friend</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/atom.xml">
+          <span class="main-nav-link">rss</span>
+        </span>
+    <a id="main-nav-toggle" class="nav-icon" aria-label="Toggle navigation" role="button"></a>
+  </nav>
+  <nav id="sub-nav" aria-label="Secondary navigation">
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed" aria-label="RSS Feed" target="_blank"></a>
+  </nav>
+</div>
+<header id="header" aria-label="Site header">
+      <picture>
+      </picture>
+        <img  fetchpriority="high" src="/images/banner.webp" alt="">
+  <div id="header-outer">
+    <div id="header-title">
+          <span id="logo">
+            <h1 data-aos="slide-up">Cl1ck-t0&#39;s blog</h1>
+          </span>
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+        </h2>
+    </div>
+  </div>
+</header>
+
+        <div id="content" aria-label="Page content"  class="sidebar-right" >
+          <aside id="sidebar" aria-label="Sidebar">
+  <div class="sidebar-wrapper-container ">
+      <meting-js
+        theme="var(--color-link)"
+        id="6868625065"
+        server="netease"
+        type="playlist"
+        
+        
+        autoplay="false"
+        loop="all"
+        order="list"
+        
+        volume="0.7"
+        mutex="true"
+        
+        
+      ></meting-js>
+  <div class="sidebar-wrapper">
+    <div class="sidebar-wrap" data-aos="fade-up">
+        <div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
+  <div class="sidebar-author-name">Cl1ck-t0</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">32</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">20</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+    <div class="icon-rss sidebar-social-icon">
+      <a href=/atom.xml itemprop="url" target="_blank" aria-label="rss" rel="noopener nofollow noreferrer"></a>
+    </div>
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/atom.xml" aria-label="rss"></a>
+        <div class="sidebar-menu-link">rss</div>
+      </div>
+</div>
+
+    </div>
+  </div>
+  <div class="sidebar-widget">
+        <div class="widget-wrapper">
+    <div class="widget-wrap" data-aos="fade-up">
+      <h3 class="widget-title">Tag Cloud</h3>
+      <div class="widget tagcloud">
+        <a href="/tags/ACTF2025/" style="font-size: 10px;">ACTF2025</a> <a href="/tags/LFSR/" style="font-size: 10px;">LFSR</a> <a href="/tags/MD5%E7%A2%B0%E6%92%9E/" style="font-size: 10px;">MD5碰撞</a> <a href="/tags/MYSQL/" style="font-size: 10px;">MYSQL</a> <a href="/tags/PHP/" style="font-size: 15px;">PHP</a> <a href="/tags/RSA/" style="font-size: 10px;">RSA</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">SQL注入</a> <a href="/tags/burp%E9%9D%B6%E5%9C%BA/" style="font-size: 10px;">burp靶场</a> <a href="/tags/crypto/" style="font-size: 15px;">crypto</a> <a href="/tags/http/" style="font-size: 10px;">http</a> <a href="/tags/misc/" style="font-size: 12.5px;">misc</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/web/" style="font-size: 20px;">web</a> <a href="/tags/web%E5%AE%89%E5%85%A8/" style="font-size: 10px;">web安全</a> <a href="/tags/web%E6%BC%8F%E6%B4%9E/" style="font-size: 17.5px;">web漏洞</a> <a href="/tags/wireshark/" style="font-size: 10px;">wireshark</a> <a href="/tags/writeup/" style="font-size: 10px;">writeup</a> <a href="/tags/xss/" style="font-size: 10px;">xss</a> <a href="/tags/xss%E5%A4%96%E5%B8%A6/" style="font-size: 10px;">xss外带</a> <a href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" style="font-size: 12.5px;">渗透测试</a>
+      </div>
+    </div>
+  </div>
+
+  </div>
+  </div>
+</aside>
+
+          <section id="main" aria-label="Main content">      <div class="post-wrapper">
+  <div class="post-wrap left" data-aos="fade-up">
+      <a class="post-link" href="/2026/09/08/vulnhub-Dripping-Blues-1/" aria-label="vulnhub -Dripping Blues: 1" title="vulnhub -Dripping Blues: 1"></a>
+    <div class="post-cover left">
+          <img data-src="/covers/c53366addf8bd88b3898724deb9a4a22.jpg" data-sizes="auto" alt="vulnhub -Dripping Blues: 1" class="lazyload">
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2026-09-08</span>
+        <span><span class="icon-pencil"></span>757 words</span>
+        <span><span class="icon-clock"></span>4 mins</span>
+      </div>
+      <h2 class="post-title">vulnhub -Dripping Blues: 1</h2>
+      <article class="post-article">
+           vulnhub -Dripping Blues: 1
+开局依旧arp-scan
+这次没有网卡连接问题，很容易就扫出存活靶机：
+1192.168.216.132
+接着nmap
+12345PORT   STATE SERVICE21/tcp open  ftp22/tcp open  ssh80/tcp open  httpMAC Address: 00:0C:29:AE:33:C3 (VMware)
+发现依旧有个80端口http服务，我们试着访问一下：
+123driftingblues is hacked again so it&amp;#x27;s now called drippingblues.
+      </article>
+    </div>
+  </div>
+</div>
+      <div class="post-wrapper">
+  <div class="post-wrap right" data-aos="fade-up">
+      <a class="post-link" href="/2026/09/07/Vulnhub-Deathnote-1/" aria-label="Vulnhub-Deathnote: 1" title="Vulnhub-Deathnote: 1"></a>
+    <div class="post-cover right">
+          <img data-src="/covers/furina-neuvillette-3840x2160-19462.jpg" data-sizes="auto" alt="Vulnhub-Deathnote: 1" class="lazyload">
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2026-09-07</span>
+        <span><span class="icon-pencil"></span>984 words</span>
+        <span><span class="icon-clock"></span>5 mins</span>
+      </div>
+      <h2 class="post-title">Vulnhub-Deathnote: 1</h2>
+      <article class="post-article">
+           Vulnhub-Deathnote: 1
+试试简单的渗透测试。（小灯表示并非简单QAQ
+打开靶机以后看到：
+
+而我也不知道密码说是，于是只能尝试扫描所有存活主机：
+1sudo arp-scan xxx
+但是扫描出来发现没有靶机的IP啊）
+推测是因为VMware的问题，网络适配器驱动可能不兼容导致没有成功从DHCP服务器获取到IP地址
+那就需要手动设置IP）
+(后面探索以后发现是因为网卡没有被启用，也没有获取 IP)
+启用网卡以后DHCP获取IP
+然后扫描存活主机得到：
+1192.168.216.131
+服了第一步花了最长时间😭
+然后使用nmap扫描端口看看：
+回显：
+12345678910
+      </article>
+    </div>
+  </div>
+</div>
+      <div class="post-wrapper">
+  <div class="post-wrap left" data-aos="fade-up">
+      <a class="post-link" href="/2026/08/22/SSRF-XXE%E6%BC%8F%E6%B4%9E/" aria-label="SSRF&amp;XXE漏洞" title="SSRF&amp;XXE漏洞"></a>
+    <div class="post-cover left">
+          <img data-src="/covers/e733171f5f38a0bcf1090901492e8331.jpg" data-sizes="auto" alt="SSRF&amp;XXE漏洞" class="lazyload">
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2026-08-22</span>
+        <span><span class="icon-pencil"></span>6.1k words</span>
+        <span><span class="icon-clock"></span>26 mins</span>
+      </div>
+      <h2 class="post-title">SSRF&amp;XXE漏洞</h2>
+      <article class="post-article">
+           SSRF&amp;amp;XXE漏洞
+SSRF和XXE的共同点是：用户表面上提交的是一个地址或一段数据，但程序却让服务器替用户访问了内部资源。
+ 一、前置知识
+ 1.1 漏洞概述
+什么是 SSRF？
+
+
+SSRF（Server-Side Request Forgery，服务端请求伪造）
+
+
+服务器根据用户输入去请求某个地址，但没有限制好访问范围
+
+
+攻击者让服务器替自己访问内部资源
+SSRF 形成的原因大都是由于服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤与限制。
+比如,黑客操作服务端从指定URL地址获取网页文本内容，加载指定地址的图片，下载等等。利用的是服务端的请求伪造。ssr
+      </article>
+    </div>
+  </div>
+</div>
+      <div class="post-wrapper">
+  <div class="post-wrap right" data-aos="fade-up">
+      <a class="post-link" href="/2026/08/20/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E%E8%AF%A6%E8%A7%A3%E5%8F%8A%E5%88%A9%E7%94%A8/" aria-label="文件包含漏洞详解及利用" title="文件包含漏洞详解及利用"></a>
+    <div class="post-cover right">
+          <img data-src="/covers/0cb69d937ff15dcac75060bcfc1f5877.jpg" data-sizes="auto" alt="文件包含漏洞详解及利用" class="lazyload">
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2026-08-20</span>
+        <span><span class="icon-pencil"></span>3.5k words</span>
+        <span><span class="icon-clock"></span>16 mins</span>
+      </div>
+      <h2 class="post-title">文件包含漏洞详解及利用</h2>
+      <article class="post-article">
+           文件包含漏洞
+ 一、基础知识
+ 1.什么是文件包含漏洞
+ 1.1 基本概念
+文件包含漏洞是指应用程序在引入文件时，用户能够控制包含的文件路径，导致服务器执行了非预期的文件内容。
+123456// 正常使用&amp;lt;?php include(&amp;#x27;header.php&amp;#x27;); ?&amp;gt;// 存在漏洞的代码&amp;lt;?php include($_GET[&amp;#x27;file&amp;#x27;]); ?&amp;gt;// 用户可控制：?file=../../etc/passwd
+ 1.2 为什么会存在文件包含漏洞？
+
+
+
+原因
+说明
+
+
+
+
+动态包含
+开发者根据用户输入动态决定包含哪个文件
+
+
+路
+      </article>
+    </div>
+  </div>
+</div>
+      <div class="post-wrapper">
+  <div class="post-wrap left" data-aos="fade-up">
+      <a class="post-link" href="/2026/08/17/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/" aria-label="文件上传漏洞" title="文件上传漏洞"></a>
+    <div class="post-cover left">
+          <img data-src="/covers/7c3f98a5ee09b954c45ba2df0e2ba422.jpg" data-sizes="auto" alt="文件上传漏洞" class="lazyload">
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2026-08-17</span>
+        <span><span class="icon-pencil"></span>2.9k words</span>
+        <span><span class="icon-clock"></span>12 mins</span>
+      </div>
+      <h2 class="post-title">文件上传漏洞</h2>
+      <article class="post-article">
+           文件上传漏洞
+ 一、前置知识
+ 1.1 文件上传漏洞概述
+什么是文件上传漏洞？
+
+网站允许用户上传文件（头像、附件、图片等）
+如果服务端未严格检查，攻击者可上传恶意脚本
+当 Web 服务器解析执行该脚本时，就形成了漏洞
+
+核心思想：
+
+上传成功 ≠ 利用成功
+
+完整的攻击链需要四步：
+1上传 → 保存 → 访问 → 解析
+ 1.2 HTTP 上传请求基础
+multipart/form-data
+
+HTML 上传文件时的编码类型
+示例：
+
+123&amp;lt;form method=&amp;quot;post&amp;quot; enctype=&amp;quot;multipart/form-data&amp;quot;&amp;gt
+      </article>
+    </div>
+  </div>
+</div>
+      <div class="post-wrapper">
+  <div class="post-wrap right" data-aos="fade-up">
+      <a class="post-link" href="/2026/08/15/CSP/" aria-label="CSP" title="CSP"></a>
+    <div class="post-cover right">
+          <img data-src="/covers/51aed603166dff1de44b9bcf765c6677.jpg" data-sizes="auto" alt="CSP" class="lazyload">
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2026-08-15</span>
+        <span><span class="icon-pencil"></span>393 words</span>
+        <span><span class="icon-clock"></span>2 mins</span>
+      </div>
+      <h2 class="post-title">CSP</h2>
+      <article class="post-article">
+           CSP
+Content Security Policy（内容安全策略）是一种由服务端通过 HTTP 响应头（或 &amp;lt;meta&amp;gt; 标签）下发的安全策略，告诉浏览器哪些资源来源是可信的，从而限制页面能加载和执行的内容。
+这里先简单说明一下基础前置知识：
+源（Origin） 由三部分构成，三者完全一致才算同一个源：
+
+
+
+组成部分
+说明
+示例
+
+
+
+
+协议（Protocol）
+通信协议
+https://、http://
+
+
+域名（Host）
+域名或 IP
+example.com、192.168.1.1
+
+
+端口（Port）
+端口号（默认端口可省略）
+443（HTTPS 默认）、80（HT
+      </article>
+    </div>
+  </div>
+</div>
+      <div class="post-wrapper">
+  <div class="post-wrap left" data-aos="fade-up">
+      <a class="post-link" href="/2026/07/31/DVWA-security/" aria-label="DVWA security" title="DVWA security"></a>
+    <div class="post-cover left">
+          <img data-src="/covers/hoshimi-miyabi-dope-3840x2160-20500.jpg" data-sizes="auto" alt="DVWA security" class="lazyload">
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2026-07-31</span>
+        <span><span class="icon-pencil"></span>3.6k words</span>
+        <span><span class="icon-clock"></span>17 mins</span>
+      </div>
+      <h2 class="post-title">DVWA security</h2>
+      <article class="post-article">
+           DVWA security
+ 一、靶机的搭建
+窝本来是想和往常一样用phpstudy启动靶场服务的，突然不想这么干，于是窝再建立了一个虚拟机，在网上找了一个服务器安装镜像
+Ubuntu 22.04.5 LTS（Jammy Jellyfish）
+准备搞一个无图形用户界面纯命令行的靶机（毕竟只是一个靶机不需要其他功能，至于为什么不用kali作为靶机，是因为ubuntu比较小emmmmmm，随便给点配置就够用了）
+虚拟机的配置和以往差不多，可以先选择NET连接便于后续相关源码和工具的下载，运存2G完全够用了，毕竟是纯命令行）
+虚拟机配置完就打开，里面有一些虚拟机的详细配置，全部Done就行
+然后就
+      </article>
+    </div>
+  </div>
+</div>
+      <div class="post-wrapper">
+  <div class="post-wrap right" data-aos="fade-up">
+      <a class="post-link" href="/2026/07/27/ctfshow-crypto-wp/" aria-label="ctfshow-crypto-wp" title="ctfshow-crypto-wp"></a>
+    <div class="post-cover right">
+          <img data-src="/covers/d6d41915b0e308caf498f5160d5a8178.jpg" data-sizes="auto" alt="ctfshow-crypto-wp" class="lazyload">
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2026-07-27</span>
+        <span><span class="icon-pencil"></span>3.2k words</span>
+        <span><span class="icon-clock"></span>17 mins</span>
+      </div>
+      <h2 class="post-title">ctfshow-crypto-wp</h2>
+      <article class="post-article">
+           ctfshow-crypto-wp
+这里持续更新我在ctfshow里面crypto的刷题记录
+ 1.crypto9
+发现打开压缩包需要密码，直接爆破秒了
+得到密码4132
+然后我上网搜了一下发现serpent是一种加密
+于是我找到了在线解密网站如下：
+蛇形加密——轻松加密或解密字符串或文件
+得到flag：flag{c960a0f3bf871d7da2a8413ae78f7b5f}
+ 2.crypto10
+看到 =E7=94=A8 这种格式，这是 Quoted-Printable 编码（也叫 URL 百分号编码的变体）。
+特征：
+
+每个字节用 = 加两个十六进制数字表示
+例如 =E7=94=A
+      </article>
+    </div>
+  </div>
+</div>
+      <div class="post-wrapper">
+  <div class="post-wrap left" data-aos="fade-up">
+      <a class="post-link" href="/2026/07/21/ctfshow-web-wp/" aria-label="ctfshow-web-wp" title="ctfshow-web-wp"></a>
+    <div class="post-cover left">
+          <img data-src="/covers/skirk-anime-girl-3840x2160-23044.jpg" data-sizes="auto" alt="ctfshow-web-wp" class="lazyload">
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2026-07-21</span>
+        <span><span class="icon-pencil"></span>3.6k words</span>
+        <span><span class="icon-clock"></span>18 mins</span>
+      </div>
+      <h2 class="post-title">ctfshow-web-wp</h2>
+      <article class="post-article">
+           ctfshow-web-wp
+ctfshow web入门篇（部分）
+ 一、命令执行
+ 1.web29
+1234567891011121314151617181920212223&amp;lt;?php/*# -*- coding: utf-8 -*-# @Author: h1xa# @Date:   2020-09-04 00:12:34# @Last Modified by:   h1xa# @Last Modified time: 2020-09-04 00:26:48# @email: h1xa@ctfer.com# @link: https://ctfer.com*/error_report
+      </article>
+    </div>
+  </div>
+</div>
+      <div class="post-wrapper">
+  <div class="post-wrap right" data-aos="fade-up">
+      <a class="post-link" href="/2026/07/20/Web%E5%85%A5%E9%97%A8%E2%80%94%E2%80%94%E7%88%86%E7%A0%B4/" aria-label="Web入门——爆破" title="Web入门——爆破"></a>
+    <div class="post-cover right">
+          <img data-src="/covers/148743802_p0_master1200.jpg" data-sizes="auto" alt="Web入门——爆破" class="lazyload">
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2026-07-20</span>
+        <span><span class="icon-pencil"></span>1.2k words</span>
+        <span><span class="icon-clock"></span>6 mins</span>
+      </div>
+      <h2 class="post-title">Web入门——爆破</h2>
+      <article class="post-article">
+           爆破
+这里主要是有关小灯学习爆破实战中学习过程与总结
+ctfshow-web入门篇~
+ 一、web21
+账号密码爆破
+首先我们用bp抓包，试着输入一下账号密码，发现账号密码是以账号:密码为形式的，于是我们将该请求发送到intruder模块
+选择刚刚加密后的那一栏添加payload，这时候intruder模块就会在这一段尝试爆破
+
+然后我们开始设置payload：
+由于payload有自己的格式，我们选择自定义迭代器
+
+配置payload是位置一选择admin，位置二写&amp;quot;:&amp;quot;,位置三将题目给的字典上传
+选择base64-encode并取消url编码
+直接爆破
+
+找到状态码2
+      </article>
+    </div>
+  </div>
+</div>
+  <nav id="page-nav" aria-label="Pagination navigation" data-aos="fade-up">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+  </nav>
+
+</section>
+        </div>
+        <footer id="footer" aria-label="Site footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    <div>
+      <span class="icon-copyright"></span>
+        2020-2026
+        &nbsp;
+      Cl1ck-t0
+    </div>
+      <div>
+        Powered by&nbsp;<a href="https://hexo.io/" rel="noopener nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+      <div>
+        <span class="icon-brush"></span>
+        67.8k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        05:11
+      </div>
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">Number of visits&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">Number of visitors&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+  </div>
+</footer>
+
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav" aria-label="Mobile navigation">
+  <div class="sidebar-wrap">
+      <div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
+  <div class="sidebar-author-name">Cl1ck-t0</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">32</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">20</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+    <div class="icon-rss sidebar-social-icon">
+      <a href=/atom.xml itemprop="url" target="_blank" aria-label="rss" rel="noopener nofollow noreferrer"></a>
+    </div>
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/atom.xml" aria-label="rss"></a>
+        <div class="sidebar-menu-link">rss</div>
+      </div>
+</div>
+
+  </div>
+</nav>
+
+    </div>
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+
+  <script>
+    var setupFirework = () => {
+      if (!false || !window.matchMedia('(max-width: 768px)').matches) {
+        window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["var(--red-1)","var(--red-2)","var(--red-3)","var(--red-4)"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["var(--red-0)"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'));
+      }
+    }
+  </script>
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.2.0/dist/index.umd.js" integrity="sha384-qi9WggRt19tv8Vc7pCHW3ulMNLwrn515zaLEWZjl1px07vz8+pUoWX8n1rgq282T" crossorigin="anonymous" onload="setupFirework()" defer></script>
+
+
+  
+<script src="https://npm.webcache.cn/theme-shokax-pjax@0.0.3/dist/index.umd.js" integrity="sha384-xneY1WY8hOfUzswrE4CrYq35N4BdVcxqxwHPr9zawE&#x2F;jMSCxD+jAPU55x&#x2F;jj3wlf" crossorigin="anonymous"></script>
+
+  
+<script src="/js/pjax.js"></script>
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@3.0.1/dist/quicklink.umd.js" integrity="sha384-caMDqvgav&#x2F;HWdEYQU1QRRHMLleigpL1YHAG0m371DhzfL8rRzUyOb+bEHtwlmYjD" crossorigin="anonymous"></script>
+
+  <script data-pjax>
+    window.quicklink?.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+<div id="lazy-script">
+  <div>
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.12.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+
+    <script>
+      var setupAPlayer = () => {
+        if (!false || !window.matchMedia('(max-width: 768px)').matches) {
+          if (window.matchMedia('(max-width: 959px)').matches) {
+            const meting = _$('meting-js');
+            if (meting) {
+              meting.setAttribute('fixed', 'true');
+              const aside = meting.parentNode?.parentNode;
+              if (aside?.tagName === 'ASIDE') {
+                meting.parentNode.removeChild(meting);
+                document.body.appendChild(meting);
+              }
+            }
+          }
+        }
+      };
+    </script>
+  
+<script src="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.js" integrity="sha384-gdGYZwHnfJM54evoZhpO0s6ZF5BQiybkiyW7VXr+h5UfruuRL&#x2F;aORyw+5+HZoU6e" crossorigin="anonymous" defer onload="setupAPlayer()"></script>
+
+    
+<script src="https://npm.webcache.cn/meting@2.0.1/dist/Meting.min.js" integrity="sha384-ASVlpKF80A22OXTK3tfEjZm1EL6uFMKIC4p8+0maanw1S&#x2F;IyB+Y4JG+ZDU7GpKE8" crossorigin="anonymous" defer></script>
+
+
+
+  </body>
+  </html>

