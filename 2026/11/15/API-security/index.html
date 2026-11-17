@@ -25,7 +25,7 @@
 <meta property="og:image" content="https://developer.qcloudimg.com/operation/attachment/9118877/20251106-48c547a0.png">
 <meta property="og:image" content="https://s41.ax1x.com/2026/11/15/pn7FStH.png">
 <meta property="article:published_time" content="2026-11-15T08:26:30.000Z">
-<meta property="article:modified_time" content="2026-11-15T13:23:19.945Z">
+<meta property="article:modified_time" content="2026-11-17T13:22:36.881Z">
 <meta property="article:author" content="Cl1ck-t0">
 <meta property="article:tag" content="web">
 <meta name="twitter:card" content="summary">
@@ -161,7 +161,7 @@
     <div class="sidebar-wrap" data-aos="fade-up">
           <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#api-security"><span class="toc-number">1.</span> <span class="toc-text"> API security</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、基础知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E9%9D%B6%E5%9C%BA%E5%AE%9E%E6%88%98"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、靶场实战</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#api-security"><span class="toc-number">1.</span> <span class="toc-text"> API security</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、基础知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E9%9D%B6%E5%9C%BA%E5%AE%9E%E6%88%98%E4%B8%8E%E6%80%BB%E7%BB%93"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、靶场实战与总结</span></a></li></ol></li></ol>
 </div>
 </div>
           <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -228,7 +228,7 @@
       <div class="article-date">
   <span class="article-date-link icon-calendar" data-aos="zoom-in">
     <time datetime="2026-11-15T08:26:30.000Z" itemprop="datePublished">2026-11-15</time>
-    <time style="display: none;" id="post-update-time">2026-11-15</time>
+    <time style="display: none;" id="post-update-time">2026-11-17</time>
   </span>
 </div>
 
@@ -319,7 +319,7 @@
 <p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/2584807">API 安全难在哪？这篇是我见过讲得最透的架构方案-腾讯云开发者社区-腾讯云</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/2402_84408069/article/details/154240602">API安全入门指南：从零理解API与越权漏洞_api 安全入门-CSDN博客</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_51725318/article/details/144183643">什么是API 安全？（非常详细），零基础入门到精通，看这一篇就够了-CSDN博客</a></p>
-<h2 id="二-靶场实战"><a class="markdownIt-Anchor" href="#二-靶场实战"></a> 二、靶场实战</h2>
+<h2 id="二-靶场实战与总结"><a class="markdownIt-Anchor" href="#二-靶场实战与总结"></a> 二、靶场实战与总结</h2>
 <p>本文的主要内容，还是在实操中对api security的内容做出实践性阐述。</p>
 <p>首先我们先试试<code>/api</code></p>
 <p>发现返回了大量的错误信息：包括服务器的绝对文件路径和版本，部署位置，暴露了具体的路由文件和抛出错误的代码，以及技术栈和框架内部的调用链。</p>
@@ -336,6 +336,54 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">User-agent: *</span><br><span class="line">Disallow: /ftp</span><br></pre></td></tr></table></figure>
 <p>/ftp在这里是一个<strong>被错误地配置为公开可访问的静态文件目录</strong>。它直接暴露了服务器上存放的一些文件，其中包含敏感信息。</p>
 <p><img src="https://s41.ax1x.com/2026/11/15/pn7FStH.png" alt="image" /></p>
+<p>这些基础的探测不一一细说，重点在于在靶场渗透中学到了什么。</p>
+<p>我们大致可以把api可能导致的漏洞触发点分为以下几类（窝自己分的）：</p>
+<p><strong>1.授权类问题</strong></p>
+<p><strong>2.认证与会话滥用</strong></p>
+<p><strong>3.资源与业务滥用</strong></p>
+<p><strong>4.配置与供应链信任问题</strong></p>
+<p>其中，最重要也最严重的就是**<mark>1.授权类问题</mark>**</p>
+<p>很多服务端的api安全问题就是由于某个接口信任客户端发来的部分内容，对客户端的请求没有经过严格的处理，</p>
+<p>例如你登录后请求 <code>GET /api/invoices/1001</code>，拿到了自己的内容。如果改成 <code>1002</code> 也能拿到别人的内容，系统就存在 BOLA。</p>
+<p><strong>（对象级授权失效）</strong></p>
+<p>因此永远不要信任客户端传来的 ID。在数据库查询中强制加上归属条件，例如 <code>findOne({ _id: req.params.id, ownerId: req.user.id })</code>。如果查不到，<strong>返回 404</strong> 而不是 403，避免泄露“这个资源存在但不属于你”的信息。</p>
+<hr />
+<p>抑或是：<strong>授权检查停在了对象层面，没有延伸到字段层面</strong>。</p>
+<p>这种问题主要体现在两方面：</p>
+<p><strong>读方向的典型问题</strong>：你请求自己的订单，接口确实验证了订单归你，但返回的 JSON 里包含了 <code>internal_supplier_cost</code>（内部成本价）这类你不该看到的字段。原因是后端直接把整个数据库对象序列化返回了，指望前端去隐藏敏感字段——但攻击者用 Burp Suite 看原始响应，前端隐藏毫无意义。</p>
+<p><strong>写方向的典型问题</strong>：你更新个人资料，正常请求是 <code>{&quot;nickname&quot;: &quot;alex&quot;}</code>。攻击者在请求体里偷偷加上 <code>&quot;role&quot;: &quot;admin&quot;</code>，如果后端直接把请求体绑定到用户对象上，你就把自己提升成了管理员。这就是批量赋值。（太经典了）</p>
+<p>这就是<strong>对象属性级授权失效（BOPLA）</strong></p>
+<p><strong>修复思路</strong>：<strong>读写两个方向都用显式的允许列表（allowlist）</strong>。响应时只返回当前角色应该看到的字段（用 DTO 或序列化配置）；请求时只接受允许修改的字段，拒绝或忽略其他所有字段，绝不直接把原始请求体丢给 ORM。</p>
+<hr />
+<p>再者：<strong>功能级授权失效（BFLA）</strong></p>
+<p>这一项关注的是<strong>整个接口或功能</strong>的访问权限，而不是某个具体数据。典型场景是：管理员接口（如 <code>DELETE /api/admin/users/5</code>）没有在服务端做角色校验，普通用户只要知道 URL 就能调用成功。</p>
+<p>一个常见误区是<strong>在前端隐藏按钮</strong>就以为安全了。攻击者根本不看你的 UI，直接发 HTTP 请求就行。另一个容易遗漏的点是 <strong>HTTP 方法切换</strong>：<code>GET /api/users/5</code> 可能做了权限校验，但 <code>DELETE /api/users/5</code> 忘了加，攻击者换个方法就绕过了。</p>
+<p><strong>修复思路</strong>：在服务端对<strong>每一个接口</strong>（尤其是管理类接口）实施基于角色的访问控制（RBAC），采用“默认拒绝”策略。授权逻辑应该集中在中间件或统一入口处理，而不是散落在各个接口里靠开发者自觉添加。</p>
+<p>这些就是api security授权类问题的主要形式（更多细节查询官方资料去👀</p>
+<p>剩下的就一笔带过,骗你的，剩下的靶场也没怎么体现：</p>
+<p><mark><strong>认证与会话安全：</strong></mark></p>
+<p>eg.API2 身份认证失效</p>
+<p>这一项管的是“你到底是谁”。如果认证环节出了问题，攻击者就能冒充他人，后续所有基于身份的授权检查都会失效。</p>
+<p><strong>核心问题</strong>：认证机制实现不当，导致攻击者可以窃取或伪造认证令牌，从而临时或永久地冒充其他用户。常见的脆弱点包括：JWT 令牌在服务端未正确验证签名、令牌没有过期时间、在 URL 中传递 API 密钥导致密钥被日志记录，以及登录接口缺乏速率限制从而允许暴力破解或撞库。</p>
+<p><strong>后果</strong>：一旦攻击者获得了一个有效令牌，系统就会认为他就是那个用户。此时，即使对象级授权（BOLA）检查写得再正确，也会“合理地”放行对他人数据的访问，因为系统认为请求就来自数据所有者本人。</p>
+<p><strong>防护重点</strong>：确保所有令牌都经过严格的签名验证和有效期控制；不在 URL 或日志中暴露凭证；对认证端点实施速率限制和异常检测。</p>
+<p><mark><strong>资源与业务滥用：</strong></mark></p>
+<p>eg.API4 与 API6</p>
+<p>这一类风险更多是“没有设防”或“设计时没有考虑被滥用”。</p>
+<p><strong>API4：资源消耗无限制</strong></p>
+<p>满足 API 请求需要消耗网络带宽、CPU、内存和存储等资源。此外，短信、电话呼叫或生物特征验证等资源由第三方服务商通过 API 集成提供，按请求次数计费。如果接口对请求频率、单次返回数据量、GraphQL 查询深度或文件大小没有任何上限，攻击者就能轻易耗尽服务器资源，或通过触发大量付费的第三方调用来推高运营成本。</p>
+<p><strong>API6：敏感业务流无限制访问</strong></p>
+<p>接口本身逻辑可能完全正确，但业务流程可以被自动化脚本滥用。典型场景包括：抢购限量商品（scalping）、批量注册虚假账号、或爬取库存信息来操纵市场。这类问题传统漏洞扫描扫不出来，因为接口没有技术漏洞，只是被机器人滥用了正常业务流程。防护需要结合限流之外的业务层面手段，例如行为分析、人机验证，以及在设计阶段就识别出哪些流程是“敏感的、经不起自动化滥用的”。</p>
+<p><mark><strong>配置与供应链信任：</strong></mark></p>
+<p>eg.API8、API9、API10</p>
+<p>这三项的共同点是系统在某个环节放松了警惕——要么是配置上疏忽了，要么是信任了不该信任的外部依赖。</p>
+<p><strong>API8：安全配置错误</strong></p>
+<p>这类问题不涉及复杂逻辑，纯粹是配置纪律问题。典型表现包括：默认密码未修改、生产环境仍开着调试端点、错误信息泄露了堆栈细节、CORS 配置允许任意来源、缺少必要的安全响应头。防护方式是定期审查和加固 API 堆栈的配置，确保生产环境与开发环境的配置分离，并移除所有不必要的功能暴露。</p>
+<p><strong>API9：库存管理不当</strong></p>
+<p>你对自己到底暴露了哪些 API 缺乏清晰的掌控。旧版本接口没有下线、测试环境对公网开放、调试端点被遗忘、文档中未记录的“影子 API”仍然可访问。攻击者往往专门寻找这些被遗忘的端点下手，因为它们通常缺少最新的安全防护和监控。防护的核心是建立并维护完整的 API 清单，使用 OpenAPI 规范记录所有端点，定期审计并下线不再使用的接口。</p>
+<p><strong>API10：对 API 的不安全使用</strong></p>
+<p>开发者倾向于信任从第三方 API 收到的数据，认为“大厂的数据不会有问题”，因此在输入验证和清理上采用了更宽松的标准。攻击者因此转向攻击你<strong>所依赖的第三方服务</strong>，而不是直接攻击你的 API。例如：你的 API 从第三方服务获取地址数据并存入数据库，攻击者在第三方服务中存入包含 SQL 注入载荷的“恶意商家”，当你的 API 拉取这条数据时，注入载荷在你的数据库中执行。又或者，第三方服务被攻破后返回一个重定向响应，你的 API 盲目跟随，将包含用户敏感数据的请求原样发送到了攻击者的服务器。</p>
+<p><strong>防护原则</strong>：把第三方 API 的响应当作不可信的用户输入来处理——始终验证和清理，不盲目跟随重定向，使用 TLS 加密所有交互，并限制处理第三方响应时所消耗的资源。</p>
 
     </div>
     <footer class="article-footer">
@@ -344,7 +392,7 @@
     <p><strong><span class="icon-link icon"></span>Permalink: </strong><a href="https://cl1ck-t0.github.io/2026/11/15/API-security/">https://cl1ck-t0.github.io/2026/11/15/API-security/</a></p>
     
     <p><strong><span class="icon-calendar icon"></span>Published: </strong>2026-11-15 16:26:30</p>
-    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-11-15 21:23:19</p>
+    <p><strong><span class="icon-calendar icon"></span>Updated: </strong>2026-11-17 21:22:36</p>
     <p><strong><span class="icon-copyright icon"></span>License: </strong>All articles on this blog are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> license agreement unless otherwise stated. Please indicate the source when reprinting!</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
@@ -386,7 +434,7 @@
   </div>
     <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
     <div class="article-nav-link-wrap right">
-          <img data-src="/covers/8e05cba59b76a5b7d9bab1331e3a07d6_720.png" data-sizes="auto" alt="java反序列化漏洞" class="lazyload">
+          <img data-src="/covers/preview.jpg" data-sizes="auto" alt="java反序列化漏洞" class="lazyload">
       <a href="/2026/09/22/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/" aria-label="Next: java反序列化漏洞"  title="Next: java反序列化漏洞"></a>
       <div class="article-nav-caption">Next</div>
       <h3 class="article-nav-title">
@@ -435,10 +483,10 @@
       </div>
       <div>
         <span class="icon-brush"></span>
-        71.8k
+        74k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        05:30
+        05:38
       </div>
       <div>
         <span class="icon-eye"></span>
@@ -460,7 +508,7 @@
   <div class="sidebar-wrap">
         <div class="sidebar-toc-sidebar"><h3 class="toc-title">Contents</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#api-security"><span class="toc-number">1.</span> <span class="toc-text"> API security</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、基础知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E9%9D%B6%E5%9C%BA%E5%AE%9E%E6%88%98"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、靶场实战</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#api-security"><span class="toc-number">1.</span> <span class="toc-text"> API security</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、基础知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E9%9D%B6%E5%9C%BA%E5%AE%9E%E6%88%98%E4%B8%8E%E6%80%BB%E7%BB%93"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、靶场实战与总结</span></a></li></ol></li></ol>
 </div>
 </div>
         <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -617,7 +665,7 @@
           description: "",
           stripContent: " API security  一、基础知识 API (Application Programming Interface) 应用程序编程接口 是一个软件与另一个软件互动的方式。如果一个程序或应用程序有 API，外部客户端可以向它请求服务。 API 安全是保护 API 免遭攻击的过程。正如应用、网络和服务器可能会遭受攻击一样，API 也可能陷入许多不同的威胁，成为此类威胁的受害者。 API 安全是 Web 应用安全的核心组成部分。大多数现代 Web 应用依赖 API 来运行，而 API 允许外部方",
           date: "Sun Nov 15 2026 16:26:30 GMT+0800",
-          updated: "Sun Nov 15 2026 21:23:19 GMT+0800",
+          updated: "Tue Nov 17 2026 21:22:36 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
